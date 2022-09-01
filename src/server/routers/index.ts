@@ -1,22 +1,18 @@
 import { createRouter } from "@/api-lib/createRouter";
-import { postRouter } from "./post";
 import superjson from "superjson";
-
+import { connectDatabase } from "@/api-lib/database";
+    
 
 export const appRouter = 
-    createRouter()
-    .transformer(superjson)
-    .query("healthz", {
-        async resolve() {
-            return "yay!";
-        }
-    })
-    .query("wet", {
-        async resolve() {
-            return "wet"
-        }
-    })
-    .merge("post.", postRouter);
+  createRouter()
+  .transformer(superjson)
+  .middleware(async ({ next }) =>{
+    await connectDatabase();
+
+    return next();
+})
 
 
 export type AppRouter = typeof appRouter;
+
+

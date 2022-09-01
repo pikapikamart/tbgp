@@ -25,6 +25,10 @@ export async function createContext(
   opts: trpcNext.CreateNextContextOptions,
 ): Promise<Context> {
   // for API-response caching see https://trpc.io/docs/caching
+  const {
+    req,
+    res
+  } = opts;
 
   return await createContextInner({});
 }
