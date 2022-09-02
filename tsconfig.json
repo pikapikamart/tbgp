@@ -21,8 +21,7 @@
       "@/page-components/*": ["src/page-components/*"],
       "@/store/*": ["src/clients/store/*"],
       "@/styled/*": ["src/clients/styled/*"],
-      "@/pages/*": ["src/pages/*"],
-      "@/api-lib/*": [ "src/server/api-lib/*" ],
+      "@/pages/*": ["src/pages/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

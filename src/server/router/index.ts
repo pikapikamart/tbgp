@@ -1,6 +1,7 @@
-import { createRouter } from "@/api-lib/createRouter";
+import { createRouter } from "src/server/createRouter";
 import superjson from "superjson";
-import { connectDatabase } from "@/api-lib/database";
+import { connectDatabase } from "../database";
+import { adminRouter } from "../routes/admin.route";
     
 
 export const appRouter = 
@@ -11,6 +12,7 @@ export const appRouter =
 
     return next();
 })
+  .merge("admin.", adminRouter)
 
 
 export type AppRouter = typeof appRouter;

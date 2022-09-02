@@ -37,11 +37,13 @@ async function connectDatabase() {
   if (!cached.promise) {
     const opts = { bufferCommands: false };
 
-    if ( deployment === "development" ){
-        cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
-    } else if ( deployment === "production" ) {
-      cached.promise = mongoose.connect(MONGODB_URI_PROD, opts).then((mongoose) => mongoose);
-    }
+    // if ( deployment === "development" ){
+    //   cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
+    // } else if ( deployment === "production" ) {
+    //   cached.promise = mongoose.connect(MONGODB_URI_PROD, opts).then((mongoose) => mongoose);
+    // }
+
+    cached.promise = mongoose.connect(MONGODB_URI_PROD, opts).then((mongoose) => mongoose);
   
   }
   cached.conn = await cached.promise; 
