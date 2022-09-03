@@ -1,5 +1,5 @@
 import { createRouter } from "src/server/router/createRouter";
-import { createAdminHandler } from "../controller/admin.controller";
+import { createAdminHandler, createBastionIdHandler } from "../controller/admin.controller";
 import { createAdminSchema } from "../schema/admin.schema";
 
 
@@ -7,6 +7,9 @@ export const adminRouter = createRouter()
   .mutation("signup", {
     input: createAdminSchema,
     resolve: ({ input }) => createAdminHandler(input)
+  })
+  .mutation("create-id", {
+    resolve: () => createBastionIdHandler()
   })
 
 
