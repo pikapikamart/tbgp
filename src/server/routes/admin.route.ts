@@ -1,4 +1,4 @@
-import { createRouter } from "src/server/createRouter";
+import { createRouter } from "src/server/router/createRouter";
 import { createAdminHandler } from "../controller/admin.controller";
 import { createAdminSchema } from "../schema/admin.schema";
 

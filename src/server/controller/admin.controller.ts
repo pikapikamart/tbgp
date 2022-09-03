@@ -1,7 +1,6 @@
-import { TRPCError } from "@trpc/server"
 import { CreateAdminSchema } from "../schema/admin.schema"
 import { createAdmin, getAdmin } from "../services/admin.service";
-
+import { trpcError } from "../utils/error.util";
 
 
 export const createAdminHandler = async ( input: CreateAdminSchema ) =>{
@@ -11,10 +10,12 @@ export const createAdminHandler = async ( input: CreateAdminSchema ) =>{
 
   // only one admin
   if ( foundAdmin ) {
-    throw new TRPCError({
-      code: "CONFLICT",
-      message: "Admin already created"
-    })
+    trpcError("CONFLICT", "Admin already created")
+  }
+
+  // should match the env admin password
+  if ( adminPassword !== input.password ) {
+    trpcError("BAD_REQUEST", "Admin password incorrect in creation")
   }
 
   return await createAdmin(input);
