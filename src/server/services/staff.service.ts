@@ -1,8 +1,9 @@
 import { 
   DocumentDefinition, 
   FilterQuery, 
-  QueryOptions } from "mongoose";
-import { Staff, StaffModel } from "../models/staff.model";
+  QueryOptions, 
+  UpdateQuery} from "mongoose";
+import { Staff, StaffDocument, StaffModel } from "../models/staff.model";
 
 
 export const findStaff = async( 
@@ -14,4 +15,11 @@ export const findStaff = async(
 
 export const createStaff = async( staff: DocumentDefinition<Staff> ) => (
   StaffModel.create(staff)
+)
+
+export const updateStaff = async(
+  query: FilterQuery<StaffDocument>, 
+  update: UpdateQuery<StaffDocument> 
+) => (
+  StaffModel.findOneAndUpdate(query, update)
 )

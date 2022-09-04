@@ -1,9 +1,10 @@
-import { Staff } from "../models/staff.model";
+import { Staff, STAFF_POSITIONS } from "../models/staff.model";
 import { 
   CreateStaffSchema, 
-  RegisterIdSchema } from "../schema/staff.schema";
+  RegisterIdSchema, 
+  VerifyPositionSchema} from "../schema/staff.schema";
 import { getAdmin, updateAdmin } from "../services/admin.service";
-import { createStaff, findStaff } from "../services/staff.service";
+import { createStaff, findStaff, updateStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 
 
@@ -58,6 +59,51 @@ export const createStaffHandler = async( staff: CreateStaffSchema ) => {
 
   return {
     message: "Account created",
+    success: true
+  }
+}
+
+export const verifyPositionHandler = async( position: VerifyPositionSchema ) => {
+  const foundStaff = await findStaff({ bastionId: position.bastionId }, { lean: false });
+  const admin = await getAdmin();
+
+  if ( !foundStaff ) {
+    return trpcError("NOT_FOUND", "Please login properly")
+  }
+
+  if ( !STAFF_POSITIONS.includes(position.position) ) {
+    return trpcError("BAD_REQUEST", "Send a valid position")
+  }
+
+  if ( foundStaff.position ) {
+    return trpcError("CONFLICT", "Already a verified staff");
+  }
+
+  const foundVerificationRequest = admin?.verifications.find(request => request.bastionId===foundStaff.bastionId);
+
+  if ( foundVerificationRequest ) {
+    return trpcError("CONFLICT", "Already sent a verification request")
+  }
+
+  // for now, change to session later
+  const positionInformation = {
+    fullname: foundStaff.firstname + " " + foundStaff.lastname,
+    bastionId: foundStaff.bastionId,
+    position: position.position
+  }
+
+  await updateAdmin({
+    $push: {
+      verifications: positionInformation
+    }
+  })
+  await updateStaff(
+    { bastionId: position.bastionId },
+    { "requests.verification": true }
+  )
+
+  return {
+    message: "Verification sent",
     success: true
   }
 }

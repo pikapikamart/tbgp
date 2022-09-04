@@ -8,6 +8,13 @@ import {
   preHashModel } from "./utils";
 
 
+export const STAFF_POSITIONS = [
+  "Writer",
+  "Copy editor",
+  "Editor in chief",
+  "Layout artist"
+]
+
 export type Staff = User & {
   firstname: string,
   lastname: string,
@@ -15,6 +22,7 @@ export type Staff = User & {
   requests: {
     verification: boolean
   },
+  position?: string,
   bio?: string
 }
 
@@ -37,6 +45,7 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
   requests: {
     verification: Boolean
   },
+  position: String,
   bio: String
 })
 

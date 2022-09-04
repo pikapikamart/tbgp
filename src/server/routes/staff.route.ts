@@ -1,8 +1,9 @@
-import { createStaffHandler, registerIdHandler } from "../controller/staff.controller";
+import { createStaffHandler, registerIdHandler, verifyPositionHandler } from "../controller/staff.controller";
 import { createRouter } from "../router/createRouter";
 import { 
   createStaffSchema, 
-  registerIdSchema } from "../schema/staff.schema";
+  registerIdSchema, 
+  verifyPositionSchema} from "../schema/staff.schema";
 
 
 export const staffRouter = createRouter()
@@ -13,4 +14,8 @@ export const staffRouter = createRouter()
   .mutation("create-account", {
     input: createStaffSchema,
     resolve: ({ input }) => createStaffHandler(input)
+  })
+  .mutation("verify-position", {
+    input: verifyPositionSchema,
+    resolve: ({ input }) => verifyPositionHandler(input)
   })

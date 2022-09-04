@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { StaffDocument } from "./staff.model";
 import { 
   User,
   userBaseModel, 
@@ -9,6 +10,7 @@ import {
 
 
 type Verifications = {
+  fullname: string,
   bastionId: string,
   position: string
 }
@@ -30,6 +32,7 @@ const adminSchema: mongoose.Schema<AdminDocument> = new mongoose.Schema({
   bastionIds: [ String ],
   verifications: [
     {
+      fullname: String,
       bastionId: String,
       position: String
     }
