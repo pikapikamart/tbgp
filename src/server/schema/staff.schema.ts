@@ -6,9 +6,11 @@ export const registerIdSchema = z.string({ required_error: "Bastion Id is requir
 
 export const createStaffSchema = z
   .object({
-    firstName: z.string({ required_error:"Firstname is required" }),
-    lastName: z.string({ required_error: "Lastname is required" })
+    firstname: z.string({ required_error:"Firstname is required" }),
+    lastname: z.string({ required_error: "Lastname is required" }),
+    bastionId: z.string({ required_error: "Bastion Id should be passed" })
   })
   .merge(baseUserSchema);
 
 export type RegisterIdSchema = TypeOf<typeof registerIdSchema>;
+export type CreateStaffSchema = TypeOf<typeof createStaffSchema>;
