@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { StaffDocument } from "./staff.model";
 import { 
   User,
   userBaseModel, 

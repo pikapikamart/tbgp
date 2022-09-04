@@ -2,7 +2,7 @@ import { Staff, STAFF_POSITIONS } from "../models/staff.model";
 import { 
   CreateStaffSchema, 
   RegisterIdSchema, 
-  VerifyPositionSchema} from "../schema/staff.schema";
+  RequestVerificationSchema } from "../schema/staff.schema";
 import { getAdmin, updateAdmin } from "../services/admin.service";
 import { createStaff, findStaff, updateStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
@@ -63,7 +63,7 @@ export const createStaffHandler = async( staff: CreateStaffSchema ) => {
   }
 }
 
-export const verifyPositionHandler = async( position: VerifyPositionSchema ) => {
+export const verifyPositionHandler = async( position: RequestVerificationSchema ) => {
   const foundStaff = await findStaff({ bastionId: position.bastionId }, { lean: false });
   const admin = await getAdmin();
 

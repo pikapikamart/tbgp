@@ -3,7 +3,7 @@ import { createRouter } from "../router/createRouter";
 import { 
   createStaffSchema, 
   registerIdSchema, 
-  verifyPositionSchema} from "../schema/staff.schema";
+  requestVerificationSchema} from "../schema/staff.schema";
 
 
 export const staffRouter = createRouter()
@@ -16,6 +16,6 @@ export const staffRouter = createRouter()
     resolve: ({ input }) => createStaffHandler(input)
   })
   .mutation("verify-position", {
-    input: verifyPositionSchema,
+    input: requestVerificationSchema,
     resolve: ({ input }) => verifyPositionHandler(input)
   })

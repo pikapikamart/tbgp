@@ -1,8 +1,10 @@
 import { AdminDocument } from "../models/admin.model";
-import { CreateAdminSchema } from "../schema/admin.schema"
+import { CreateAdminSchema, VerifyPositionSchema } from "../schema/admin.schema"
 import { createAdmin, getAdmin, updateAdmin } from "../services/admin.service";
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid";
+import { updateStaff } from "../services/staff.service";
+import { STAFF_POSITIONS } from "../models/staff.model";
 
 
 export const createAdminHandler = async ( input: CreateAdminSchema ) =>{
@@ -45,5 +47,33 @@ export const createBastionIdHandler = async() =>{
   return {
     message: "Successfully created bastion id",
     data: createdBastionId
+  }
+}
+
+export const verifyPositionHandler = async ( { bastionId, position }: VerifyPositionSchema ) => {
+  const admin = await getAdmin();
+  const foundRequest = admin?.verifications.find(request => request.bastionId===bastionId)
+
+  if( !foundRequest ){
+    return trpcError("NOT_FOUND", "No request to confirm");
+  }
+
+  if ( !STAFF_POSITIONS.includes(position) ) {
+    return trpcError("BAD_REQUEST", "Send a valid position");
+  }
+
+  await updateStaff(
+    { bastionId },
+    { position }
+  )
+  await updateAdmin({
+    $pull: {
+      verifications: { bastionId }
+    }
+  })
+
+  return {
+    message: "Successfully verified staff",
+    success: true
   }
 }
