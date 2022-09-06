@@ -18,11 +18,11 @@ export const STAFF_POSITIONS: { [ key: string ]: string } = {
  
 export type Staff = StaffSchema & {
   requests: {
-    verification: boolean
+    verification: boolean,
+    story: StoryRequestDocument["_id"][]
   },
   position?: string,
   bio?: string,
-  storyRequests?: StoryRequestDocument["_id"][],
 }
 
 export type StaffDocument = Staff & UserDocument & {};
@@ -42,14 +42,14 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
     required: true
   },
   requests: {
-    verification: Boolean
+    verification: Boolean,
+    story: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "StoryRequest"
+    }]
   },
   position: String,
   bio: String,
-  storyRequests: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "StoryRequest"
-  }]
 })
 
 staffSchema.pre("save", preHashModel);

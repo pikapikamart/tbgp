@@ -13,7 +13,8 @@ export const CATEGORIES: { [key: string]: string } = {
 
 export type StoryRequest = StoryRequestSchema & {
   owner: StaffDocument["_id"],
-  members: StaffDocument["_id"][]
+  members: StaffDocument["_id"][],
+  requests: StaffDocument["_id"][]
 }
 
 export type StoryRequestDocument = StoryRequest & mongoose.Document & {}
@@ -25,6 +26,10 @@ const requestStorySchema: mongoose.Schema<StoryRequestDocument> = new mongoose.S
     required: true
   },
   members: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Staff"
+  }],
+  requests: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Staff"
   }],

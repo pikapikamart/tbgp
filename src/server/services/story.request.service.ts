@@ -1,6 +1,7 @@
 import { 
   DocumentDefinition, 
-  FilterQuery } from "mongoose";
+  FilterQuery, 
+  UpdateQuery} from "mongoose";
 import { 
   StoryRequest, 
   StoryRequestModel } from "../models/story.request.model";
@@ -12,4 +13,11 @@ export const createStoryRequest = async( storyRequest: DocumentDefinition<StoryR
 
 export const findStoryRequest = async( request: FilterQuery<StoryRequest> ) => (
   StoryRequestModel.findOne(request)
+)
+
+export const updateStoryRequest = async(
+  request: FilterQuery<StoryRequest>,
+  update: UpdateQuery<StoryRequest>
+) => (
+  StoryRequestModel.findOneAndUpdate(request, update)
 )
