@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
+import { AdminSchema } from "../schema/admin.schema";
 import { 
-  User,
   userBaseModel, 
   UserDocument } from "./user.model";
 import { 
@@ -14,8 +14,7 @@ type Verifications = {
   position: string
 }
 
-export type Admin = User & {
-  username: string,
+export type Admin = AdminSchema & {
   bastionIds: string[],
   verifications: Verifications[]
 }

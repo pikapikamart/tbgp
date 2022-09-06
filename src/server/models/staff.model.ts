@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import { StaffSchema } from "../schema/staff.schema";
+import { StoryRequestDocument } from "./story.request.model";
 import { 
-  User, 
   userBaseModel, 
   UserDocument } from "./user.model";
 import { 
@@ -8,22 +9,20 @@ import {
   preHashModel } from "./utils";
 
 
-export const STAFF_POSITIONS = [
-  "Writer",
-  "Copy editor",
-  "Editor in chief",
-  "Layout artist"
-]
-
-export type Staff = User & {
-  firstname: string,
-  lastname: string,
-  bastionId: string,
+export const STAFF_POSITIONS: { [ key: string ]: string } = {
+  writer: "Writer",
+  copyEditor: "Copy editor",
+  editorInChief: "Editor in chief",
+  layoutArtist: "Layout artist"
+}
+ 
+export type Staff = StaffSchema & {
   requests: {
     verification: boolean
   },
   position?: string,
-  bio?: string
+  bio?: string,
+  storyRequests?: StoryRequestDocument["_id"][],
 }
 
 export type StaffDocument = Staff & UserDocument & {};
@@ -46,7 +45,11 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
     verification: Boolean
   },
   position: String,
-  bio: String
+  bio: String,
+  storyRequests: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "StoryRequest"
+  }]
 })
 
 staffSchema.pre("save", preHashModel);

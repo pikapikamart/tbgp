@@ -4,19 +4,19 @@ import {
   createBastionIdHandler, 
   verifyPositionHandler} from "../controller/admin.controller";
 import { 
-  createAdminSchema, 
-  verifyPositionSchema } from "../schema/admin.schema";
+  adminSchema, 
+  positionSchema } from "../schema/admin.schema";
 
 
 export const adminRouter = createRouter()
-  .mutation("signup", {
-    input: createAdminSchema,
+  .mutation("create-admin", {
+    input: adminSchema,
     resolve: ({ input }) => createAdminHandler(input)
   })
-  .mutation("create-id", {
+  .mutation("create-bastionId", {
     resolve: () => createBastionIdHandler()
   })
   .mutation("verify-position", {
-    input: verifyPositionSchema,
+    input: positionSchema,
     resolve: ({ input }) => verifyPositionHandler(input)
   })

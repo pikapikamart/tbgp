@@ -1,5 +1,5 @@
 import { AdminDocument } from "../models/admin.model";
-import { CreateAdminSchema, VerifyPositionSchema } from "../schema/admin.schema"
+import { AdminSchema, PositionSchema } from "../schema/admin.schema"
 import { createAdmin, getAdmin, updateAdmin } from "../services/admin.service";
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid";
@@ -7,7 +7,7 @@ import { updateStaff } from "../services/staff.service";
 import { STAFF_POSITIONS } from "../models/staff.model";
 
 
-export const createAdminHandler = async ( input: CreateAdminSchema ) =>{
+export const createAdminHandler = async ( input: AdminSchema ) =>{
   const adminPassword = process.env.ADMIN_PASSWORD as string;
   
   const foundAdmin = await getAdmin();
@@ -50,7 +50,7 @@ export const createBastionIdHandler = async() =>{
   }
 }
 
-export const verifyPositionHandler = async ( { bastionId, position }: VerifyPositionSchema ) => {
+export const verifyPositionHandler = async ( { bastionId, position }: PositionSchema ) => {
   const admin = await getAdmin();
   const foundRequest = admin?.verifications.find(request => request.bastionId===bastionId)
 
@@ -58,13 +58,13 @@ export const verifyPositionHandler = async ( { bastionId, position }: VerifyPosi
     return trpcError("NOT_FOUND", "No request to confirm");
   }
 
-  if ( !STAFF_POSITIONS.includes(position) ) {
+  if ( !STAFF_POSITIONS[position] ) {
     return trpcError("BAD_REQUEST", "Send a valid position");
   }
 
   await updateStaff(
     { bastionId },
-    { position }
+    { position: STAFF_POSITIONS[position] }
   )
   await updateAdmin({
     $pull: {
