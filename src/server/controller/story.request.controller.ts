@@ -1,10 +1,21 @@
-import { CATEGORIES, StoryRequest } from "../models/story.request.model";
+import { 
+  CATEGORIES, 
+  StoryRequest } from "../models/story.request.model";
 import { STAFF_POSITIONS } from "../models/staff.model";
-import { ApplyStoryRequestSchema, StoryRequestSchema } from "../schema/story.request.schema";
-import { findStaff, updateStaff } from "../services/staff.service";
+import { 
+  ApplyStoryRequestSchema, 
+  StoryRequestSchema,
+  AcceptStoryRequestSchema } from "../schema/story.request.schema";
+import { 
+  findStaff, 
+  updateStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
-import { createStoryRequest, findStoryRequest, updateStoryRequest } from "../services/story.request.service";
+import { 
+  createStoryRequest, 
+  findStoryRequest, 
+  updateStoryRequest } from "../services/story.request.service";
 import { apiResult } from "../utils/success.util";
+import { nanoid } from "nanoid";
 
 
 export const createStoryRequestHandler = async( request: StoryRequestSchema ) =>{
@@ -28,6 +39,7 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema ) =>
 
   const storyRequestBody: StoryRequest = {
     ...request,
+    storyRequestId: nanoid(14),
     category: CATEGORIES[request.category],
     assignedMembers: sanitizeAssignment,
     owner: foundStaff._id,
@@ -40,7 +52,7 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema ) =>
     { bastionId: foundStaff.bastionId },
     { 
       $push: {
-        storyRequests: newStoryRequest._id
+        "storyRequests.created": newStoryRequest._id
       } 
     } 
   )
@@ -48,15 +60,15 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema ) =>
   return apiResult("Story request created", true);
 }
 
-export const applyStoryRequestHandler = async( { bastionId, title }: ApplyStoryRequestSchema ) => {
-  const foundStaff = await findStaff({ bastionId });
+export const applyStoryRequestHandler = async( { bastionId, id }: ApplyStoryRequestSchema ) => {
+  const foundStaff = await findStaff({ bastionId }, { lean: false });
 
   // Forbidden
   if ( !foundStaff ) {
     return trpcError("NOT_FOUND", "No staff found")
   }
   
-  const foundStoryRequest = await findStoryRequest({ title });
+  const foundStoryRequest = await findStoryRequest({ storyRequestId: id });
   
   if ( !foundStoryRequest ) {
     return trpcError("NOT_FOUND", "No story request found")
@@ -66,12 +78,16 @@ export const applyStoryRequestHandler = async( { bastionId, title }: ApplyStoryR
     return trpcError("BAD_REQUEST", "Already applied to story request")
   }
 
-  if ( foundStoryRequest.owner.equals(foundStaff._id) ){
-    return trpcError("BAD_REQUEST", "Can't apply to your own story request")
+  if ( foundStoryRequest.assignedMembers?.length && !foundStoryRequest.assignedMembers.includes(foundStaff.bastionId) ) {
+    return trpcError("FORBIDDEN", "Can't when you are not assigned in a story")
+  }
+
+  if ( foundStoryRequest.members.find(member => member.equals(foundStaff._id)) ) {
+    return trpcError("BAD_REQUEST", "Can't apply when you are already a member")
   }
 
   await updateStoryRequest(
-    { title },
+    { storyRequestId: id },
     { 
       $push: {
         requests: foundStaff._id
@@ -88,4 +104,61 @@ export const applyStoryRequestHandler = async( { bastionId, title }: ApplyStoryR
   )
 
   return apiResult("Successfully applied to story", true);
+}
+
+export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchema ) => {
+  const foundOwner = await findStaff({ bastionId: request.bastionId });
+
+  if ( !foundOwner ) {
+    return trpcError("FORBIDDEN", "Make sure to create your account properly")
+  }
+  
+  const foundRequester = await findStaff({ bastionId: request.requesterId }, { lean: false });
+
+  if ( !foundRequester ) {
+    return trpcError("BAD_REQUEST", "Use valid requester bastion id")
+  }
+
+  const foundStoryRequest = await findStoryRequest({ storyRequestId: request.id }, { lean: false });
+
+  if ( !foundStoryRequest ) {
+    return trpcError("BAD_REQUEST", "Use valid story request id")
+  }
+  
+  if ( !foundStoryRequest.requests.find(request => request.equals(foundRequester._id)) ) {
+    return trpcError("BAD_REQUEST", "Only staff that requested can be accepted")
+  }
+
+  if ( foundStoryRequest.members.find(member => member.equals(foundRequester._id)) ) {
+    return trpcError("BAD_REQUEST", "Requester is already a member")
+  }
+
+  if ( !foundStoryRequest.owner.equals(foundOwner._id) ) {
+    return trpcError("BAD_REQUEST", "Make sure to be the story request's owner to accept requsters")
+  }
+ 
+  await updateStoryRequest(
+    { storyRequestId: request.id }, 
+    { 
+      $push: {
+        members: foundRequester._id
+      },
+      $pull: {
+        requests: foundRequester._id
+      }
+    }
+  )
+  await updateStaff(
+    { bastionid: foundRequester.bastionId }, 
+    {
+      $push: {
+        "storyRequests.joined": foundStoryRequest._id
+      },
+      $pull: {
+        "requests.story": foundStoryRequest._id
+      }
+    }
+  )
+
+  return apiResult("Successfully accepted a member", true);
 }

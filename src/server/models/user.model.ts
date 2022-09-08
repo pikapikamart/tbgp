@@ -6,7 +6,7 @@ export type User = {
   password: string
 }
 
-export type UserDocument = mongoose.Document & {
+export type UserDocument = User & mongoose.Document & {
   comparePassword: ( pasword: string ) => Promise<boolean>
 }
 

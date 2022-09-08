@@ -14,9 +14,17 @@ export const storyRequestSchema = z
 
 export const applyStoryRequestSchema = z
   .object({
+    id: z.string({ required_error: "Story request tite is required" }),
     bastionId: z.string({ required_error: "Bastion Id is required" }),
-    title: z.string({ required_error: "Story request tite is required" })
+  })
+
+export const acceptStoryRequestSchema = z
+  .object({
+    id: z.string({ required_error: "Story request id is required" }),
+    bastionId: z.string({ required_error: "Bastion Id is required" }),
+    requesterId: z.string({ required_error: "Request Id is required" })
   })
 
 export type StoryRequestSchema = TypeOf<typeof storyRequestSchema>;
 export type ApplyStoryRequestSchema = TypeOf<typeof applyStoryRequestSchema>;
+export type AcceptStoryRequestSchema = TypeOf<typeof acceptStoryRequestSchema>;

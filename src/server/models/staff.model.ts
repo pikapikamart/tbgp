@@ -6,7 +6,7 @@ import {
   UserDocument } from "./user.model";
 import { 
   modelComparePassword, 
-  preHashModel } from "./utils";
+  preHashModel } from "./model.utils";
 
 
 export const STAFF_POSITIONS: { [ key: string ]: string } = {
@@ -22,6 +22,10 @@ export type Staff = StaffSchema & {
     story: StoryRequestDocument["_id"][]
   },
   position?: string,
+  storyRequests?: {
+    joined: StoryRequestDocument["_id"][],
+    created: StoryRequestDocument["_id"][]
+  },
   bio?: string,
 }
 
@@ -49,6 +53,16 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
     }]
   },
   position: String,
+  storyRequests: {
+    joined: [{
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: "StoryRequest"
+    }],
+    created: [{
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: "StoryRequest"
+    }]
+  },
   bio: String,
 })
 

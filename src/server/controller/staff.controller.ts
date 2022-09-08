@@ -45,7 +45,8 @@ export const createStaffHandler = async( staff: StaffSchema ) => {
   const newStaff: Staff = {
     ...staff,
     requests: {
-      verification: false
+      verification: false,
+      story: []
     },
     bio: ""
   }

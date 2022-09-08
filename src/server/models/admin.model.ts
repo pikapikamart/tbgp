@@ -5,7 +5,7 @@ import {
   UserDocument } from "./user.model";
 import { 
   modelComparePassword, 
-  preHashModel } from "./utils";
+  preHashModel } from "./model.utils";
 
 
 type Verifications = {
