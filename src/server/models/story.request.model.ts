@@ -21,7 +21,7 @@ export type StoryRequest = StoryRequestSchema & {
 
 export type StoryRequestDocument = StoryRequest & mongoose.Document & {}
 
-const storyRequestSchema: mongoose.Schema<StoryRequestDocument> = new mongoose.Schema({
+export const storyRequestSchema: mongoose.Schema<StoryRequestDocument> = new mongoose.Schema({
   storyRequestId: {
     type: String,
     unique: true,

@@ -1,21 +1,28 @@
 import { 
   CATEGORIES, 
   StoryRequest } from "../models/story.request.model";
-import { STAFF_POSITIONS } from "../models/staff.model";
+import { 
+  Staff,
+  StaffDocument, 
+  STAFF_POSITIONS } from "../models/staff.model";
 import { 
   ApplyStoryRequestSchema, 
   StoryRequestSchema,
-  AcceptStoryRequestSchema } from "../schema/story.request.schema";
+  AcceptStoryRequestSchema,
+  DeleteStoryRequestSchema } from "../schema/story.request.schema";
 import { 
+  bulkUpdateStaff,
   findStaff, 
   updateStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { 
   createStoryRequest, 
+  deleteStoryRequest, 
   findStoryRequest, 
   updateStoryRequest } from "../services/story.request.service";
 import { apiResult } from "../utils/success.util";
 import { nanoid } from "nanoid";
+import { AnyBulkWriteOperation } from "mongodb";
 
 
 export const createStoryRequestHandler = async( request: StoryRequestSchema ) =>{
@@ -161,4 +168,53 @@ export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchem
   )
 
   return apiResult("Successfully accepted a member", true);
+}
+
+export const deleteStoryRequestHandler = async( { id, bastionId }: DeleteStoryRequestSchema ) => {
+  const foundStaff = await findStaff({ bastionId }, { lean: false });
+
+  if ( !foundStaff ) {
+    return trpcError("UNAUTHORIZED", "Make sure to include your bastion id");
+  }
+
+  const foundStoryRequest = await findStoryRequest({ storyRequestId: id }, { lean: false });
+
+  if ( !foundStoryRequest ) {
+    return trpcError("NOT_FOUND", "No story request with this id found")
+  }
+
+  if ( !foundStoryRequest.owner.equals(foundStaff._id) ) {
+    return trpcError("BAD_REQUEST", "Only include owned story request")
+  }
+
+  const updateStaffBody = ( id: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
+    {
+      updateOne: {
+        filter: {
+          _id: id
+        },
+        update: {
+          $pull: {
+            "storyRequests.joined": foundStoryRequest._id,
+            "requests.story": foundStoryRequest._id
+          },
+        }
+      }
+    }
+  )
+
+  const membersAndRequestsIds = foundStoryRequest.members.concat(foundStoryRequest.requests);
+
+  await bulkUpdateStaff(membersAndRequestsIds.map(updateStaffBody));
+  await updateStaff(
+    { bastionId },
+    {
+      $pull: {
+        "storyRequests.created": foundStoryRequest._id
+      }
+    }
+  )
+  await deleteStoryRequest({ storyRequestId: id });
+
+  return apiResult("Successfully deleted story request", true);
 }

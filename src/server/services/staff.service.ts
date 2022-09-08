@@ -23,3 +23,7 @@ export const updateStaff = async(
 ) => (
   StaffModel.findOneAndUpdate(query, update)
 )
+
+export const bulkUpdateStaff = async( input: any ) => (
+  StaffModel.bulkWrite(input)
+)

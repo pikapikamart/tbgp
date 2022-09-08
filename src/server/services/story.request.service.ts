@@ -25,3 +25,7 @@ export const updateStoryRequest = async(
 ) => (
   StoryRequestModel.findOneAndUpdate(request, update)
 )
+
+export const deleteStoryRequest = async( request: FilterQuery<StoryRequest> ) => (
+  StoryRequestModel.deleteOne(request)
+)
