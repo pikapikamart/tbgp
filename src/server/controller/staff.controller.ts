@@ -1,10 +1,17 @@
-import { Staff, STAFF_POSITIONS } from "../models/staff.model";
+import { 
+  Staff, 
+  STAFF_POSITIONS } from "../models/staff.model";
 import { PositionSchema } from "../schema/admin.schema";
 import { 
   StaffSchema, 
   BastionIdSchema  } from "../schema/staff.schema";
-import { getAdmin, updateAdmin } from "../services/admin.service";
-import { createStaff, findStaff, updateStaff } from "../services/staff.service";
+import { 
+  getAdmin, 
+  updateAdmin } from "../services/admin.service";
+import { 
+  createStaff, 
+  findStaff, 
+  updateStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 
 
@@ -65,7 +72,7 @@ export const createStaffHandler = async( staff: StaffSchema ) => {
 }
 
 export const requestPositionHandler = async( { bastionId, position }: PositionSchema ) => {
-  const foundStaff = await findStaff({ bastionId }, { lean: false });
+  const foundStaff = await findStaff({ bastionId });
   const admin = await getAdmin();
 
   if ( !foundStaff ) {

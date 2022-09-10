@@ -1,6 +1,7 @@
 import { 
   DocumentDefinition, 
   FilterQuery, 
+  ProjectionType, 
   QueryOptions, 
   UpdateQuery} from "mongoose";
 import { 
@@ -14,9 +15,10 @@ export const createStoryRequest = async( storyRequest: DocumentDefinition<StoryR
 
 export const findStoryRequest = async( 
   request: FilterQuery<StoryRequest>,
+  projection: ProjectionType<StoryRequest> = {},
   options: QueryOptions = { lean: true }
 ) => (
-  StoryRequestModel.findOne(request)
+  StoryRequestModel.findOne(request, projection, options)
 )
 
 export const updateStoryRequest = async(

@@ -7,13 +7,22 @@ import {
 import { 
   modelComparePassword, 
   preHashModel } from "./model.utils";
+import { WriteupDocument } from "./writeup.model";
 
 
-export const STAFF_POSITIONS: { [ key: string ]: string } = {
+type StaffPositions = {
+  [ key: string ]: string,
   writer: "Writer",
-  copyEditor: "Copy editor",
-  editorInChief: "Editor in chief",
-  layoutArtist: "Layout artist"
+  copyEditor: "Copy Editor",
+  editorInChief: "Editor in Chief",
+  layoutArtist: "Layout Artist"
+}
+
+export const STAFF_POSITIONS: StaffPositions = {
+  writer: "Writer",
+  copyEditor: "Copy Editor",
+  editorInChief: "Editor in Chief",
+  layoutArtist: "Layout Artist"
 }
  
 export type Staff = StaffSchema & {
@@ -27,6 +36,11 @@ export type Staff = StaffSchema & {
     created: StoryRequestDocument["_id"][]
   },
   bio?: string,
+  writings?: {
+    solo: WriteupDocument["_id"][],
+    collaborated: WriteupDocument["_id"][],
+    task: WriteupDocument["_id"][]
+  }
 }
 
 export type StaffDocument = Staff & UserDocument & {};
@@ -64,6 +78,20 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
     }]
   },
   bio: String,
+  writings: {
+    solo: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Writeup"
+    }],
+    collaborated: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Writeup"
+    }],
+    task: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Writeup"
+    }]
+  }
 })
 
 staffSchema.pre("save", preHashModel);

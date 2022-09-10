@@ -4,7 +4,16 @@ import {
 import { StaffDocument } from "./staff.model";
 
 
-export const CATEGORIES: { [key: string]: string } = {
+type Categories = {
+  [ key: string ]: string,
+  sports: "Sports",
+  education: "Education",
+  devCom: "DevCom",
+  literary: "Literary",
+  news: "News"
+}
+
+export const CATEGORIES: Categories = {
   sports: "Sports",
   education: "Education",
   devCom: "DevCom",
@@ -16,10 +25,13 @@ export type StoryRequest = StoryRequestSchema & {
   storyRequestId: string,
   owner: StaffDocument["_id"],
   members: StaffDocument["_id"][],
-  requests: StaffDocument["_id"][]
+  requests: StaffDocument["_id"][],
+  started: boolean
 }
 
-export type StoryRequestDocument = StoryRequest & mongoose.Document & {}
+export type StoryRequestDocument = StoryRequest & mongoose.Document & {
+  createdAt: Date
+}
 
 export const storyRequestSchema: mongoose.Schema<StoryRequestDocument> = new mongoose.Schema({
   storyRequestId: {
@@ -55,7 +67,8 @@ export const storyRequestSchema: mongoose.Schema<StoryRequestDocument> = new mon
   assignedMembers: [{
     type: String,
     ref: "Staff"
-  }]
+  }],
+  started: Boolean
 })
 
 const StoryRequestModel: mongoose.Model<StoryRequestDocument> = mongoose.models.StoryRequest || mongoose.model("StoryRequest", storyRequestSchema);

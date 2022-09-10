@@ -9,7 +9,8 @@ import {
   ApplyStoryRequestSchema, 
   StoryRequestSchema,
   AcceptStoryRequestSchema,
-  DeleteStoryRequestSchema } from "../schema/story.request.schema";
+  DeleteStoryRequestSchema, 
+  StartStoryRequestSchema} from "../schema/story.request.schema";
 import { 
   bulkUpdateStaff,
   findStaff, 
@@ -23,10 +24,14 @@ import {
 import { apiResult } from "../utils/success.util";
 import { nanoid } from "nanoid";
 import { AnyBulkWriteOperation } from "mongodb";
+import { 
+  Writeup, 
+  WRITEUP_PHASE } from "../models/writeup.model";
+import { createWriteup } from "../services/writeup.service";
 
 
 export const createStoryRequestHandler = async( request: StoryRequestSchema ) =>{
-  const foundStaff = await findStaff({ bastionId: request.bastionId }, { lean: false });
+  const foundStaff = await findStaff({ bastionId: request.bastionId });
 
   if ( !foundStaff ) {
     return trpcError("NOT_FOUND", "No staff found")
@@ -51,7 +56,8 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema ) =>
     assignedMembers: sanitizeAssignment,
     owner: foundStaff._id,
     members: [],
-    requests: []
+    requests: [],
+    started: false
   }
 
   const newStoryRequest = await createStoryRequest(storyRequestBody);
@@ -68,14 +74,19 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema ) =>
 }
 
 export const applyStoryRequestHandler = async( { bastionId, id }: ApplyStoryRequestSchema ) => {
-  const foundStaff = await findStaff({ bastionId }, { lean: false });
+  const foundStaff = await findStaff({ bastionId });
 
   // Forbidden
   if ( !foundStaff ) {
     return trpcError("NOT_FOUND", "No staff found")
   }
   
-  const foundStoryRequest = await findStoryRequest({ storyRequestId: id });
+  const foundStoryRequest = await findStoryRequest(
+    { 
+      storyRequestId: id,
+      started: false
+    }
+  );
   
   if ( !foundStoryRequest ) {
     return trpcError("NOT_FOUND", "No story request found")
@@ -120,13 +131,13 @@ export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchem
     return trpcError("FORBIDDEN", "Make sure to create your account properly")
   }
   
-  const foundRequester = await findStaff({ bastionId: request.requesterId }, { lean: false });
+  const foundRequester = await findStaff({ bastionId: request.requesterId });
 
   if ( !foundRequester ) {
     return trpcError("BAD_REQUEST", "Use valid requester bastion id")
   }
 
-  const foundStoryRequest = await findStoryRequest({ storyRequestId: request.id }, { lean: false });
+  const foundStoryRequest = await findStoryRequest({ storyRequestId: request.id });
 
   if ( !foundStoryRequest ) {
     return trpcError("BAD_REQUEST", "Use valid story request id")
@@ -171,13 +182,13 @@ export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchem
 }
 
 export const deleteStoryRequestHandler = async( { id, bastionId }: DeleteStoryRequestSchema ) => {
-  const foundStaff = await findStaff({ bastionId }, { lean: false });
+  const foundStaff = await findStaff({ bastionId });
 
   if ( !foundStaff ) {
     return trpcError("UNAUTHORIZED", "Make sure to include your bastion id");
   }
 
-  const foundStoryRequest = await findStoryRequest({ storyRequestId: id }, { lean: false });
+  const foundStoryRequest = await findStoryRequest({ storyRequestId: id });
 
   if ( !foundStoryRequest ) {
     return trpcError("NOT_FOUND", "No story request with this id found")
@@ -217,4 +228,77 @@ export const deleteStoryRequestHandler = async( { id, bastionId }: DeleteStoryRe
   await deleteStoryRequest({ storyRequestId: id });
 
   return apiResult("Successfully deleted story request", true);
+}
+
+export const startStoryRequestHandler = async( { id, bastionId }: StartStoryRequestSchema ) => {
+  const foundStaff = await findStaff({ bastionId });
+
+  if ( !foundStaff ) {
+    return trpcError("UNAUTHORIZED", "Make sure to create your account properly")
+  }
+
+  const foundStoryRequest = await findStoryRequest(
+    {
+      storyRequestId: id,
+      started: false
+    }
+  );
+
+  if ( !foundStoryRequest ) {
+    return trpcError("BAD_REQUEST", "Please send a valid story request id")
+  }
+
+  if ( !foundStoryRequest.owner.equals(foundStaff._id) ) {
+    return trpcError("FORBIDDEN", "Only story request owner can access")
+  }
+
+  const newWriteup = await createWriteup(
+    {
+      request: foundStoryRequest._id,
+      title: foundStoryRequest.title,
+      caption: "",
+      banner: "",
+      content: [],
+      phase: WRITEUP_PHASE.writeup
+    }
+  );
+
+  await bulkUpdateStaff(foundStoryRequest.requests.map(( id: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
+    {
+      updateOne: {
+        filter: {
+          _id: id
+        },
+        update: {
+          $pull: {
+            "requests.story": foundStoryRequest._id
+          }
+        }
+      }
+    }
+  )));
+  const requestMembersLength = foundStoryRequest.members.length;
+  await bulkUpdateStaff(foundStoryRequest.members.map(( id: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
+    {
+      updateOne: {
+        filter: {
+          _id: id
+        },
+        update: {
+          $push: {
+            [ `writings.${ requestMembersLength>1? "collaborated" : "solo" }` ]: newWriteup._id
+          }
+        }
+      }
+    }
+  )));
+  await updateStoryRequest(
+    { storyRequestId: id }, 
+    {
+      requests: [],
+      started: true
+    }
+  );
+  
+  return apiResult("Successfully started the request", true);
 }

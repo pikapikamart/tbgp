@@ -2,12 +2,14 @@ import {
   acceptStoryRequestHandler, 
   applyStoryRequestHandler, 
   createStoryRequestHandler, 
-  deleteStoryRequestHandler} from "../controller/story.request.controller";
+  deleteStoryRequestHandler,
+  startStoryRequestHandler} from "../controller/story.request.controller";
 import { createRouter } from "../router/createRouter";
 import { 
   acceptStoryRequestSchema,
   applyStoryRequestSchema, 
   deleteStoryRequestSchema, 
+  startStoryRequestSchema, 
   storyRequestSchema } from "../schema/story.request.schema";
 
 
@@ -27,4 +29,8 @@ export const storyRequestRouter = createRouter()
   .mutation("accept", {
     input: acceptStoryRequestSchema,
     resolve: ({ input }) => acceptStoryRequestHandler(input)
+  })
+  .mutation("start", {
+    input: startStoryRequestSchema,
+    resolve: ({ input }) => startStoryRequestHandler(input)
   })
