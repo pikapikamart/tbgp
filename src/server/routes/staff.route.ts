@@ -1,12 +1,14 @@
 import { 
   createStaffHandler, 
   registerBastionIdHandler, 
-  requestPositionHandler } from "../controller/staff.controller";
+  requestPositionHandler, 
+  validateStaffHandler} from "../controller/staff.controller";
 import { createRouter } from "../router/createRouter";
 import { positionSchema } from "../schema/admin.schema";
 import { 
   staffSchema, 
-  bastionIdSchema } from "../schema/staff.schema";
+  bastionIdSchema, 
+  validateStaffSchema} from "../schema/staff.schema";
 
 
 export const staffRouter = createRouter()
@@ -21,4 +23,8 @@ export const staffRouter = createRouter()
   .mutation("request-position", {
     input: positionSchema,
     resolve: ({ input }) => requestPositionHandler(input)
+  })
+  .mutation("validate", {
+    input: validateStaffSchema, 
+    resolve: ({ input }) => validateStaffHandler(input)
   })

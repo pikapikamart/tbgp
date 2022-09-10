@@ -12,5 +12,12 @@ export const staffSchema = z
   })
   .merge(baseUserSchema);
 
+export const validateStaffSchema = z
+  .object({
+    email: z.string({ required_error: "Email is required" }),
+    password: z.string({ required_error: "Password is required" })
+  })
+
 export type BastionIdSchema = TypeOf<typeof bastionIdSchema>;
 export type StaffSchema = TypeOf<typeof staffSchema>;
+export type ValidateStaffSchema = TypeOf<typeof validateStaffSchema>;

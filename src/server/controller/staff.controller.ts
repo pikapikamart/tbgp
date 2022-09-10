@@ -4,7 +4,8 @@ import {
 import { PositionSchema } from "../schema/admin.schema";
 import { 
   StaffSchema, 
-  BastionIdSchema  } from "../schema/staff.schema";
+  BastionIdSchema,  
+  ValidateStaffSchema} from "../schema/staff.schema";
 import { 
   getAdmin, 
   updateAdmin } from "../services/admin.service";
@@ -13,6 +14,7 @@ import {
   findStaff, 
   updateStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
+import { apiResult } from "../utils/success.util";
 
 
 export const registerBastionIdHandler = async( bastionId: BastionIdSchema ) => {
@@ -114,4 +116,17 @@ export const requestPositionHandler = async( { bastionId, position }: PositionSc
     message: "Verification sent",
     success: true
   }
+}
+
+export const validateStaffHandler = async( { email, password }: ValidateStaffSchema ) => {
+  const foundStaff = await findStaff({ email }, {}, { lean: false });
+
+  if ( !foundStaff ) {
+    return trpcError("NOT_FOUND", "No user found with email")
+  }
+  if ( !await foundStaff.comparePassword(password) ) {
+    return trpcError("BAD_REQUEST", "Password does not match")
+  }
+
+  return apiResult("Successfully validated", true);
 }
