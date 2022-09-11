@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { 
-  StoryRequestSchema } from "../schema/story.request.schema";
+  StoryRequestSchema } from "../schemas/story.request.schema";
 import { StaffDocument } from "./staff.model";
 
 
@@ -24,9 +24,9 @@ export const CATEGORIES: Categories = {
 export type StoryRequest = StoryRequestSchema & {
   storyRequestId: string,
   owner: StaffDocument["_id"],
+  started: boolean
   members: StaffDocument["_id"][],
   requests: StaffDocument["_id"][],
-  started: boolean
 }
 
 export type StoryRequestDocument = StoryRequest & mongoose.Document & {

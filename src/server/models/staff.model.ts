@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { StaffSchema } from "../schema/staff.schema";
+import { StaffSchema } from "../schemas/staff.schema";
 import { StoryRequestDocument } from "./story.request.model";
 import { 
   userBaseModel, 

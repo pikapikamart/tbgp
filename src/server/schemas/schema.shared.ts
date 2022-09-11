@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { TypeOf, z } from "zod";
 
 
 export const baseUserSchema = z.object({
@@ -7,3 +7,5 @@ export const baseUserSchema = z.object({
   password: z.string({ required_error: "Password is require" })
     .min(10, "Should have 10 minimum character")
 })
+
+export type BaseUserSchema = TypeOf<typeof baseUserSchema>;

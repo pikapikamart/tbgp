@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { trpc } from "@/lib/trpc";
-import { ValidateStaffSchema } from "src/server/schema/staff.schema";
+import { ValidateStaffSchema } from "src/server/schemas/staff.schema";
 
 
 type UserInfo = ValidateStaffSchema & {

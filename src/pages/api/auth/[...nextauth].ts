@@ -8,7 +8,7 @@ import { getAdmin } from "src/server/services/admin.service";
 import { findStaff } from "src/server/services/staff.service";
 
 
-const nextAuthOptions: NextAuthOptions = {
+export const nextAuthOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",

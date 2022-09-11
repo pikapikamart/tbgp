@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { AdminSchema } from "../schema/admin.schema";
+import { AdminSchema } from "../schemas/admin.schema";
 import { 
   userBaseModel, 
   UserDocument } from "./user.model";

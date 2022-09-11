@@ -3,34 +3,34 @@ import {
   applyStoryRequestHandler, 
   createStoryRequestHandler, 
   deleteStoryRequestHandler,
-  startStoryRequestHandler} from "../controller/story.request.controller";
+  startStoryRequestHandler} from "../controllers/story.request.controller";
+import { isValidStaff } from "../middlewares/router.middleware";
 import { createRouter } from "../router/createRouter";
 import { 
   acceptStoryRequestSchema,
-  applyStoryRequestSchema, 
-  deleteStoryRequestSchema, 
-  startStoryRequestSchema, 
-  storyRequestSchema } from "../schema/story.request.schema";
+  storyRequestIdSchema, 
+  storyRequestSchema } from "../schemas/story.request.schema";
 
 
 export const storyRequestRouter = createRouter()
+  .middleware(({ ctx, next }) => isValidStaff(ctx, next))
   .mutation("create", {
     input: storyRequestSchema,
-    resolve: ({ input }) => createStoryRequestHandler(input)
-  })
-  .mutation("delete", {
-    input: deleteStoryRequestSchema,
-    resolve: ({ input }) => deleteStoryRequestHandler(input)
+    resolve: ({ input, ctx }) => createStoryRequestHandler(input, ctx)
   })
   .mutation("apply", {
-    input: applyStoryRequestSchema,
-    resolve: ({ input }) => applyStoryRequestHandler(input)
+    input: storyRequestIdSchema,
+    resolve: ({ input, ctx }) => applyStoryRequestHandler(input, ctx)
   })
   .mutation("accept", {
     input: acceptStoryRequestSchema,
-    resolve: ({ input }) => acceptStoryRequestHandler(input)
+    resolve: ({ input, ctx }) => acceptStoryRequestHandler(input, ctx)
+  })
+  .mutation("delete", {
+    input: storyRequestIdSchema,
+    resolve: ({ input, ctx }) => deleteStoryRequestHandler(input, ctx)
   })
   .mutation("start", {
-    input: startStoryRequestSchema,
-    resolve: ({ input }) => startStoryRequestHandler(input)
+    input: storyRequestIdSchema,
+    resolve: ({ input, ctx }) => startStoryRequestHandler(input, ctx)
   })

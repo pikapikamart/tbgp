@@ -2,10 +2,11 @@ import { createRouter } from "src/server/router/createRouter";
 import { 
   createAdminHandler, 
   createBastionIdHandler, 
-  verifyPositionHandler} from "../controller/admin.controller";
+  verifyPositionHandler} from "../controllers/admin.controller";
+import { isValidAdmin } from "../middlewares/router.middleware";
 import { 
   adminSchema, 
-  positionSchema } from "../schema/admin.schema";
+  verifyPositionSchema} from "../schemas/admin.schema";
 
 
 export const adminRouter = createRouter()
@@ -13,10 +14,12 @@ export const adminRouter = createRouter()
     input: adminSchema,
     resolve: ({ input }) => createAdminHandler(input)
   })
+  // authentication needed
+  .middleware(async({ ctx, next }) => isValidAdmin(ctx, next))
   .mutation("create-bastionId", {
-    resolve: () => createBastionIdHandler()
+    resolve: ({ ctx }) => createBastionIdHandler(ctx)
   })
   .mutation("verify-position", {
-    input: positionSchema,
-    resolve: ({ input }) => verifyPositionHandler(input)
+    input: verifyPositionSchema,
+    resolve: ({ input, ctx }) => verifyPositionHandler(input, ctx)
   })

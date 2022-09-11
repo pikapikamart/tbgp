@@ -1,4 +1,6 @@
-import { TypeOf, z } from "zod";
+import { 
+  TypeOf, 
+  z } from "zod";
 import { baseUserSchema } from "./schema.shared";
 
 
@@ -12,12 +14,11 @@ export const staffSchema = z
   })
   .merge(baseUserSchema);
 
-export const validateStaffSchema = z
+export const requestPositionSchema = z
   .object({
-    email: z.string({ required_error: "Email is required" }),
-    password: z.string({ required_error: "Password is required" })
+    position: z.string({ required_error: "Position is required" })
   })
 
 export type BastionIdSchema = TypeOf<typeof bastionIdSchema>;
 export type StaffSchema = TypeOf<typeof staffSchema>;
-export type ValidateStaffSchema = TypeOf<typeof validateStaffSchema>;
+export type RequestPositionSchema = TypeOf<typeof requestPositionSchema>;

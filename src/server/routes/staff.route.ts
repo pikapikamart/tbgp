@@ -2,13 +2,14 @@ import {
   createStaffHandler, 
   registerBastionIdHandler, 
   requestPositionHandler, 
-  validateStaffHandler} from "../controller/staff.controller";
+  validateStaffHandler} from "../controllers/staff.controller";
+import { isValidStaff } from "../middlewares/router.middleware";
 import { createRouter } from "../router/createRouter";
-import { positionSchema } from "../schema/admin.schema";
+import { baseUserSchema } from "../schemas/schema.shared";
 import { 
   staffSchema, 
   bastionIdSchema, 
-  validateStaffSchema} from "../schema/staff.schema";
+  requestPositionSchema} from "../schemas/staff.schema";
 
 
 export const staffRouter = createRouter()
@@ -20,11 +21,13 @@ export const staffRouter = createRouter()
     input: staffSchema,
     resolve: ({ input }) => createStaffHandler(input)
   })
-  .mutation("request-position", {
-    input: positionSchema,
-    resolve: ({ input }) => requestPositionHandler(input)
-  })
   .mutation("validate", {
-    input: validateStaffSchema, 
+    input: baseUserSchema, 
     resolve: ({ input }) => validateStaffHandler(input)
+  })
+  // authentication checking
+  .middleware(async ({ ctx, next }) => isValidStaff(ctx, next))
+  .mutation("request-position", {
+    input: requestPositionSchema,
+    resolve: ({ input, ctx }) => requestPositionHandler(input, ctx)
   })

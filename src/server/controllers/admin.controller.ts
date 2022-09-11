@@ -1,10 +1,16 @@
-import { AdminDocument } from "../models/admin.model";
-import { AdminSchema, PositionSchema } from "../schema/admin.schema"
-import { createAdmin, getAdmin, updateAdmin } from "../services/admin.service";
+import { 
+  AdminSchema, 
+  VerifyPositionSchema } from "../schemas/admin.schema"
+import { 
+  createAdmin, 
+  getAdmin, 
+  updateAdmin } from "../services/admin.service";
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid";
 import { updateStaff } from "../services/staff.service";
 import { STAFF_POSITIONS } from "../models/staff.model";
+import { apiResult } from "../utils/success.util";
+import { AdminContext } from "../middlewares/router.middleware";
 
 
 export const createAdminHandler = async ( input: AdminSchema ) =>{
@@ -12,26 +18,22 @@ export const createAdminHandler = async ( input: AdminSchema ) =>{
   
   const foundAdmin = await getAdmin();
 
-  // only one admin
   if ( foundAdmin ) {
     return trpcError("CONFLICT", "Admin already created")
   }
 
-  // should match the env admin password
   if ( adminPassword !== input.password ) {
     return trpcError("BAD_REQUEST", "Admin password incorrect in creation")
   }
 
-  return await createAdmin(input);
+  await createAdmin(input);
+
+  return apiResult("Admin created", true);
 }
 
-// todo - add authentication for admin first
+export const createBastionIdHandler = async( { admin }: AdminContext ) =>{
 
-export const createBastionIdHandler = async() =>{
-  const admin = await getAdmin() as AdminDocument;
-  const bastionIds = admin.bastionIds;
-
-  if ( bastionIds.length===3 ) {
+  if ( admin.bastionIds.length===3 ) {
     return trpcError("BAD_REQUEST", "Maximum of 3 bastion id's at a time")
   }
 
@@ -44,18 +46,14 @@ export const createBastionIdHandler = async() =>{
     }
   })
 
-  return {
-    message: "Successfully created bastion id",
-    data: createdBastionId
-  }
+  return apiResult("Successfully created bastion id", createdBastionId);
 }
 
-export const verifyPositionHandler = async ( { bastionId, position }: PositionSchema ) => {
-  const admin = await getAdmin();
-  const foundRequest = admin?.verifications.find(request => request.bastionId===bastionId)
+export const verifyPositionHandler = async ( { bastionId, position }: VerifyPositionSchema, ctx: AdminContext ) => {
+  const foundRequest = ctx.admin.verifications.find(request => request.bastionId===bastionId)
 
   if( !foundRequest ){
-    return trpcError("NOT_FOUND", "No request to confirm");
+    return trpcError("BAD_REQUEST", "Send a valid verification request");
   }
 
   if ( !STAFF_POSITIONS[position] ) {
@@ -72,8 +70,5 @@ export const verifyPositionHandler = async ( { bastionId, position }: PositionSc
     }
   })
 
-  return {
-    message: "Successfully verified staff",
-    success: true
-  }
+  return apiResult("Successfully verified a staff", true)
 }
