@@ -3,11 +3,11 @@ import { StaffSchema } from "../schemas/staff.schema";
 import { StoryRequestDocument } from "./story.request.model";
 import { 
   userBaseModel, 
-  UserDocument } from "./user.model";
+  UserDocument } from "./shared.model";
 import { 
   modelComparePassword, 
   preHashModel } from "./model.utils";
-import { WriteupDocument } from "./writeup.model";
+import { WriteupsDocument } from "./writeups.model";
 
 
 type StaffPositions = {
@@ -37,9 +37,9 @@ export type Staff = StaffSchema & {
   },
   bio?: string,
   writings?: {
-    solo: WriteupDocument["_id"][],
-    collaborated: WriteupDocument["_id"][],
-    task: WriteupDocument["_id"][]
+    solo: WriteupsDocument["_id"][],
+    collaborated: WriteupsDocument["_id"][],
+    task: WriteupsDocument["_id"][]
   }
 }
 

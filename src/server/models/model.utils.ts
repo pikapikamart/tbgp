@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { UserDocument } from "./user.model";
+import { UserDocument } from "./shared.model";
 import bcrypt from "bcrypt";
 
 

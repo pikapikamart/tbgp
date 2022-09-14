@@ -13,6 +13,7 @@ import {
 
 
 export const storyRequestRouter = createRouter()
+  // authentication
   .middleware(({ ctx, next }) => isValidStaff(ctx, next))
   .mutation("create", {
     input: storyRequestSchema,

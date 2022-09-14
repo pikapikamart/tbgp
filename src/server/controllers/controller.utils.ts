@@ -1,6 +1,8 @@
 import { StaffDocument } from "../models/staff.model";
+import { WriteupIdSchema } from "../schemas/writeup.schema";
 import { getAdmin } from "../services/admin.service"
 import { findStoryRequest } from "../services/story.request.service";
+import { findWriteup } from "../services/writeup.service";
 import { trpcError } from "../utils/error.util";
 
 
@@ -37,4 +39,14 @@ export const getOwnedAvailableStoryRequest = async( id: string, owner: StaffDocu
   }
 
   return foundStoryRequest;
+}
+
+export const getSingleWriteup = async( writeupId: WriteupIdSchema ) => {
+  const foundWriteup = await findWriteup({ writeupId });
+
+  if ( !foundWriteup ) {
+    return trpcError("NOT_FOUND", "No writeup found with this id")
+  }
+
+  return foundWriteup;
 }

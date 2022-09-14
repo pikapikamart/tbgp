@@ -20,8 +20,9 @@ import {
 import { apiResult } from "../utils/success.util";
 import { nanoid } from "nanoid";
 import { AnyBulkWriteOperation } from "mongodb";
-import { WRITEUP_PHASE } from "../models/writeup.model";
-import { createWriteup } from "../services/writeup.service";
+import { 
+  createWriteup, 
+  updateWriteup } from "../services/writeup.service";
 import { StaffContext } from "../middlewares/router.middleware";
 import { 
   getCurrentAvailableStoryRequest, 
@@ -178,17 +179,37 @@ export const deleteStoryRequestHandler = async( { id }: StoryRequestIdSchema, { 
 
 export const startStoryRequestHandler = async( { id }: StoryRequestIdSchema, { staff }: StaffContext ) => {
   const foundStoryRequest = await getOwnedAvailableStoryRequest(id, staff._id);
-  const newWriteup = await createWriteup(
+  const newWriteupBody = {
+    request: foundStoryRequest._id,
+    writeupId: nanoid(14),
+    title: foundStoryRequest.title,
+    caption: "",
+    banner: "",
+    content: [],
+  }
+  let newlyCreatedWriteupDbId: String = "";
+  const updatedWriteups = await updateWriteup(
+    { phase: "writeup" }, 
     {
-      request: foundStoryRequest._id,
-      title: foundStoryRequest.title,
-      caption: "",
-      banner: "",
-      content: [],
-      phase: WRITEUP_PHASE.writeup
+      $push: {
+        writeups: newWriteupBody
+      }
     }
-  );
+  )
 
+  if ( !updatedWriteups ) {
+    const newlyCreatedWriteups = await createWriteup(
+      {
+        phase: "writeup",
+        writings: [newWriteupBody]
+      }
+    )
+    newlyCreatedWriteupDbId = newlyCreatedWriteups.writings[0]._id;
+  }
+
+  newlyCreatedWriteupDbId = newlyCreatedWriteupDbId? newlyCreatedWriteupDbId : updatedWriteups?.writings[updatedWriteups.writings.length - 1]._id;
+
+  // remove all request made by users to the story
   await bulkUpdateStaff(foundStoryRequest.requests.map(( id: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
     {
       updateOne: {
@@ -203,6 +224,7 @@ export const startStoryRequestHandler = async( { id }: StoryRequestIdSchema, { s
       }
     }
   )));
+  // add the writeup to all members of the story
   await bulkUpdateStaff(foundStoryRequest.members.map(( id: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
     {
       updateOne: {
@@ -211,7 +233,7 @@ export const startStoryRequestHandler = async( { id }: StoryRequestIdSchema, { s
         },
         update: {
           $push: {
-            [ `writings.${ foundStoryRequest.members.length>1? "collaborated" : "solo" }` ]: newWriteup._id
+            [ `writings.${ foundStoryRequest.members.length>1? "collaborated" : "solo" }` ]: newlyCreatedWriteupDbId
           }
         }
       }

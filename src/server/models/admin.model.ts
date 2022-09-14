@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { AdminSchema } from "../schemas/admin.schema";
 import { 
   userBaseModel, 
-  UserDocument } from "./user.model";
+  UserDocument } from "./shared.model";
 import { 
   modelComparePassword, 
   preHashModel } from "./model.utils";

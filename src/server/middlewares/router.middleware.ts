@@ -29,6 +29,10 @@ export const isValidStaff = async( ctx: Context, next: TrpcNext ) =>{
 
 export const isValidAdmin = async( ctx: Context, next: TrpcNext ) => {
   const admin = await getCurrentAdmin();
+  // change to using token validation
+  if ( !admin ) {
+    return trpcError("UNAUTHORIZED", "Please login as admin properly")
+  }
 
   return next({
     ctx: {
