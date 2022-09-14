@@ -37,7 +37,8 @@ export type Writeup = {
   title: string,
   caption: string,
   banner: string,
-  content: any[]
+  content: any[],
+  isEditing?: boolean
 }
 
 export type WriteupDocument = Writeup & mongoose.Document & {};
@@ -59,4 +60,5 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
   caption: String,
   banner: String,
   content: [],
+  isEditing: Boolean
 })

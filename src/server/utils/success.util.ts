@@ -6,3 +6,11 @@ export const apiResult = ( message: string, success: boolean | string ) => (
     success
   }
 )
+
+export const apiResultWithData = <T>( success: boolean, data: T ) => {
+
+  return {
+    success,
+    data
+  }
+}

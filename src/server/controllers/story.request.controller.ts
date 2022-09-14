@@ -186,6 +186,7 @@ export const startStoryRequestHandler = async( { id }: StoryRequestIdSchema, { s
     caption: "",
     banner: "",
     content: [],
+    isEditing: false
   }
   let newlyCreatedWriteupDbId: String = "";
   const updatedWriteups = await updateWriteup(
