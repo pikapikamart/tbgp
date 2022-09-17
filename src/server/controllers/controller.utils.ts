@@ -1,4 +1,6 @@
-import { FilterQuery, PopulateOptions, ProjectionType } from "mongoose";
+import { 
+  PopulateOptions, 
+  ProjectionType } from "mongoose";
 import { StaffDocument } from "../models/staff.model";
 import { Writeups } from "../models/writeups.model";
 import { getAdmin } from "../services/admin.service"
@@ -42,14 +44,24 @@ export const getOwnedAvailableStoryRequest = async( id: string, owner: StaffDocu
   return foundStoryRequest;
 }
 
+export type WriteupQuery = {
+  phase: string,
+  writeupId: string
+}
+
 export const getSingleWriteup = async( 
-  query: FilterQuery<Writeups>,
+  query: WriteupQuery,
   projection: ProjectionType<Writeups>="",
-  populate?: PopulateOptions ) => {
-  const foundWriteup = await findWriteup(query, projection, populate);
+  populate?: PopulateOptions 
+) => {
+  const writeupQuery = {
+    phase: query.phase,
+    "writings.writeupId": query.writeupId
+  }
+  const foundWriteup = await findWriteup(writeupQuery, projection, populate);
 
   if ( !foundWriteup ) {
-    return trpcError("NOT_FOUND", "No writeup found with this id and phase")
+    return trpcError("NOT_FOUND", "No writeup found with this phase and writeup id")
   }
 
   return foundWriteup;
