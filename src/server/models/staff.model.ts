@@ -10,6 +10,8 @@ import {
 import { WriteupsDocument } from "./writeups.model";
 
 
+export type BastionId = string;
+
 type StaffPositions = {
   [ key: string ]: string,
   writer: "Writer",

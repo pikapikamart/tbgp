@@ -6,7 +6,7 @@ import {
 
 
 export type Writeups = {
-  phase: keyof WriteupPhase,
+  phase: WriteupPhase,
   writings: WriteupDocument[]
 }
 

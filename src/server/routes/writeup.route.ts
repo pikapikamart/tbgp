@@ -14,7 +14,7 @@ export const writeupRouter = createRouter()
     input: writeupIdWithPhaseSchema,
     resolve: ({ input }) => getWriteupHandler(input)
   })
-  .mutation("edit", {
+  .mutation("start", {
     input: writeupIdWithPhaseSchema,
     resolve: ({ input, ctx }) => editWriteupHandler(input, ctx)
   })

@@ -6,6 +6,7 @@ import {
 import { 
   modelComparePassword, 
   preHashModel } from "./model.utils";
+import { BastionId } from "./staff.model";
 
 
 type Verifications = {
@@ -15,7 +16,7 @@ type Verifications = {
 }
 
 export type Admin = AdminSchema & {
-  bastionIds: string[],
+  bastionIds: BastionId[],
   verifications: Verifications[]
 }
 
