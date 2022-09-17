@@ -49,7 +49,7 @@ export const getSingleWriteup = async(
   const foundWriteup = await findWriteup(query, projection, populate);
 
   if ( !foundWriteup ) {
-    return trpcError("NOT_FOUND", "No writeup found with this id")
+    return trpcError("NOT_FOUND", "No writeup found with this id and phase")
   }
 
   return foundWriteup;

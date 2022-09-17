@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { 
   WriteupDocument, 
   WriteupPhase, 
-  writeupSchema} from "./shared.model";
+  writeupSchema} from "./writeup.model";
 
 
 export type Writeups = {

@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react"
+import { 
+  useEffect, 
+  useRef } from "react"
 import { trpc } from "@/lib/trpc";
-import { ValidateStaffSchema } from "src/server/schemas/staff.schema";
+import { BaseUserSchema } from "src/server/schemas/schema.shared";
 
 
-type UserInfo = ValidateStaffSchema & {
+type UserInfo = BaseUserSchema & {
   [ key: string ]: string,
 }
 

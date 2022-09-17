@@ -1,7 +1,10 @@
-import { getWriteupHandler } from "../controllers/writeup.controller";
+import { 
+  editWriteupHandler, 
+  getWriteupHandler } from "../controllers/writeup.controller";
 import { isValidStaff } from "../middlewares/router.middleware";
 import { createRouter } from "../router/createRouter";
-import { writeupIdWithPhaseSchema } from "../schemas/writeup.schema";
+import { 
+  writeupIdWithPhaseSchema } from "../schemas/writeup.schema";
 
 
 export const writeupRouter = createRouter()
@@ -10,4 +13,8 @@ export const writeupRouter = createRouter()
   .query("get", {
     input: writeupIdWithPhaseSchema,
     resolve: ({ input }) => getWriteupHandler(input)
+  })
+  .mutation("edit", {
+    input: writeupIdWithPhaseSchema,
+    resolve: ({ input, ctx }) => editWriteupHandler(input, ctx)
   })

@@ -1,5 +1,4 @@
 import { signIn } from "next-auth/react";
-import { Auth } from "src/client/components/auth";
 
 
 const SignupPage = () => {

@@ -3,7 +3,6 @@ import {
   FilterQuery, 
   PopulateOptions, 
   ProjectionType, 
-  QueryOptions, 
   UpdateQuery} from "mongoose";
 import { 
   Writeups, 
@@ -20,10 +19,6 @@ export const updateWriteup = async(
 ) => (
   WriteupsModel.findOneAndUpdate(query, update)
 )
-
-export const findWriteupPhase = async( phase: DocumentDefinition<Writeups> ) => {
-
-}
 
 export const findWriteup = async(
   query: FilterQuery<Writeups>,
