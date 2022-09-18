@@ -15,9 +15,12 @@ import { trpcError } from "../utils/error.util";
 import { 
   createStoryRequest, 
   deleteStoryRequest, 
+  findManyStoryRequest, 
   findStoryRequest, 
   updateStoryRequest } from "../services/story.request.service";
-import { apiResult } from "../utils/success.util";
+import { 
+  apiResult, 
+  apiResultWithData } from "../utils/success.util";
 import { nanoid } from "nanoid";
 import { AnyBulkWriteOperation } from "mongodb";
 import { createWriteup } from "../services/writeup.service";
@@ -25,8 +28,27 @@ import { StaffContext } from "../middlewares/router.middleware";
 import { 
   getCurrentAvailableStoryRequest, 
   getOwnedAvailableStoryRequest } from "./controller.utils";
-import { createWriteupPhase, updateWriteupPhase } from "../services/writeup.phase.service";
+import { 
+  createWriteupPhase, 
+  updateWriteupPhase } from "../services/writeup.phase.service";
 
+
+// --------Queries--------
+
+export const getMultipleStoryRequestsHandler = async() => {
+  const foundWriteups = await findManyStoryRequest(
+    {},
+    "-_id -owner -assignedmembers -requests",
+    {
+      limit: 9,
+      sort: "-createdAt"
+    }
+  );
+
+  return apiResultWithData(true, foundWriteups);
+}
+
+// --------Mutations--------
 
 export const createStoryRequestHandler = async( request: StoryRequestSchema, { staff }: StaffContext ) =>{
 

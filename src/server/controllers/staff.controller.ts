@@ -17,6 +17,8 @@ import {
   getCurrentAdmin } from "./controller.utils";
 
 
+// --------Mutations--------
+
 export const validateBastionIdHandler = async( bastionId: BastionIdSchema ) => {
   await checkBastionIdExistence(bastionId);
 

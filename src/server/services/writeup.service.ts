@@ -2,6 +2,7 @@ import {
   DocumentDefinition, 
   FilterQuery, 
   PopulateOptions, 
+  QueryOptions, 
   UpdateQuery} from "mongoose";
 import { 
   Writeup, 
@@ -24,4 +25,14 @@ export const findWriteup = async(
   populate?: PopulateOptions 
 ) => (
   populate? WriteupModel.findOne(query).populate(populate) : WriteupModel.findOne(query)
+)
+
+// --------Multiple--------
+
+export const findManyWriteup = async(
+  query: FilterQuery<Writeup>,
+  option: QueryOptions,
+  populate?: PopulateOptions
+) => (
+  populate? WriteupModel.find(query, "", option).populate(populate) : WriteupModel.find(query, "", option)
 )

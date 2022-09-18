@@ -21,7 +21,10 @@ export type Writeup = {
   phase: WriteupPhases
 }
 
-export type WriteupDocument = Writeup & mongoose.Document & {};
+export type WriteupDocument = Writeup & mongoose.Document & {
+  createdAt: Date,
+  updatedAt: Date
+};
 
 export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Schema({
   request: {
@@ -44,7 +47,8 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
     of: []
   },
   isEditingBy: String
-})
+},{ timestamps: true }
+)
 
 const WriteupModel: mongoose.Model<WriteupDocument> = mongoose.models.Writeup || mongoose.model<WriteupDocument>("Writeup", writeupSchema);
 

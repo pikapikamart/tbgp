@@ -69,7 +69,8 @@ export const storyRequestSchema: mongoose.Schema<StoryRequestDocument> = new mon
     ref: "Staff"
   }],
   started: Boolean
-})
+},{ timestamps: true }
+)
 
 const StoryRequestModel: mongoose.Model<StoryRequestDocument> = mongoose.models.StoryRequest || mongoose.model("StoryRequest", storyRequestSchema);
 
