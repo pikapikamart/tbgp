@@ -1,16 +1,18 @@
 import mongoose from "mongoose";
-import { StaffSchema } from "../schemas/staff.schema";
 import { StoryRequestDocument } from "./story.request.model";
-import { 
-  userBaseModel, 
-  UserDocument } from "./shared.model";
 import { 
   modelComparePassword, 
   preHashModel } from "./model.utils";
-import { WriteupsDocument } from "./writeups.model";
+import { WriteupDocument } from "./writeup.model";
+import { 
+  BaseUser, 
+  BaseUserDocument, 
+  baseUserModel} from "./base.user.model";
 
 
 export type BastionId = string;
+
+export type StaffDocument = Staff & BaseUserDocument & {};
 
 type StaffPositions = {
   [ key: string ]: string,
@@ -26,29 +28,30 @@ export const STAFF_POSITIONS: StaffPositions = {
   editorInChief: "Editor in Chief",
   layoutArtist: "Layout Artist"
 }
- 
-export type Staff = StaffSchema & {
+
+export type Staff = BaseUser & {
+  firstname: string,
+  lastname: string,
+  bastionId: BastionId,
+  position?: string,
   requests: {
     verification: boolean,
     story: StoryRequestDocument["_id"][]
   },
-  position?: string,
   storyRequests?: {
     joined: StoryRequestDocument["_id"][],
     created: StoryRequestDocument["_id"][]
   },
   bio?: string,
-  writings?: {
-    solo: WriteupsDocument["_id"][],
-    collaborated: WriteupsDocument["_id"][],
-    task: WriteupsDocument["_id"][]
+  writeups?: {
+    solo: WriteupDocument["_id"][],
+    collaborated: WriteupDocument["_id"][],
+    task: WriteupDocument["_id"][]
   }
 }
 
-export type StaffDocument = Staff & UserDocument & {};
-
 const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
-  ...userBaseModel,
+  ...baseUserModel,
   firstname: {
     type: String,
     required: true
@@ -80,7 +83,7 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
     }]
   },
   bio: String,
-  writings: {
+  writeups: {
     solo: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Writeup"

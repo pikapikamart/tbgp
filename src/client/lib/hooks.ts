@@ -2,7 +2,7 @@ import {
   useEffect, 
   useRef } from "react"
 import { trpc } from "@/lib/trpc";
-import { BaseUserSchema } from "src/server/schemas/schema.shared";
+import { BaseUserSchema } from "src/server/schemas/base.user.schema";
 
 
 type UserInfo = BaseUserSchema & {

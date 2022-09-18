@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import { UserDocument } from "./shared.model";
+import { BaseUserDocument } from "./base.user.model";
 import bcrypt from "bcrypt";
 
 
 export const preHashModel = async function(
-  this: UserDocument,
+  this: BaseUserDocument,
   next: mongoose.CallbackWithoutResultAndOptionalError
 ) {
   if ( !this.isModified("password") ) {

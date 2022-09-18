@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
-import { AdminSchema } from "../schemas/admin.schema";
-import { 
-  userBaseModel, 
-  UserDocument } from "./shared.model";
 import { 
   modelComparePassword, 
   preHashModel } from "./model.utils";
 import { BastionId } from "./staff.model";
+import { 
+  baseUserModel, 
+  BaseUserDocument } from "./base.user.model";
 
 
 type Verifications = {
@@ -15,15 +14,18 @@ type Verifications = {
   position: string
 }
 
-export type Admin = AdminSchema & {
+export type Admin = {
+  username: string,
+  email: string,
+  password: string,
   bastionIds: BastionId[],
   verifications: Verifications[]
 }
 
-export type AdminDocument = Admin & UserDocument & {}
+export type AdminDocument = Admin & BaseUserDocument & {}
 
 const adminSchema: mongoose.Schema<AdminDocument> = new mongoose.Schema({
-  ...userBaseModel,
+  ...baseUserModel,
   username: {
     type: String,
     required: true

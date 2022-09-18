@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 
 
-export type User = {
+export type BaseUser = {
   email: string,
   password: string
 }
 
-export type UserDocument = User & mongoose.Document & {
+export type BaseUserDocument = BaseUser & mongoose.Document & {
   comparePassword: ( pasword: string ) => Promise<boolean>
 }
 
-export const userBaseModel = {
+export const baseUserModel = {
   email: {
     type: String,
     required: true,

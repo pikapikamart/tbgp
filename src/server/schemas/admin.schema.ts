@@ -1,7 +1,7 @@
 import { 
   TypeOf, 
   z } from "zod";
-import { baseUserSchema } from "./schema.shared";
+import { baseUserSchema } from "./base.user.schema";
 import { requestPositionSchema } from "./staff.schema";
 
 

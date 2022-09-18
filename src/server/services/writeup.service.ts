@@ -2,28 +2,26 @@ import {
   DocumentDefinition, 
   FilterQuery, 
   PopulateOptions, 
-  ProjectionType, 
   UpdateQuery} from "mongoose";
 import { 
-  Writeups, 
-  WriteupsModel } from "../models/writeups.model";
+  Writeup, 
+  WriteupModel } from "../models/writeup.model";
 
 
-export const createWriteup = async( writeup: DocumentDefinition<Writeups> ) => (
-  WriteupsModel.create(writeup)
+export const createWriteup = async( writeup: DocumentDefinition<Writeup> ) => (
+  WriteupModel.create(writeup)
 )
 
 export const updateWriteup = async(
-  query: FilterQuery<Writeups>,
-  update: UpdateQuery<Writeups>
+  query: FilterQuery<Writeup>,
+  update: UpdateQuery<Writeup>
 ) => (
-  WriteupsModel.findOneAndUpdate(query, update)
+  WriteupModel.findOneAndUpdate(query, update)
 )
 
 export const findWriteup = async(
-  query: FilterQuery<Writeups>,
-  projection: ProjectionType<Writeups> = "",
+  query: FilterQuery<Writeup>,
   populate?: PopulateOptions 
 ) => (
-  populate? WriteupsModel.findOne(query, projection).populate(populate) : WriteupsModel.findOne(query, projection)
+  populate? WriteupModel.findOne(query).populate(populate) : WriteupModel.findOne(query)
 )

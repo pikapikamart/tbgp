@@ -1,8 +1,10 @@
 import { 
-  PopulateOptions, 
-  ProjectionType } from "mongoose";
+  FilterQuery, 
+  PopulateOptions} from "mongoose";
 import { StaffDocument } from "../models/staff.model";
-import { Writeups } from "../models/writeups.model";
+import { StoryRequestDocument } from "../models/story.request.model";
+import { Writeup } from "../models/writeup.model";
+import { BastionIdSchema } from "../schemas/staff.schema";
 import { getAdmin } from "../services/admin.service"
 import { findStoryRequest } from "../services/story.request.service";
 import { findWriteup } from "../services/writeup.service";
@@ -10,13 +12,22 @@ import { trpcError } from "../utils/error.util";
 
 
 export const getCurrentAdmin = async() => {
-  const admin = await getAdmin();
+  const foundAdmin = await getAdmin();
 
-  if ( !admin ) {
+  if ( !foundAdmin ) {
     return trpcError("INTERNAL_SERVER_ERROR", "Admin is still not created")
   }
 
-  return admin;
+  return foundAdmin;
+}
+
+export const checkBastionIdExistence = async( bastionId: BastionIdSchema ) => {
+  const admin = await getCurrentAdmin();
+  const foundBastionId = admin.bastionIds.find(id => id===bastionId);
+
+  if ( !foundBastionId ) {
+    return trpcError("NOT_FOUND", "No matching Bastion Id found");
+  }
 }
 
 export const getCurrentAvailableStoryRequest = async( id: string ) =>{
@@ -49,20 +60,27 @@ export type WriteupQuery = {
   writeupId: string
 }
 
-export const getSingleWriteup = async( 
-  query: WriteupQuery,
-  projection: ProjectionType<Writeups>="",
-  populate?: PopulateOptions 
-) => {
-  const writeupQuery = {
-    phase: query.phase,
-    "writings.writeupId": query.writeupId
-  }
-  const foundWriteup = await findWriteup(writeupQuery, projection, populate);
+export const getSingleWriteup = async( query: FilterQuery<Writeup>, populate?: PopulateOptions ) => {
+  const foundWriteup = await findWriteup(query, populate);
 
   if ( !foundWriteup ) {
-    return trpcError("NOT_FOUND", "No writeup found with this phase and writeup id")
+    return trpcError("NOT_FOUND", "No write up found")
   }
 
   return foundWriteup;
+}
+
+export const getSingleOwnedWriteup = async( query: FilterQuery<Writeup>, staff: StaffDocument ) => {
+  const writeup = await getSingleWriteup(query, 
+    {
+      path: "request",
+      select: "-_id members"
+    }
+  );
+
+  if ( !writeup.request.members.find(( member: StoryRequestDocument ) => member.equals(staff._id)) ) {
+    return trpcError("FORBIDDEN", "Make sure to be a member first to edit")
+  }
+
+  return writeup;
 }

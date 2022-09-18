@@ -6,7 +6,6 @@ import {
   UpdateQuery} from "mongoose";
 import { 
   Staff, 
-  StaffDocument, 
   StaffModel } from "../models/staff.model";
 
 
@@ -23,8 +22,8 @@ export const createStaff = async( staff: DocumentDefinition<Staff> ) => (
 )
 
 export const updateStaff = async(
-  query: FilterQuery<StaffDocument>, 
-  update: UpdateQuery<StaffDocument> 
+  query: FilterQuery<Staff>, 
+  update: UpdateQuery<Staff> 
 ) => (
   StaffModel.findOneAndUpdate(query, update)
 )

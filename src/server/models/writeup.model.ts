@@ -3,11 +3,11 @@ import { BastionId } from "./staff.model";
 import { StoryRequestDocument } from "./story.request.model";
 
 
-export type WriteupPhase = 
+export type WriteupPhases = 
   | "writeup" | "revision" | "finalEdit" | "graphics" | "finalizations"
 
 type WriteupContent = {
-  [ key in WriteupPhase ]: any[]
+  [ key in WriteupPhases ]: any[]
 }
 
 export type Writeup = {
@@ -17,7 +17,8 @@ export type Writeup = {
   caption: string,
   banner: string,
   content: Partial<WriteupContent>,
-  isEditingBy: BastionId
+  isEditingBy: BastionId,
+  phase: WriteupPhases
 }
 
 export type WriteupDocument = Writeup & mongoose.Document & {};
@@ -44,3 +45,7 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
   },
   isEditingBy: String
 })
+
+const WriteupModel: mongoose.Model<WriteupDocument> = mongoose.models.Writeup || mongoose.model<WriteupDocument>("Writeup", writeupSchema);
+
+export { WriteupModel };

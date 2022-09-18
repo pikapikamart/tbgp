@@ -1,40 +1,30 @@
 import { StaffContext } from "../middlewares/router.middleware";
 import { STAFF_POSITIONS } from "../models/staff.model";
-import { BaseUserSchema } from "../schemas/schema.shared";
+import { BaseUserSchema } from "../schemas/base.user.schema";
 import { 
   StaffSchema, 
   BastionIdSchema, 
   RequestPositionSchema} from "../schemas/staff.schema";
-import { 
-  getAdmin, 
-  updateAdmin } from "../services/admin.service";
+import { updateAdmin } from "../services/admin.service";
 import { 
   createStaff, 
   findStaff, 
   updateStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { apiResult } from "../utils/success.util";
-import { getCurrentAdmin } from "./controller.utils";
+import { 
+  checkBastionIdExistence, 
+  getCurrentAdmin } from "./controller.utils";
 
 
-export const registerBastionIdHandler = async( bastionId: BastionIdSchema ) => {
-  const admin = await getCurrentAdmin();
-  const foundBastionId = admin.bastionIds.find(id => id===bastionId);
-
-  if( !foundBastionId ){
-    return trpcError("NOT_FOUND", "No matching Bastion Id found");
-  }
+export const validateBastionIdHandler = async( bastionId: BastionIdSchema ) => {
+  await checkBastionIdExistence(bastionId);
 
   return apiResult("Bastion Id validated", true);
 }
 
-export const createStaffHandler = async( staff: StaffSchema ) => {
-  const admin = await getCurrentAdmin();
-  const foundBastionId = admin?.bastionIds.find(id => id===staff.bastionId);
-
-  if ( !foundBastionId ) {
-    return trpcError("NOT_FOUND", "No matching Bastion Id found")
-  }
+export const registerStaffHandler = async( staff: StaffSchema ) => {
+  await checkBastionIdExistence(staff.bastionId);
 
   const foundStaff = await findStaff({ email: staff.email });
 
@@ -67,43 +57,43 @@ export const validateStaffHandler = async( { email, password }: BaseUserSchema )
   if ( !foundStaff ) {
     return trpcError("NOT_FOUND", "No user found with email")
   }
+
   if ( !await foundStaff.comparePassword(password) ) {
-    return trpcError("BAD_REQUEST", "Password does not match")
+    return trpcError("CONFLICT", "Password does not match")
   }
 
   return apiResult("Successfully validated", true);
 }
 
 // requires authentication
-export const requestPositionHandler = async( input: RequestPositionSchema, ctx: StaffContext ) => {
-  const { position } = input;
-  const admin = await getAdmin();
+export const requestPositionHandler = async( { position }: RequestPositionSchema, { staff }: StaffContext ) => {
+  const admin = await getCurrentAdmin();
 
   if ( !STAFF_POSITIONS[position] ) {
     return trpcError("BAD_REQUEST", "Send a valid position")
   }
 
-  if ( ctx.staff.position ) {
-    return trpcError("BAD_REQUEST", "Already a verified staff");
+  if ( staff.position ) {
+    return trpcError("CONFLICT", "Already a verified staff");
   }
 
-  const foundVerificationRequest = admin?.verifications.find(request => request.bastionId===ctx.staff.bastionId);
+  const foundVerificationRequest = admin.verifications.find(request => request.bastionId===staff.bastionId);
 
   if ( foundVerificationRequest ) {
-    return trpcError("BAD_REQUEST", "Already sent a verification request")
+    return trpcError("CONFLICT", "Already sent a verification request")
   }
 
   await updateAdmin({
     $push: {
       verifications: {
-        fullname: ctx.staff.firstname + " " + ctx.staff.lastname,
-        bastionId: ctx.staff.bastionId,
+        fullname: staff.firstname + " " + staff.lastname,
+        bastionId: staff.bastionId,
         position
       }
     }
   })
   await updateStaff(
-    { bastionId: ctx.staff.bastionId },
+    { bastionId: staff.bastionId },
     { "requests.verification": true }
   )
 

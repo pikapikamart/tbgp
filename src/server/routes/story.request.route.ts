@@ -4,7 +4,9 @@ import {
   createStoryRequestHandler, 
   deleteStoryRequestHandler,
   startStoryRequestHandler} from "../controllers/story.request.controller";
-import { isValidStaff } from "../middlewares/router.middleware";
+import { 
+  isValidStaff, 
+  isVerifiedStaff } from "../middlewares/router.middleware";
 import { createRouter } from "../router/createRouter";
 import { 
   acceptStoryRequestSchema,
@@ -19,6 +21,7 @@ export const storyRequestRouter = createRouter()
     input: storyRequestSchema,
     resolve: ({ input, ctx }) => createStoryRequestHandler(input, ctx)
   })
+  .middleware(({ ctx, next }) => isVerifiedStaff(ctx, next))
   .mutation("apply", {
     input: storyRequestIdSchema,
     resolve: ({ input, ctx }) => applyStoryRequestHandler(input, ctx)

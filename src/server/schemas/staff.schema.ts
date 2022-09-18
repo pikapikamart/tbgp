@@ -1,7 +1,7 @@
 import { 
   TypeOf, 
   z } from "zod";
-import { baseUserSchema } from "./schema.shared";
+import { baseUserSchema } from "./base.user.schema";
 
 
 export const bastionIdSchema = z.string({ required_error: "Bastion Id is required" });

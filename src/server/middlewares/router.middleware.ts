@@ -27,6 +27,14 @@ export const isValidStaff = async( ctx: Context, next: TrpcNext ) =>{
   })
 }
 
+export const isVerifiedStaff = async( ctx: StaffContext, next: TrpcNext ) => {
+  if ( !ctx.staff.position ) {
+    return trpcError("FORBIDDEN", "Make sure to be verified first");
+  }
+  
+  return next({ ctx })
+}
+
 export const isValidAdmin = async( ctx: Context, next: TrpcNext ) => {
   const admin = await getCurrentAdmin();
   // change to using token validation

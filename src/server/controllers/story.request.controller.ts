@@ -20,25 +20,24 @@ import {
 import { apiResult } from "../utils/success.util";
 import { nanoid } from "nanoid";
 import { AnyBulkWriteOperation } from "mongodb";
-import { 
-  createWriteup, 
-  updateWriteup } from "../services/writeup.service";
+import { createWriteup } from "../services/writeup.service";
 import { StaffContext } from "../middlewares/router.middleware";
 import { 
   getCurrentAvailableStoryRequest, 
   getOwnedAvailableStoryRequest } from "./controller.utils";
+import { createWriteupPhase, updateWriteupPhase } from "../services/writeup.phase.service";
 
 
 export const createStoryRequestHandler = async( request: StoryRequestSchema, { staff }: StaffContext ) =>{
 
   if ( STAFF_POSITIONS.editorInChief!==staff.position ) {
-    return trpcError("UNAUTHORIZED", "Only editor in chief can request story")
+    return trpcError("FORBIDDEN", "Only editor in chief can request story")
   }
 
   const foundStoryRequest = await findStoryRequest({ title: request.title });
 
   if ( foundStoryRequest ) {
-    return trpcError("BAD_REQUEST", "Request already created")
+    return trpcError("CONFLICT", "Request already created")
   }
 
   const newStoryRequest = await createStoryRequest(
@@ -62,14 +61,14 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
     } 
   )
 
-  return apiResult("Story request created", true);
+  return apiResult("Story request created", newStoryRequest.storyRequestId);
 }
 
 export const applyStoryRequestHandler = async( { id }: StoryRequestIdSchema, { staff }: StaffContext ) => {
   const foundStoryRequest = await getCurrentAvailableStoryRequest(id);
   
-  if ( foundStoryRequest.requests?.find(request => request.equals(staff._id)) ) {
-    return trpcError("BAD_REQUEST", "Already applied to story request")
+  if ( foundStoryRequest.requests.find(request => request.equals(staff._id)) ) {
+    return trpcError("CONFLICT", "Already applied to story request")
   }
 
   if ( foundStoryRequest.assignedMembers?.length 
@@ -78,7 +77,7 @@ export const applyStoryRequestHandler = async( { id }: StoryRequestIdSchema, { s
   }
 
   if ( foundStoryRequest.members.find(member => member.equals(staff._id)) ) {
-    return trpcError("BAD_REQUEST", "Can't apply when you are already a member")
+    return trpcError("CONFLICT", "Can't apply when you are already a member")
   }
 
   await updateStoryRequest(
@@ -103,7 +102,7 @@ export const applyStoryRequestHandler = async( { id }: StoryRequestIdSchema, { s
 
 export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchema, { staff }: StaffContext ) => {
   const foundRequester = await findStaff({ bastionId: request.bastionId });
-
+  
   if ( !foundRequester ) {
     return trpcError("BAD_REQUEST", "Use valid requester bastion id")
   }
@@ -111,11 +110,11 @@ export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchem
   const foundStoryRequest = await getOwnedAvailableStoryRequest(request.id, staff._id);
   
   if ( !foundStoryRequest.requests.find(request => request.equals(foundRequester._id)) ) {
-    return trpcError("BAD_REQUEST", "Send a valid requester id")
+    return trpcError("CONFLICT", "Send a valid requester id")
   }
 
   if ( foundStoryRequest.members.find(member => member.equals(foundRequester._id)) ) {
-    return trpcError("BAD_REQUEST", "Requester is already a member")
+    return trpcError("CONFLICT", "Requester is already a member")
   }
  
   await updateStoryRequest(
@@ -130,7 +129,7 @@ export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchem
     }
   )
   await updateStaff(
-    { bastionid: foundRequester.bastionId }, 
+    { bastionId: request.bastionId }, 
     {
       $push: {
         "storyRequests.joined": foundStoryRequest._id
@@ -179,35 +178,32 @@ export const deleteStoryRequestHandler = async( { id }: StoryRequestIdSchema, { 
 
 export const startStoryRequestHandler = async( { id }: StoryRequestIdSchema, { staff }: StaffContext ) => {
   const storyRequest = await getOwnedAvailableStoryRequest(id, staff._id);
-  const newWriteupBody = {
+  const newWriteup = await createWriteup({
     request: storyRequest._id,
     writeupId: nanoid(14),
     title: storyRequest.title,
     caption: "",
     banner: "",
     content: {},
-    isEditingBy: ""
-  }
-  let newlyCreatedWriteupDbId: string | undefined;
-  const updatedWriteups = await updateWriteup(
-    { phase: "writeup" }, 
+    isEditingBy: "",
+    phase: "writeup"
+  }) 
+  const updatedWriteupPhase = await updateWriteupPhase(
+    { phase: "writeup" },
     {
       $push: {
-        writeups: newWriteupBody
+        writeups: newWriteup._id
       }
     }
   )
 
-  if ( !updatedWriteups ) {
-    const newlyCreatedWriteups = await createWriteup(
+  if ( !updatedWriteupPhase ) {
+    await createWriteupPhase(
       {
         phase: "writeup",
-        writings: [newWriteupBody]
+        writeups: [ newWriteup._id ]
       }
     )
-    newlyCreatedWriteupDbId = newlyCreatedWriteups.writings[0]._id;
-  } else {
-    newlyCreatedWriteupDbId = updatedWriteups.writings[updatedWriteups.writings.length - 1]._id;
   }
 
   // remove all request made by users to the story
@@ -225,7 +221,7 @@ export const startStoryRequestHandler = async( { id }: StoryRequestIdSchema, { s
       }
     }
   )));
-  // add the writeup to all members of the story
+  // // add the writeup to all members of the story
   await bulkUpdateStaff(storyRequest.members.map(( id: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
     {
       updateOne: {
@@ -234,7 +230,7 @@ export const startStoryRequestHandler = async( { id }: StoryRequestIdSchema, { s
         },
         update: {
           $push: {
-            [ `writings.${ storyRequest.members.length>1? "collaborated" : "solo" }` ]: newlyCreatedWriteupDbId
+            [ `writeups.${ storyRequest.members.length>1? "collaborated" : "solo" }` ]: newWriteup._id,
           }
         }
       }

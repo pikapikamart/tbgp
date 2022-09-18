@@ -1,11 +1,11 @@
 import { 
-  createStaffHandler, 
-  registerBastionIdHandler, 
+  registerStaffHandler, 
+  validateBastionIdHandler, 
   requestPositionHandler, 
   validateStaffHandler} from "../controllers/staff.controller";
 import { isValidStaff } from "../middlewares/router.middleware";
 import { createRouter } from "../router/createRouter";
-import { baseUserSchema } from "../schemas/schema.shared";
+import { baseUserSchema } from "../schemas/base.user.schema";
 import { 
   staffSchema, 
   bastionIdSchema, 
@@ -13,14 +13,16 @@ import {
 
 
 export const staffRouter = createRouter()
-  .query("register-bastionId", ({
+  .query("validate-bastionId", ({
     input: bastionIdSchema,
-    resolve: ({ input }) => registerBastionIdHandler(input)
+    resolve: ({ input }) => validateBastionIdHandler(input)
   }))
-  .mutation("create-staff", {
+  .mutation("register", {
     input: staffSchema,
-    resolve: ({ input }) => createStaffHandler(input)
+    resolve: ({ input }) => registerStaffHandler(input)
   })
+  // for signin, validate first before creating session
+  // this way, we can use ui error for client side
   .mutation("validate", {
     input: baseUserSchema, 
     resolve: ({ input }) => validateStaffHandler(input)
