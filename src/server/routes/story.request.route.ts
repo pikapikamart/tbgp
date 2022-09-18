@@ -4,7 +4,9 @@ import {
   createStoryRequestHandler, 
   deleteStoryRequestHandler,
   startStoryRequestHandler,
-  getMultipleStoryRequestsHandler } from "../controllers/story.request.controller";
+  getMultipleStoryRequestsHandler, 
+  getStoryRequestHandler,
+  getMultipleAssignedStoryRequestsHandler} from "../controllers/story.request.controller";
 import { 
   isValidStaff, 
   isVerifiedStaff } from "../middlewares/router.middleware";
@@ -20,6 +22,13 @@ export const storyRequestRouter = createRouter()
   .middleware(({ ctx, next }) => isValidStaff(ctx, next))
   .query("get-multiple", {
     resolve: () => getMultipleStoryRequestsHandler()
+  })
+  .query("get-multiple-assigned", {
+    resolve: () => getMultipleAssignedStoryRequestsHandler()
+  })
+  .query("get", {
+    input: storyRequestIdSchema,
+    resolve: ({ input }) => getStoryRequestHandler(input)
   })
   .mutation("create", {
     input: storyRequestSchema,

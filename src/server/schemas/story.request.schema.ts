@@ -13,14 +13,14 @@ export const storyRequestSchema = z
 
 export const storyRequestIdSchema = z
   .object({
-    id: z.string({ required_error: "Story request id is required" })
+    storyRequestId: z.string({ required_error: "Story request storyRequestId is required" })
   })
 
 export const acceptStoryRequestSchema = z
   .object({
-    id: z.string({ required_error: "Story request id is required" }),
     bastionId: z.string({ required_error: "Bastion Id is required" }),
   })
+  .merge(storyRequestIdSchema)
 
 export type StoryRequestSchema = TypeOf<typeof storyRequestSchema>;
 export type StoryRequestIdSchema = TypeOf<typeof storyRequestIdSchema>;

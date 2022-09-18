@@ -48,6 +48,34 @@ export const getMultipleStoryRequestsHandler = async() => {
   return apiResultWithData(true, foundWriteups);
 }
 
+export const getMultipleAssignedStoryRequestsHandler = async() => {
+  const foundWriteups = await findManyStoryRequest(
+    {
+      assignedMembers: {
+        $ne: []
+      }
+    },
+    "-_id -owner -assignedmembers -requests",
+    {
+      limit: 9,
+      sort: "-createdAt"
+    }
+  )
+
+  return apiResultWithData(true, foundWriteups)
+}
+
+export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema ) => {
+  const storyRequest = await getCurrentAvailableStoryRequest(
+    storyRequestId,
+    "-_id -requests",
+    { lean: true },
+    {
+      path: "owner members "
+    }
+  )
+}
+
 // --------Mutations--------
 
 export const createStoryRequestHandler = async( request: StoryRequestSchema, { staff }: StaffContext ) =>{
@@ -86,8 +114,8 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
   return apiResult("Story request created", newStoryRequest.storyRequestId);
 }
 
-export const applyStoryRequestHandler = async( { id }: StoryRequestIdSchema, { staff }: StaffContext ) => {
-  const foundStoryRequest = await getCurrentAvailableStoryRequest(id);
+export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
+  const foundStoryRequest = await getCurrentAvailableStoryRequest(storyRequestId);
   
   if ( foundStoryRequest.requests.find(request => request.equals(staff._id)) ) {
     return trpcError("CONFLICT", "Already applied to story request")
@@ -103,7 +131,7 @@ export const applyStoryRequestHandler = async( { id }: StoryRequestIdSchema, { s
   }
 
   await updateStoryRequest(
-    { storyRequestId: id },
+    { storyRequestId: storyRequestId },
     { 
       $push: {
         requests: staff._id
@@ -126,13 +154,13 @@ export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchem
   const foundRequester = await findStaff({ bastionId: request.bastionId });
   
   if ( !foundRequester ) {
-    return trpcError("BAD_REQUEST", "Use valid requester bastion id")
+    return trpcError("BAD_REQUEST", "Use valid requester bastion Id")
   }
 
-  const foundStoryRequest = await getOwnedAvailableStoryRequest(request.id, staff._id);
+  const foundStoryRequest = await getOwnedAvailableStoryRequest(request.storyRequestId, staff._id);
   
   if ( !foundStoryRequest.requests.find(request => request.equals(foundRequester._id)) ) {
-    return trpcError("CONFLICT", "Send a valid requester id")
+    return trpcError("CONFLICT", "Send a valid requester bastion Id")
   }
 
   if ( foundStoryRequest.members.find(member => member.equals(foundRequester._id)) ) {
@@ -140,7 +168,7 @@ export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchem
   }
  
   await updateStoryRequest(
-    { storyRequestId: request.id }, 
+    { storyRequestId: request.storyRequestId }, 
     { 
       $push: {
         members: foundRequester._id
@@ -165,16 +193,16 @@ export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchem
   return apiResult("Successfully accepted a member", true);
 }
 
-export const deleteStoryRequestHandler = async( { id }: StoryRequestIdSchema, { staff }: StaffContext ) => {
-  const foundStoryRequest = await getOwnedAvailableStoryRequest(id, staff._id);
+export const deleteStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
+  const foundStoryRequest = await getOwnedAvailableStoryRequest(storyRequestId, staff._id);
 
   const membersAndRequesters = foundStoryRequest.members.concat(foundStoryRequest.requests);
 
-  await bulkUpdateStaff(membersAndRequesters.map(( id ): AnyBulkWriteOperation<Staff> => (
+  await bulkUpdateStaff(membersAndRequesters.map(( storyRequestId ): AnyBulkWriteOperation<Staff> => (
     {
       updateOne: {
         filter: {
-          _id: id
+          _id: storyRequestId
         },
         update: {
           $pull: {
@@ -193,13 +221,13 @@ export const deleteStoryRequestHandler = async( { id }: StoryRequestIdSchema, { 
       }
     }
   )
-  await deleteStoryRequest({ storyRequestId: id });
+  await deleteStoryRequest({ storyRequestId: storyRequestId });
 
   return apiResult("Successfully deleted story request", true);
 }
 
-export const startStoryRequestHandler = async( { id }: StoryRequestIdSchema, { staff }: StaffContext ) => {
-  const storyRequest = await getOwnedAvailableStoryRequest(id, staff._id);
+export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
+  const storyRequest = await getOwnedAvailableStoryRequest(storyRequestId, staff._id);
   const newWriteup = await createWriteup({
     request: storyRequest._id,
     writeupId: nanoid(14),
@@ -229,11 +257,11 @@ export const startStoryRequestHandler = async( { id }: StoryRequestIdSchema, { s
   }
 
   // remove all request made by users to the story
-  await bulkUpdateStaff(storyRequest.requests.map(( id: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
+  await bulkUpdateStaff(storyRequest.requests.map(( storyRequestId: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
     {
       updateOne: {
         filter: {
-          _id: id
+          _id: storyRequestId
         },
         update: {
           $pull: {
@@ -244,11 +272,11 @@ export const startStoryRequestHandler = async( { id }: StoryRequestIdSchema, { s
     }
   )));
   // // add the writeup to all members of the story
-  await bulkUpdateStaff(storyRequest.members.map(( id: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
+  await bulkUpdateStaff(storyRequest.members.map(( storyRequestId: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
     {
       updateOne: {
         filter: {
-          _id: id
+          _id: storyRequestId
         },
         update: {
           $push: {
@@ -259,7 +287,7 @@ export const startStoryRequestHandler = async( { id }: StoryRequestIdSchema, { s
     }
   )));
   await updateStoryRequest(
-    { storyRequestId: id }, 
+    { storyRequestId: storyRequestId }, 
     {
       requests: [],
       started: true

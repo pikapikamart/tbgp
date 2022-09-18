@@ -1,8 +1,12 @@
 import { 
   FilterQuery, 
-  PopulateOptions} from "mongoose";
+  PopulateOptions,
+  ProjectionType,
+  QueryOptions} from "mongoose";
 import { StaffDocument } from "../models/staff.model";
-import { StoryRequestDocument } from "../models/story.request.model";
+import { 
+  StoryRequest, 
+  StoryRequestDocument } from "../models/story.request.model";
 import { Writeup } from "../models/writeup.model";
 import { BastionIdSchema } from "../schemas/staff.schema";
 import { getAdmin } from "../services/admin.service"
@@ -30,12 +34,20 @@ export const checkBastionIdExistence = async( bastionId: BastionIdSchema ) => {
   }
 }
 
-export const getCurrentAvailableStoryRequest = async( id: string ) =>{
+export const getCurrentAvailableStoryRequest = async( 
+  storyRequestId: string,
+  projection: ProjectionType<StoryRequest> = "",
+  options: QueryOptions = { lean: true },
+  populate?: PopulateOptions, 
+) =>{
   const foundStoryRequest = await findStoryRequest(
     {
-      storyRequestId: id,
+      storyRequestId,
       started: false
-    }
+    },
+    projection,
+    options,
+    populate
   )
 
   if ( !foundStoryRequest ) {

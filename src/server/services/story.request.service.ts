@@ -15,11 +15,12 @@ export const createStoryRequest = async( storyRequest: DocumentDefinition<StoryR
 )
 
 export const findStoryRequest = async( 
-  request: FilterQuery<StoryRequest>,
+  query: FilterQuery<StoryRequest>,
   projection: ProjectionType<StoryRequest> = "",
-  options: QueryOptions = { lean: true }
+  options: QueryOptions = { lean: true },
+  populate?: PopulateOptions,
 ) => (
-  StoryRequestModel.findOne(request, projection, options)
+  populate? StoryRequestModel.findOne(query, projection, options).populate(populate) : StoryRequestModel.findOne(query, projection, options)
 )
 
 export const updateStoryRequest = async(
