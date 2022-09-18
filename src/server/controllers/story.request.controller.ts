@@ -71,9 +71,12 @@ export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdS
     "-_id -requests",
     { lean: true },
     {
-      path: "owner members "
+      path: "owner members assignedMembers",
+      select: "-_id bastionId firstname lastname"
     }
-  )
+  );
+
+  return storyRequest;
 }
 
 // --------Mutations--------
