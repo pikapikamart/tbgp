@@ -42,7 +42,7 @@ export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdS
   if ( foundStoryRequest.owner.equals(staff._id) ) {
     return await findStoryRequest(
       { storyRequestId },
-      "-_id",
+      "-_id -owner",
       { lean: false },
       {
         path: "requests members assignedMembers",
@@ -93,7 +93,7 @@ export const getMultipleAssignedStoryRequestsHandler = async() => {
   return apiResultWithData(true, storyRequests)
 }
 
-export const getAllCreatedStoryRequestHandler = async( { staff }: StaffContext ) => {
+export const getMultipleCreatedStoryRequestHandler = async( { staff }: StaffContext ) => {
   
   if ( staff.position!==STAFF_POSITIONS.editorInChief ) {
     return trpcError("FORBIDDEN", "Only editor in chief can access created story requests")
@@ -103,14 +103,30 @@ export const getAllCreatedStoryRequestHandler = async( { staff }: StaffContext )
     {
       owner: staff._id
     },
-    "-_id",
+    "-_id -owner -assignedMembers ",
     {
       limit: 9,
       sort: "-createdAt"
     }
   );
 
-  return storyRequests;
+  return apiResultWithData(true, storyRequests);
+}
+
+export const populateStoryRequests = async({ staff }: StaffContext ) => {
+  await staff.populate({
+    path: "requests.story storyRequests.joined",
+    select: "-_id storyRequestId"
+  })
+
+  const requestsData = {
+    requests: staff.requests,
+    storyRequests: {
+      joined: staff.storyRequests?.joined
+    }
+  }
+
+  return apiResultWithData(true, requestsData);
 }
 
 // --------Mutations--------
