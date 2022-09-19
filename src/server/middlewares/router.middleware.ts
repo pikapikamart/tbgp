@@ -5,6 +5,7 @@ import { trpcError } from "../utils/error.util";
 import { StaffDocument } from "../models/staff.model";
 import { getCurrentAdmin } from "../controllers/controller.utils";
 import { AdminDocument } from "../models/admin.model";
+import { findAdmin } from "../services/admin.service";
 
 
 type TrpcNext = {
@@ -12,11 +13,13 @@ type TrpcNext = {
   <T>(opts: { ctx: T }): Promise<MiddlewareResult<T>>
 };
 
+// --------Staff--------
+
 export const isValidStaff = async( ctx: Context, next: TrpcNext ) =>{
   const foundStaff = await findStaff({ email: ctx.token?.email }, {}, { lean: false });
 
   if ( !foundStaff ) {
-    return trpcError("UNAUTHORIZED", "Please login properly")
+    return trpcError("UNAUTHORIZED", "Please login as staff properly")
   }
 
   return next({
@@ -35,8 +38,10 @@ export const isVerifiedStaff = async( ctx: StaffContext, next: TrpcNext ) => {
   return next({ ctx })
 }
 
+// --------Admin--------
+
 export const isValidAdmin = async( ctx: Context, next: TrpcNext ) => {
-  const admin = await getCurrentAdmin();
+  const admin = await findAdmin({ email: ctx.token?.email });
   // change to using token validation
   if ( !admin ) {
     return trpcError("UNAUTHORIZED", "Please login as admin properly")

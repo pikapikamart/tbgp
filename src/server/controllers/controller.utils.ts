@@ -9,20 +9,29 @@ import {
   StoryRequestDocument } from "../models/story.request.model";
 import { Writeup } from "../models/writeup.model";
 import { BastionIdSchema } from "../schemas/staff.schema";
-import { getAdmin } from "../services/admin.service"
+import { findAdmin } from "../services/admin.service"
 import { findStoryRequest } from "../services/story.request.service";
 import { findWriteup } from "../services/writeup.service";
 import { trpcError } from "../utils/error.util";
 
+
 // --------Admin--------
 export const getCurrentAdmin = async() => {
-  const foundAdmin = await getAdmin();
+  const foundAdmin = await findAdmin({});
 
   if ( !foundAdmin ) {
     return trpcError("INTERNAL_SERVER_ERROR", "Admin is still not created")
   }
 
   return foundAdmin;
+}
+
+export const adminValidator = <T,>( admin: T ) => {
+  if( !admin ) {
+    return trpcError("NOT_FOUND", "Admin not found with this email");
+  }
+
+  return admin;
 }
 
 // --------Staff--------

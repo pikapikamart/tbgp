@@ -18,17 +18,16 @@ export const staffRouter = createRouter()
     input: bastionIdSchema,
     resolve: ({ input }) => validateBastionIdHandler(input)
   }))
-  
+  .query("validate", {
+    input: baseUserSchema, 
+    resolve: ({ input }) => validateStaffHandler(input)
+  })
   .mutation("register", {
     input: staffSchema,
     resolve: ({ input }) => registerStaffHandler(input)
   })
   // for signin, validate first before creating session
   // this way, we can use ui error for client side
-  .mutation("validate", {
-    input: baseUserSchema, 
-    resolve: ({ input }) => validateStaffHandler(input)
-  })
   // authentication checking
   .middleware(async ({ ctx, next }) => isValidStaff(ctx, next))
   .query("get", {

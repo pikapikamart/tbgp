@@ -3,7 +3,7 @@ import {
   VerifyPositionSchema } from "../schemas/admin.schema"
 import { 
   createAdmin, 
-  getAdmin, 
+  findAdmin, 
   updateAdmin } from "../services/admin.service";
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid";
@@ -11,12 +11,16 @@ import { updateStaff } from "../services/staff.service";
 import { STAFF_POSITIONS } from "../models/staff.model";
 import { apiResult } from "../utils/success.util";
 import { AdminContext } from "../middlewares/router.middleware";
+import { BaseUserSchema } from "../schemas/base.user.schema";
+import { adminValidator } from "./controller.utils";
 
+
+// --------Queries--------
 
 export const createAdminHandler = async ( input: AdminSchema ) =>{
   const adminPassword = process.env.ADMIN_PASSWORD as string;
   
-  const foundAdmin = await getAdmin();
+  const foundAdmin = await findAdmin({});
 
   if ( foundAdmin ) {
     return trpcError("CONFLICT", "Admin already created")
@@ -30,6 +34,18 @@ export const createAdminHandler = async ( input: AdminSchema ) =>{
 
   return apiResult("Admin created", true);
 }
+
+export const validateAdminHandler = async( { email, password }: BaseUserSchema ) => {
+  const admin = adminValidator(await findAdmin({ email }));
+
+  if ( !await admin.comparePassword(password) ) {
+    return trpcError("CONFLICT", "Password does not match")
+  }
+
+  return apiResult("Successfully validated", true);
+}
+
+// --------Mutations--------
 
 export const createBastionIdHandler = async( { admin }: AdminContext ) =>{
 
@@ -49,8 +65,8 @@ export const createBastionIdHandler = async( { admin }: AdminContext ) =>{
   return apiResult("Successfully created bastion id", createdBastionId);
 }
 
-export const verifyPositionHandler = async ( { bastionId, position }: VerifyPositionSchema, ctx: AdminContext ) => {
-  const foundRequest = ctx.admin.verifications.find(request => request.bastionId===bastionId)
+export const verifyPositionHandler = async ( { bastionId, position }: VerifyPositionSchema, { admin }: AdminContext ) => {
+  const foundRequest = admin.verifications.find(request => request.bastionId===bastionId)
 
   if( !foundRequest ){
     return trpcError("BAD_REQUEST", "Send a valid verification request");

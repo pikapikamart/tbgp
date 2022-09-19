@@ -21,6 +21,13 @@ import {
 
 
 // --------Queries--------
+
+export const validateBastionIdHandler = async( bastionId: BastionIdSchema ) => {
+  await checkBastionIdExistence(bastionId);
+
+  return apiResult("Bastion Id validated", true);
+}
+
 export const getStaffHandler = async( bastionId: BastionIdSchema, { staff: staffctx }: StaffContext ) => {
   const staff = staffValidator(await findStaff(
     { bastionId: bastionId? bastionId : staffctx.bastionId },
@@ -30,13 +37,22 @@ export const getStaffHandler = async( bastionId: BastionIdSchema, { staff: staff
   return apiResultWithData(true, staff);
 }
 
-// --------Mutations--------
+export const validateStaffHandler = async( { email, password }: BaseUserSchema ) => {
+  const foundStaff = await findStaff({ email }, {}, { lean: false });
 
-export const validateBastionIdHandler = async( bastionId: BastionIdSchema ) => {
-  await checkBastionIdExistence(bastionId);
+  if ( !foundStaff ) {
+    return trpcError("NOT_FOUND", "No user found with email")
+  }
 
-  return apiResult("Bastion Id validated", true);
+  if ( !await foundStaff.comparePassword(password) ) {
+    return trpcError("CONFLICT", "Password does not match")
+  }
+
+  return apiResult("Successfully validated", true);
 }
+
+
+// --------Mutations--------
 
 export const registerStaffHandler = async( staff: StaffSchema ) => {
   await checkBastionIdExistence(staff.bastionId);
@@ -66,19 +82,7 @@ export const registerStaffHandler = async( staff: StaffSchema ) => {
   return apiResult("Staff account created", true);
 }
 
-export const validateStaffHandler = async( { email, password }: BaseUserSchema ) => {
-  const foundStaff = await findStaff({ email }, {}, { lean: false });
 
-  if ( !foundStaff ) {
-    return trpcError("NOT_FOUND", "No user found with email")
-  }
-
-  if ( !await foundStaff.comparePassword(password) ) {
-    return trpcError("CONFLICT", "Password does not match")
-  }
-
-  return apiResult("Successfully validated", true);
-}
 
 // requires authentication
 export const requestPositionHandler = async( { position }: RequestPositionSchema, { staff }: StaffContext ) => {

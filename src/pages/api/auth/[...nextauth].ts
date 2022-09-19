@@ -4,7 +4,7 @@ import { NextAuthOptions } from "next-auth";
 import { connectDatabase } from "src/server/database";
 import { StaffDocument } from "src/server/models/staff.model";
 import { AdminDocument } from "src/server/models/admin.model";
-import { getAdmin } from "src/server/services/admin.service";
+import { findAdmin } from "src/server/services/admin.service";
 import { findStaff } from "src/server/services/staff.service";
 
 
@@ -26,7 +26,7 @@ export const nextAuthOptions: NextAuthOptions = {
         let userExistence: StaffDocument | AdminDocument | null = null;
 
         if ( user.userType==="admin" ) {
-          userExistence = await getAdmin();
+          userExistence = await findAdmin({ email: user.email });
         } else if ( user.userType==="staff" ) {
           userExistence = await findStaff({ email: user.email }, {}, { lean: false })
         }

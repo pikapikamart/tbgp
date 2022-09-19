@@ -34,6 +34,11 @@ import {
   updateWriteupPhase } from "../services/writeup.phase.service";
 
 
+const optionsStoryRequest = {
+  limit: 9,
+  sort: "-createdAt"
+}
+
 // --------Queries--------
 
 export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
@@ -66,10 +71,7 @@ export const getMultipleStoryRequestsHandler = async() => {
   const storyRequests = await findManyStoryRequest(
     { started: false },
     "-_id -owner -assignedMembers -requests",
-    {
-      limit: 9,
-      sort: "-createdAt"
-    }
+    optionsStoryRequest
   );
 
   return apiResultWithData(true, storyRequests);
@@ -84,10 +86,7 @@ export const getMultipleAssignedStoryRequestsHandler = async() => {
       }
     },
     "-_id -owner -assignedMembers -requests",
-    {
-      limit: 9,
-      sort: "-createdAt"
-    }
+    optionsStoryRequest
   )
 
   return apiResultWithData(true, storyRequests)
@@ -104,10 +103,7 @@ export const getMultipleCreatedStoryRequestHandler = async( { staff }: StaffCont
       owner: staff._id
     },
     "-_id -owner -assignedMembers ",
-    {
-      limit: 9,
-      sort: "-createdAt"
-    }
+    optionsStoryRequest
   );
 
   return apiResultWithData(true, storyRequests);
