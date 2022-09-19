@@ -24,9 +24,10 @@ export const CATEGORIES: Categories = {
 export type StoryRequest = StoryRequestSchema & {
   storyRequestId: string,
   owner: StaffDocument["_id"],
-  started: boolean
+  started: boolean,
   members: StaffDocument["_id"][],
   requests: StaffDocument["_id"][],
+  writeupId?: string
 }
 
 export type StoryRequestDocument = StoryRequest & mongoose.Document & {
@@ -68,7 +69,8 @@ export const storyRequestSchema: mongoose.Schema<StoryRequestDocument> = new mon
     type: String,
     ref: "Staff"
   }],
-  started: Boolean
+  started: Boolean,
+  writeupId: String
 },{ timestamps: true }
 )
 

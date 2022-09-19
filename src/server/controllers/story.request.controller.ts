@@ -27,7 +27,8 @@ import { createWriteup } from "../services/writeup.service";
 import { StaffContext } from "../middlewares/router.middleware";
 import { 
   getCurrentAvailableStoryRequest, 
-  getOwnedAvailableStoryRequest } from "./controller.utils";
+  getOwnedAvailableStoryRequest, 
+  storyRequestValidator} from "./controller.utils";
 import { 
   createWriteupPhase, 
   updateWriteupPhase } from "../services/writeup.phase.service";
@@ -35,38 +36,22 @@ import {
 
 // --------Queries--------
 
-export const getMultipleStoryRequestsHandler = async() => {
-  const foundWriteups = await findManyStoryRequest(
-    {},
-    "-_id -owner -assignedmembers -requests",
-    {
-      limit: 9,
-      sort: "-createdAt"
-    }
-  );
+export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
+  const foundStoryRequest = storyRequestValidator(await findStoryRequest({ storyRequestId }, "owner"));
 
-  return apiResultWithData(true, foundWriteups);
-}
-
-export const getMultipleAssignedStoryRequestsHandler = async() => {
-  const foundWriteups = await findManyStoryRequest(
-    {
-      assignedMembers: {
-        $ne: []
+  if ( foundStoryRequest.owner.equals(staff._id) ) {
+    return await findStoryRequest(
+      { storyRequestId },
+      "-_id",
+      { lean: false },
+      {
+        path: "requests members assignedMembers",
+        select: "-_id bastionId firstname lastname"
       }
-    },
-    "-_id -owner -assignedmembers -requests",
-    {
-      limit: 9,
-      sort: "-createdAt"
-    }
-  )
+    )
+  } 
 
-  return apiResultWithData(true, foundWriteups)
-}
-
-export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema ) => {
-  const storyRequest = await getCurrentAvailableStoryRequest(
+  return await getCurrentAvailableStoryRequest(
     storyRequestId,
     "-_id -requests",
     { lean: true },
@@ -75,8 +60,57 @@ export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdS
       select: "-_id bastionId firstname lastname"
     }
   );
+}
 
-  return storyRequest;
+export const getMultipleStoryRequestsHandler = async() => {
+  const storyRequests = await findManyStoryRequest(
+    { started: false },
+    "-_id -owner -assignedMembers -requests",
+    {
+      limit: 9,
+      sort: "-createdAt"
+    }
+  );
+
+  return apiResultWithData(true, storyRequests);
+}
+
+export const getMultipleAssignedStoryRequestsHandler = async() => {
+  const storyRequests = await findManyStoryRequest(
+    {
+      started: false,
+      assignedMembers: {
+        $ne: []
+      }
+    },
+    "-_id -owner -assignedMembers -requests",
+    {
+      limit: 9,
+      sort: "-createdAt"
+    }
+  )
+
+  return apiResultWithData(true, storyRequests)
+}
+
+export const getAllCreatedStoryRequestHandler = async( { staff }: StaffContext ) => {
+  
+  if ( staff.position!==STAFF_POSITIONS.editorInChief ) {
+    return trpcError("FORBIDDEN", "Only editor in chief can access created story requests")
+  }
+
+  const storyRequests = await findManyStoryRequest(
+    {
+      owner: staff._id
+    },
+    "-_id",
+    {
+      limit: 9,
+      sort: "-createdAt"
+    }
+  );
+
+  return storyRequests;
 }
 
 // --------Mutations--------
@@ -293,7 +327,8 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
     { storyRequestId: storyRequestId }, 
     {
       requests: [],
-      started: true
+      started: true,
+      writeupId: newWriteup.writeupId
     }
   );
   

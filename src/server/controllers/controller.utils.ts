@@ -34,13 +34,21 @@ export const checkBastionIdExistence = async( bastionId: BastionIdSchema ) => {
   }
 }
 
+export const storyRequestValidator = <T,>( story: T ) => {
+  if ( !story ) {
+    return trpcError("BAD_REQUEST", "Send a valid story request Id")
+  }
+
+  return story
+}
+
 export const getCurrentAvailableStoryRequest = async( 
   storyRequestId: string,
   projection: ProjectionType<StoryRequest> = "",
   options: QueryOptions = { lean: true },
   populate?: PopulateOptions, 
 ) =>{
-  const foundStoryRequest = await findStoryRequest(
+  const foundStoryRequest = storyRequestValidator(await findStoryRequest(
     {
       storyRequestId,
       started: false
@@ -48,17 +56,13 @@ export const getCurrentAvailableStoryRequest = async(
     projection,
     options,
     populate
-  )
-
-  if ( !foundStoryRequest ) {
-    return trpcError("BAD_REQUEST", "Send a valid story request id");
-  }
+  ))
 
   return foundStoryRequest;
 }
 
-export const getOwnedAvailableStoryRequest = async( id: string, owner: StaffDocument["_id"] ) => {
-  const foundStoryRequest = await getCurrentAvailableStoryRequest(id);
+export const getOwnedAvailableStoryRequest = async( storyRequestId: string, owner: StaffDocument["_id"] ) => {
+  const foundStoryRequest = await getCurrentAvailableStoryRequest(storyRequestId);
 
   if ( !foundStoryRequest.owner.equals(owner) ) {
     return trpcError("FORBIDDEN", "Only story request owner can update request")
