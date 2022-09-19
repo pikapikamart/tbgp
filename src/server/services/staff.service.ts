@@ -1,6 +1,7 @@
 import { 
   DocumentDefinition, 
   FilterQuery, 
+  PopulateOptions, 
   ProjectionType, 
   QueryOptions, 
   UpdateQuery} from "mongoose";
@@ -12,9 +13,10 @@ import {
 export const findStaff = async( 
   query: FilterQuery<Staff>,
   projection: ProjectionType<Staff> = {},
-  options: QueryOptions = { lean: true } 
+  options: QueryOptions = { lean: true } ,
+  populate?: PopulateOptions
 ) => (
-  StaffModel.findOne(query, projection, options)
+  populate? StaffModel.findOne(query, projection, options).populate(populate) : StaffModel.findOne(query, projection, options)
 )
 
 export const createStaff = async( staff: DocumentDefinition<Staff> ) => (

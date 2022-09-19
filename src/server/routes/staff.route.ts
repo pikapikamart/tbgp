@@ -2,7 +2,8 @@ import {
   registerStaffHandler, 
   validateBastionIdHandler, 
   requestPositionHandler, 
-  validateStaffHandler} from "../controllers/staff.controller";
+  validateStaffHandler,
+  getStaffHandler} from "../controllers/staff.controller";
 import { isValidStaff } from "../middlewares/router.middleware";
 import { createRouter } from "../router/createRouter";
 import { baseUserSchema } from "../schemas/base.user.schema";
@@ -17,6 +18,7 @@ export const staffRouter = createRouter()
     input: bastionIdSchema,
     resolve: ({ input }) => validateBastionIdHandler(input)
   }))
+  
   .mutation("register", {
     input: staffSchema,
     resolve: ({ input }) => registerStaffHandler(input)
@@ -29,6 +31,10 @@ export const staffRouter = createRouter()
   })
   // authentication checking
   .middleware(async ({ ctx, next }) => isValidStaff(ctx, next))
+  .query("get", {
+    input: bastionIdSchema,
+    resolve: ({ input, ctx }) => getStaffHandler(input, ctx)
+  })
   .mutation("request-position", {
     input: requestPositionSchema,
     resolve: ({ input, ctx }) => requestPositionHandler(input, ctx)

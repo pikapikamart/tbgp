@@ -11,11 +11,24 @@ import {
   findStaff, 
   updateStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
-import { apiResult } from "../utils/success.util";
+import { 
+  apiResult, 
+  apiResultWithData } from "../utils/success.util";
 import { 
   checkBastionIdExistence, 
-  getCurrentAdmin } from "./controller.utils";
+  getCurrentAdmin, 
+  staffValidator} from "./controller.utils";
 
+
+// --------Queries--------
+export const getStaffHandler = async( bastionId: BastionIdSchema, { staff: staffctx }: StaffContext ) => {
+  const staff = staffValidator(await findStaff(
+    { bastionId: bastionId? bastionId : staffctx.bastionId },
+    "-_id firstname lastname bastionId position bio"
+  ));
+
+  return apiResultWithData(true, staff);
+}
 
 // --------Mutations--------
 

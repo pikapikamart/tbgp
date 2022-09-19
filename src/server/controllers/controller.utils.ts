@@ -14,7 +14,7 @@ import { findStoryRequest } from "../services/story.request.service";
 import { findWriteup } from "../services/writeup.service";
 import { trpcError } from "../utils/error.util";
 
-
+// --------Admin--------
 export const getCurrentAdmin = async() => {
   const foundAdmin = await getAdmin();
 
@@ -25,6 +25,8 @@ export const getCurrentAdmin = async() => {
   return foundAdmin;
 }
 
+// --------Staff--------
+
 export const checkBastionIdExistence = async( bastionId: BastionIdSchema ) => {
   const admin = await getCurrentAdmin();
   const foundBastionId = admin.bastionIds.find(id => id===bastionId);
@@ -33,6 +35,16 @@ export const checkBastionIdExistence = async( bastionId: BastionIdSchema ) => {
     return trpcError("NOT_FOUND", "No matching Bastion Id found");
   }
 }
+
+export const staffValidator = <T,>( staff: T ) => {
+  if ( !staff ) {
+    return trpcError("NOT_FOUND", "No staff found with this bastion Id")
+  }
+
+  return staff;
+}
+
+// --------StoryRequest--------
 
 export const storyRequestValidator = <T,>( story: T ) => {
   if ( !story ) {
@@ -75,6 +87,8 @@ export type WriteupQuery = {
   phase: string,
   writeupId: string
 }
+
+// --------Writeup--------
 
 export const getSingleWriteup = async( query: FilterQuery<Writeup>, populate?: PopulateOptions ) => {
   const foundWriteup = await findWriteup(query, populate);
