@@ -4,7 +4,8 @@ import { BaseUserSchema } from "../schemas/base.user.schema";
 import { 
   StaffSchema, 
   BastionIdSchema, 
-  RequestPositionSchema} from "../schemas/staff.schema";
+  PositionSchema,
+  UpdateStaffaSchema} from "../schemas/staff.schema";
 import { updateAdmin } from "../services/admin.service";
 import { 
   createStaff, 
@@ -23,22 +24,13 @@ import {
 // --------Queries--------
 
 export const validateBastionIdHandler = async( bastionId: BastionIdSchema ) => {
-  await checkBastionIdExistence(bastionId);
+  await checkBastionIdExistence(bastionId)
 
-  return apiResult("Bastion Id validated", true);
-}
-
-export const getStaffHandler = async( bastionId: BastionIdSchema, { staff: staffctx }: StaffContext ) => {
-  const staff = staffValidator(await findStaff(
-    { bastionId: bastionId? bastionId : staffctx.bastionId },
-    "-_id firstname lastname bastionId position bio"
-  ));
-
-  return apiResultWithData(true, staff);
+  return apiResult("Bastion Id validated", true)
 }
 
 export const validateStaffHandler = async( { email, password }: BaseUserSchema ) => {
-  const foundStaff = await findStaff({ email }, {}, { lean: false });
+  const foundStaff = await findStaff({ email }, {}, { lean: false })
 
   if ( !foundStaff ) {
     return trpcError("NOT_FOUND", "No user found with email")
@@ -48,16 +40,25 @@ export const validateStaffHandler = async( { email, password }: BaseUserSchema )
     return trpcError("CONFLICT", "Password does not match")
   }
 
-  return apiResult("Successfully validated", true);
+  return apiResult("Successfully validated", true)
 }
 
+export const getStaffHandler = async( bastionId: BastionIdSchema, { staff: staffctx }: StaffContext ) => {
+  // either return the current staff or another staff
+  const staff = staffValidator(await findStaff(
+    { bastionId: bastionId? bastionId : staffctx.bastionId },
+    "-_id firstname lastname bastionId position bio"
+  ))
+
+  return apiResultWithData(true, staff)
+}
 
 // --------Mutations--------
 
-export const registerStaffHandler = async( staff: StaffSchema ) => {
-  await checkBastionIdExistence(staff.bastionId);
+export const registerStaffHandler = async( staffBody: StaffSchema ) => {
+  await checkBastionIdExistence(staffBody.bastionId);
 
-  const foundStaff = await findStaff({ email: staff.email });
+  const foundStaff = await findStaff({ email: staffBody.email });
 
   if ( foundStaff ) {
     return trpcError("CONFLICT", "Email is already in use")
@@ -65,27 +66,25 @@ export const registerStaffHandler = async( staff: StaffSchema ) => {
 
   await createStaff(
     {
-      ...staff,
+      ...staffBody,
       requests: {
         verification: false,
         story: []
       },
       bio: ""
     }
-  );
+  )
   await updateAdmin({
     $pull: {
-      bastionIds: staff.bastionId
+      bastionIds: staffBody.bastionId
     }
   })
 
-  return apiResult("Staff account created", true);
+  return apiResult("Staff account created", true)
 }
 
-
-
 // requires authentication
-export const requestPositionHandler = async( { position }: RequestPositionSchema, { staff }: StaffContext ) => {
+export const requestPositionHandler = async( { position }: PositionSchema, { staff }: StaffContext ) => {
   const admin = await getCurrentAdmin();
 
   if ( !STAFF_POSITIONS[position] ) {
@@ -117,4 +116,13 @@ export const requestPositionHandler = async( { position }: RequestPositionSchema
   )
 
   return apiResult("Verification for position request sent", true);
+}
+
+export const updateStaffHandler = async( update: UpdateStaffaSchema, { staff }: StaffContext ) => {
+  await updateStaff(
+    { email: staff.email },
+    update
+  )
+
+  return apiResult("Successfully udpated profile", true);
 }

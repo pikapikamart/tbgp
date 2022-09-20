@@ -16,6 +16,7 @@ import { trpcError } from "../utils/error.util";
 
 
 // --------Admin--------
+
 export const getCurrentAdmin = async() => {
   const foundAdmin = await findAdmin({});
 

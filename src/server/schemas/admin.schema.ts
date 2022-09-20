@@ -2,7 +2,7 @@ import {
   TypeOf, 
   z } from "zod";
 import { baseUserSchema } from "./base.user.schema";
-import { requestPositionSchema } from "./staff.schema";
+import { positionSchema } from "./staff.schema";
 
 
 export const adminSchema = z
@@ -15,7 +15,7 @@ export const verifyPositionSchema = z
   .object({
     bastionId: z.string({ required_error: "Position is required" })
   })
-  .merge(requestPositionSchema)
+  .merge(positionSchema)
 
 export type AdminSchema = TypeOf<typeof adminSchema>;
 export type VerifyPositionSchema = TypeOf<typeof verifyPositionSchema>;

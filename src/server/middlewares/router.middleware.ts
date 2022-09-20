@@ -3,7 +3,6 @@ import { MiddlewareResult } from "@trpc/server/src/internals/middlewares";
 import { findStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { StaffDocument } from "../models/staff.model";
-import { getCurrentAdmin } from "../controllers/controller.utils";
 import { AdminDocument } from "../models/admin.model";
 import { findAdmin } from "../services/admin.service";
 
