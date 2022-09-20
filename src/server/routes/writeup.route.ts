@@ -17,6 +17,7 @@ export const writeupRouter = createRouter()
     input: writeupIdSchema,
     resolve: ({ input }) => getWriteupHandler(input)
   })
+  
   .mutation("edit", {
     input: writeupIdSchema,
     resolve: ({ input, ctx }) => editWriteupHandler(input, ctx)

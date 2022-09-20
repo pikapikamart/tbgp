@@ -47,10 +47,10 @@ export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdS
   if ( foundStoryRequest.owner.equals(staff._id) ) {
     return await findStoryRequest(
       { storyRequestId },
-      "-_id -owner",
+      "-_id",
       { lean: false },
       {
-        path: "requests members assignedMembers",
+        path: "owner requests members assignedMembers",
         select: "-_id bastionId firstname lastname"
       }
     )
@@ -107,22 +107,6 @@ export const getMultipleCreatedStoryRequestHandler = async( { staff }: StaffCont
   );
 
   return apiResultWithData(true, storyRequests);
-}
-
-export const populateStoryRequests = async({ staff }: StaffContext ) => {
-  await staff.populate({
-    path: "requests.story storyRequests.joined",
-    select: "-_id storyRequestId"
-  })
-
-  const requestsData = {
-    requests: staff.requests,
-    storyRequests: {
-      joined: staff.storyRequests?.joined
-    }
-  }
-
-  return apiResultWithData(true, requestsData);
 }
 
 // --------Mutations--------

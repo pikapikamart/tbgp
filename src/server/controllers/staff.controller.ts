@@ -10,6 +10,7 @@ import { updateAdmin } from "../services/admin.service";
 import { 
   createStaff, 
   findStaff, 
+  staffPopulator, 
   updateStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { 
@@ -53,6 +54,39 @@ export const getStaffHandler = async( bastionId: BastionIdSchema, { staff: staff
   return apiResultWithData(true, staff)
 }
 
+export const populateStaffStoryRequests = async({ staff }: StaffContext ) => {
+  await staffPopulator(
+    staff,
+    {
+      path: "requests.story storyRequests.joined",
+      select: "-_id storyRequestId"
+    }
+  )
+
+  const requestsData = {
+    requests: staff.requests,
+    storyRequests: {
+      joined: staff.storyRequests?.joined
+    }
+  }
+
+  return apiResultWithData(true, requestsData);
+}
+
+export const populateStaffWriteups = async({ staff }: StaffContext ) => {
+  await staffPopulator(
+    staff,
+    {
+      path: "writeups.solo writeups.collaborated writeups.task",
+      select: "-_id writeupId"
+    }
+  )
+
+  const writeupsData = Object.assign({}, staff.writeups);
+
+  return apiResultWithData(true, writeupsData);
+}
+
 // --------Mutations--------
 
 export const registerStaffHandler = async( staffBody: StaffSchema ) => {
@@ -83,7 +117,6 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
   return apiResult("Staff account created", true)
 }
 
-// requires authentication
 export const requestPositionHandler = async( { position }: PositionSchema, { staff }: StaffContext ) => {
   const admin = await getCurrentAdmin();
 

@@ -34,7 +34,12 @@ export const updateStaffSchema = z
   })
   .merge(staffNameSchema)
 
+export const staffWritingsSchema = z
+  .string({ required_error: "Writings is required" })
+  .min(1, "Writings should not be empty")
+
 export type BastionIdSchema = TypeOf<typeof bastionIdSchema>;
 export type StaffSchema = TypeOf<typeof staffSchema>;
 export type PositionSchema = TypeOf<typeof positionSchema>;
 export type UpdateStaffaSchema = TypeOf<typeof updateStaffSchema>;
+export type StaffWritingsSchema = TypeOf<typeof staffWritingsSchema>;

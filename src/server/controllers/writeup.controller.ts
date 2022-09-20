@@ -12,6 +12,8 @@ import {
   getSingleWriteup } from "./controller.utils";
 
 
+// --------Queries--------
+
 export const getWriteupHandler = async( writeupId : WriteupIdSchema ) => {
   const writeup = await getSingleWriteup(
     { writeupId },
@@ -27,6 +29,8 @@ export const getWriteupHandler = async( writeupId : WriteupIdSchema ) => {
 
   return apiResultWithData(true, writeup);
 }
+
+// --------Mutations--------
 
 export const editWriteupHandler = async( writeupId: WriteupIdSchema, { staff }: StaffContext ) => {
   const writeup = await getSingleOwnedWriteup(

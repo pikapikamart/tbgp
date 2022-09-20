@@ -7,6 +7,7 @@ import {
   UpdateQuery} from "mongoose";
 import { 
   Staff, 
+  StaffDocument, 
   StaffModel } from "../models/staff.model";
 
 
@@ -32,4 +33,11 @@ export const updateStaff = async(
 
 export const bulkUpdateStaff = async( input: any ) => (
   StaffModel.bulkWrite(input)
+)
+
+export const staffPopulator = async( 
+  staff: StaffDocument,
+  populate: PopulateOptions
+) => (
+  await staff.populate(populate)
 )

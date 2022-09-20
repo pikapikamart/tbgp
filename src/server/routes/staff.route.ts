@@ -4,15 +4,18 @@ import {
   requestPositionHandler, 
   validateStaffHandler,
   getStaffHandler,
-  updateStaffHandler} from "../controllers/staff.controller";
-import { isValidStaff } from "../middlewares/router.middleware";
+  updateStaffHandler,
+  populateStaffStoryRequests,
+  populateStaffWriteups} from "../controllers/staff.controller";
+import { isValidStaff, isVerifiedStaff } from "../middlewares/router.middleware";
 import { createRouter } from "../router/createRouter";
 import { baseUserSchema } from "../schemas/base.user.schema";
 import { 
   staffSchema, 
   bastionIdSchema, 
   positionSchema,
-  updateStaffSchema} from "../schemas/staff.schema";
+  updateStaffSchema,
+  staffWritingsSchema} from "../schemas/staff.schema";
 
 
 export const staffRouter = createRouter()
@@ -41,4 +44,11 @@ export const staffRouter = createRouter()
   .mutation("edit", {
     input: updateStaffSchema,
     resolve: ({ input, ctx }) => updateStaffHandler(input, ctx)
+  })
+  .middleware(async ({ ctx, next }) => isVerifiedStaff(ctx, next))
+  .query("populate-storyRequests", {
+    resolve: ({ ctx }) => populateStaffStoryRequests(ctx)
+  })
+  .query("populate-writeups", {
+    resolve: ({ ctx }) => populateStaffWriteups(ctx)
   })
