@@ -9,13 +9,33 @@ import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid";
 import { updateStaff } from "../services/staff.service";
 import { STAFF_POSITIONS } from "../models/staff.model";
-import { apiResult } from "../utils/success.util";
+import { apiResult, apiResultWithData } from "../utils/success.util";
 import { AdminContext } from "../middlewares/router.middleware";
 import { BaseUserSchema } from "../schemas/base.user.schema";
 import { adminValidator } from "./controller.utils";
 
 
 // --------Queries--------
+
+export const validateAdminHandler = async( { email, password }: BaseUserSchema ) => {
+  const admin = adminValidator(await findAdmin({ email }));
+
+  if ( !await admin.comparePassword(password) ) {
+    return trpcError("CONFLICT", "Password does not match")
+  }
+
+  return apiResult("Successfully validated", true);
+}
+
+export const getProfileHandler = async({ admin }: AdminContext) =>{
+  
+  return apiResultWithData(true,{
+    bastionIds: admin.bastionIds,
+    verifications: admin.verifications
+  })
+}
+
+// --------Mutations--------
 
 export const createAdminHandler = async ( input: AdminSchema ) =>{
   const adminPassword = process.env.ADMIN_PASSWORD as string;
@@ -34,18 +54,6 @@ export const createAdminHandler = async ( input: AdminSchema ) =>{
 
   return apiResult("Admin created", true);
 }
-
-export const validateAdminHandler = async( { email, password }: BaseUserSchema ) => {
-  const admin = adminValidator(await findAdmin({ email }));
-
-  if ( !await admin.comparePassword(password) ) {
-    return trpcError("CONFLICT", "Password does not match")
-  }
-
-  return apiResult("Successfully validated", true);
-}
-
-// --------Mutations--------
 
 export const createBastionIdHandler = async( { admin }: AdminContext ) =>{
 

@@ -7,7 +7,8 @@ import { isValidStaff } from "../middlewares/router.middleware";
 import { createRouter } from "../router/createRouter";
 import { 
   saveWriteupSchema,
-  writeupIdSchema } from "../schemas/writeup.schema";
+  writeupIdSchema, 
+  writeupPhaseSchema} from "../schemas/writeup.schema";
 
 
 export const writeupRouter = createRouter()
@@ -17,7 +18,10 @@ export const writeupRouter = createRouter()
     input: writeupIdSchema,
     resolve: ({ input }) => getWriteupHandler(input)
   })
-  
+  .query("get-multiple", {
+    input: writeupPhaseSchema,
+    resolve: () => {}
+  })
   .mutation("edit", {
     input: writeupIdSchema,
     resolve: ({ input, ctx }) => editWriteupHandler(input, ctx)

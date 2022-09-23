@@ -35,6 +35,7 @@ export const storyRequestRouter = createRouter()
     input: storyRequestSchema,
     resolve: ({ input, ctx }) => createStoryRequestHandler(input, ctx)
   })
+  // verification
   .middleware(({ ctx, next }) => isVerifiedStaff(ctx, next))
   .query("get-multiple-created", {
     resolve: ({ ctx }) => getMultipleCreatedStoryRequestHandler(ctx)

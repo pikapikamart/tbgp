@@ -15,6 +15,11 @@ type TrpcNext = {
 // --------Staff--------
 
 export const isValidStaff = async( ctx: Context, next: TrpcNext ) =>{
+  
+  if ( ctx.token?.userType!=="staff" ) {
+    return trpcError("FORBIDDEN", "Only staff account can proceed")
+  }
+
   const foundStaff = await findStaff({ email: ctx.token?.email }, {}, { lean: false });
 
   if ( !foundStaff ) {
@@ -40,8 +45,13 @@ export const isVerifiedStaff = async( ctx: StaffContext, next: TrpcNext ) => {
 // --------Admin--------
 
 export const isValidAdmin = async( ctx: Context, next: TrpcNext ) => {
+  
+  if ( ctx.token?.userType!=="admin" ) {
+    return trpcError("FORBIDDEN", "Only admin account can proceed")
+  }
+
   const admin = await findAdmin({ email: ctx.token?.email });
-  // change to using token validation
+ 
   if ( !admin ) {
     return trpcError("UNAUTHORIZED", "Please login as admin properly")
   }

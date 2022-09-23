@@ -117,7 +117,7 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
   return apiResult("Staff account created", true)
 }
 
-export const requestPositionHandler = async( { position }: PositionSchema, { staff }: StaffContext ) => {
+export const requestStaffPositionHandler = async( { position }: PositionSchema, { staff }: StaffContext ) => {
   const admin = await getCurrentAdmin();
 
   if ( !STAFF_POSITIONS[position] ) {

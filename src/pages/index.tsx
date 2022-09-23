@@ -1,7 +1,8 @@
-import { NextPage } from "next";
+import { BuilderLayout } from "@/components/layout/builder";
+import { NextPageWithLayout } from "./_app";
 
 
-const Homepage: NextPage = () =>{
+const Homepage: NextPageWithLayout = () =>{
 
   return (
     <div>
@@ -9,6 +10,8 @@ const Homepage: NextPage = () =>{
     </div>
   )
 }
+
+Homepage.getLayout = ( page ) => BuilderLayout(page)
 
 
 export default Homepage;

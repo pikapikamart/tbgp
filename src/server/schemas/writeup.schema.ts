@@ -21,5 +21,9 @@ export const saveWriteupSchema = z
     .min(1, "Phase should not be empty")
   })
 
+export const writeupPhaseSchema = z
+  .object({ phase: z.string({ required_error: "Writeup phase is required" }) })
+
 export type WriteupIdSchema = TypeOf<typeof writeupIdSchema>
 export type SaveWriteupSchema = TypeOf<typeof saveWriteupSchema>;
+export type WriteupPhaseSchema = TypeOf<typeof writeupPhaseSchema>;
