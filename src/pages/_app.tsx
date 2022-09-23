@@ -6,6 +6,8 @@ import { ThemeProvider } from "styled-components";
 import { Theme } from "@/styled/base";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
+import { Provider } from "react-redux";
+import { store } from "@/store/index";
 
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -20,11 +22,13 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? (( page ) => page)
 
   return (
-    <ThemeProvider theme={ Theme }>
-      <SessionProvider session={ pageProps.session }>
-        { getLayout(<Component {...pageProps} />) }
-      </SessionProvider>
-    </ThemeProvider>
+    <Provider store={ store }>  
+      <ThemeProvider theme={ Theme }>
+        <SessionProvider session={ pageProps.session }>
+          { getLayout(<Component {...pageProps} />) }
+        </SessionProvider>
+      </ThemeProvider>
+    </Provider>
   )
 }
 
