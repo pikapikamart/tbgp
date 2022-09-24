@@ -21,7 +21,10 @@ const theme: DefaultTheme = {
     skyBlue: "#119ECB",
     violet: "#B835B8"
   },
-  fontSizes: {},
+  fontSizes: {
+    welcomeHeading_m: 28,
+    welcomeHeading_d: 32
+  },
   breakpoints: {
     tablet: 768,
     desktop: 1000

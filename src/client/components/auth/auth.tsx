@@ -10,12 +10,12 @@ const Auth = ( { csrfToken }: AuthProps ) => {
     form,
     addInputsRef,
     handleFormSubmit,
-    mutation
+    data
   } = useSignupStaff();
 
   return (
     <div>
-      <p>{ JSON.stringify(mutation.data) }</p>
+      <p>{ JSON.stringify(data) }</p>
       <form
         method="post"
         action="/api/auth/callback/credentials"

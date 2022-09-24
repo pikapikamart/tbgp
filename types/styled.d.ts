@@ -23,7 +23,8 @@ declare module "styled-components" {
       violet: string
     },
     fontSizes: {
-
+      welcomeHeading_m: number,
+      welcomeHeading_d: number
     },
     breakpoints: {
       tablet: number,

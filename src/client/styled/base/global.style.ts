@@ -72,7 +72,7 @@ const globalStyle = createGlobalStyle`
 
   /* Font Families */
   body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'libre-franklin', sans-serif;
     min-height: 100vh;
     max-width: 100rem;
     margin: 0 auto;
@@ -92,6 +92,10 @@ const globalStyle = createGlobalStyle`
       outline: 3px dashed rgb(0, 36, 58);
       outline-offset: 3px;
     }
+  }
+
+  p {
+    line-height: 1.4;
   }
 
   .sr-only {

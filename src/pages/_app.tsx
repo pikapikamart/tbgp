@@ -8,6 +8,7 @@ import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { store } from "@/store/index";
+import { DefaultLayout } from "@/components/layout/default";
 
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -19,7 +20,7 @@ type AppPropsWithLayout = AppProps & {
 }
 
 const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
-  const getLayout = Component.getLayout ?? (( page ) => page)
+  const getLayout = Component.getLayout ?? (( page ) => DefaultLayout(page))
 
   return (
     <Provider store={ store }>  
