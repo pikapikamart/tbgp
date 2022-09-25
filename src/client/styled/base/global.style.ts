@@ -117,6 +117,15 @@ const globalStyle = createGlobalStyle`
       scroll-behavior: auto !important;
     }
   }
+
+  @media(min-width: 1000px) {
+    a,
+    input,
+    button,
+    textarea:hover {
+      cursor: pointer;
+    }
+  }
 `
 
 

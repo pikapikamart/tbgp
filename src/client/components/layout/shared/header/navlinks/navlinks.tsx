@@ -14,7 +14,6 @@ export type NavlinksProps = {
 const Navlinks = ({ type }: NavlinksProps) =>{
   const router = useRouter();
 
-  // could extract component
   const renderLinks = () =>{
     const links = linksData[type]
     const navlinks = links.map(link => (

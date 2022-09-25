@@ -7,8 +7,9 @@ import {
 import { 
   signOut,
   useSession } from "next-auth/react";
-import { Navlinks } from "../navlinks";
-import { NavlinksProps } from "../navlinks/navlinks";
+import { 
+  HeaderNavlinks,
+  NavlinksProps } from "@/components/layout/shared/header/navlinks";
 
 
 type DropdownProps = NavlinksProps
@@ -22,7 +23,7 @@ const Dropdown = ( { type }: DropdownProps ) => {
         <ProfileName>{ data?.user?.name }</ProfileName>
         <p>{ data?.user?.email }</p>
       </ProfileContainer>
-      <Navlinks type={ type } />
+      <HeaderNavlinks type={ type } />
       <ul>
         {/* add for staff conditional */}
         <li>

@@ -21,7 +21,7 @@ export const HeaderWrapper = styled(RowCenter)`
   `) }
 `
 
-export const HeaderLogo = styled.img`
+export const HeaderLogoWrapper = styled.img`
   height: ${ fluid(36, 5.5, 48) };
 `
 

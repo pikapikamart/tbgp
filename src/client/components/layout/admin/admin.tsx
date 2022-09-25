@@ -1,6 +1,6 @@
 import { GlobalStyle } from "@/styled/base";
 import { LayoutHead } from "../head";
-import { HeaderLayout } from "./header";
+import { AdminHeaderLayout } from "./header";
 
 
 const AdminLayout = ( page: React.ReactElement ) => {
@@ -9,7 +9,7 @@ const AdminLayout = ( page: React.ReactElement ) => {
     <>
       <LayoutHead />
       <GlobalStyle />
-      <HeaderLayout />
+      <AdminHeaderLayout />
       { page }
     </>
   )
