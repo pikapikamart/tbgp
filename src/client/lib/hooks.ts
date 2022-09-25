@@ -5,6 +5,11 @@ import { trpc } from "@/lib/trpc";
 import { BaseUserSchema } from "src/server/schemas/base.user.schema";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import {
+  setErrors,
+  removeErrors,
+  elementHasError
+} from "./utils";
 
 
 type UserInfo = BaseUserSchema & {
@@ -62,32 +67,6 @@ export const useSignupStaff = () => {
 type FormFields = HTMLInputElement | HTMLTextAreaElement
 type UserInformation = BaseUserSchema & {
   [ key: string ]: string
-}
-
-const setErrors = ( element: FormFields ) => {
-  element.setAttribute("aria-invalid", "true");
-  element.setAttribute("aria-describedby", `error-${ element.name }`)
-  element.nextElementSibling?.classList.add("show")
-}
-
-const removeErrors = ( element: FormFields ) => {
-  element.removeAttribute("aria-invalid")
-  element.removeAttribute("aria-describedby")
-  element.nextElementSibling?.classList.remove("show")
-}
-
-const elementHasError = ( element: FormFields ) => {
-  if ( element.name!=="email" && element.value ) {
-    return false
-  }
-
-  let re = /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/
-
-  if ( element.name==="email" && re.test(element.value) ) {
-    return false
-  } 
-
-  return true
 }
 
 export const useUserLogin = () => {
@@ -187,7 +166,7 @@ export const useAdminLogin = () => {
 
   useEffect(() => {
     if ( data?.success ) {
-      handleSignIn("admin", "/")
+      handleSignIn("admin", "/admin")
     }
   }, [ data ])
 
@@ -196,5 +175,38 @@ export const useAdminLogin = () => {
     ariaLiveRef,
     handleFormSubmit,
     data
+  }
+}
+
+export const useExpansion = () =>{
+  const [ isExpanded, setIsExpanded ] = useState(false)
+
+  const handleExpansion = () => {
+    setIsExpanded(prev => !prev)
+  }
+
+  return {
+    isExpanded,
+    handleExpansion
+  }
+}
+
+export const useProfileExpansion = () => {
+  const { isExpanded, handleExpansion } = useExpansion()
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() =>{
+    if ( !wrapperRef.current ) {
+      return
+    }
+
+    isExpanded? wrapperRef.current.classList.add("toggled") : wrapperRef.current.classList.remove("toggled");
+
+  }, [ isExpanded ])
+
+  return {
+    isExpanded,
+    handleExpansion,
+    wrapperRef
   }
 }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+  <g id="Hamburger" transform="translate(-1135.77 0)">
+    <path id="Line_13" data-name="Line 13" d="M14.136,2.136.738,1.854A.886.886,0,0,1,0,.912C-.01.4.3-.008.7,0L14.1.282a.886.886,0,0,1,.737.942C14.845,1.736,14.532,2.144,14.136,2.136Z" transform="translate(1135.77 10.49) rotate(-45)" fill="#fff"/>
+    <path id="Line_13-2" data-name="Line 13" d="M14.1,1.854.7,2.136c-.4.008-.709-.4-.7-.912A.886.886,0,0,1,.738.282L14.136,0c.4-.008.709.4.7.912A.886.886,0,0,1,14.1,1.854Z" transform="translate(1137.28 0) rotate(45)" fill="#fff"/>
+  </g>
+</svg>

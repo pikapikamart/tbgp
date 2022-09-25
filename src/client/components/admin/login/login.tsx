@@ -16,7 +16,7 @@ const Login = () => {
   const { data, status } = useSession()
 
   if ( data?.user ) {
-    router.replace("/")
+    router.replace("/admin")
   }
 
   if ( status==="loading" || status==="authenticated" ) {
@@ -28,7 +28,7 @@ const Login = () => {
       <ContentContainer>
         <SrOnly as="h1" >Login</SrOnly>
         <div>
-          <LoginImage src="/logos/bastion-logo.png" alt="The Bastion Group of Publications" />
+          <LoginImage src="/logos/bastion-logo.svg" alt="The Bastion Group of Publications" />
           <LoginBannerHeading>Hello Admin!</LoginBannerHeading>
           <LoginBannerText>Login your bastion admin account now to manage accounts and position requests</LoginBannerText>
           <LoginForm />

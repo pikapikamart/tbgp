@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 
 export const SrOnly = styled.span`
@@ -15,4 +15,30 @@ export const SrOnly = styled.span`
 export const CenterContent = styled.div`
   margin: 0 auto;
   max-width: max-content;
+`
+
+const BaseRowCenter = css`
+  align-items: center;
+  display: flex;
+`
+
+export const RowCenterBetween = styled.div`
+  ${ BaseRowCenter };
+
+  justify-content: space-between;
+  width: 100%;
+`
+
+export const RowCenter = styled.div`
+  ${ BaseRowCenter };
+`
+
+export const RowCenterCenter = styled.div`
+  ${ BaseRowCenter };
+
+  justify-content: center;
+`
+
+export const BlockLink = styled.a`
+  display: block;
 `

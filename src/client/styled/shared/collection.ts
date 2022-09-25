@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import { 
   rem,
-  fluid } from "../functions";
+  fluid, 
+  breakpoint} from "../functions";
+import { 
+  RowCenter, 
+  RowCenterCenter } from "./helpers";
 
 
 // --------Buttons--------
