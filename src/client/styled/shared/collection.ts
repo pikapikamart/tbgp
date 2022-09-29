@@ -22,6 +22,12 @@ export const DarkBlueButton = styled(BaseButton)`
   background-color: ${({ theme }) => theme.colors.darkBlue};
 `
 
+// --------Texts--------
+export const DefaultText = styled.p`
+  color: ${({ theme }) => theme.colors.dark1};
+  font-size: ${ fluid(14, 1, 16) };
+`
+
 // --------Login & Registration--------
 
 export const LoginImage = styled.img`
@@ -99,3 +105,5 @@ export const LoginInputError = styled.span`
     display: block;
   }
 `
+
+// 

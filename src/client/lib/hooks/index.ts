@@ -9,7 +9,7 @@ import {
   setErrors,
   removeErrors,
   elementHasError
-} from "./utils";
+} from "../utils";
 
 
 type UserInfo = BaseUserSchema & {

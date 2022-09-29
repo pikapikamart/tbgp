@@ -20,7 +20,8 @@
       "@/lib/*": ["src/client/lib/*"],
       "@/store/*": ["src/client/store/*"],
       "@/styled/*": ["src/client/styled/*"],
-      "@/pages/*": ["src/pages/*"]
+      "@/pages/*": ["src/pages/*"],
+      "@/src/*": ["src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
