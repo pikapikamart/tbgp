@@ -1,4 +1,5 @@
 import { useAppSelector } from "@/lib/hooks/store.hooks";
+import { selectAdminBastionIds } from "@/store/slices/admin.slice";
 import { 
   BastionIdsWrapper,
   BastionIdListOption,
@@ -6,7 +7,7 @@ import {
 
 
 const BastionIds = () => {
-  const bastionIds = useAppSelector((state) => state.admin.bastionIds)
+  const bastionIds = useAppSelector(selectAdminBastionIds)
 
   const renderBastionIdList = () => {
     const sampleList = bastionIds.map(id => {

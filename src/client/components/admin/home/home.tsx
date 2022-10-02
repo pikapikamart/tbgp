@@ -5,7 +5,10 @@ import { SrOnly } from "@/styled/shared/helpers";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { AccountsSection } from "./accounts";
-import { MainWrapper } from "./home.styled";
+import { 
+  MainContentContainer, 
+  MainWrapper } from "./home.styled";
+import { VerificationsSection } from "./verifications";
 
 
 const Home = () => {
@@ -30,8 +33,11 @@ const Home = () => {
   
   return (
     <MainWrapper>
-      <SrOnly>Homepage. Manage everything in here</SrOnly>
-      <AccountsSection />
+      <MainContentContainer>
+        <SrOnly>Homepage. Manage everything in here</SrOnly>
+        <AccountsSection />
+        <VerificationsSection />  
+      </MainContentContainer>
     </MainWrapper>
   )
 }

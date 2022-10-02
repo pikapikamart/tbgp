@@ -8,14 +8,15 @@ const SignupPage = () => {
       <button onClick={ () => signIn("credentials", {
         email: "doe.kevin@gmail.com",
         password: "thebastion",
+        userType: "staff",
         callbackUrl: "/"
-       }) }>login</button>
+       }) }>kevin</button>
        <button onClick={ () => signIn("credentials", { 
-        email: "doe.jane@gmail.com",
+        email: "doe.natasha@gmail.com",
         password: "thebastion",
         userType: "staff",
         callbackUrl: "/"
-        }) }>here</button>
+        }) }>natasha</button>
     </main>
   )
 }

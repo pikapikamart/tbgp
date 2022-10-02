@@ -4,16 +4,11 @@ import {
   fluid,
   breakpoint } from "@/styled/functions";
 import { DarkLongRoundButton } from "@/styled/shared/collection";
+import { HomeFrameWrapper } from "../home.styled";
 
 
-export const AccountsWrapper = styled.div`
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
-  border-radius: ${ rem(4) };
-  padding: ${ rem(16) } ${ rem(8) };
-
-  ${({ theme }) => `
-    color: ${ theme.colors.dark1 };
-  `}
+export const AccountsWrapper = styled(HomeFrameWrapper)`
+  margin-bottom: ${ rem(16) };
 
   ${ DarkLongRoundButton } {
     
@@ -21,6 +16,10 @@ export const AccountsWrapper = styled.div`
       background-color: #BDBDBD;
     }
   }
+
+  ${ breakpoint("tablet", `
+    margin: 0 ${ fluid(16, 3, 24) };
+  `) }
 
   ${ breakpoint("desktop", `
 
@@ -34,10 +33,4 @@ export const AccountsWrapper = styled.div`
       }
     }
   `) }
-`
-
-export const AccountsHeading = styled.h2`
-  font-size: ${ fluid(18, 3, 24) };
-  font-weight: 600;
-  margin-bottom: ${ fluid(4, .7, 8) };
 `

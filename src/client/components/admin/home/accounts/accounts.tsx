@@ -1,4 +1,6 @@
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
+import { 
+  useAppDispatch, 
+  useAppSelector } from "@/lib/hooks/store.hooks";
 import { trpc } from "@/lib/trpc";
 import { addBastionId } from "@/store/slices/admin.slice";
 import { 
@@ -6,9 +8,8 @@ import {
   DarkLongRoundButton } from "@/styled/shared/collection";
 import { CenterContent } from "@/styled/shared/helpers";
 import { useEffect } from "react";
-import { 
-  AccountsHeading, 
-  AccountsWrapper } from "./accounts.styled";
+import { HomeFrameHeading } from "../home.styled";
+import { AccountsWrapper } from "./accounts.styled";
 import { AccountsBastionIdList } from "./bastionids";
 
 
@@ -35,7 +36,7 @@ const Accounts = () => {
 
   return (
     <AccountsWrapper>
-      <AccountsHeading>Accounts</AccountsHeading>
+      <HomeFrameHeading>Accounts</HomeFrameHeading>
       <DefaultText>Expand your team by generating bastion id for them to use</DefaultText>
       <AccountsBastionIdList />
       <CenterContent>
