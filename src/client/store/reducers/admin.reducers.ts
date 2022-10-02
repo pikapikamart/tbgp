@@ -7,3 +7,7 @@ export const setAdminReducer = ( state: WritableDraft<AdminState>, action: Paylo
   state.bastionIds = action.payload.bastionIds
   state.verifications = action.payload.verifications
 }
+
+export const addBastionIdReducer = ( state: WritableDraft<AdminState>, action: PayloadAction<string> ) => {
+  state.bastionIds.push(action.payload)
+}

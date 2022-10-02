@@ -3,6 +3,7 @@ import {
   rem,
   fluid,
   breakpoint } from "@/styled/functions";
+import { DarkLongRoundButton } from "@/styled/shared/collection";
 
 
 export const AccountsWrapper = styled.div`
@@ -11,8 +12,28 @@ export const AccountsWrapper = styled.div`
   padding: ${ rem(16) } ${ rem(8) };
 
   ${({ theme }) => `
-    colors: ${ theme.colors.dark1 };
+    color: ${ theme.colors.dark1 };
   `}
+
+  ${ DarkLongRoundButton } {
+    
+    &[aria-disabled="true"] {
+      background-color: #BDBDBD;
+    }
+  }
+
+  ${ breakpoint("desktop", `
+
+    ${ DarkLongRoundButton } {
+
+      &[aria-disabled="true"] {
+        
+        &:hover {
+          cursor: not-allowed;
+        }
+      }
+    }
+  `) }
 `
 
 export const AccountsHeading = styled.h2`

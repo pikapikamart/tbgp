@@ -70,7 +70,7 @@ export const createBastionIdHandler = async( { admin }: AdminContext ) =>{
     }
   })
 
-  return apiResult("Successfully created bastion id", createdBastionId);
+  return apiResultWithData(true, createdBastionId);
 }
 
 export const verifyPositionHandler = async ( { bastionId, position }: VerifyPositionSchema, { admin }: AdminContext ) => {

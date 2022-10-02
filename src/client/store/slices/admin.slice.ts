@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Admin } from "@/src/server/models/admin.model";
-import { setAdminReducer } from "../reducers/admin.reducers";
+import { 
+  addBastionIdReducer, 
+  setAdminReducer } from "../reducers/admin.reducers";
 
 
 export type AdminState = Pick<Admin,"bastionIds" | "verifications">
@@ -15,10 +17,13 @@ export const adminSlice = createSlice({
   initialState,
   reducers: {
     setAdmin: setAdminReducer,
+    addBastionId: addBastionIdReducer
   }
 })
 
-export const { setAdmin } = adminSlice.actions;
+export const { 
+  setAdmin,
+  addBastionId } = adminSlice.actions;
 export const selectAdminBastionIds = ( state: AdminState ) => state.bastionIds;
 export const selectAdminVerifications = ( state: AdminState ) => state.verifications;
 

@@ -22,6 +22,11 @@ export const DarkBlueButton = styled(BaseButton)`
   background-color: ${({ theme }) => theme.colors.darkBlue};
 `
 
+export const DarkLongRoundButton = styled(DarkBlueButton)`
+  border-radius: ${ rem(24) };
+  min-width: ${ fluid(140, 10, 256) };
+`
+
 // --------Texts--------
 export const DefaultText = styled.p`
   color: ${({ theme }) => theme.colors.dark1};

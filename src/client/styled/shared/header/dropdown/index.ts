@@ -10,7 +10,8 @@ import {
 import { RowCenter } from "../../helpers";
 
 
-export const DropdownWrapper = styled.div`
+export const DropdownWrapper = styled.div`  
+  background-color: ${({ theme }) => theme.colors.white1};
   box-shadow: 0 8px 8px 0 rgba(0, 0, 0, .2);
   inset: 100% 0 auto 0;
   opacity: 0;
