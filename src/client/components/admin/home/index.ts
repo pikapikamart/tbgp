@@ -1,1 +1,1 @@
-export { default as AdminHomeSection } from "./home";
+export { default as AdminHomeSection } from "./home.context";

@@ -3,12 +3,15 @@ import { trpc } from "@/lib/trpc";
 import { setAdmin } from "@/store/slices/admin.slice";
 import { SrOnly } from "@/styled/shared/helpers";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { AccountsSection } from "./accounts";
 import { 
   MainContentContainer, 
   MainWrapper } from "./home.styled";
 import { VerificationsSection } from "./verifications";
+import { AdminContext } from "./home.context";
+import { BaseModal } from "@/components/shared/modal";
+import { VerificationModal } from "@/components/shared/modal/admin/verification";
 
 
 const Home = () => {
@@ -18,6 +21,7 @@ const Home = () => {
   })
   const { data: token } = useSession()
   const dispatch = useAppDispatch()
+  const adminContext = useContext(AdminContext)
 
   useEffect(() => {
     if ( data && status==="success" ) {
@@ -32,13 +36,20 @@ const Home = () => {
   }, [ token ])
   
   return (
-    <MainWrapper>
-      <MainContentContainer>
-        <SrOnly>Homepage. Manage everything in here</SrOnly>
-        <AccountsSection />
-        <VerificationsSection />  
-      </MainContentContainer>
-    </MainWrapper>
+    <>
+      <MainWrapper>
+        <MainContentContainer>
+          <SrOnly as="h1">Homepage. Manage everything in here</SrOnly>
+          <AccountsSection />
+          <VerificationsSection />  
+        </MainContentContainer>
+      </MainWrapper>
+      { adminContext?.verification && (
+        <BaseModal>
+          <VerificationModal />
+        </BaseModal>
+      )}
+    </>
   )
 }
 

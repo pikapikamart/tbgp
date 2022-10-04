@@ -5,7 +5,7 @@ import {
 
 
 export const findAdmin = async( query: FilterQuery<Admin> ) => (
-  AdminModel.findOne()
+  AdminModel.findOne(query)
 )
 
 export const createAdmin = async( admin: Omit<Admin, "bastionIds" | "verifications"> ) => AdminModel.create(admin)

@@ -19,7 +19,7 @@ import { adminValidator } from "./controller.utils";
 
 export const validateAdminHandler = async( { email, password }: BaseUserSchema ) => {
   const admin = adminValidator(await findAdmin({ email }));
-  console.log("backend")
+
   if ( !await admin.comparePassword(password) ) {
     return trpcError("CONFLICT", "Password does not match")
   }

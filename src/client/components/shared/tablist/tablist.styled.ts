@@ -24,8 +24,8 @@ export const TabSelections = styled(RowCenter)`
 
 export const Tab = styled.button`
   font-weight: 500;
-  font-size: ${ fluid(13, 1, 14) };
-  padding: 0 ${ fluid(24, 3.5, 32) };
+  font-size: ${ fluid(13, 1.4, 14) };
+  padding: 0 ${ fluid(12, 1.2, 16) };
 
   ${({ theme: { colors } }) => `
     color: ${ colors.grey2 };  

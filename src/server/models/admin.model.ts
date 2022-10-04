@@ -8,7 +8,7 @@ import {
   BaseUserDocument } from "./base.user.model";
 
 
-type Verifications = {
+export type Verification = {
   fullname: string,
   bastionId: string,
   position: string
@@ -19,7 +19,7 @@ export type Admin = {
   email: string,
   password: string,
   bastionIds: BastionId[],
-  verifications: Verifications[]
+  verifications: Verification[]
 }
 
 export type AdminDocument = Admin & BaseUserDocument & {}

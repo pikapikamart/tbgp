@@ -12,7 +12,8 @@ export const BastionIdsWrapper = styled.ul`
 export const BastionIdListOption = styled.li`
   border: 1px solid ${({ theme }) => theme.colors.grey3};
   border-radius: ${ rem(4) };
-  font-size: ${ fluid(15, 1, 16) };
+  font-size: ${ fluid(15, 1.5, 16) };
+  font-weight: 600;
   
   &:not(:last-of-type) {
     margin-bottom: ${ fluid(8, 1, 14) };

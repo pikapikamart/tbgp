@@ -18,19 +18,23 @@ const BaseButton = styled.button`
   text-align: center;
 `
 
+export const SmallBaseButton = styled(BaseButton)`
+  padding: ${ fluid(6, 1.3, 8) } ${ rem(12) };
+`
+
 export const DarkBlueButton = styled(BaseButton)`
   background-color: ${({ theme }) => theme.colors.darkBlue};
 `
 
 export const DarkLongRoundButton = styled(DarkBlueButton)`
   border-radius: ${ rem(24) };
-  min-width: ${ fluid(140, 10, 256) };
+  min-width: ${ fluid(140, 19, 256) };
 `
 
 // --------Texts--------
 export const DefaultText = styled.p`
-  color: ${({ theme }) => theme.colors.dark1};
-  font-size: ${ fluid(14, 1, 16) };
+  color: ${({ theme }) => theme.colors.dark2};
+  font-size: ${ fluid(14, 2, 16) };
 `
 
 // --------Login & Registration--------

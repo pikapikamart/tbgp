@@ -12,6 +12,48 @@ import {
 } from "../utils";
 
 
+// --------General--------
+interface AnyFocusableELement extends HTMLElement{}
+type RegisterControl = ( element: AnyFocusableELement | null) => void
+type RegisterTrapContainer = ( event: React.KeyboardEvent ) => void
+
+export const useTrapFocus = (): [ RegisterControl, RegisterTrapContainer ] =>{
+  const firstControl = useRef<AnyFocusableELement | null>(null)
+  const lastControl = useRef<AnyFocusableELement | null>(null)
+
+  const registerControl: RegisterControl = ( element ) =>{
+    if ( !firstControl.current ) {
+      firstControl.current = element
+    } else {
+      lastControl.current = element
+    }
+  }
+
+  const registerTrapContainer: RegisterTrapContainer = ( event ) => {
+
+    if ( !firstControl.current || !lastControl.current ) {
+      return
+    }    
+
+    const currentElement = document.activeElement
+
+    if ( currentElement===firstControl.current && event.shiftKey && event.key==="Tab" ) {
+      event.preventDefault()
+      lastControl.current.focus()
+    } else if ( currentElement===lastControl.current && !event.shiftKey && event.key==="Tab" ) {
+      event.preventDefault()
+      firstControl.current.focus()
+    }
+  }
+
+  return [
+    registerControl,
+    registerTrapContainer
+  ]
+}
+
+// --------{}--------
+
 type UserInfo = BaseUserSchema & {
   [ key: string ]: string,
 }

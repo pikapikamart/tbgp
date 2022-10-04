@@ -18,7 +18,9 @@ export const AccountsWrapper = styled(HomeFrameWrapper)`
   }
 
   ${ breakpoint("tablet", `
-    margin: 0 ${ fluid(16, 3, 24) };
+    flex-basis: 35%;
+    margin: 0 ${ fluid(16, 3, 24) } 0 0;
+    max-width: ${ rem(352) };
   `) }
 
   ${ breakpoint("desktop", `

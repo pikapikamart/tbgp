@@ -1,21 +1,20 @@
 import { TabInterface } from "@/components/shared/tablist";
 import { DefaultText } from "@/styled/shared/collection";
-import { 
-  HomeFrameHeading, 
-  HomeFrameWrapper } from "../home.styled";
+import { HomeFrameHeading } from "../home.styled";
 import { VerificationsPositions } from "./positions";
+import { VerificationsWrapper } from "./verifications.styled";
 
 
 const Verifications = () =>{
 
   return (
-    <HomeFrameWrapper>
+    <VerificationsWrapper>
       <HomeFrameHeading>Positions</HomeFrameHeading>
       <DefaultText>Verify bastion members position requests</DefaultText>
       <TabInterface selectionNames={["Verifications", "test"]}>
         <VerificationsPositions />
       </TabInterface>
-    </HomeFrameWrapper>
+    </VerificationsWrapper>
   )
 }
 

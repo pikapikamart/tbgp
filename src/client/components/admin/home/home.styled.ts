@@ -11,6 +11,10 @@ export const MainWrapper = styled.main`
 
 export const MainContentContainer = styled.div`
   
+  ${ breakpoint("tablet", `
+    display: flex;
+    justify-content: center;
+  `) }  
 `
 
 export const HomeFrameWrapper = styled.div`
@@ -19,12 +23,16 @@ export const HomeFrameWrapper = styled.div`
   padding: ${ rem(16) } ${ rem(8) };
 
   ${({ theme }) => `
-    color: ${ theme.colors.dark1 };
+    color: ${ theme.colors.dark2 };
   `}
+
+  ${ breakpoint("desktop", `
+    padding: ${ rem(16) };
+  `) }
 `
 
 export const HomeFrameHeading = styled.h2`
-  font-size: ${ fluid(18, 3, 24) };
+  font-size: ${ fluid(18, 2.6, 24) };
   font-weight: 600;
   margin-bottom: ${ fluid(4, .7, 8) };
 `

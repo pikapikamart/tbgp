@@ -39,6 +39,13 @@ export const RowCenterCenter = styled.div`
   justify-content: center;
 `
 
+export const ColumCenterCenter = styled.div`
+  ${ BaseRowCenter };
+
+  flex-direction: column;
+  justify-content: center;
+`
+
 export const BlockLink = styled.a`
   display: block;
 `
