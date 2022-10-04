@@ -9,6 +9,10 @@ import {
   SmallBaseButton } from "@/styled/shared/collection"
 
 
+export const PositionListWrapper = styled.ul`
+  outline: none;
+`
+
 export const Position = styled.li`
   border-radius: ${ rem(4) };
   border: 1px solid ${({ theme }) => theme.colors.grey3};

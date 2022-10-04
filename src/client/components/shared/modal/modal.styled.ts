@@ -2,7 +2,7 @@ import {
   fluid, 
   rem } from "@/styled/functions";
 import { DarkLongRoundButton } from "@/styled/shared/collection";
-import { ColumCenterCenter, RowCenterCenter } from "@/styled/shared/helpers";
+import { RowCenterCenter } from "@/styled/shared/helpers";
 import styled from "styled-components";
 
 

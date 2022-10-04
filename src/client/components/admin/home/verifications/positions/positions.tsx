@@ -1,14 +1,15 @@
-import { 
-  useAppDispatch, 
-  useAppSelector } from "@/lib/hooks/store.hooks"
+import { useFocusPositionList } from "@/lib/hooks"
+import { useAppSelector } from "@/lib/hooks/store.hooks"
 import { selectAdminVerifications } from "@/store/slices/admin.slice"
 import { useContext } from "react"
 import { AdminContext } from "../../home.context"
 import { 
   Position, 
+  PositionListWrapper, 
   PositionOption, 
   PositionRequester, 
   PositionRole } from "./position.styled"
+
 
 export const sanitizePosition = ( position: string ) => {
   const lowercasedPosition = position.split(/(?=[A-Z])/).map(item => item.toLowerCase())
@@ -19,6 +20,7 @@ export const sanitizePosition = ( position: string ) => {
 const Positions = () => {
   const verifications = useAppSelector(selectAdminVerifications)
   const adminContext = useContext(AdminContext)
+  const { positionListRef } = useFocusPositionList()
 
   const renderPositions = () => {
     const positions = verifications.map(position => (
@@ -46,9 +48,11 @@ const Positions = () => {
 
   return (
     <>
-      <ul>
+      <PositionListWrapper 
+        ref={ positionListRef }
+        tabIndex={ -1 }>
         { renderPositions() }
-      </ul>
+      </PositionListWrapper>
     </>
   )
 }

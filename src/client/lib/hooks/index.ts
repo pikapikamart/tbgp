@@ -1,4 +1,5 @@
 import { 
+  useContext,
   useEffect, 
   useRef } from "react"
 import { trpc } from "@/lib/trpc";
@@ -10,6 +11,7 @@ import {
   removeErrors,
   elementHasError
 } from "../utils";
+import { AdminContext } from "@/components/admin/home/home.context";
 
 
 // --------General--------
@@ -50,6 +52,40 @@ export const useTrapFocus = (): [ RegisterControl, RegisterTrapContainer ] =>{
     registerControl,
     registerTrapContainer
   ]
+}
+
+export const useFocusRef = () =>{
+  const elementRef = useRef<AnyFocusableELement | null>(null)
+
+  useEffect(() =>{ 
+    if ( elementRef.current ) {
+      elementRef.current.focus()
+    }
+  }, [])
+
+  return {
+    elementRef
+  }
+}
+
+export const useFocusPositionList = () =>{
+  const isMounted = useRef(false)
+  const adminContext = useContext(AdminContext)
+  const positionListRef = useRef<HTMLUListElement | null>(null)
+
+  useEffect(() =>{
+    if ( isMounted.current ) {
+      if ( !adminContext?.verification && positionListRef.current ) {
+        positionListRef.current.focus()
+      }
+    } else {
+      isMounted.current = true
+    }
+  }, [ adminContext ])
+
+  return {
+    positionListRef
+  }
 }
 
 // --------{}--------
