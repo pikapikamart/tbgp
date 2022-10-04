@@ -13,7 +13,8 @@ export const adminSchema = z
 
 export const verifyPositionSchema = z
   .object({
-    bastionId: z.string({ required_error: "Position is required" })
+    bastionId: z.string({ required_error: "Position is required" }),
+    accepted: z.boolean()
   })
   .merge(positionSchema)
 

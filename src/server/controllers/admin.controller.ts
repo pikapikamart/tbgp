@@ -8,11 +8,12 @@ import {
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid";
 import { updateStaff } from "../services/staff.service";
-import { STAFF_POSITIONS } from "../models/staff.model";
+import { Staff, STAFF_POSITIONS } from "../models/staff.model";
 import { apiResult, apiResultWithData } from "../utils/success.util";
 import { AdminContext } from "../middlewares/router.middleware";
 import { BaseUserSchema } from "../schemas/base.user.schema";
 import { adminValidator } from "./controller.utils";
+import { UpdateQuery } from "mongoose";
 
 
 // --------Queries--------
@@ -73,9 +74,12 @@ export const createBastionIdHandler = async( { admin }: AdminContext ) =>{
   return apiResultWithData(true, createdBastionId);
 }
 
-export const verifyPositionHandler = async ( { bastionId, position }: VerifyPositionSchema, { admin }: AdminContext ) => {
+export const verifyPositionHandler = async ( 
+  { bastionId, position, accepted }: VerifyPositionSchema,
+  { admin }: AdminContext 
+) => {
   const foundRequest = admin.verifications.find(request => request.bastionId===bastionId)
-
+ 
   if( !foundRequest ){
     return trpcError("BAD_REQUEST", "Send a valid verification request");
   }
@@ -84,10 +88,19 @@ export const verifyPositionHandler = async ( { bastionId, position }: VerifyPosi
     return trpcError("BAD_REQUEST", "Send a valid position");
   }
 
+  const updateStaffBody: UpdateQuery<Staff> = {}
+
+  if ( accepted ) {
+    updateStaffBody.position = STAFF_POSITIONS[position]
+  } else {
+    updateStaffBody["requests.verification"] = false
+  }
+
   await updateStaff(
     { bastionId },
-    { position: STAFF_POSITIONS[position] }
+    updateStaffBody 
   )
+
   await updateAdmin({
     $pull: {
       verifications: { bastionId }

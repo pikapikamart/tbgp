@@ -2,7 +2,8 @@ import {
   AdminContext, 
   AdminContextProps } from "@/components/admin/home/home.context";
 import { sanitizePosition } from "@/components/admin/home/verifications/positions/positions";
-import { useTrapFocus } from "@/lib/hooks";
+import { useTrapFocus, useVerifyPosition } from "@/lib/hooks";
+import { trpc } from "@/lib/trpc";
 import { ColumCenterCenter } from "@/styled/shared/helpers";
 import { useContext } from "react";
 import {
@@ -17,6 +18,7 @@ import {
 const VerificationModal = () => {
   const { verification, removeVerification } = useContext(AdminContext) as AdminContextProps
   const [ registerControl, registerTrapContainer ] = useTrapFocus()
+  const { handleVerifyPosition } = useVerifyPosition()
 
   return (
     <>
@@ -27,17 +29,18 @@ const VerificationModal = () => {
           { verification?.type==="accept" ? 
             <>
               This will make 
-              <span> { verification.data.fullname } </span>
-               as a verified { sanitizePosition(verification.data.position) } 
+              <span> { verification.fullname } </span>
+               as a verified { sanitizePosition(verification.position) } 
             </> :
             <>
               This will invalidate
-              <span> { verification?.data.fullname }'s </span>
-              request as { sanitizePosition(verification?.data.position!) }
+              <span> { verification?.fullname }'s </span>
+              request as { sanitizePosition(verification?.position!) }
             </> }
         </ConfirmationDescription>
         <ColumCenterCenter>
           <VerificationChoiceButton 
+            onClick={ handleVerifyPosition }
             accepted={ verification?.type==="accept" }
             ref={ registerControl }>
             { verification?.type==="accept" ? "Accept" : "Reject" } Request

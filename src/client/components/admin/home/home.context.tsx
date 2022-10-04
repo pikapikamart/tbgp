@@ -5,8 +5,7 @@ import {
 import Home from "./home";
 
 
-type VerificationContext = {
-  data: Verification,
+export type VerificationContext = Verification & {
   type: "accept" | "reject"
 }
 
@@ -24,6 +23,7 @@ type AdminProviderProps = {
 
 const AdminProvider = ( { children }: AdminProviderProps ) =>{
   const [ verification, setVerification ] = useState<VerificationContext | null>(null)
+  
   const addVerification = ( verification: VerificationContext ) => {
     setVerification(verification)
   }

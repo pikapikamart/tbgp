@@ -11,7 +11,11 @@ import {
   removeErrors,
   elementHasError
 } from "../utils";
-import { AdminContext } from "@/components/admin/home/home.context";
+import { 
+  AdminContext, 
+  AdminContextProps } from "@/components/admin/home/home.context";
+import { useAppDispatch } from "./store.hooks";
+import { removeVerification } from "@/store/slices/admin.slice"
 
 
 // --------General--------
@@ -68,6 +72,8 @@ export const useFocusRef = () =>{
   }
 }
 
+// --------{}--------
+
 export const useFocusPositionList = () =>{
   const isMounted = useRef(false)
   const adminContext = useContext(AdminContext)
@@ -88,7 +94,35 @@ export const useFocusPositionList = () =>{
   }
 }
 
-// --------{}--------
+export const useVerifyPosition = () =>{
+  const { verification, removeVerification: removeVerificationContext } = useContext(AdminContext) as AdminContextProps
+  const mutation = trpc.useMutation(["admin.verify-position"])
+  const dispatch = useAppDispatch()
+
+  const handleVerifyPosition = () =>{
+
+    if ( !verification ) {
+      return
+    }
+
+    mutation.mutate({
+      bastionId: verification.bastionId,
+      position: verification.position,
+      accepted: verification.type==="accept"
+    })
+  }
+
+  useEffect(() =>{
+    if ( mutation.data?.success && verification ) {
+      removeVerificationContext()
+      dispatch(removeVerification(verification.bastionId))
+    }
+  }, [ mutation ])
+
+  return {
+    handleVerifyPosition
+  }
+}
 
 type UserInfo = BaseUserSchema & {
   [ key: string ]: string,

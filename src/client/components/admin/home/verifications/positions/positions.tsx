@@ -33,12 +33,12 @@ const Positions = () => {
         <PositionOption 
           bgColor="blue"
           type="button"
-          onClick={ () => adminContext?.addVerification({ data: position, type: "accept" }) } >Accept
+          onClick={ () => adminContext?.addVerification({ ...position, type: "accept" }) } >Accept
         </PositionOption>
         <PositionOption 
           bgColor="red"
           type="button"
-          onClick={ () => adminContext?.addVerification({ data: position, type: "reject" }) } >Reject
+          onClick={ () => adminContext?.addVerification({ ...position, type: "reject" }) } >Reject
         </PositionOption>
       </Position>
     ))
