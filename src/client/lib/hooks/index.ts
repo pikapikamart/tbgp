@@ -1,5 +1,4 @@
 import { 
-  useContext,
   useEffect, 
   useRef } from "react"
 import { trpc } from "@/lib/trpc";
@@ -9,17 +8,11 @@ import { signIn } from "next-auth/react";
 import {
   setErrors,
   removeErrors,
-  elementHasError
-} from "../utils";
-import { 
-  AdminContext, 
-  AdminContextProps } from "@/components/admin/home/home.context";
-import { useAppDispatch } from "./store.hooks";
-import { removeVerification } from "@/store/slices/admin.slice"
+  elementHasError } from "../utils";
 
 
 // --------General--------
-interface AnyFocusableELement extends HTMLElement{}
+interface AnyFocusableELement extends HTMLElement {}
 type RegisterControl = ( element: AnyFocusableELement | null) => void
 type RegisterTrapContainer = ( event: React.KeyboardEvent ) => void
 
@@ -56,72 +49,6 @@ export const useTrapFocus = (): [ RegisterControl, RegisterTrapContainer ] =>{
     registerControl,
     registerTrapContainer
   ]
-}
-
-export const useFocusRef = () =>{
-  const elementRef = useRef<AnyFocusableELement | null>(null)
-
-  useEffect(() =>{ 
-    if ( elementRef.current ) {
-      elementRef.current.focus()
-    }
-  }, [])
-
-  return {
-    elementRef
-  }
-}
-
-// --------{}--------
-
-export const useFocusPositionList = () =>{
-  const isMounted = useRef(false)
-  const adminContext = useContext(AdminContext)
-  const positionListRef = useRef<HTMLUListElement | null>(null)
-
-  useEffect(() =>{
-    if ( isMounted.current ) {
-      if ( !adminContext?.verification && positionListRef.current ) {
-        positionListRef.current.focus()
-      }
-    } else {
-      isMounted.current = true
-    }
-  }, [ adminContext ])
-
-  return {
-    positionListRef
-  }
-}
-
-export const useVerifyPosition = () =>{
-  const { verification, removeVerification: removeVerificationContext } = useContext(AdminContext) as AdminContextProps
-  const mutation = trpc.useMutation(["admin.verify-position"])
-  const dispatch = useAppDispatch()
-
-  const handleVerifyPosition = () =>{
-
-    if ( !verification ) {
-      return
-    }
-
-    mutation.mutate({
-      bastionId: verification.bastionId,
-      position: verification.position,
-      accepted: verification.type==="accept"
-    })
-  }
-
-  useEffect(() =>{
-    if ( mutation.data?.success && verification ) {
-      removeVerificationContext()
-      dispatch(removeVerification(verification.bastionId))
-    }
-  }, [ mutation ])
-
-  return {
-    handleVerifyPosition
-  }
 }
 
 type UserInfo = BaseUserSchema & {
@@ -320,53 +247,5 @@ export const useProfileExpansion = () => {
     isExpanded,
     handleExpansion,
     wrapperRef
-  }
-}
-
-export const useTablistSelection = () => {
-  const [ currentTabindex, setCurrentTabindex ] = useState(0)
-  const tabsRefs = useRef<HTMLButtonElement[]>([])
-  const currentFocusIndexRef = useRef(0)
-  const tablistContentRef = useRef<HTMLDivElement | null>(null)
-
-  const addTabRef = ( element: HTMLButtonElement | null ) => {
-    if ( element && !tabsRefs.current.includes(element) ) {
-      tabsRefs.current.push(element)
-    }
-  }
-
-  const handleChangeTabFocus = ( event: React.KeyboardEvent<HTMLDivElement> ) => {
-    const { key } = event
-    const tabsLength = tabsRefs.current.length
-
-    switch(key) {
-      case "ArrowRight":
-        currentFocusIndexRef.current = ++currentFocusIndexRef.current===tabsLength? 0: currentFocusIndexRef.current
-        tabsRefs.current[currentFocusIndexRef.current].focus()  
-
-        return
-      case "ArrowLeft":
-        currentFocusIndexRef.current = --currentFocusIndexRef.current===-1? tabsLength-1: currentFocusIndexRef.current
-        tabsRefs.current[currentFocusIndexRef.current].focus()  
-
-        return
-      case "ArrowUp":
-      case "ArrowDown":
-    }
-  }
-
-  const handleChangeCurrentTabindex = ( event: React.MouseEvent<HTMLButtonElement, MouseEvent> ) => {
-    const { dataset } = event.currentTarget
-    
-    if ( dataset.index && parseInt(dataset.index)!==currentTabindex ) {
-      setCurrentTabindex(parseInt(dataset.index))
-    }
-  }
-
-  return {
-    currentTabindex,
-    addTabRef,
-    handleChangeTabFocus,
-    handleChangeCurrentTabindex
   }
 }

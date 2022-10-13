@@ -1,1 +1,0 @@
-export { default as VerificationModal } from "./verification.modal";

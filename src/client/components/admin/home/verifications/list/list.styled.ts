@@ -9,11 +9,11 @@ import {
   SmallBaseButton } from "@/styled/shared/collection"
 
 
-export const PositionListWrapper = styled.ul`
+export const VerificationsListWrapper = styled.ul`
   outline: none;
 `
 
-export const Position = styled.li`
+export const VerificationItem = styled.li`
   border-radius: ${ rem(4) };
   border: 1px solid ${({ theme }) => theme.colors.grey3};
   display: grid;
@@ -38,7 +38,7 @@ export const Position = styled.li`
   `) }
 `
 
-export const PositionRequester = styled(DefaultText)`
+export const VerificationRequester = styled(DefaultText)`
   align-self: flex-end;
   font-weight: 700;
   grid-column: 1 / 2;
@@ -50,7 +50,7 @@ export const PositionRequester = styled(DefaultText)`
   `) }
 `
 
-export const PositionRole = styled.p`
+export const VerificationRole = styled.p`
   align-self: flex-start;
   color: ${({ theme }) => theme.colors.dark2};
   font-size: ${ fluid(13, 1, 14) };
@@ -73,11 +73,11 @@ export const PositionRole = styled.p`
   `) }
 `
 
-type PositionOptionProps = {
+type VerificationOptionProps = {
   bgColor: "blue" | "red";
 }
 
-export const PositionOption = styled(SmallBaseButton)<PositionOptionProps>`
+export const VerificationOption = styled(SmallBaseButton)<VerificationOptionProps>`
   background-color: ${({ theme, bgColor }) => bgColor==="red"? theme.colors.red : theme.colors.blue};
   font-size: ${ fluid(13, 1.8, 14) };
 

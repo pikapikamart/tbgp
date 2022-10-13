@@ -12,6 +12,6 @@ export const addBastionIdReducer = ( state: WritableDraft<AdminState>, action: P
   state.bastionIds.push(action.payload)
 }
 
-export const removeVerificationReducer = ( state: WritableDraft<AdminState>, action: PayloadAction<string> ) => {
+export const rejectStaffVerificationReducer = ( state: WritableDraft<AdminState>, action: PayloadAction<string> ) => {
   state.verifications = state.verifications.filter(verification => verification.bastionId!==action.payload)
 }

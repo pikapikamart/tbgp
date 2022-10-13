@@ -1,1 +1,1 @@
-export { default as AdminLoginSection } from "./login";
+export { default as AdminLogin } from "./login";

@@ -18,6 +18,15 @@ export const ModalExit = styled.div`
   position: absolute;
 `
 
+export const ModalFocusBack = styled.div`
+  outline: none;
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
+`
+
 export const ConfirmationModal = styled.div`
   border-radius: ${ rem(8) };
   max-width: ${ fluid(330, 70, 528) };

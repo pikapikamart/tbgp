@@ -1,1 +1,1 @@
-export { default as VerificationsSection } from "./verifications";
+export { default as AdminVerificationsSection } from "./verifications";

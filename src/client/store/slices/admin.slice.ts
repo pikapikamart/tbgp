@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Admin } from "@/src/server/models/admin.model";
 import { 
   addBastionIdReducer, 
-  removeVerificationReducer, 
+  rejectStaffVerificationReducer, 
   setAdminReducer } from "../reducers/admin.reducers";
 import { RootState } from "..";
 
@@ -20,14 +20,14 @@ export const adminSlice = createSlice({
   reducers: {
     setAdmin: setAdminReducer,
     addBastionId: addBastionIdReducer,
-    removeVerification: removeVerificationReducer
+    rejectStaffVerification: rejectStaffVerificationReducer
   }
 })
 
 export const { 
   setAdmin,
   addBastionId,
-  removeVerification } = adminSlice.actions;
+  rejectStaffVerification } = adminSlice.actions;
 export const selectAdminBastionIds = ( state: RootState ) => state.admin.bastionIds;
 export const selectAdminVerifications = ( state: RootState ) => state.admin.verifications;
 
