@@ -1,1 +1,1 @@
-export { default as AccountsSection } from "./accounts";
+export { default as AdminAccountsSection } from "./accounts";

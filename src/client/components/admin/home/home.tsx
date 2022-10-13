@@ -3,17 +3,16 @@ import { trpc } from "@/lib/trpc";
 import { setAdmin } from "@/store/slices/admin.slice";
 import { SrOnly } from "@/styled/shared/helpers";
 import { useSession } from "next-auth/react";
-import { useContext, useEffect } from "react";
-import { AccountsSection } from "./accounts";
+import { useEffect } from "react";
+import { AdminAccountsSection } from "./accounts";
 import { 
   MainContentContainer, 
   MainWrapper } from "./home.styled";
-import { VerificationsSection } from "./verifications";
-import { AdminContext } from "./home.context";
-import { BaseModal } from "@/components/shared/modal";
-import { VerificationModal } from "@/components/shared/modal/admin/verification";
+import { AdminVerificationsSection } from "./verifications";
+import { ModalProvider } from "@/store/context/modal";
 
-
+// create a hook for useSetupAdmin
+// check for authentication bypass
 const Home = () => {
   const { data, status, refetch } = trpc.useQuery(["admin.get-profile"], {
     refetchOnWindowFocus: false,
@@ -21,7 +20,6 @@ const Home = () => {
   })
   const { data: token } = useSession()
   const dispatch = useAppDispatch()
-  const adminContext = useContext(AdminContext)
 
   useEffect(() => {
     if ( data && status==="success" ) {
@@ -37,18 +35,15 @@ const Home = () => {
   
   return (
     <>
+    <ModalProvider>
       <MainWrapper>
         <MainContentContainer>
           <SrOnly as="h1">Homepage. Manage everything in here</SrOnly>
-          <AccountsSection />
-          <VerificationsSection />  
+          <AdminAccountsSection />
+          <AdminVerificationsSection />  
         </MainContentContainer>
       </MainWrapper>
-      { adminContext?.verification && (
-        <BaseModal>
-          <VerificationModal />
-        </BaseModal>
-      )}
+    </ModalProvider>
     </>
   )
 }
