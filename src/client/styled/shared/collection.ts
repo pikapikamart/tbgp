@@ -14,6 +14,7 @@ const BaseButton = styled.button`
   border-radius: ${ rem(4) };
   color: ${({ theme }) => theme.colors.white1};
   font-size: ${ fluid(14, 2, 15) };
+  font-weight: 500;
   padding: ${ rem(12) };
   text-align: center;
 `

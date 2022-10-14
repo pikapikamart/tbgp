@@ -79,7 +79,7 @@ type VerificationOptionProps = {
 
 export const VerificationOption = styled(SmallBaseButton)<VerificationOptionProps>`
   background-color: ${({ theme, bgColor }) => bgColor==="red"? theme.colors.red : theme.colors.blue};
-  font-size: ${ fluid(13, 1.8, 14) };
+  font-size: ${ fluid(13, 1.85, 14) };
 
   &:first-of-type {
     grid-column: 2 / 3;

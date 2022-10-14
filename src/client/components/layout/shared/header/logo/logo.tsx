@@ -21,7 +21,7 @@ const Logo = ( { href, src }: LogoProps ) =>{
             <SrOnly>Homepage</SrOnly>
             <HeaderLogoWrapper
               src={ src }
-              alt="The Bastion" />
+              alt="The Bastion Group of Publications" />
           </BlockLink>
       </Link>
     </div>

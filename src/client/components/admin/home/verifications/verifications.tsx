@@ -11,7 +11,7 @@ const Verifications = () =>{
     <VerificationsWrapper>
       <HomeFrameHeading>Positions</HomeFrameHeading>
       <DefaultText>Verify bastion members position requests</DefaultText>
-      <TabInterface selectionNames={["Verifications", "test"]}>
+      <TabInterface selectionNames={["Verifications"]}>
         <VerificationsList />
       </TabInterface>
     </VerificationsWrapper>

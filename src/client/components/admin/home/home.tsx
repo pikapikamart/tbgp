@@ -10,31 +10,14 @@ import {
   MainWrapper } from "./home.styled";
 import { AdminVerificationsSection } from "./verifications";
 import { ModalProvider } from "@/store/context/modal";
+import { useSetupAdmin } from "./home.hooks";
 
 // create a hook for useSetupAdmin
 // check for authentication bypass
 const Home = () => {
-  const { data, status, refetch } = trpc.useQuery(["admin.get-profile"], {
-    refetchOnWindowFocus: false,
-    enabled: false
-  })
-  const { data: token } = useSession()
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    if ( data && status==="success" ) {
-      dispatch(setAdmin(data.data))
-    }
-  }, [ data, status ] )
-
-  useEffect(() =>{
-    if ( token?.user ) {
-      refetch()
-    }
-  }, [ token ])
+  useSetupAdmin()
   
   return (
-    <>
     <ModalProvider>
       <MainWrapper>
         <MainContentContainer>
@@ -44,7 +27,6 @@ const Home = () => {
         </MainContentContainer>
       </MainWrapper>
     </ModalProvider>
-    </>
   )
 }
 
