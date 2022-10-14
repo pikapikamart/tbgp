@@ -1,28 +1,27 @@
-import { 
-  LoginBannerHeading, 
-  LoginBannerText, 
-  LoginImage } from "@/styled/shared/collection";
+import { LoginAdminForm } from "@/components/collections/forms/login/admin";
 import { SrOnly } from "@/styled/shared/helpers";
-import { LoginForm } from "./form";
 import { 
-  ContentContainer, 
-  MainWrapper } from "./login.styled";
+  SigninContentContainer, 
+  SigninMainWrapper,
+  SigninLogo,
+  SigninHeading,
+  SigninText } from "@/styled/shared/signin";
 
 
 const Login = () => {
 
   return (
-    <MainWrapper>
-      <ContentContainer>
+    <SigninMainWrapper>
+      <SigninContentContainer>
         <SrOnly as="h1" >Login</SrOnly>
         <div>
-          <LoginImage src="/logos/bastion-logo.svg" alt="The Bastion Group of Publications" />
-          <LoginBannerHeading>Hello Admin!</LoginBannerHeading>
-          <LoginBannerText>Login your bastion admin account now to manage accounts and position requests</LoginBannerText>
-          <LoginForm />
+          <SigninLogo src="/logos/bastion-logo.svg" alt="The Bastion Group of Publications" />
+          <SigninHeading>Hello Admin!</SigninHeading>
+          <SigninText>Login your bastion admin account now to manage accounts and position requests</SigninText>
+          <LoginAdminForm />
         </div>
-      </ContentContainer>
-    </MainWrapper>
+      </SigninContentContainer>
+    </SigninMainWrapper>
   )
 }
 

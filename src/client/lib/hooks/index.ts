@@ -6,9 +6,9 @@ import { BaseUserSchema } from "src/server/schemas/base.user.schema";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import {
-  setErrors,
   removeErrors,
-  elementHasError } from "../utils";
+  inputHasError,
+  addErrors} from "../utils";
 
 
 // --------General--------
@@ -55,165 +55,142 @@ type UserInfo = BaseUserSchema & {
   [ key: string ]: string,
 }
 
-export const useSignupStaff = () => {
-  const form = useRef<HTMLFormElement | null>(null);
-  const formInputs = useRef<HTMLInputElement[]>([]);
-  const [ credentials, setCredentials ] = useState<UserInfo>({
-    email: "",
-    password: ""
-  })
-  const { data, refetch } = trpc.useQuery(["staff.validate", credentials],{
-    refetchOnWindowFocus: false,
-    enabled: false
-  })
+// ---------------------
+export type FormFields = HTMLInputElement | HTMLTextAreaElement
+export type AddFieldRef = ( element: FormFields | null ) => void
+type HandleFormSubmit = ( event: React.FormEvent ) => void 
 
-  const addInputsRef = ( element: HTMLInputElement | null ) => {
-    if ( element && !formInputs.current.includes(element) ) {
-      formInputs.current.push(element)
+export const useFormValidation = () => {
+  const [ isValidData, setIsValidData ] = useState(false)
+  const [ isSubmitting, setIsSubmitting ] = useState(false)
+  const formFieldsRefs = useRef<FormFields[]>([])
+  const ariaLive = useRef<HTMLParagraphElement | null>(null)
+
+  // Add an element as a referenced element
+  const addFieldRef: AddFieldRef = ( element ) => {
+    if ( element && !formFieldsRefs.current.includes(element) ) {
+      formFieldsRefs.current.push(element)
     }
   }
 
-  const handleFormSubmit = () => {
-    const userInfo = formInputs.current.reduce(( accu, cur ) => {
-      accu[cur.name] = cur.value;
-
-      return accu;
-    },{} as UserInfo);
-
-    setCredentials(userInfo)
+  // Returns an array of referenced form fields
+  const getFieldsRef = () => {
+    return formFieldsRefs.current
   }
 
-  useEffect(() =>{
-    if ( credentials.email && credentials.password ) {
-      refetch();
+  const configureLiveRegion = ( hasError: boolean ) => {
+    if ( !ariaLive.current ){
+      return
     }
-  }, [ credentials ])
 
-  useEffect(() =>{
-    if ( data?.success ) {
-      form.current?.submit();
+    if ( hasError ) {
+      const invalidFields = getFieldsRef().filter(field => field.getAttribute("aria-invalid")==="true")
+      const invalidFieldsNames = invalidFields.map(field => field.name)
+
+      ariaLive.current.textContent = "Form submission invalid. Please check your " + invalidFieldsNames.join(" , ") + " input fields"
+    
+      return
+    } 
+    ariaLive.current.textContent = ""
+  }
+
+  const handleFormSubmit: HandleFormSubmit = ( event ) => {
+    event.preventDefault()
+    let formHasError = false
+    setIsSubmitting(true)
+
+    formFieldsRefs.current.forEach(field => {
+      if ( inputHasError(field) ) {
+        formHasError = true
+        addErrors(field)
+      } else {
+        removeErrors(field)
+        formHasError = false
+      }
+    })
+
+    if ( formHasError ) {
+      configureLiveRegion(true)
+      resetFormValidation()
+    } else {
+      setIsValidData(true)
     }
-  }, [ data ])
+  }
+
+  const resetFormValidation = () => {
+    setIsSubmitting(false)
+    setIsValidData(false)
+  }
 
   return {
-    form,
-    addInputsRef,
+    isValidData,
+    isSubmitting,
+    ariaLive,
+    addFieldRef,
+    getFieldsRef,
     handleFormSubmit,
-    data
+    resetFormValidation
   }
 }
 
-type FormFields = HTMLInputElement | HTMLTextAreaElement
 type UserInformation = BaseUserSchema & {
   [ key: string ]: string
 }
 
-export const useUserLogin = () => {
-  const formInputsRef = useRef<FormFields[]>([])
-  const ariaLiveRef = useRef<HTMLParagraphElement | null>(null)
+export const useUserLogin = ( 
+  userType: string, 
+  callbackUrl: string, 
+  path: "admin.validate" | "staff.validate" 
+) => {
+  const {
+    addFieldRef,
+    ariaLive,
+    isValidData,
+    getFieldsRef,
+    handleFormSubmit,
+  } = useFormValidation()
   const [ userData, setUserData ] = useState<UserInformation>({
     email: "",
     password: ""
   })
-
-  const addFieldRef = ( element: FormFields | null ) => {
-    if ( element && !formInputsRef.current?.includes(element) ) {
-      formInputsRef.current.push(element)
-    }
-  }
-
-  const configureLiveRegionErrors = ( isError: boolean ) => {
-    if ( !ariaLiveRef.current ) {
-      return 
-    }
-
-    if ( isError ) {
-      const errorInputs = formInputsRef.current.filter(input => input.getAttribute("aria-invalid")==="true")
-      const errorInputsName = errorInputs.reduce((accu, cur) => {
-        accu.push(cur.name)
-
-        return accu
-      }, [] as string[])
-
-      ariaLiveRef.current.textContent = "Error submission. Please check your " + errorInputsName.join(", ") + " input fields."
-    } else {
-      ariaLiveRef.current.textContent = ""
-    }
-  }
- 
-  const handleFormSubmit = () => {
-    let errorOccured = false
-    let userDataCopy: UserInformation = { ...userData }
-
-    formInputsRef.current.forEach(input => {
-      
-      if ( elementHasError(input) ) {
-        setErrors(input)
-        errorOccured = true
-      } else {
-        removeErrors(input)
-        errorOccured = false
-        userDataCopy[input.name] = input.value
-      }
-    })
-
-    if ( errorOccured ) {
-      configureLiveRegionErrors(true)
-
-      return
-    }
-
-    configureLiveRegionErrors(false)
-    setUserData(() => ({ ...userDataCopy }))
-  }
-
-  const handleSignIn = ( userType: string, callbackUrl: string ) => {
-    signIn("credentials", {
-      ...userData,
-      userType,
-      callbackUrl
-    })
-  }
- 
-  return {
-    addFieldRef,
-    ariaLiveRef,
-    handleFormSubmit,
-    handleSignIn,
-    userData
-  }
-}
-
-export const useAdminLogin = () => {
-  const {
-    addFieldRef,
-    ariaLiveRef,
-    handleFormSubmit,
-    handleSignIn,
-    userData
-  } = useUserLogin();
-  const { data, refetch } = trpc.useQuery(["admin.validate", userData], {
+  const query = trpc.useQuery([path, userData], {
     refetchOnWindowFocus: false,
     enabled: false
   })
 
   useEffect(() =>{
+    if ( isValidData ) {
+      const user = getFieldsRef().reduce((accu, cur) =>{
+        accu[cur.name] = cur.value
+
+        return accu
+      }, {} as UserInformation)
+
+      setUserData(user)
+    }
+  }, [ isValidData ])
+
+  useEffect(() =>{
     if ( userData.email && userData.password ) {
-      refetch()
+      query.refetch()
     }
   }, [ userData ])
 
   useEffect(() => {
-    if ( data?.success ) {
-      handleSignIn("admin", "/admin")
+    if ( query.isSuccess ) {
+      signIn("credentials", {
+        ...userData,
+        userType,
+        callbackUrl
+      })
     }
-  }, [ data ])
+  }, [ query.isSuccess ])
 
   return {
     addFieldRef,
-    ariaLiveRef,
+    ariaLive,
     handleFormSubmit,
-    data
+    data: query.data
   }
 }
 
