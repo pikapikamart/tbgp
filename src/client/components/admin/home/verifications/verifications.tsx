@@ -1,5 +1,5 @@
 import { TabInterface } from "@/components/shared/tablist";
-import { DefaultText } from "@/styled/shared/collection";
+import { DefaultText } from "@/styled/collections/text";
 import { HomeFrameHeading } from "../home.styled";
 import { VerificationsList } from "./list";
 import { VerificationsWrapper } from "./verifications.styled";

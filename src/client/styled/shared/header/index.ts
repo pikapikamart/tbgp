@@ -8,6 +8,7 @@ import {
   RowCenterCenter } from "../helpers";
 import { DropdownWrapper } from "./dropdown";
 
+
 export const HeaderWrapper = styled(RowCenter)`
   background-color: ${({ theme }) => theme.colors.white1};
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, .2);

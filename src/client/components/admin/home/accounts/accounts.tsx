@@ -1,12 +1,11 @@
 import { useAppSelector } from "@/lib/hooks/store.hooks";
-import { 
-  DefaultText, 
-  DarkLongRoundButton } from "@/styled/shared/collection";
+import { DefaultText } from "@/styled/collections/text";
 import { CenterContent } from "@/styled/shared/helpers";
 import { HomeFrameHeading } from "../home.styled";
 import { useBastionIdCreation } from "./accounts.hook";
 import { AccountsWrapper } from "./accounts.styled";
 import { AccountsBastionIdList } from "./bastionids";
+import { DarkLongRoundButton } from "@/styled/collections/button";
 
 
 const Accounts = () => {

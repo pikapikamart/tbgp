@@ -4,9 +4,8 @@ import {
   fluid,
   breakpoint
 } from "@/styled/functions"
-import { 
-  DefaultText, 
-  SmallBaseButton } from "@/styled/shared/collection"
+import { DefaultText } from "@/styled/collections/text"
+import { SmallButton } from "@/styled/collections/button"
 
 
 export const VerificationsListWrapper = styled.ul`
@@ -77,7 +76,7 @@ type VerificationOptionProps = {
   bgColor: "blue" | "red";
 }
 
-export const VerificationOption = styled(SmallBaseButton)<VerificationOptionProps>`
+export const VerificationOption = styled(SmallButton)<VerificationOptionProps>`
   background-color: ${({ theme, bgColor }) => bgColor==="red"? theme.colors.red : theme.colors.blue};
   font-size: ${ fluid(13, 1.85, 14) };
 

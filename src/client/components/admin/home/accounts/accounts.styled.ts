@@ -3,7 +3,7 @@ import {
   rem,
   fluid,
   breakpoint } from "@/styled/functions";
-import { DarkLongRoundButton } from "@/styled/shared/collection";
+import { DarkLongRoundButton } from "@/styled/collections/button";
 import { HomeFrameWrapper } from "../home.styled";
 
 
