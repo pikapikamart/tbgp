@@ -3,8 +3,6 @@ import {
   LoginBannerText, 
   LoginImage } from "@/styled/shared/collection";
 import { SrOnly } from "@/styled/shared/helpers";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { LoginForm } from "./form";
 import { 
   ContentContainer, 
@@ -12,16 +10,6 @@ import {
 
 
 const Login = () => {
-  const router = useRouter()
-  const { data, status } = useSession()
-
-  if ( data?.user ) {
-    router.replace("/admin")
-  }
-
-  if ( status==="loading" || status==="authenticated" ) {
-    return <div></div>
-  }
 
   return (
     <MainWrapper>
