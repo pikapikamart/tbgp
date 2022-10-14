@@ -4,23 +4,25 @@ import { ColoredBaseButton } from "@/styled/collections/button"
 import { SrOnly } from "@/styled/shared/helpers"
 import { 
   SigninControlsContainer, 
+  SigninControlsDivider, 
   SigninForm } from "@/styled/shared/signin"
+import Link from "next/link"
 
 
-const Admin = () =>{
+const Staff = () => {
   const {
     addFieldRef,
     ariaLive,
     handleFormSubmit,
     data
-  } = useUserLogin("admin", "/admin", "admin.validate")
+  } = useUserLogin("staff", "/storybuilder", "staff.validate")
 
-  return (
-    <SigninForm onSubmit={ handleFormSubmit }>
+  return(
+    <SigninForm onSubmit={ handleFormSubmit } >
       <SrOnly
         as="p"
-        aria-live="polite"
-        ref={ ariaLive } />
+        ref={ ariaLive }
+        aria-live="polite" />
       <div>
         <SigninInputField
           name="email"
@@ -34,11 +36,23 @@ const Admin = () =>{
       <SigninControlsContainer>
         <ColoredBaseButton
           colored="darkBlue" 
-          type="submit">Login</ColoredBaseButton>
+          type="submit">Login
+        </ColoredBaseButton>
+        <SigninControlsDivider>
+          <span>or</span>
+        </SigninControlsDivider>
+        <Link
+          href="/storybuilder/signup"
+          passHref>
+            <ColoredBaseButton 
+              as="a"
+              colored="orange">Create bastion account
+            </ColoredBaseButton>
+        </Link>
       </SigninControlsContainer>
     </SigninForm>
   )
 }
 
 
-export default Admin
+export default Staff

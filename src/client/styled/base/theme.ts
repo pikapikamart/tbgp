@@ -19,7 +19,8 @@ const theme: DefaultTheme = {
     blue: "#3B35B8",
     red: "#FF0000",
     skyBlue: "#119ECB",
-    violet: "#B835B8"
+    violet: "#B835B8",
+    orange: "#F37A20"
   },
   fontSizes: {
     welcomeHeading_m: 28,

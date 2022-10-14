@@ -20,7 +20,8 @@ declare module "styled-components" {
       blue: string,
       red: string,
       skyBlue: string,
-      violet: string
+      violet: string,
+      orange: string
     },
     fontSizes: {
       welcomeHeading_m: number,

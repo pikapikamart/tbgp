@@ -1,7 +1,7 @@
 import { 
   fluid, 
   rem } from "@/styled/functions";
-import { DarkLongRoundButton } from "@/styled/collections/button";
+import { ColoredLongRoundButton } from "@/styled/collections/button";
 import { RowCenterCenter } from "@/styled/shared/helpers";
 import styled from "styled-components";
 
@@ -61,12 +61,12 @@ type VerificationChoiceButtonProps = {
   accepted: boolean
 }
 
-export const VerificationChoiceButton = styled(DarkLongRoundButton)<VerificationChoiceButtonProps>`
+export const VerificationChoiceButton = styled(ColoredLongRoundButton)<VerificationChoiceButtonProps>`
   background-color: ${({ accepted, theme }) => accepted? theme.colors.blue : theme.colors.red };
   margin-bottom: ${ rem(8) };
 `
 
-export const VerificationCloseButton = styled(DarkLongRoundButton)`
+export const VerificationCloseButton = styled(ColoredLongRoundButton)`
 
   ${({ theme: { colors } }) => `
     background-color: ${ colors.white3 };

@@ -51,11 +51,6 @@ export const useTrapFocus = (): [ RegisterControl, RegisterTrapContainer ] =>{
   ]
 }
 
-type UserInfo = BaseUserSchema & {
-  [ key: string ]: string,
-}
-
-// ---------------------
 export type FormFields = HTMLInputElement | HTMLTextAreaElement
 export type AddFieldRef = ( element: FormFields | null ) => void
 type HandleFormSubmit = ( event: React.FormEvent ) => void 
@@ -148,6 +143,7 @@ export const useUserLogin = (
     isValidData,
     getFieldsRef,
     handleFormSubmit,
+    resetFormValidation
   } = useFormValidation()
   const [ userData, setUserData ] = useState<UserInformation>({
     email: "",
@@ -185,6 +181,12 @@ export const useUserLogin = (
       })
     }
   }, [ query.isSuccess ])
+
+  useEffect(() =>{
+    if ( query.isError ) {
+      resetFormValidation()
+    }
+  }, [ query.isError ])
 
   return {
     addFieldRef,

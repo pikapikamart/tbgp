@@ -13,7 +13,7 @@ import { RowCenter } from "../../helpers";
 export const DropdownWrapper = styled.div`  
   background-color: ${({ theme }) => theme.colors.white1};
   box-shadow: 0 8px 8px 0 rgba(0, 0, 0, .2);
-  inset: 100% 0 auto 0;
+  inset: 102% 0 auto 0;
   opacity: 0;
   padding: ${ rem(24) } ${ rem(24) } ${ rem(64) };
   position: absolute;
@@ -25,7 +25,7 @@ export const DropdownWrapper = styled.div`
   }
 
   ${ breakpoint("tablet",`
-    inset: 100% ${ fluid(24, 3, 40) } auto auto;
+    inset: 102% ${ fluid(24, 3, 40) } auto auto;
     width: ${ rem(256) };
 
     ${ NavlinksWrapper } {

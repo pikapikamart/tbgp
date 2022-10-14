@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { 
   rem,
   fluid } from "@/styled/functions"
@@ -21,11 +21,32 @@ export const MediumButton = styled(BaseButton)`
   padding: ${ fluid(10, 1.5, 12) } ${ rem(12) };
 `
 
-export const DarkBlueButton = styled(BaseButton)`
-  background-color: ${({ theme }) => theme.colors.darkBlue};
+type ColoredButtonProps = {
+  colored: "darkBlue" | "green" | "blue" | "red" | "skyBlue" | "violet" | "orange"
+}
+
+export const ColoredBaseButton = styled(BaseButton)<ColoredButtonProps>`
+
+  ${ ({ theme: { colors }, colored }) => {
+    switch( colored ){
+      case "darkBlue": 
+        return css`background-color: ${ colors.darkBlue }`
+      case "orange":
+        return css`background-color: ${ colors.orange }`
+    }
+  } }
 `
 
-export const DarkLongRoundButton = styled(DarkBlueButton)`
+export const ColoredLongRoundButton = styled(BaseButton)<ColoredButtonProps>`
   border-radius: ${ rem(24) };
   min-width: ${ fluid(140, 19, 256) };
+
+  ${ ({ theme: { colors }, colored }) => {
+    switch( colored ){
+      case "darkBlue": 
+        return css`background-color: ${ colors.darkBlue }`
+      case "orange":
+        return css`background-color: ${ colors.orange }`
+    }
+  } }
 `

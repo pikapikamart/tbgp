@@ -3,14 +3,14 @@ import {
   rem,
   fluid,
   breakpoint } from "@/styled/functions";
-import { DarkLongRoundButton } from "@/styled/collections/button";
+import { ColoredLongRoundButton } from "@/styled/collections/button";
 import { HomeFrameWrapper } from "../home.styled";
 
 
 export const AccountsWrapper = styled(HomeFrameWrapper)`
   margin-bottom: ${ rem(16) };
 
-  ${ DarkLongRoundButton } {
+  ${ ColoredLongRoundButton } {
     
     &[aria-disabled="true"] {
       background-color: #BDBDBD;
@@ -25,7 +25,7 @@ export const AccountsWrapper = styled(HomeFrameWrapper)`
 
   ${ breakpoint("desktop", `
 
-    ${ DarkLongRoundButton } {
+    ${ ColoredLongRoundButton } {
 
       &[aria-disabled="true"] {
         

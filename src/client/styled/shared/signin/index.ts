@@ -57,3 +57,27 @@ export const SigninControlsContainer = styled.div`
   gap: ${ rem(32) } 0;
   margin-top: ${ rem(24) };
 `
+
+export const SigninControlsDivider = styled.div`
+  position: relative;
+
+  &::before {
+    content: "";
+    background-color: ${ ({ theme }) => theme.colors.grey3 };
+    height: 1px;
+    inset: 50% auto auto 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+  }
+
+  > span {
+    background-color: ${ ({ theme }) => theme.colors.white1 };
+    color: ${ ({ theme }) => theme.colors.grey1 };
+    font-size: ${ rem(15) };
+    padding: 0 ${ rem(8) };
+    position: relative  ;
+    z-index: 5;
+  }
+`
