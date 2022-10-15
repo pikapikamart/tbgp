@@ -151,7 +151,17 @@ export const useUserLogin = (
   })
   const query = trpc.useQuery([path, userData], {
     refetchOnWindowFocus: false,
-    enabled: false
+    enabled: false,
+    onSuccess: () =>{
+      signIn("credentials", {
+        ...userData,
+        userType,
+        callbackUrl
+      })
+    },
+    onError: () => {
+      resetFormValidation()
+    }
   })
 
   useEffect(() =>{
@@ -171,22 +181,6 @@ export const useUserLogin = (
       query.refetch()
     }
   }, [ userData ])
-
-  useEffect(() => {
-    if ( query.isSuccess ) {
-      signIn("credentials", {
-        ...userData,
-        userType,
-        callbackUrl
-      })
-    }
-  }, [ query.isSuccess ])
-
-  useEffect(() =>{
-    if ( query.isError ) {
-      resetFormValidation()
-    }
-  }, [ query.isError ])
 
   return {
     addFieldRef,
