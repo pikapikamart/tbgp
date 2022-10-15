@@ -1,19 +1,19 @@
-import { GlobalStyle } from "@/styled/base";
-import { LayoutHead } from "../head";
-import { AdminHeaderLayout } from "./header";
+import { GlobalStyle } from "@/styled/base"
+import { LayoutHead } from "../head"
+import { DefaultHeader } from "../header";
 
 
-const AdminLayout = ( page: React.ReactElement ) => {
+const DefaultLayout = ( page: React.ReactElement ) => {
 
   return (
     <>
       <LayoutHead />
       <GlobalStyle />
-      <AdminHeaderLayout />
+      <DefaultHeader type="admin" />
       { page }
     </>
   )
 }
 
 
-export default AdminLayout;
+export default DefaultLayout;

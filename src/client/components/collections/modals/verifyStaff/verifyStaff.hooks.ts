@@ -3,7 +3,6 @@ import { trpc } from "@/lib/trpc"
 import { Verification } from "@/src/server/models/admin.model"
 import { useModalContext } from "@/store/context/modal/modal"
 import { rejectStaffVerification } from "@/store/slices/admin.slice"
-import { useEffect } from "react"
 
 
 export const useVerifyPosition = ( accepted: boolean, verification: Verification ) =>{

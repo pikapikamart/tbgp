@@ -9,7 +9,7 @@ import {
   useSession } from "next-auth/react";
 import { 
   HeaderNavlinks,
-  NavlinksProps } from "@/components/layout/shared/header/navlinks";
+  NavlinksProps } from "@/components/layout/header/navlinks";
 
 
 type DropdownProps = NavlinksProps

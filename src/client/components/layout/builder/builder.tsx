@@ -1,17 +1,19 @@
-import { GlobalStyle } from "@/styled/base";
-import { LayoutHead } from "../head";
+import { GlobalStyle } from "@/styled/base"
+import { LayoutHead } from "../head"
+import { DefaultHeader } from "../header";
 
 
-const BuilderLayout = ( page: React.ReactElement ) =>{
+const DefaultLayout = ( page: React.ReactElement ) => {
 
   return (
     <>
       <LayoutHead />
       <GlobalStyle />
+      <DefaultHeader type="staff" />
       { page }
     </>
   )
 }
 
 
-export default BuilderLayout;
+export default DefaultLayout;

@@ -18,7 +18,7 @@ export const HeaderWrapper = styled(RowCenter)`
   position: relative;
 
   ${ breakpoint("desktop", `
-    padding: 0 ${ rem(64) };
+    padding: 0 ${ rem(48) };
   `) }
 `
 
