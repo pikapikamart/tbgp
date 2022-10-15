@@ -35,7 +35,7 @@ export const bulkUpdateStaff = async( input: any ) => (
   StaffModel.bulkWrite(input)
 )
 
-export const staffPopulator = async( 
+export const staffPopulatorService = async( 
   staff: StaffDocument,
   populate: PopulateOptions
 ) => (

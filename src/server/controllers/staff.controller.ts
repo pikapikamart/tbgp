@@ -5,12 +5,13 @@ import {
   StaffSchema, 
   BastionIdSchema, 
   PositionSchema,
-  UpdateStaffaSchema} from "../schemas/staff.schema";
+  UpdateStaffaSchema,
+  UsernameSchema} from "../schemas/staff.schema";
 import { updateAdmin } from "../services/admin.service";
 import { 
   createStaff, 
   findStaff, 
-  staffPopulator, 
+  staffPopulatorService, 
   updateStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { 
@@ -44,18 +45,18 @@ export const validateStaffHandler = async( { email, password }: BaseUserSchema )
   return apiResult("Successfully validated", true)
 }
 
-export const getStaffHandler = async( bastionId: BastionIdSchema, { staff: staffctx }: StaffContext ) => {
-  // either return the current staff or another staff
+export const getStaffHandler = async( username: UsernameSchema, { staff: staffCtx }: StaffContext ) => {
   const staff = staffValidator(await findStaff(
-    { bastionId: bastionId? bastionId : staffctx.bastionId },
+    { username },
     "-_id firstname lastname bastionId position bio"
   ))
+    // add the writings since this will be used when visiting a writer
 
   return apiResultWithData(true, staff)
 }
 
 export const populateStaffStoryRequests = async({ staff }: StaffContext ) => {
-  await staffPopulator(
+  await staffPopulatorService(
     staff,
     {
       path: "requests.story storyRequests.joined",
@@ -63,10 +64,23 @@ export const populateStaffStoryRequests = async({ staff }: StaffContext ) => {
     }
   )
 
+  await staffPopulatorService(
+    staff,
+    {
+      path: "storyRequests.created",
+      select: "-_id ",
+      populate: {
+        path: "owner members requests assignedMembers",
+        select: "-_id email firstname lastname"
+      }
+    }
+  )
+
   const requestsData = {
     requests: staff.requests,
     storyRequests: {
-      joined: staff.storyRequests?.joined
+      joined: staff.storyRequests?.joined,
+      created: staff.storyRequests?.created
     }
   }
 
@@ -74,7 +88,7 @@ export const populateStaffStoryRequests = async({ staff }: StaffContext ) => {
 }
 
 export const populateStaffWriteups = async({ staff }: StaffContext ) => {
-  await staffPopulator(
+  await staffPopulatorService(
     staff,
     {
       path: "writeups.solo writeups.collaborated writeups.task",
@@ -101,6 +115,7 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
   await createStaff(
     {
       ...staffBody,
+      username: staffBody.email.split("@")[0],
       requests: {
         verification: false,
         story: []

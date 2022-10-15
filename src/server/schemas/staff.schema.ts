@@ -5,6 +5,9 @@ import { baseUserSchema } from "./base.user.schema";
 
 
 export const bastionIdSchema = z.string({ required_error: "Bastion Id is required" })
+export const usernameSchema =  z
+  .string({ required_error: "Username is required" })
+  .min(1, "Username should not be empty")
 
 const staffNameSchema = z
   .object({
@@ -43,3 +46,4 @@ export type StaffSchema = TypeOf<typeof staffSchema>;
 export type PositionSchema = TypeOf<typeof positionSchema>;
 export type UpdateStaffaSchema = TypeOf<typeof updateStaffSchema>;
 export type StaffWritingsSchema = TypeOf<typeof staffWritingsSchema>;
+export type UsernameSchema = TypeOf<typeof usernameSchema>

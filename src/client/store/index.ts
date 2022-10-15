@@ -1,12 +1,24 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { 
+  configureStore, 
+  ThunkAction } from "@reduxjs/toolkit";
 import adminReducer from "./slices/admin.slice";
+import staffReducer from "./slices/staff.slice"
+import { Action } from "redux"
+import { createWrapper } from "next-redux-wrapper"
 
 
-export const store = configureStore({
+export const store = () => configureStore({
   reducer: {
-    admin: adminReducer
-  }
+    admin: adminReducer,
+    staff: staffReducer
+  },
+  devTools: true
 })
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootStore = ReturnType<typeof store>
+export type RootState = ReturnType<RootStore["getState"]>
+
+export const wrapper = createWrapper<RootStore>(store, { debug: true })
+
+export type AppDispatch = ReturnType<RootStore["dispatch"]>
+export type AppThunk<ReturnType  = void> = ThunkAction<ReturnType, RootState, unknown, Action>

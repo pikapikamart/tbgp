@@ -7,7 +7,7 @@ import { Theme } from "@/styled/base";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { Provider } from "react-redux";
-import { store } from "@/store/index";
+import { store, wrapper } from "@/store/index";
 import { DefaultLayout } from "@/components/layout/default";
 
 
@@ -19,14 +19,15 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
-const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
+const MyApp = ({ Component, ...rest }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? (( page ) => DefaultLayout(page))
+  const { store, props } = wrapper.useWrappedStore(rest)
 
   return (
     <Provider store={ store }>  
       <ThemeProvider theme={ Theme }>
-        <SessionProvider session={ pageProps.session }>
-          { getLayout(<Component {...pageProps} />) }
+        <SessionProvider session={ props.pageProps.session }>
+          { getLayout(<Component {...props.pageProps} />) }
         </SessionProvider>
       </ThemeProvider>
     </Provider>

@@ -29,7 +29,7 @@ const Dropdown = ( { type }: DropdownProps ) => {
         <li>
           <DropdownOption 
             as="button"
-            onClick={() => signOut({ callbackUrl: "/admin/login" }) }>
+            onClick={() => signOut({ callbackUrl: type==="admin"? "/admin/login" : "/storybuilder/login" }) }>
             <span />
             Sign out
           </DropdownOption>

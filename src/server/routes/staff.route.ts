@@ -16,7 +16,8 @@ import {
   staffSchema, 
   bastionIdSchema, 
   positionSchema,
-  updateStaffSchema } from "../schemas/staff.schema";
+  updateStaffSchema, 
+  usernameSchema} from "../schemas/staff.schema";
 
 
 export const staffRouter = createRouter()
@@ -35,7 +36,7 @@ export const staffRouter = createRouter()
   // authentication
   .middleware(({ ctx, next }) => isValidStaff(ctx, next))
   .query("get", {
-    input: bastionIdSchema,
+    input: usernameSchema,
     resolve: ({ input, ctx }) => getStaffHandler(input, ctx)
   })
   .mutation("request-position", {

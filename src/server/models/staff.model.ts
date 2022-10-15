@@ -30,6 +30,7 @@ export const STAFF_POSITIONS: StaffPositions = {
 }
 
 export type Staff = BaseUser & {
+  username: string,
   firstname: string,
   lastname: string,
   bastionId: BastionId,
@@ -52,6 +53,11 @@ export type Staff = BaseUser & {
 
 const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
   ...baseUserModel,
+  username: {
+    type: String,
+    unique: true,
+    required: true
+  },
   firstname: {
     type: String,
     required: true
