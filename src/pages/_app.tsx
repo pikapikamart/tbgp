@@ -52,4 +52,5 @@ const trpc = withTRPC<AppRouter>({
 })(MyApp)
 
 
+// export default wrapper.withRedux(trpc);
 export default trpc;

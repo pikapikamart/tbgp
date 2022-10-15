@@ -1,4 +1,7 @@
-import { FilterQuery, UpdateQuery } from "mongoose";
+import "../models"
+import { 
+  FilterQuery, 
+  UpdateQuery } from "mongoose";
 import { 
   Admin, 
   AdminModel } from "../models/admin.model";

@@ -1,3 +1,4 @@
+import { getProfileHandler } from "../controllers/admin.controller";
 import { 
   registerStaffHandler, 
   validateBastionIdHandler, 
@@ -38,6 +39,9 @@ export const staffRouter = createRouter()
   .query("get", {
     input: usernameSchema,
     resolve: ({ input, ctx }) => getStaffHandler(input, ctx)
+  })
+  .query("get-profile", {
+    resolve: ({ ctx }) => getProfileHandler(ctx)
   })
   .mutation("request-position", {
     input: positionSchema,

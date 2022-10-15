@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { HYDRATE } from "next-redux-wrapper";
 import { Admin } from "@/src/server/models/admin.model";
 import { 
   addBastionIdReducer, 
@@ -21,6 +22,14 @@ export const adminSlice = createSlice({
     setAdmin: setAdminReducer,
     addBastionId: addBastionIdReducer,
     rejectStaffVerification: rejectStaffVerificationReducer
+  },
+  extraReducers: {
+    [HYDRATE]: ( state, action ) => {
+      return {
+        ...state,
+        ...action.payload,
+      }
+    }
   }
 })
 

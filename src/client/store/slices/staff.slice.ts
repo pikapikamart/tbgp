@@ -1,11 +1,13 @@
 import { createSlice  } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { Staff } from "@/src/server/models/staff.model";
+import { setStaffReducer } from "../reducers/staff.reducer";
+import { RootState } from "..";
 
 
-type StaffState = Omit<Staff, "password" | "bastionId">
+export type StaffState = Omit<Staff, "password" | "bastionId">
 
-const initialState: StaffState = {
+const initialState = {
   email: "",
   username: "",
   firstname: "",
@@ -16,22 +18,27 @@ const initialState: StaffState = {
   },
 }
 
+
 export const staffSlice = createSlice({
   name: "staff",
   initialState,
   reducers: {
-
+    setStaff: setStaffReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
-      console.log('HYDRATE', state, action.payload)
       return {
         ...state,
-        ...action.payload.subject,
+        ...action.payload.staff,
       }
     }
   }
 })
+
+export const {
+  setStaff
+} = staffSlice.actions
+export const selectStaff = ( state: RootState ) => state.staff
 
 
 export default staffSlice.reducer

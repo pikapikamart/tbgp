@@ -18,7 +18,7 @@ export const store = () => configureStore({
 export type RootStore = ReturnType<typeof store>
 export type RootState = ReturnType<RootStore["getState"]>
 
-export const wrapper = createWrapper<RootStore>(store, { debug: true })
+export const wrapper = createWrapper<RootStore>(store)
 
-export type AppDispatch = ReturnType<RootStore["dispatch"]>
+export type AppDispatch = RootStore["dispatch"]
 export type AppThunk<ReturnType  = void> = ThunkAction<ReturnType, RootState, unknown, Action>

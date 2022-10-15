@@ -49,31 +49,36 @@ export const DropdownWrapper = styled.div`
   }
 `
 
-export const DropdownOption = styled(RowCenter)`
+export const DropdownItem = styled.li`
   color: ${({ theme }) => theme.colors.dark2};
   font-size: ${ rem(16) };
   font-weight: 500;
-  
-  > span {
+
+  &:not(:last-of-type) {
+    margin-bottom: ${ rem(18) };
+  }
+
+  &:first-of-type {
+    
+    span {
+      background-image: url("/icons/icon-profile.svg");
+    }
+  }
+
+  &:last-of-type {
+    color: ${({ theme }) => theme.colors.red};
+
+    span {
+      background-image: url("/icons/icon-signout.svg");
+    }
+  }
+` 
+
+export const DropdownOption = styled(RowCenter)`
+  span {
     background: no-repeat center center 100%;
     height: ${ rem(20) };
     margin-right: ${ rem(6) };
     width: ${ rem(20) };
-  }
-  
-  &:not(:last-of-type) {
-    margin-bottom: ${ rem(18) };
-  }
-  
-  &:first-of-type > span {
-    background-image: url("/icons/icon-profile.svg");
-  }
-  
-  &:last-of-type {
-    color: ${({ theme }) => theme.colors.red};
-    
-    > span {
-      background-image: url("/icons/icon-signout.svg");
-    }
   }
 `

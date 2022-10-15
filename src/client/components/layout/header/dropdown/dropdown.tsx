@@ -1,4 +1,5 @@
 import { 
+  DropdownItem,
   DropdownOption, 
   DropdownWrapper } from "@/styled/shared/header/dropdown";
 import { 
@@ -10,12 +11,16 @@ import {
 import { 
   HeaderNavlinks,
   NavlinksProps } from "@/components/layout/header/navlinks";
+import Link from "next/link"
+import { useAppSelector } from "@/lib/hooks/store.hooks";
+import { selectStaff } from "@/store/slices/staff.slice";
 
 
 type DropdownProps = NavlinksProps
 
 const Dropdown = ( { type }: DropdownProps ) => {
   const { data } = useSession()
+  const staff = useAppSelector(selectStaff)
 
   return (
     <DropdownWrapper>
@@ -26,14 +31,26 @@ const Dropdown = ( { type }: DropdownProps ) => {
       <HeaderNavlinks type={ type } />
       <ul>
         {/* add for staff conditional */}
-        <li>
+        { data?.user && (
+          <DropdownItem>
+            <Link
+              href={ `/storybuilder/${ staff.username }`}
+              passHref>
+                <DropdownOption as="a">
+                  <span />
+                  Profile
+                </DropdownOption>
+            </Link>
+          </DropdownItem>
+        ) }
+        <DropdownItem>
           <DropdownOption 
             as="button"
             onClick={() => signOut({ callbackUrl: type==="admin"? "/admin/login" : "/storybuilder/login" }) }>
             <span />
             Sign out
           </DropdownOption>
-        </li>
+        </DropdownItem>
       </ul>
     </DropdownWrapper> 
   )
