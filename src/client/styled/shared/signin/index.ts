@@ -1,9 +1,8 @@
-import { SigninInputBlock } from "@/components/collections/inputs/signin/input.styled";
+import { InputBlock } from "@/components/collections/inputs/regular/input.styled";
 import styled from "styled-components";
 import { 
   rem,
-  fluid, 
-  breakpoint} from "../../functions";
+  fluid } from "../../functions";
 
 
 export const SigninMainWrapper = styled.main`
@@ -43,7 +42,7 @@ export const SigninForm = styled.form`
   margin-top: ${ rem(32) };
   padding: 0 ${ rem(8) };
 
-  ${ SigninInputBlock } {
+  ${ InputBlock } {
 
     &:not(:last-of-type) {
       margin-bottom: ${ rem(8) };

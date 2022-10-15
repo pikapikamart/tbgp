@@ -1,25 +1,32 @@
-import { signIn } from "next-auth/react";
+import { StaffSignup } from "@/components/staff/signup"
+import { nextAuthOptions } from "@/pages/api/auth/[...nextauth]"
+import { GetServerSidePropsContext } from "next"
+import { unstable_getServerSession } from "next-auth"
 
 
-const SignupPage = () => {
+const StaffSignupPage = () =>{
 
   return (
-    <main>
-      <button onClick={ () => signIn("credentials", {
-        email: "doe.kevin@gmail.com",
-        password: "thebastion",
-        userType: "staff",
-        callbackUrl: "/"
-       }) }>kevin</button>
-       <button onClick={ () => signIn("credentials", { 
-        email: "doe.natasha@gmail.com",
-        password: "thebastion",
-        userType: "staff",
-        callbackUrl: "/"
-        }) }>natasha</button>
-    </main>
+    <StaffSignup />
   )
 }
 
+export const getServerSideProps = async( context: GetServerSidePropsContext ) =>{
+  const session = await unstable_getServerSession(context.req, context.res, nextAuthOptions)
 
-export default SignupPage;
+  if ( session?.user?.userType==="staff" ) {
+    return {
+      redirect: {
+        destination: "/storybuilder",
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
+}
+
+
+export default StaffSignupPage

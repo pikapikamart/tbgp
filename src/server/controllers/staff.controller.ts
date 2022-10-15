@@ -114,7 +114,7 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
     }
   })
 
-  return apiResult("Staff account created", true)
+  return apiResultWithData(true, staffBody)
 }
 
 export const requestStaffPositionHandler = async( { position }: PositionSchema, { staff }: StaffContext ) => {

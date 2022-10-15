@@ -3,13 +3,14 @@ import { useTrapFocus } from "@/lib/hooks";
 import { Verification } from "@/src/server/models/admin.model";
 import { useModalContext } from "@/store/context/modal/modal";
 import { ColumCenterCenter } from "@/styled/shared/helpers";
-import {
-  ConfirmationModal, 
-  ConfirmationHeading, 
-  ConfirmationDescription,
-  VerificationChoiceButton,
-  VerificationCloseButton} from "../../../shared/modal/modal.styled";
+import { 
+  ModalHeading, 
+  ModalWrapper } from "@/styled/shared/modal";
 import { useVerifyPosition } from "./verifyStaff.hooks";
+import { 
+  VerificationChoice, 
+  VerificationClose, 
+  VerificationDescription } from "./verifyStaff.styled";
 
 
 export type VerifyStaffModalProps = {
@@ -23,9 +24,14 @@ const VerifyStaffModal = ({ accepted, verification }: VerifyStaffModalProps) => 
   const modalContext = useModalContext()
 
   return (
-    <ConfirmationModal onKeyDown={ registerTrapContainer }>
-      <ConfirmationHeading id="modal-heading">Continue with this choice?</ConfirmationHeading>
-      <ConfirmationDescription>
+    <ModalWrapper
+      size="small"
+      onKeyDown={ registerTrapContainer }>
+      <ModalHeading
+        size="medium"
+        id="modal-heading">Continue with this choice?
+      </ModalHeading>
+      <VerificationDescription>
         { accepted ? 
           <>
             This will make 
@@ -39,19 +45,19 @@ const VerifyStaffModal = ({ accepted, verification }: VerifyStaffModalProps) => 
             request as { sanitizePosition(verification?.position!) }
           </>
         }
-      </ConfirmationDescription>
+      </VerificationDescription>
       <ColumCenterCenter>
-        <VerificationChoiceButton 
+        <VerificationChoice 
           onClick={ handleVerifyPosition }
           accepted={ accepted }
           ref={ registerControl }>{ accepted ? "Accept" : "Reject" } Request
-        </VerificationChoiceButton>
-        <VerificationCloseButton 
+        </VerificationChoice>
+        <VerificationClose 
           onClick={ modalContext.removeModal }
           ref={ registerControl }>Close
-        </VerificationCloseButton>
+        </VerificationClose>
       </ColumCenterCenter>
-    </ConfirmationModal>
+    </ModalWrapper>
   )
 }
 

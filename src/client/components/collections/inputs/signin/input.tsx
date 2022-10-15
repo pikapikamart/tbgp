@@ -1,32 +1,23 @@
-import { AddFieldRef } from "@/lib/hooks"
 import { SrOnly } from "@/styled/shared/helpers"
-import {
-  SigninInputBlock,
-  SigninInputError,
-  SigninInputWrapper
-} from "./input.styled"
+import { InputProps } from "../regular/input"
+import { 
+  InputBlock, 
+  InputError } from "../regular/input.styled"
+import { SigninInputWrapper } from "./input.styled"
 
-
-type InputProps = {
-  name: string,
-  addFieldRef: AddFieldRef,
-  type: string,
-  error?: any
-}
-// error is from the fetch result
-// children is for the error text
 
 const Input = ({
   name,
   addFieldRef,
   type
-}: InputProps) =>{
+}: Pick<InputProps, "name" | "addFieldRef" | "type">) =>{
 
   return (
-    <SigninInputBlock>
+    <InputBlock>
       <SrOnly
         as="label"
-        htmlFor={ name }>Enter email</SrOnly>
+        htmlFor={ name }>Enter email
+      </SrOnly>
       <SigninInputWrapper
         name={ name }
         id={ name }
@@ -34,8 +25,9 @@ const Input = ({
         ref={ addFieldRef }
         placeholder={ name }
         aria-required="true" />
-      <SigninInputError>Please enter a valid { name } value</SigninInputError> 
-    </SigninInputBlock>
+      <InputError>Please enter a valid { name } value
+      </InputError> 
+    </InputBlock>
   )
 }
 

@@ -17,12 +17,9 @@ export const SmallButton = styled(BaseButton)`
   padding: ${ fluid(8, 1.3, 10) } ${ rem(12) };
 `
 
-export const MediumButton = styled(BaseButton)`
-  padding: ${ fluid(10, 1.5, 12) } ${ rem(12) };
-`
 
 type ColoredButtonProps = {
-  colored: "darkBlue" | "green" | "blue" | "red" | "skyBlue" | "violet" | "orange"
+  colored?: "darkBlue" | "green" | "blue" | "red" | "skyBlue" | "violet" | "orange" | "grey"
 }
 
 export const ColoredBaseButton = styled(BaseButton)<ColoredButtonProps>`
@@ -30,11 +27,17 @@ export const ColoredBaseButton = styled(BaseButton)<ColoredButtonProps>`
   ${ ({ theme: { colors }, colored }) => {
     switch( colored ){
       case "darkBlue": 
-        return css`background-color: ${ colors.darkBlue }`
+        return css`background-color: ${ colors.darkBlue };`
       case "orange":
-        return css`background-color: ${ colors.orange }`
+        return css`background-color: ${ colors.orange };`
+      case "grey":
+        return css`background-color: ${ colors.grey1 };`
     }
   } }
+`
+  
+export const ColoredMediumButton = styled(ColoredBaseButton)`
+  padding: ${ fluid(10, 1.5, 12) } ${ rem(12) };
 `
 
 export const ColoredLongRoundButton = styled(BaseButton)<ColoredButtonProps>`

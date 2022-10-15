@@ -13,7 +13,7 @@ import {
 
 // --------General--------
 interface AnyFocusableELement extends HTMLElement {}
-type RegisterControl = ( element: AnyFocusableELement | null) => void
+export type RegisterControl = ( element: AnyFocusableELement | null) => void
 type RegisterTrapContainer = ( event: React.KeyboardEvent ) => void
 
 export const useTrapFocus = (): [ RegisterControl, RegisterTrapContainer ] =>{
