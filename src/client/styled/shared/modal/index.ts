@@ -68,19 +68,3 @@ export const ModalHeading = styled.h2<ModalHeadingProps>`
     }
   } }
 `
-
-type ModalBottomControlsProps = {
-  marginTop?: number
-}
-
-export const ModalBottomControls = styled.div<ModalBottomControlsProps>`
-  display: flex;
-  margin-top:${ ({ marginTop }) => rem(marginTop?? 32) };
-
-  > button {
-
-    &:not(:last-of-type) {
-      margin-right: ${ rem(8) };
-    }
-  }
-`

@@ -1,7 +1,7 @@
 import { useTrapFocus } from "@/lib/hooks"
 import { useModalContext } from "@/store/context/modal/modal"
 import { ColoredMediumButton } from "@/styled/collections/button"
-import { ModalBottomControls } from "@/styled/shared/modal"
+import { FormBottomControls } from "@/styled/shared/form"
 import { PositionComboBox } from "./combobox"
 import { useSendPositionRequest } from "./requestPosition.hook"
 import { RequestPositionWrapper } from "./requestPosition.styled"
@@ -21,7 +21,7 @@ const RequestPosition = () =>{
       <PositionComboBox 
         registerControl={ registerControl }
         handleSetPosition={ handleSetPosition } />
-      <ModalBottomControls>
+      <FormBottomControls>
         <ColoredMediumButton
           colored="darkBlue"
           type="submit">Register
@@ -32,7 +32,7 @@ const RequestPosition = () =>{
           ref={ registerControl }
           onClick={ () => modalContext.removeModal() }>Cancel
         </ColoredMediumButton>
-      </ModalBottomControls>
+      </FormBottomControls>
     </RequestPositionWrapper>
   )
 }

@@ -1,7 +1,4 @@
 import styled from "styled-components";
-import { 
-  fluid, 
-  rem } from "@/styled/functions";
 import { RowCenterCenter } from "@/styled/shared/helpers";
 
 

@@ -1,11 +1,10 @@
 import { useTrapFocus } from "@/lib/hooks"
 import { useModalContext } from "@/store/context/modal/modal"
 import { ColoredMediumButton } from "@/styled/collections/button"
-import { ModalBottomControls } from "@/styled/shared/modal"
+import { FormBottomControls } from "@/styled/shared/form"
 import { InputField } from "@/components/collections/inputs/regular"
-import { 
-  SetupFieldsRowContainer, 
-  SetupWrapper } from "./setup.styled"
+import { SetupWrapper } from "./setup.styled"
+import { FormRowFields } from "@/styled/shared/form"
 import { useSetupStaffProfile } from "./setup.hooks"
 import { SetupProfileProps } from "@/components/collections/modals/staff/setupProfile/setupProfile"
 
@@ -23,7 +22,7 @@ const Setup = ({ bastionId }: SetupProfileProps) =>{
     <SetupWrapper
       onKeyDown={ registerTrapContainer }
       onSubmit={ handleFormSubmit }>
-        <SetupFieldsRowContainer>
+        <FormRowFields>
           <InputField
             name="firstname"
             labelText="Firstname"
@@ -33,8 +32,8 @@ const Setup = ({ bastionId }: SetupProfileProps) =>{
             name="lastname"
             labelText="Lastname"
             addFieldRef={ addFieldRef }/>
-        </SetupFieldsRowContainer>
-        <SetupFieldsRowContainer>
+        </FormRowFields>
+        <FormRowFields>
           <InputField
             name="email"
             labelText="Email address"
@@ -45,8 +44,8 @@ const Setup = ({ bastionId }: SetupProfileProps) =>{
             type="password"
             labelText="Password"
             addFieldRef={ addFieldRef }/>
-        </SetupFieldsRowContainer>
-        <ModalBottomControls>
+        </FormRowFields>
+        <FormBottomControls>
           <ColoredMediumButton
             colored="darkBlue"
             type="submit">Register
@@ -57,7 +56,7 @@ const Setup = ({ bastionId }: SetupProfileProps) =>{
             ref={ registerControl }
             onClick={ () => modalContext.removeModal() }>Cancel
           </ColoredMediumButton>
-        </ModalBottomControls>
+        </FormBottomControls>
     </SetupWrapper>
   )
 }

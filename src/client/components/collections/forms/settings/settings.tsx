@@ -1,13 +1,13 @@
 import { useFormValidation } from "@/lib/hooks"
 import { useSetupStaff } from "@/lib/hooks/store.hooks"
 import { ColoredMediumButton } from "@/styled/collections/button"
-import { ModalBottomControls } from "@/styled/shared/modal"
+import { FormBottomControls } from "@/styled/shared/form"
 import { InputField } from "../../inputs/regular"
 import { 
   InputBlock, 
   InputLabel, 
   InputWrapper } from "../../inputs/regular/input.styled"
-import { SetupFieldsRowContainer } from "../signup/staff/setup/setup.styled"
+import { FormRowFields } from "@/styled/shared/form"
 import { useUpdateSettings } from "./settings.hook"
 import { SettingsWrapper } from "./settings.styled"
 
@@ -25,7 +25,7 @@ const Settings = () =>{
 
   return (
     <SettingsWrapper onSubmit={ handleFormSubmit }>
-      <SetupFieldsRowContainer marginBottom={ 32 }>
+      <FormRowFields marginBottom={ 32 }>
           <InputField
             name="firstname"
             labelText="Firstname"
@@ -36,7 +36,7 @@ const Settings = () =>{
             labelText="Lastname"
             defValue={ staff.lastname }
             addFieldRef={ addFieldRef }/>
-        </SetupFieldsRowContainer>
+        </FormRowFields>
         <InputBlock>
           <InputLabel htmlFor="bio">Bio</InputLabel>
           <InputWrapper
@@ -48,12 +48,12 @@ const Settings = () =>{
             maxLength={ 400 }
             ref={ addFieldRef } />
         </InputBlock>
-        <ModalBottomControls>
+        <FormBottomControls>
           <ColoredMediumButton
             colored="darkBlue"
             type="submit">Update profile
           </ColoredMediumButton>
-        </ModalBottomControls>
+        </FormBottomControls>
     </SettingsWrapper>
   )
 }
