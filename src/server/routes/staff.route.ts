@@ -1,4 +1,3 @@
-import { getProfileHandler } from "../controllers/admin.controller";
 import { 
   registerStaffHandler, 
   validateBastionIdHandler, 
@@ -7,7 +6,8 @@ import {
   getStaffHandler,
   updateStaffHandler,
   populateStaffStoryRequests,
-  populateStaffWriteups} from "../controllers/staff.controller";
+  populateStaffWriteups,
+  getProfileHandler} from "../controllers/staff.controller";
 import { 
   isValidStaff, 
   isVerifiedStaff } from "../middlewares/router.middleware";

@@ -1,7 +1,5 @@
 import { StaffSignupForm } from "@/components/collections/forms/signup/staff"
-import { ModalFocusBack } from "@/components/shared/modal/modal.styled"
 import { ModalProvider } from "@/store/context/modal"
-import { useModalContext } from "@/store/context/modal/modal"
 import { SrOnly } from "@/styled/shared/helpers"
 import { 
   SigninContentContainer, 
@@ -12,7 +10,6 @@ import {
 
 
 const Signup = () =>{
-  const modalContext = useModalContext()
 
   return (
     <ModalProvider>

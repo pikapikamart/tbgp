@@ -58,13 +58,21 @@ export const getStaffHandler = async( username: UsernameSchema, { staff: staffCt
 export const getProfileHandler = async( { staff }: StaffContext ) =>{
   const populatedStaff = staffValidator(await findStaff(
     { email: staff.email },
-    "-_id -password",
+    "-_id -__v -password",
     {},
     {
-      path: "requests.story storyRequests.joined storyRequests.created",
-      select: "-_id"
+      path: "requests.story storyRequests.joined writeups",
+      select: "-_id storyRequestId"
     }
   ))
+
+  await staffPopulatorService(
+    populatedStaff,
+    {
+      path: "storyRequests.created",
+      select: "-_id -__v"
+    }
+  )
 
   return apiResultWithData(true, populatedStaff)
 }

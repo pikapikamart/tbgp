@@ -4,11 +4,14 @@ import {
 import { trpc } from "@/lib/trpc";
 import { BaseUserSchema } from "src/server/schemas/base.user.schema";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import {
   removeErrors,
   inputHasError,
   addErrors} from "../utils";
+import { useRouter } from "next/router";
+import { useAppDispatch, useAppSelector } from "./store.hooks";
+import { selectStaff, setStaff } from "@/store/slices/staff.slice";
 
 
 // --------General--------

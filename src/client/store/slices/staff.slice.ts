@@ -7,7 +7,7 @@ import { RootState } from "..";
 
 export type StaffState = Omit<Staff, "password" | "bastionId">
 
-const initialState = {
+const initialState: StaffState = {
   email: "",
   username: "",
   firstname: "",
@@ -16,6 +16,8 @@ const initialState = {
     verification: false,
     story: []
   },
+  bio: "",
+  position: ""
 }
 
 
