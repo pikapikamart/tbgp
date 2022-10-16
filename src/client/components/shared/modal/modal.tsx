@@ -6,10 +6,11 @@ import {
 
 
 type ModalProps = {
-  children: React.ReactNode
+  children: React.ReactNode,
+  exit?: () => void
 }
 
-const Modal = ({ children }: ModalProps) => {
+const Modal = ({ children, exit }: ModalProps) => {
   const { modalRef } = useFocusModal()
   const modalContext = useModalContext()
 
@@ -20,7 +21,10 @@ const Modal = ({ children }: ModalProps) => {
       ref={ modalRef }
       aria-labelledby="modal-heading">
       <div role="document">
-        <ModalExit onClick={ modalContext.removeModal } />
+        <ModalExit onClick={ () => {
+          modalContext.removeModal()
+          exit? exit() : null
+        } } />
         { children }
       </div>
     </BaseModalWrapper>
