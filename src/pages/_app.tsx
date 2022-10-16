@@ -7,7 +7,7 @@ import { Theme } from "@/styled/base";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { Provider } from "react-redux";
-import { store, wrapper } from "@/store/index";
+import { wrapper } from "@/store/index";
 import { DefaultLayout } from "@/components/layout/default";
 
 

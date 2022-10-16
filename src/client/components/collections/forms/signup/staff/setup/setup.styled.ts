@@ -6,13 +6,19 @@ export const SetupWrapper = styled.form`
   text-align: left;
 `
 
-export const SetupFieldsRowContainer = styled.div`
+type SetupFieldsRowContainerProps = {
+  marginBottom?: number
+}
+
+export const SetupFieldsRowContainer = styled.div<SetupFieldsRowContainerProps>`
   display: grid;
   flex-wrap: wrap;
   gap: ${ rem(12) } ${ rem(16) };
   grid-template-columns: repeat(auto-fit, minmax(${ rem(230) }, 1fr));
 
   &:not(:last-of-type) {
-    margin-bottom: ${ rem(16) };
+    ${ ({ marginBottom }) => `
+      margin-bottom: ${ rem(marginBottom?? 16) };
+    ` }
   }
 `

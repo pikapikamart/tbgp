@@ -1,4 +1,3 @@
-import { useSetupStaff } from "@/lib/hooks/store.hooks"
 import { ModalProvider } from "@/store/context/modal"
 import { ProfileHeaderSection } from "./header"
 import { 
@@ -7,14 +6,6 @@ import {
 
 
 const Profile = () =>{
-  const { staff } = useSetupStaff()
-  // throw user outside
-
-  if ( !staff.username ) {
-    return (
-      <>sdf</>
-    )
-  }
 
   return (
     <ModalProvider>

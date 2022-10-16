@@ -16,6 +16,7 @@ export type InputProps = {
   name: string,
   labelText: string,
   addFieldRef: AddFieldRef,
+  defValue?: string,
   registerControl?: RegisterControl,
   type?: string,
   error?: string
@@ -25,6 +26,7 @@ const Input = ({
   name, 
   labelText,
   addFieldRef, 
+  defValue,
   type,
   registerControl,
   error
@@ -33,7 +35,6 @@ const Input = ({
 
   useEffect(() =>{
     if ( error && inputRef?.current ) {
-      console.log("run")
       addErrors(inputRef.current)
     }
   })
@@ -45,6 +46,7 @@ const Input = ({
         type={ type?? "text" }
         id={ name }
         name={ name }
+        defaultValue={ defValue?? "" }
         ref={ el => {
           addFieldRef(el)
           inputRef.current = el

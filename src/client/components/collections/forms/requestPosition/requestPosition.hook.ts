@@ -1,10 +1,15 @@
 import { trpc } from "@/lib/trpc"
+import { useRouter } from "next/router"
 import { useState } from "react"
 
 
-
 export const useSendPositionRequest = () =>{
-  const mutation = trpc.useMutation(["staff.request-position"])
+  const router = useRouter()
+  const mutation = trpc.useMutation(["staff.request-position"], {
+    onSuccess: () =>{
+      router.reload()
+    }
+  })
   const [ position, setPosition ] = useState("")
 
   const handlePositionRequest = ( event: React.FormEvent ) =>{

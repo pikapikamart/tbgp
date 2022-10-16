@@ -8,6 +8,7 @@ import {
   HeaderMenuIcon } from "@/styled/shared/header";
 import { HeaderProfile } from "@/components/layout/header/profile";
 import { HeaderDropdown } from "@/components/layout/header/dropdown";
+import { useSession } from "next-auth/react";
 
 
 type HeaderProps = {
@@ -16,6 +17,11 @@ type HeaderProps = {
 
 const Header = ( { type }: HeaderProps ) =>{
   const { isExpanded, handleExpansion } = useExpansion()
+  const session = useSession()
+
+  if ( !session.data?.user ) {
+    return <></>
+  }
 
   return (
     <HeaderWrapper as="header">

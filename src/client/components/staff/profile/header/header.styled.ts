@@ -5,6 +5,7 @@ import {
   breakpoint } from "@/styled/functions"
 import { NoteWrapper } from "@/components/shared/note/note.styled"
 import { ColoredMediumButton } from "@/styled/collections/button"
+import { RowCenter } from "@/styled/shared/helpers"
 
 
 export const HeaderWrapper = styled.div`
@@ -23,9 +24,18 @@ export const HeaderContentContainer = styled.div`
   `) }
 `
 
+export const HeaderName = styled(RowCenter)`
+  
+  > img {
+    margin-left: ${ rem(8) };
+    height: 100%;
+  }
+`
+
 export const HeaderBio = styled.p`
   font-size: ${ fluid(14, 2, 15) };
   margin: ${ rem(12) } 0;
+  white-space: pre-wrap;
   
   ${ breakpoint("tablet", `
     grid-column: 1 / -1;

@@ -24,6 +24,8 @@ const BaseButton = styled.button<ColoredButtonProps>`
         return css`background-color: ${ colors.orange };`
       case "grey":
         return css`background-color: ${ colors.grey1 };`
+      case "blue":
+        return css`background-color: ${ colors.blue };`
     }
   } }
 `

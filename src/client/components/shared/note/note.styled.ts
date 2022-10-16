@@ -3,6 +3,7 @@ import {
   rem,
   fluid,
   breakpoint } from "@/styled/functions"
+import { SmallButton } from "@/styled/collections/button"
 
 
 export const NoteWrapper = styled.div`
@@ -14,6 +15,10 @@ export const NoteWrapper = styled.div`
     background: url("/icons/icon-information.svg") no-repeat ${ rem(16) } ${ rem(16) };
     display: flex;
     padding-left: ${ rem(44) };
+
+    ${ SmallButton } {
+      flex-shrink: 0 ;
+    }
   `) }
 
   ${ ({ theme: { colors } }) => `

@@ -5,7 +5,7 @@ import {
 
 
 export const MainWrapper = styled.main`
-  padding: ${ rem(32) } ${ rem(16) } ${ fluid(80, 10, 96) };
+  padding: ${ fluid(32, 5, 48) } ${ rem(24) } ${ fluid(80, 10, 96) };
 `
 
 export const MainContentContainer = styled.div`

@@ -44,6 +44,6 @@ export const staffWritingsSchema = z
 export type BastionIdSchema = TypeOf<typeof bastionIdSchema>;
 export type StaffSchema = TypeOf<typeof staffSchema>;
 export type PositionSchema = TypeOf<typeof positionSchema>;
-export type UpdateStaffaSchema = TypeOf<typeof updateStaffSchema>;
+export type UpdateStaffSchema = TypeOf<typeof updateStaffSchema>;
 export type StaffWritingsSchema = TypeOf<typeof staffWritingsSchema>;
 export type UsernameSchema = TypeOf<typeof usernameSchema>

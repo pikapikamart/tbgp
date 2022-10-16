@@ -4,6 +4,8 @@ import {
 import { 
   selectStaff, 
   setStaff } from "@/store/slices/staff.slice";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { 
@@ -21,7 +23,14 @@ export const useSetupStaff = () =>{
     enabled: false
   })
   const dispatch = useAppDispatch()
+  const router = useRouter()
   const staff = useAppSelector(selectStaff)
+  const session = useSession({
+    required: true,
+    onUnauthenticated(){
+      router.replace("/storybuilder/login")
+    }
+  })
 
   useEffect(() =>{
     if ( query.isSuccess ) {
@@ -38,10 +47,4 @@ export const useSetupStaff = () =>{
   return {
     staff
   }
-}
-
-export const useStaffState = () =>{
-  const staff = useAppSelector(selectStaff)
-
-  return staff
 }

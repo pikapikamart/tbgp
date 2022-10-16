@@ -87,7 +87,8 @@ const globalStyle = createGlobalStyle`
   
   a,
   button,
-  input {
+  input,
+  textarea {
     &:focus-visible {
       outline: 2px dashed rgb(0, 36, 58);
       outline-offset: 1px;

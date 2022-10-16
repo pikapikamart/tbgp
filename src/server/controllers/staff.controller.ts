@@ -5,7 +5,7 @@ import {
   StaffSchema, 
   BastionIdSchema, 
   PositionSchema,
-  UpdateStaffaSchema,
+  UpdateStaffSchema,
   UsernameSchema} from "../schemas/staff.schema";
 import { updateAdmin } from "../services/admin.service";
 import { 
@@ -188,7 +188,7 @@ export const requestStaffPositionHandler = async( { position }: PositionSchema, 
   return apiResult("Verification for position request sent", true);
 }
 
-export const updateStaffHandler = async( update: UpdateStaffaSchema, { staff }: StaffContext ) => {
+export const updateStaffHandler = async( update: UpdateStaffSchema, { staff }: StaffContext ) => {
   await updateStaff(
     { email: staff.email },
     update
