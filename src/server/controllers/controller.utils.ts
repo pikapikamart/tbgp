@@ -9,7 +9,7 @@ import {
   StoryRequestDocument } from "../models/story.request.model";
 import { Writeup } from "../models/writeup.model";
 import { BastionIdSchema } from "../schemas/staff.schema";
-import { findAdmin } from "../services/admin.service"
+import { findAdminService } from "../services/admin.service"
 import { findStoryRequest } from "../services/story.request.service";
 import { findWriteup } from "../services/writeup.service";
 import { trpcError } from "../utils/error.util";
@@ -18,7 +18,7 @@ import { trpcError } from "../utils/error.util";
 // --------Admin--------
 
 export const getCurrentAdmin = async() => {
-  const foundAdmin = await findAdmin({});
+  const foundAdmin = await findAdminService({});
 
   if ( !foundAdmin ) {
     return trpcError("INTERNAL_SERVER_ERROR", "Admin is still not created")

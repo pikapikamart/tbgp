@@ -59,10 +59,8 @@ export const rolesAndPosition: RolesAndPositionIndex = {
   ],
   seniorEditor: [
     "Editor in Chief",
-    "Associate Editor for Internal Affairs",
-    "Associate Editor for External Affairs",
-    "Managing Editor for Administration",
-    "Managing Editor for Finance",
+    "Associate Editor",
+    "Managing Editor",
     "Operations Manager",
     "Circulations Manager"
   ],

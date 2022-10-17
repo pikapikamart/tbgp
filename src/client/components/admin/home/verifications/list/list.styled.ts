@@ -15,14 +15,16 @@ export const VerificationsListWrapper = styled.ul`
 export const VerificationItem = styled.li`
   border-radius: ${ rem(4) };
   border: 1px solid ${({ theme }) => theme.colors.grey3};
-  display: grid;
-  gap: 0 ${ rem(8) };
-  grid-template-columns: 1fr min-content;
-  grid-template-rows: repeat(2, auto);
   padding: ${ rem(12) };
-
   &:not(:last-of-type) {
     margin-bottom: ${ rem(12) };
+  }
+
+  @media(min-width: ${ rem(450) }) {
+    display: grid;
+    gap: 0 ${ rem(8) };
+    grid-template-columns: 1fr min-content;
+    grid-template-rows: repeat(2, auto);
   }
 
   ${ breakpoint("tablet", `
@@ -38,7 +40,7 @@ export const VerificationItem = styled.li`
 `
 
 export const VerificationRequester = styled(DefaultText)`
-  align-self: flex-end;
+  align-self: center;
   font-weight: 700;
   grid-column: 1 / 2;
   grid-row: 1 / 2;
@@ -55,6 +57,7 @@ export const VerificationRole = styled.p`
   font-size: ${ fluid(13, 1, 14) };
   grid-column: 1 / 2;
   grid-row: 2 / 3;
+  margin: ${ rem(2) } 0 ${ rem(8) };
 
   > span {
     background-color: ${({ theme }) => theme.colors.green};
@@ -65,6 +68,15 @@ export const VerificationRole = styled.p`
     margin: ${ rem(4) } ${ rem(8) } 0;
     padding: ${ rem(4) } ${ rem(8) };
   }
+
+  @media(min-width: ${ rem(450) }) {
+    margin: 0;
+    transform: translateY(-${ rem(10) });
+  }
+
+  ${ breakpoint("tablet", `
+    transform: translateY(0);
+  `) }
 
   ${ breakpoint("desktop", `
     grid-column: 2 / 3;
@@ -81,15 +93,23 @@ export const VerificationOption = styled(SmallButton)<VerificationOptionProps>`
   font-size: ${ fluid(13, 1.85, 14) };
 
   &:first-of-type {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-    margin-bottom: ${ rem(4) };
+    margin-right: ${ rem(4) };
   }
 
-  &:last-of-type {
-    align-self: flex-start;
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
+  @media(min-width: ${ rem(450) }) {
+    
+    &:first-of-type {
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+      margin-bottom: ${ rem(4) };
+      margin-right: 0;
+    }
+  
+    &:last-of-type {
+      align-self: flex-start;
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+    }
   }
 
   ${ breakpoint("tablet", `

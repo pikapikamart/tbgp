@@ -27,7 +27,7 @@ export const adminSlice = createSlice({
     [HYDRATE]: ( state, action ) => {
       return {
         ...state,
-        ...action.payload,
+        ...action.payload.admin,
       }
     }
   }

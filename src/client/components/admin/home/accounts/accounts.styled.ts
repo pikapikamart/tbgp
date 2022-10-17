@@ -19,7 +19,7 @@ export const AccountsWrapper = styled(HomeFrameWrapper)`
 
   ${ breakpoint("tablet", `
     flex-basis: 35%;
-    margin: 0 ${ fluid(16, 3, 24) } 0 0;
+    margin: 0 ${ fluid(16, 2, 24) } 0 0;
     max-width: ${ rem(352) };
   `) }
 

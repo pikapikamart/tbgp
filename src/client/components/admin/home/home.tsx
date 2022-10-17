@@ -5,11 +5,9 @@ import {
   MainWrapper } from "./home.styled";
 import { AdminVerificationsSection } from "./verifications";
 import { ModalProvider } from "@/store/context/modal";
-import { useSetupAdmin } from "./home.hooks";
 
 
 const Home = () => {
-  useSetupAdmin()
   
   return (
     <ModalProvider>

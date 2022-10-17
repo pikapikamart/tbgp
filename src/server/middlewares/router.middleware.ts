@@ -4,7 +4,7 @@ import { findStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { StaffDocument } from "../models/staff.model";
 import { AdminDocument } from "../models/admin.model";
-import { findAdmin } from "../services/admin.service";
+import { findAdminService } from "../services/admin.service";
 
 
 type TrpcNext = {
@@ -50,7 +50,7 @@ export const isValidAdmin = async( ctx: Context, next: TrpcNext ) => {
     return trpcError("FORBIDDEN", "Only admin account can proceed")
   }
 
-  const admin = await findAdmin({ email: ctx.token?.email });
+  const admin = await findAdminService({ email: ctx.token?.email });
  
   if ( !admin ) {
     return trpcError("UNAUTHORIZED", "Please login as admin properly")

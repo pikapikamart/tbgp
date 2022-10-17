@@ -39,7 +39,7 @@ const VerificationsList = () => {
         <VerificationRequester>{ verification.fullname }</VerificationRequester>
         <VerificationRole>
           Requesting as:
-          <span>{ sanitizePosition(verification.position) }</span>
+          <span>{ sanitizePosition(verification.position.name) }</span>
         </VerificationRole>
         <VerificationOption 
           bgColor="blue"

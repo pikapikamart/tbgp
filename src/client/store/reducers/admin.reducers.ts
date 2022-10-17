@@ -1,6 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit"
 import type { WritableDraft } from "immer/dist/internal"
-import { AdminState } from "../slices/admin.slice"
+import { AppThunk } from ".."
+import { AdminState, setAdmin } from "../slices/admin.slice"
 
 
 export const setAdminReducer = ( state: WritableDraft<AdminState>, action: PayloadAction<AdminState> ) => {
@@ -14,4 +15,8 @@ export const addBastionIdReducer = ( state: WritableDraft<AdminState>, action: P
 
 export const rejectStaffVerificationReducer = ( state: WritableDraft<AdminState>, action: PayloadAction<string> ) => {
   state.verifications = state.verifications.filter(verification => verification.bastionId!==action.payload)
+}
+
+export const thunkSetAdminReducer = ( admin: AdminState ): AppThunk => async dispatch =>{
+  dispatch(setAdmin(admin))
 }

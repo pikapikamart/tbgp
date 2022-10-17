@@ -8,7 +8,7 @@ import {
   BastionIdSchema, 
   UpdateStaffSchema,
   UsernameSchema} from "../schemas/staff.schema";
-import { updateAdmin } from "../services/admin.service";
+import { updateAdminService } from "../services/admin.service";
 import { 
   createStaff, 
   findStaff, 
@@ -144,7 +144,7 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
       bio: ""
     }
   )
-  await updateAdmin({
+  await updateAdminService({
     $pull: {
       bastionIds: staffBody.bastionId
     }
@@ -174,7 +174,7 @@ export const requestStaffPositionHandler = async( position: Position, { staff }:
     return trpcError("CONFLICT", "Already sent a verification request")
   }
 
-  await updateAdmin({
+  await updateAdminService({
     $push: {
       verifications: {
         fullname: staff.firstname + " " + staff.lastname,
