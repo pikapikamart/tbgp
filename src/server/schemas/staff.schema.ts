@@ -28,7 +28,12 @@ export const staffSchema = z
 
 export const positionSchema = z
   .object({
-    position: z.string({ required_error: "Position is required" })
+    name: z
+      .string({ required_error: "Position's name is required" })
+      .min(1, "Position's name should not be empty"),
+    role: z
+      .string({ required_error: "Position's role is required" })
+      .min(1, "Position's role should not be empty")
   })
 
 export const updateStaffSchema = z
@@ -43,7 +48,6 @@ export const staffWritingsSchema = z
 
 export type BastionIdSchema = TypeOf<typeof bastionIdSchema>;
 export type StaffSchema = TypeOf<typeof staffSchema>;
-export type PositionSchema = TypeOf<typeof positionSchema>;
 export type UpdateStaffSchema = TypeOf<typeof updateStaffSchema>;
 export type StaffWritingsSchema = TypeOf<typeof staffWritingsSchema>;
 export type UsernameSchema = TypeOf<typeof usernameSchema>

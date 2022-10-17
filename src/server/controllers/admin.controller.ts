@@ -8,7 +8,7 @@ import {
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid";
 import { updateStaff } from "../services/staff.service";
-import { Staff, STAFF_POSITIONS } from "../models/staff.model";
+import { Staff } from "../models/staff.model";
 import { apiResult, apiResultWithData } from "../utils/success.util";
 import { AdminContext } from "../middlewares/router.middleware";
 import { BaseUserSchema } from "../schemas/base.user.schema";

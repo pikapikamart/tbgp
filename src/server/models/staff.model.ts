@@ -11,8 +11,12 @@ import {
 
 
 type Role = "writer" | "sectionEditor" | "seniorEditor"
+type RolesAndPosition = Record<Role, string[]>
+type RolesAndPositionIndex = RolesAndPosition & {
+  [ key: string ]: string[]
+}
 
-type Position = {
+export type Position = {
   name: string,
   role: Role
 }
@@ -26,7 +30,7 @@ export type Staff = BaseUser & {
   bastionId: BastionId,
   verification: boolean,
   position: Position | null,
-  bio?: string,
+  bio: string,
   storyRequests?: {
     requested: StoryRequestDocument["_id"][],
     joined: StoryRequestDocument["_id"][],
@@ -43,7 +47,7 @@ export type StaffDocument = Staff & BaseUserDocument & {};
 
 export const Roles: ["writer", "sectionEditor", "seniorEditor"] = [ "writer", "sectionEditor", "seniorEditor"]
 
-export const RolesAndPosition: Record<Role, string[]> = {
+export const rolesAndPosition: RolesAndPositionIndex = {
   writer: ["Writer"],
   sectionEditor: [
     "News Editor",
