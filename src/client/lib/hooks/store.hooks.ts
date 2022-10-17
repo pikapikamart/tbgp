@@ -6,7 +6,6 @@ import {
   setStaff } from "@/store/slices/staff.slice";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { 
   TypedUseSelectorHook, 
