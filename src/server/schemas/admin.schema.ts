@@ -11,7 +11,7 @@ export const adminSchema = z
   })
   .merge(baseUserSchema);
 
-export const verifyPositionSchema = z
+export const verifyStaffSchema = z
   .object({
     bastionId: z.string({ required_error: "Position is required" }),
     accepted: z.boolean()
@@ -19,4 +19,4 @@ export const verifyPositionSchema = z
   .merge(positionSchema)
 
 export type AdminSchema = TypeOf<typeof adminSchema>;
-export type VerifyPositionSchema = TypeOf<typeof verifyPositionSchema>;
+export type VerifyStaffSchema = TypeOf<typeof verifyStaffSchema>;
