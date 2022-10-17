@@ -11,6 +11,7 @@ const ProfilePage: NextPageWithLayout = () =>{
 }
 
 ProfilePage.getLayout = ( page ) => BuilderLayout(page)
+ProfilePage.requireAuth = true
 
 
 export default ProfilePage

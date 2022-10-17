@@ -1,8 +1,5 @@
 import styled from "styled-components"
-import { 
-  rem,
-  fluid
- } from "@/styled/functions"
+import { fluid } from "@/styled/functions"
 import { InputWrapper } from "../../inputs/regular/input.styled"
 
 

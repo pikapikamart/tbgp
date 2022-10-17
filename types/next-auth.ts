@@ -5,10 +5,10 @@ declare module "next-auth" {
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface Session {
-    user?: {
-      name?: string | null,
-      email?: string | null,
-      userType?: string | null
+  user?: {
+    name?: string | null,
+    email?: string | null,
+    userType?: string | null
   };
   expires: ISODateString;
   }
