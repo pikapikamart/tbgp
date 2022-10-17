@@ -10,45 +10,62 @@ import {
   baseUserModel} from "./base.user.model";
 
 
+type Role = "writer" | "sectionEditor" | "seniorEditor"
+type RolesAndPosition = Record<Role, string[]>
+type RolesAndPositionIndex = RolesAndPosition & {
+  [ key: string ]: string[]
+}
+
+export type Position = {
+  name: string,
+  role: Role
+}
+
 export type BastionId = string;
-
-export type StaffDocument = Staff & BaseUserDocument & {};
-
-type StaffPositions = {
-  [ key: string ]: string,
-  writer: "Writer",
-  copyEditor: "Copy Editor",
-  editorInChief: "Editor in Chief",
-  layoutArtist: "Layout Artist"
-}
-
-export const STAFF_POSITIONS: StaffPositions = {
-  writer: "Writer",
-  copyEditor: "Copy Editor",
-  editorInChief: "Editor in Chief",
-  layoutArtist: "Layout Artist"
-}
 
 export type Staff = BaseUser & {
   username: string,
   firstname: string,
   lastname: string,
   bastionId: BastionId,
-  position?: string,
-  requests: {
-    verification: boolean,
-    story: StoryRequestDocument["_id"][]
-  },
+  verification: boolean,
+  position: Position | null,
+  bio: string,
   storyRequests?: {
+    requested: StoryRequestDocument["_id"][],
     joined: StoryRequestDocument["_id"][],
     created: StoryRequestDocument["_id"][]
   },
-  bio?: string,
   writeups?: {
     solo: WriteupDocument["_id"][],
     collaborated: WriteupDocument["_id"][],
     task: WriteupDocument["_id"][]
-  }
+  },
+}
+
+export type StaffDocument = Staff & BaseUserDocument & {};
+
+export const Roles: ["writer", "sectionEditor", "seniorEditor"] = [ "writer", "sectionEditor", "seniorEditor"]
+
+export const rolesAndPosition: RolesAndPositionIndex = {
+  writer: ["Writer"],
+  sectionEditor: [
+    "News Editor",
+    "Features Editor",
+    "Literary Editor",
+    "DevComm Editor",
+    "Sports Editor",
+    "Layout Editor"
+  ],
+  seniorEditor: [
+    "Editor in Chief",
+    "Associate Editor for Internal Affairs",
+    "Associate Editor for External Affairs",
+    "Managing Editor for Administration",
+    "Managing Editor for Finance",
+    "Operations Manager",
+    "Circulations Manager"
+  ],
 }
 
 const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
@@ -70,15 +87,17 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
     type: String,
     required: true
   },
-  requests: {
-    verification: Boolean,
-    story: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "StoryRequest"
-    }]
+  verification: Boolean,
+  position: {
+    name: String,
+    role: String
   },
-  position: String,
+  bio: String,
   storyRequests: {
+    requested: [{
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: "StoryRequest"
+    }],
     joined: [{
       type: mongoose.Schema.Types.ObjectId, 
       ref: "StoryRequest"
@@ -88,7 +107,6 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
       ref: "StoryRequest"
     }]
   },
-  bio: String,
   writeups: {
     solo: [{
       type: mongoose.Schema.Types.ObjectId,

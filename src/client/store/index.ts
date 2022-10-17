@@ -10,7 +10,7 @@ import { createWrapper } from "next-redux-wrapper"
 export const store = () => configureStore({
   reducer: {
     admin: adminReducer,
-    staff: staffReducer
+    staff: staffReducer,
   },
   devTools: true
 })

@@ -1,5 +1,4 @@
 import { SettingsForm } from "@/components/collections/forms/settings"
-import { useSetupStaff } from "@/lib/hooks/store.hooks"
 import { HeadingLarge } from "@/styled/collections/text"
 import { 
   MainContentContainer, 
@@ -7,11 +6,6 @@ import {
 
 
 const Settings = () => {
-  const { staff } = useSetupStaff()
-
-  if ( !staff.username ) {
-    return <>spinner</>
-  }
 
   return (
     <MainWrapper>

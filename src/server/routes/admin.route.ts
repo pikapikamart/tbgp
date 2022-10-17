@@ -8,7 +8,7 @@ import {
 import { isValidAdmin } from "../middlewares/router.middleware";
 import { 
   adminSchema, 
-  verifyPositionSchema} from "../schemas/admin.schema";
+  verifyStaffSchema} from "../schemas/admin.schema";
 import { baseUserSchema } from "../schemas/base.user.schema";
 
 
@@ -30,6 +30,6 @@ export const adminRouter = createRouter()
     resolve: ({ ctx }) => createBastionIdHandler(ctx)
   })
   .mutation("verify-position", {
-    input: verifyPositionSchema,
+    input: verifyStaffSchema,
     resolve: ({ input, ctx }) => verifyPositionHandler(input, ctx)
   })

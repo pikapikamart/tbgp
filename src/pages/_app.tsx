@@ -9,10 +9,12 @@ import { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { wrapper } from "@/store/index";
 import { DefaultLayout } from "@/components/layout/default";
+import { Authguard } from "@/components/layout/authguard";
 
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getLayout?: ( page: React.ReactElement ) => React.ReactNode
+  getLayout?: ( page: React.ReactElement ) => React.ReactNode,
+  requireAuth?: boolean
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -27,7 +29,15 @@ const MyApp = ({ Component, ...rest }: AppPropsWithLayout) => {
     <Provider store={ store }>  
       <ThemeProvider theme={ Theme }>
         <SessionProvider session={ props.pageProps.session }>
-          { getLayout(<Component {...props.pageProps} />) }
+          { Component.requireAuth? 
+          (
+            <Authguard>
+              { getLayout(<Component {...props.pageProps} />) }
+            </Authguard>
+          ):
+          (
+            getLayout(<Component {...props.pageProps} />) 
+          ) }
         </SessionProvider>
       </ThemeProvider>
     </Provider>

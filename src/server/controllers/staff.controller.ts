@@ -1,10 +1,11 @@
 import { StaffContext } from "../middlewares/router.middleware";
-import { STAFF_POSITIONS } from "../models/staff.model";
+import { 
+  Position, 
+  rolesAndPosition } from "../models/staff.model";
 import { BaseUserSchema } from "../schemas/base.user.schema";
 import { 
   StaffSchema, 
   BastionIdSchema, 
-  PositionSchema,
   UpdateStaffSchema,
   UsernameSchema} from "../schemas/staff.schema";
 import { updateAdmin } from "../services/admin.service";
@@ -81,7 +82,7 @@ export const populateStaffStoryRequests = async({ staff }: StaffContext ) => {
   await staffPopulatorService(
     staff,
     {
-      path: "requests.story storyRequests.joined",
+      path: "storyRequests.requested storyRequests.joined",
       select: "-_id storyRequestId"
     }
   )
@@ -99,8 +100,8 @@ export const populateStaffStoryRequests = async({ staff }: StaffContext ) => {
   )
 
   const requestsData = {
-    requests: staff.requests,
     storyRequests: {
+      requested: staff.storyRequests?.requested,
       joined: staff.storyRequests?.joined,
       created: staff.storyRequests?.created
     }
@@ -138,10 +139,8 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
     {
       ...staffBody,
       username: staffBody.email.split("@")[0],
-      requests: {
-        verification: false,
-        story: []
-      },
+      verification: false,
+      position: null,
       bio: ""
     }
   )
@@ -154,14 +153,18 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
   return apiResultWithData(true, staffBody)
 }
 
-export const requestStaffPositionHandler = async( { position }: PositionSchema, { staff }: StaffContext ) => {
+export const requestStaffPositionHandler = async( position: Position, { staff }: StaffContext ) => {
   const admin = await getCurrentAdmin();
 
-  if ( !STAFF_POSITIONS[position] ) {
-    return trpcError("BAD_REQUEST", "Send a valid position")
+  if ( !Object.keys(rolesAndPosition).includes(position.role) ) {
+    return trpcError("BAD_REQUEST", "Send a valid position role")
   }
 
-  if ( staff.position ) {
+  if ( !rolesAndPosition[position.role].includes(position.name) ) {
+    return trpcError("BAD_REQUEST", "Send a valid position name")
+  }
+
+  if ( staff.verification && staff.position ) {
     return trpcError("CONFLICT", "Already a verified staff");
   }
 
@@ -180,9 +183,10 @@ export const requestStaffPositionHandler = async( { position }: PositionSchema, 
       }
     }
   })
+
   await updateStaff(
     { bastionId: staff.bastionId },
-    { "requests.verification": true }
+    { "verification": true }
   )
 
   return apiResult("Verification for position request sent", true);

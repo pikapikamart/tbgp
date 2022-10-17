@@ -1,6 +1,6 @@
 import { 
   AdminSchema, 
-  VerifyPositionSchema } from "../schemas/admin.schema"
+  VerifyStaffSchema } from "../schemas/admin.schema"
 import { 
   createAdmin, 
   findAdmin, 
@@ -8,8 +8,10 @@ import {
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid";
 import { updateStaff } from "../services/staff.service";
-import { Staff, STAFF_POSITIONS } from "../models/staff.model";
-import { apiResult, apiResultWithData } from "../utils/success.util";
+import { rolesAndPosition, Staff } from "../models/staff.model";
+import { 
+  apiResult, 
+  apiResultWithData } from "../utils/success.util";
 import { AdminContext } from "../middlewares/router.middleware";
 import { BaseUserSchema } from "../schemas/base.user.schema";
 import { adminValidator } from "./controller.utils";
@@ -75,35 +77,42 @@ export const createBastionIdHandler = async( { admin }: AdminContext ) =>{
 }
 
 export const verifyPositionHandler = async ( 
-  { bastionId, position, accepted }: VerifyPositionSchema,
+  verification: VerifyStaffSchema,
   { admin }: AdminContext 
 ) => {
-  const foundRequest = admin.verifications.find(request => request.bastionId===bastionId)
+  const foundRequest = admin.verifications.find(request => request.bastionId===verification.bastionId)
  
   if( !foundRequest ){
-    return trpcError("BAD_REQUEST", "Send a valid verification request");
+    return trpcError("NOT_FOUND", "No staff request found");
   }
 
-  if ( !STAFF_POSITIONS[position] ) {
-    return trpcError("BAD_REQUEST", "Send a valid position");
+  if ( !Object.keys(rolesAndPosition).includes(verification.role) ) {
+    return trpcError("BAD_REQUEST", "Send a valid position role")
+  }
+
+  if ( !rolesAndPosition[verification.role].includes(verification.name) ) {
+    return trpcError("BAD_REQUEST", "Send a valid position name")
   }
 
   const updateStaffBody: UpdateQuery<Staff> = {}
 
-  if ( accepted ) {
-    updateStaffBody.position = STAFF_POSITIONS[position]
+  if ( verification.accepted ) {
+    updateStaffBody.position = {
+      name: verification.name,
+      role: verification.role,
+    }
   } else {
-    updateStaffBody["requests.verification"] = false
+    updateStaffBody["verification"] = false
   }
 
   await updateStaff(
-    { bastionId },
+    { bastionId: verification.bastionId },
     updateStaffBody 
   )
 
   await updateAdmin({
     $pull: {
-      verifications: { bastionId }
+      verifications: { bastionId: verification.bastionId }
     }
   })
 
