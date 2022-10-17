@@ -89,8 +89,11 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
   },
   verification: Boolean,
   position: {
-    name: String,
-    role: String
+    type: {
+      name: String,
+      role: String
+    },
+    default: null
   },
   bio: String,
   storyRequests: {

@@ -163,7 +163,7 @@ export const requestStaffPositionHandler = async( position: Position, { staff }:
   if ( !rolesAndPosition[position.role].includes(position.name) ) {
     return trpcError("BAD_REQUEST", "Send a valid position name")
   }
-
+  
   if ( staff.verification && staff.position ) {
     return trpcError("CONFLICT", "Already a verified staff");
   }
@@ -183,7 +183,7 @@ export const requestStaffPositionHandler = async( position: Position, { staff }:
       }
     }
   })
-
+ 
   await updateStaff(
     { bastionId: staff.bastionId },
     { "verification": true }

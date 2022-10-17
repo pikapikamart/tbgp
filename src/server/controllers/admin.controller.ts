@@ -8,7 +8,7 @@ import {
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid";
 import { updateStaff } from "../services/staff.service";
-import { rolesAndPosition, Staff } from "../models/staff.model";
+import { Staff } from "../models/staff.model";
 import { 
   apiResult, 
   apiResultWithData } from "../utils/success.util";
@@ -86,20 +86,12 @@ export const verifyPositionHandler = async (
     return trpcError("NOT_FOUND", "No staff request found");
   }
 
-  if ( !Object.keys(rolesAndPosition).includes(verification.role) ) {
-    return trpcError("BAD_REQUEST", "Send a valid position role")
-  }
-
-  if ( !rolesAndPosition[verification.role].includes(verification.name) ) {
-    return trpcError("BAD_REQUEST", "Send a valid position name")
-  }
-
   const updateStaffBody: UpdateQuery<Staff> = {}
 
   if ( verification.accepted ) {
     updateStaffBody.position = {
-      name: verification.name,
-      role: verification.role,
+      name: foundRequest.position.name,
+      role: foundRequest.position.role,
     }
   } else {
     updateStaffBody["verification"] = false
@@ -112,7 +104,7 @@ export const verifyPositionHandler = async (
 
   await updateAdmin({
     $pull: {
-      verifications: { bastionId: verification.bastionId }
+      verifications: { bastionId: foundRequest.bastionId }
     }
   })
 
