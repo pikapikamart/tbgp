@@ -1,20 +1,54 @@
 
 
-export const rolesData = [
+export const positionsData = [
   {
     name: "Writer",
-    value: "writer"
+    role: "writer",
+    id: "writer"
   },
   {
-    name: "Copy Editor",
-    value: "copyEditor"
+    name: "News Editor",
+    role: "sectionEditor",
+    id: "newsEditor"
   },
   {
-    name: "Layout Artist",
-    value: "layoutArtist"
+    name: "Features Editor",
+    role: "sectionEditor",
+    id: "featuresEditor"
+  },
+  {
+    name: "Literary Editor",
+    role: "sectionEditor",
+    id: "literaryEditor"
+  },
+  {
+    name: "DevComm Editor",
+    role: "sectionEditor",
+    id: "devcommEditor"
+  },
+  {
+    name: "Sports Editor",
+    role: "sectionEditor",
+    id: "writer"
+  },
+  {
+    name: "Layout Editor",
+    role: "sectionEditor",
+    id: "layoutEditor"
   },
   {
     name: "Editor in Chief",
-    value: "editorInChief"
-  }
+    role: "seniorEditor",
+    id: "editorInChief"
+  },
+  {
+    name: "Associate Editor",
+    role: "seniorEditor",
+    id: "associateEditor"
+  },
+  {
+    name: "Managing Editor",
+    role: "seniorEditor",
+    id: "managingEditor"
+  },
 ] 

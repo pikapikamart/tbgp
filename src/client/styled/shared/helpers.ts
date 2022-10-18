@@ -35,8 +35,12 @@ export const RowCenter = styled.div`
 
 export const RowCenterCenter = styled.div`
   ${ BaseRowCenter };
-
+  
   justify-content: center;
+`
+
+export const RowStartCenter = styled(RowCenterCenter)`
+  align-items: flex-start;
 `
 
 export const ColumCenterCenter = styled.div`

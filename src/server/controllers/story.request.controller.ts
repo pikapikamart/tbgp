@@ -10,7 +10,7 @@ import {
 import { 
   bulkUpdateStaff,
   findStaff, 
-  updateStaff } from "../services/staff.service";
+  updateStaffService } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { 
   createStoryRequest, 
@@ -135,7 +135,7 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
       requests: []
     }
   );
-  await updateStaff(
+  await updateStaffService(
     { bastionId: staff.bastionId },
     { 
       $push: {
@@ -171,7 +171,7 @@ export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestI
       }
     }
   )
-  await updateStaff(
+  await updateStaffService(
     { bastionId: staff.bastionId },
     {
       $push: {
@@ -211,7 +211,7 @@ export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchem
       }
     }
   )
-  await updateStaff(
+  await updateStaffService(
     { bastionId: request.bastionId }, 
     {
       $push: {
@@ -246,7 +246,7 @@ export const deleteStoryRequestHandler = async( { storyRequestId }: StoryRequest
       }
     }
   )))
-  await updateStaff(
+  await updateStaffService(
     { bastionId: staff.bastionId },
     {
       $pull: {

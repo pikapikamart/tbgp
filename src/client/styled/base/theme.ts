@@ -28,6 +28,7 @@ const theme: DefaultTheme = {
     welcomeHeading_d: 32
   },
   breakpoints: {
+    custom: ( breakpoint: number ) => breakpoint,
     tablet: 768,
     desktop: 1000
   }

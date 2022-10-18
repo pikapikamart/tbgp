@@ -42,14 +42,14 @@ const Header = () =>{
         { !staff.position && (
           <Note
           text="Only verified accounts can participate and create articles. Verify your account now by sending a request, verifying your The Bastion position.">
-            { !staff.requests.verification && (
+            { !staff.verification && (
               <SmallButton 
                 colored="darkBlue"
                 onClick={ handleVerificationModal }
                 aria-expanded={ isExpanded } >Verify
               </SmallButton>
              )}
-            { staff.requests.verification && (
+            { staff.verification && (
               <SmallButton 
                 colored="blue"
                 as="p">Verification sent

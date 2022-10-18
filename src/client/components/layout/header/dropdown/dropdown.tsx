@@ -30,8 +30,7 @@ const Dropdown = ( { type }: DropdownProps ) => {
       </ProfileContainer>
       <HeaderNavlinks type={ type } />
       <ul>
-        {/* add for staff conditional */}
-        { data?.user && (
+        { data?.user?.userType==="staff" && (
           <DropdownItem>
             <Link
               href={ `/storybuilder/${ staff.username }`}

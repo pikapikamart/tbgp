@@ -12,14 +12,15 @@ const initialState: StaffState = {
   username: "",
   firstname: "",
   lastname: "",
-  requests: {
-    verification: false,
-    story: []
-  },
   bio: "",
-  position: ""
+  verification: false,
+  position: null,
+  storyRequests: {
+    requested: [],
+    joined: [],
+    created: []
+  }
 }
-
 
 export const staffSlice = createSlice({
   name: "staff",

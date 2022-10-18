@@ -10,7 +10,7 @@ import {
   baseUserModel} from "./base.user.model";
 
 
-type Role = "writer" | "sectionEditor" | "seniorEditor"
+export type Role = "writer" | "sectionEditor" | "seniorEditor"
 type RolesAndPosition = Record<Role, string[]>
 type RolesAndPositionIndex = RolesAndPosition & {
   [ key: string ]: string[]
@@ -61,8 +61,6 @@ export const rolesAndPosition: RolesAndPositionIndex = {
     "Editor in Chief",
     "Associate Editor",
     "Managing Editor",
-    "Operations Manager",
-    "Circulations Manager"
   ],
 }
 

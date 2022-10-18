@@ -3,10 +3,11 @@ import {
   useRef,
   useState,
   useEffect } from "react"
-import { rolesData } from "./data"
+import { PositionState } from "../requestPosition.hook"
+import { positionsData } from "./data"
 
 
-type UsePositionComboBoxProps = ( position: string ) => void
+type UsePositionComboBoxProps = ( position: PositionState ) => void
 
 export const usePositionComboBox = ( handleSetPosition : UsePositionComboBoxProps) =>{
   const { isExpanded, handleExpansion } = useExpansion()
@@ -36,10 +37,10 @@ export const usePositionComboBox = ( handleSetPosition : UsePositionComboBoxProp
       return 
     }
 
-    const role = rolesData[optionIndex]
-    comboBoxRef.current.textContent = rolesData[optionIndex].name
+    const position = positionsData[optionIndex]
+    comboBoxRef.current.textContent = positionsData[optionIndex].name
     setSelectedIndex(optionIndex)
-    handleSetPosition(role.value)
+    handleSetPosition(position)
     handleExpansion()
  
     setTimeout(() =>{
@@ -50,7 +51,7 @@ export const usePositionComboBox = ( handleSetPosition : UsePositionComboBoxProp
 
   const handleListboxTraversing = ( event: React.KeyboardEvent<HTMLDivElement> ) => {
     const { key } = event
-    const arrayLength = rolesData.length
+    const arrayLength = positionsData.length
 
     if ( !comboBoxRef.current ) {
       return
@@ -76,7 +77,7 @@ export const usePositionComboBox = ( handleSetPosition : UsePositionComboBoxProp
   useEffect(() =>{
     if ( comboBoxRef.current ) {
       if ( isExpanded ) {
-        comboBoxRef.current.setAttribute("aria-activedescendant", rolesData[traversingIndex].value)
+        comboBoxRef.current.setAttribute("aria-activedescendant", positionsData[traversingIndex].id)
         listItemsArrayRef.current.map(el => el.classList.remove("selected"))
         listItemsArrayRef.current[traversingIndex].classList.add("selected")
       } else {

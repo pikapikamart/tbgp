@@ -25,7 +25,7 @@ export const createStaff = async( staff: DocumentDefinition<Staff> ) => (
   StaffModel.create(staff)
 )
 
-export const updateStaff = async(
+export const updateStaffService = async(
   query: FilterQuery<Staff>, 
   update: UpdateQuery<Staff> 
 ) => (

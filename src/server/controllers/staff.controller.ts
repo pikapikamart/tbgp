@@ -13,7 +13,7 @@ import {
   createStaff, 
   findStaff, 
   staffPopulatorService, 
-  updateStaff } from "../services/staff.service";
+  updateStaffService } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { 
   apiResult, 
@@ -62,7 +62,7 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
     "-_id -__v -password",
     {},
     {
-      path: "requests.story storyRequests.joined writeups",
+      path: "storyRequests.requested storyRequests.joined writeups",
       select: "-_id storyRequestId"
     }
   ))
@@ -184,7 +184,7 @@ export const requestStaffPositionHandler = async( position: Position, { staff }:
     }
   })
  
-  await updateStaff(
+  await updateStaffService(
     { bastionId: staff.bastionId },
     { "verification": true }
   )
@@ -193,7 +193,7 @@ export const requestStaffPositionHandler = async( position: Position, { staff }:
 }
 
 export const updateStaffHandler = async( update: UpdateStaffSchema, { staff }: StaffContext ) => {
-  await updateStaff(
+  await updateStaffService(
     { email: staff.email },
     update
   )

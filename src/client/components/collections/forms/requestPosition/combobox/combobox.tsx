@@ -1,5 +1,5 @@
-import { RegisterControl, useExpansion } from "@/lib/hooks"
-import { useEffect, useRef, useState } from "react"
+import { RegisterControl } from "@/lib/hooks"
+import { PositionState } from "../requestPosition.hook"
 import { usePositionComboBox } from "./comboBox.hook"
 import { 
   ComboBoxWrapper,
@@ -9,12 +9,12 @@ import {
   ListBox,
   ListBoxItem
  } from "./combobox.styled"
-import { rolesData } from "./data"
+import { positionsData } from "./data"
 
 
 type ComboBoxProps = {
   registerControl: RegisterControl,
-  handleSetPosition: ( position: string ) => void
+  handleSetPosition: ( position: PositionState ) => void
 }
 
 const ComboBox = ({ registerControl, handleSetPosition }: ComboBoxProps) => {
@@ -30,14 +30,14 @@ const ComboBox = ({ registerControl, handleSetPosition }: ComboBoxProps) => {
   } = usePositionComboBox(handleSetPosition)
 
   const renderListbox = () => {
-    const listBox = rolesData.map( (role, index) => (
+    const listBox = positionsData.map( (position, index) => (
       <ListBoxItem 
-        key={ role.value }
-        id={ role.value }
+        key={ position.id }
+        id={ position.id }
         onClick={ () => handleOptionSelection(index) }
         aria-selected={ selectedIndex===index }
         ref={ addListOptionsRef }>
-        { role.name }
+        { position.name }
       </ListBoxItem>
     ))
 

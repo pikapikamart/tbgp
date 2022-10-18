@@ -16,16 +16,17 @@ export const VerificationItem = styled.li`
   border-radius: ${ rem(4) };
   border: 1px solid ${({ theme }) => theme.colors.grey3};
   padding: ${ rem(12) };
+
   &:not(:last-of-type) {
     margin-bottom: ${ rem(12) };
   }
 
-  @media(min-width: ${ rem(450) }) {
+  ${ breakpoint(450, `
     display: grid;
     gap: 0 ${ rem(8) };
     grid-template-columns: 1fr min-content;
     grid-template-rows: repeat(2, auto);
-  }
+  `) }
 
   ${ breakpoint("tablet", `
     align-items: center;
@@ -69,10 +70,10 @@ export const VerificationRole = styled.p`
     padding: ${ rem(4) } ${ rem(8) };
   }
 
-  @media(min-width: ${ rem(450) }) {
-    margin: 0;
-    transform: translateY(-${ rem(10) });
-  }
+  ${ breakpoint(450, `
+      margin: 0;
+      transform: translateY(-${ rem(10) });
+    `) }
 
   ${ breakpoint("tablet", `
     transform: translateY(0);
@@ -96,21 +97,20 @@ export const VerificationOption = styled(SmallButton)<VerificationOptionProps>`
     margin-right: ${ rem(4) };
   }
 
-  @media(min-width: ${ rem(450) }) {
-    
+  ${ breakpoint(450, `
     &:first-of-type {
       grid-column: 2 / 3;
       grid-row: 1 / 2;
       margin-bottom: ${ rem(4) };
       margin-right: 0;
     }
-  
+
     &:last-of-type {
       align-self: flex-start;
       grid-column: 2 / 3;
       grid-row: 2 / 3;
     }
-  }
+  `) }
 
   ${ breakpoint("tablet", `
     

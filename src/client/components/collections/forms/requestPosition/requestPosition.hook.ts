@@ -3,6 +3,11 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 
 
+export type PositionState = {
+  name: string,
+  role: string
+}
+
 export const useSendPositionRequest = () =>{
   const router = useRouter()
   const mutation = trpc.useMutation(["staff.request-position"], {
@@ -10,17 +15,22 @@ export const useSendPositionRequest = () =>{
       router.reload()
     }
   })
-  const [ position, setPosition ] = useState("")
+  const [ position, setPosition ] = useState<PositionState>({
+    name: "",
+    role: ""
+  })
 
   const handlePositionRequest = ( event: React.FormEvent ) =>{
     event.preventDefault()
 
-    mutation.mutate({
-      position
-    })
+    if ( !position.name && !position.role ) {
+      return
+    }
+
+    mutation.mutate(position)
   }
 
-  const handleSetPosition = ( position: string ) => {
+  const handleSetPosition = ( position: PositionState ) => {
     setPosition(position)
   }
 

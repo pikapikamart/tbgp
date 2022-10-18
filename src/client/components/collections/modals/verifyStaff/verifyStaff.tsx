@@ -36,13 +36,13 @@ const VerifyStaffModal = ({ accepted, verification }: VerifyStaffModalProps) => 
           <>
             This will make 
             <span> { verification.fullname } </span>
-             as a verified { sanitizePosition(verification.position) } 
+             as a verified { sanitizePosition(verification.position.name) } 
           </> 
           :
           <>
             This will invalidate
             <span> { verification?.fullname }'s </span>
-            request as { sanitizePosition(verification?.position!) }
+            request as { sanitizePosition(verification?.position.name!) }
           </>
         }
       </VerificationDescription>

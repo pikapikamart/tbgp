@@ -7,7 +7,7 @@ import {
   updateAdminService } from "../services/admin.service";
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid";
-import { updateStaff } from "../services/staff.service";
+import { updateStaffService } from "../services/staff.service";
 import { Staff } from "../models/staff.model";
 import { 
   apiResult, 
@@ -97,12 +97,12 @@ export const verifyPositionHandler = async (
     updateStaffBody["verification"] = false
   }
 
-  await updateStaff(
+  await updateStaffService(
     { bastionId: verification.bastionId },
     updateStaffBody 
   )
 
-  await updateAdmin({
+  await updateAdminService({
     $pull: {
       verifications: { bastionId: foundRequest.bastionId }
     }

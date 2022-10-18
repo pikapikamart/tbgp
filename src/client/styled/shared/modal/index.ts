@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components"
 import { 
   rem,
-  fluid } from "@/styled/functions"
+  fluid, 
+  maxBreakpoint} from "@/styled/functions"
 
 
 type Size = "small" | "medium" | "large"
@@ -34,6 +35,10 @@ export const ModalWrapper = styled(BaseModalWrapper)<ModalWrapperProps>`
         return css`max-width: ${ fluid(330, 80, 624) };`
     }
   } }
+
+  ${ maxBreakpoint(450, `
+    max-width: 100%;
+  `) }
 
   ${ ({ padding }) =>{
     switch(padding) {
