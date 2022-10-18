@@ -42,8 +42,11 @@ async function connectDatabase() {
     // } else if ( deployment === "production" ) {
     //   cached.promise = mongoose.connect(MONGODB_URI_PROD, opts).then((mongoose) => mongoose);
     // }
-
-    cached.promise = mongoose.connect(MONGODB_URI_PROD, opts).then((mongoose) => mongoose);
+    
+    // for no internet
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
+    
+    // cached.promise = mongoose.connect(MONGODB_URI_PROD, opts).then((mongoose) => mongoose);
   
   }
   cached.conn = await cached.promise; 

@@ -17,7 +17,7 @@ export const linksData: Links = {
   staff: [
     {
       name: "Requests",
-      path: "/storybuilder/requests"
+      path: "/storybuilder"
     },
     {
       name: "Activities",

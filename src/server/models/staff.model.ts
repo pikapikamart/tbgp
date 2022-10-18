@@ -23,6 +23,18 @@ export type Position = {
 
 export type BastionId = string;
 
+export type StoryRequests = {
+  requested: StoryRequestDocument["_id"][],
+  joined: StoryRequestDocument["_id"][],
+  created: StoryRequestDocument["_id"][]
+}
+
+export type Writeups = {
+  solo: WriteupDocument["_id"][],
+  collaborated: WriteupDocument["_id"][],
+  task: WriteupDocument["_id"][]
+}
+
 export type Staff = BaseUser & {
   username: string,
   firstname: string,
@@ -31,16 +43,8 @@ export type Staff = BaseUser & {
   verification: boolean,
   position: Position | null,
   bio: string,
-  storyRequests?: {
-    requested: StoryRequestDocument["_id"][],
-    joined: StoryRequestDocument["_id"][],
-    created: StoryRequestDocument["_id"][]
-  },
-  writeups?: {
-    solo: WriteupDocument["_id"][],
-    collaborated: WriteupDocument["_id"][],
-    task: WriteupDocument["_id"][]
-  },
+  storyRequests: StoryRequests | null,
+  writeups: Writeups | null,
 }
 
 export type StaffDocument = Staff & BaseUserDocument & {};
@@ -93,32 +97,38 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
   },
   bio: String,
   storyRequests: {
-    requested: [{
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "StoryRequest"
-    }],
-    joined: [{
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "StoryRequest"
-    }],
-    created: [{
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "StoryRequest"
-    }]
+    type: {
+      requested: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "StoryRequest"
+      }],
+      joined: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "StoryRequest"
+      }],
+      created: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "StoryRequest"
+      }]
+    },
+    default: null
   },
   writeups: {
-    solo: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Writeup"
-    }],
-    collaborated: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Writeup"
-    }],
-    task: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Writeup"
-    }]
+    type: {
+      solo: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Writeup"
+      }],
+      collaborated: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Writeup"
+      }],
+      task: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Writeup"
+      }]
+    },
+    default: null
   }
 })
 

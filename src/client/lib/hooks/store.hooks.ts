@@ -43,3 +43,9 @@ export const useSetupStaff = () =>{
     staff
   }
 }
+
+export const useSelectStaff = () =>{
+  const staff = useAppSelector(selectStaff)
+
+  return staff
+}

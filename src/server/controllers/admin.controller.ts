@@ -86,12 +86,24 @@ export const verifyPositionHandler = async (
     return trpcError("NOT_FOUND", "No staff request found");
   }
 
-  const updateStaffBody: UpdateQuery<Staff> = {}
+  let updateStaffBody: UpdateQuery<Staff> = {}
 
   if ( verification.accepted ) {
-    updateStaffBody.position = {
-      name: foundRequest.position.name,
-      role: foundRequest.position.role,
+    updateStaffBody = {
+      position: {
+        name: foundRequest.position.name,
+        role: foundRequest.position.role,
+      },
+      storyRequests: {
+        requested: [],
+        joined: [],
+        created: []
+      },
+      writeups: {
+        solo: [],
+        collaborated: [],
+        task: []
+      }
     }
   } else {
     updateStaffBody["verification"] = false

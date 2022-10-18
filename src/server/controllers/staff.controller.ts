@@ -141,7 +141,9 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
       username: staffBody.email.split("@")[0],
       verification: false,
       position: null,
-      bio: ""
+      bio: "",
+      storyRequests: null,
+      writeups: null
     }
   )
   await updateAdminService({

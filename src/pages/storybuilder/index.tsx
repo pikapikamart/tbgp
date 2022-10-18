@@ -1,11 +1,12 @@
 import { BuilderLayout } from "@/components/layout/builder"
+import { StaffHome } from "@/components/staff/home"
 import { NextPageWithLayout } from "../_app"
 
 
 const StoryBuilderPage: NextPageWithLayout = () =>{
 
   return(
-    <>Hey</>
+    <StaffHome />
   )
 }
 

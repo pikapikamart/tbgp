@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="45" height="14" viewBox="0 0 45 14">
+  <g id="board-decor" transform="translate(-85 -114)">
+    <g id="Ellipse_6" data-name="Ellipse 6" transform="translate(120 116)" fill="none" stroke="#a4a4a4" stroke-width="1">
+      <circle cx="5" cy="5" r="5" stroke="none"/>
+      <circle cx="5" cy="5" r="4.5" fill="none"/>
+    </g>
+    <g id="Ellipse_5" data-name="Ellipse 5" transform="translate(104 115)" fill="none" stroke="#a4a4a4" stroke-width="1">
+      <circle cx="6" cy="6" r="6" stroke="none"/>
+      <circle cx="6" cy="6" r="5.5" fill="none"/>
+    </g>
+    <g id="Ellipse_4" data-name="Ellipse 4" transform="translate(85 114)" fill="none" stroke="#a4a4a4" stroke-width="1">
+      <circle cx="7" cy="7" r="7" stroke="none"/>
+      <circle cx="7" cy="7" r="6.5" fill="none"/>
+    </g>
+  </g>
+</svg>

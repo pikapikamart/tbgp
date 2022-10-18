@@ -25,7 +25,7 @@ export const breakpoint = (size: BreakpointSize, css: string) =>{
       `
     case "desktop":
       return `
-        @media (min-width: ${rem(Theme.breakpoints.tablet) }) {
+        @media (min-width: ${rem(Theme.breakpoints.desktop) }) {
           ${css}
         }
       `

@@ -18,11 +18,8 @@ const initialState: StaffState = {
   bio: "",
   verification: false,
   position: null,
-  storyRequests: {
-    requested: [],
-    joined: [],
-    created: []
-  }
+  storyRequests: null,
+  writeups: null
 }
 
 export const staffSlice = createSlice({
