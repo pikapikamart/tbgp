@@ -1,6 +1,5 @@
 import { HeaderWrapper } from "@/styled/shared/header";
 import { RowCenterBetween } from "@/styled/shared/helpers";
-import { useExpansion } from "@/lib/hooks";
 import { HeaderLogo } from "@/components/layout/header/logo";
 import { HeaderNavlinks } from "@/components/layout/header/navlinks";
 import { 
@@ -8,6 +7,7 @@ import {
   HeaderMenuIcon } from "@/styled/shared/header";
 import { HeaderProfile } from "@/components/layout/header/profile";
 import { HeaderDropdown } from "@/components/layout/header/dropdown";
+import { useHeader } from "./header.hook";
 
 
 type HeaderProps = {
@@ -15,7 +15,7 @@ type HeaderProps = {
 }
 
 const Header = ( { type }: HeaderProps ) =>{
-  const { isExpanded, handleExpansion } = useExpansion()
+  const { isExpanded, handleExpansion } = useHeader()
 
   return (
     <HeaderWrapper as="header">

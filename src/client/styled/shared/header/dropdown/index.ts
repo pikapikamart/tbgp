@@ -19,6 +19,7 @@ export const DropdownWrapper = styled.div`
   position: absolute;
   transition: opacity .5s ease, visibility .5s ease;
   visibility: hidden;
+  z-index: 50;
 
   ${ NavlinksWrapper } {
     display: block;

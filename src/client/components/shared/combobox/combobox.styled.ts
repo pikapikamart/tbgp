@@ -1,15 +1,16 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { 
   rem,
   breakpoint } from "@/styled/functions"
+import { 
+  InputError,
+  InputLabel, 
+  InputWrapper } from "@/components/collections/inputs/regular/input.styled"
 
 
 export const ComboBoxWrapper = styled.div``
 
-export const ComboBoxLabel = styled.label`
-  font-size: ${ rem(17) };
-  margin-top: ${ rem(10) };
-`
+export const ComboBoxLabel = styled(InputLabel)``
 
 export const ComboBoxContentContainer = styled.div`
   position: relative;
@@ -32,12 +33,14 @@ export const ListBox = styled.div`
   ` }
 `
 
-export const ComboBoxRole = styled.button`
+type ComboBoxRoleProps = {
+  bottomBorder?: boolean
+}
+
+export const ComboBoxRole = styled(InputWrapper)<ComboBoxRoleProps>`
   background: url("/icons/icon-triangle.svg") no-repeat calc(100% - ${ rem(14) }) center;
-  border-bottom: 1px solid ${ ({ theme }) => theme.colors.grey1 };
   font-weight: 600;
-  height: ${ rem(32) };
-  padding-top: ${ rem(2) };
+  min-height: ${ rem(43) };
   width: 100%;
 
   &[aria-expanded="true"] {
@@ -48,7 +51,9 @@ export const ComboBoxRole = styled.button`
   }
 `
 
-export const ListBoxItem = styled.div`
+export const ListBoxItem = styled.div.attrs(({ className }) =>({
+  className
+}))`
   border-radius: ${ rem(8) };
   font-weight: 500;
   font-size: ${ rem(15) };
@@ -69,4 +74,23 @@ export const ListBoxItem = styled.div`
       cursor: pointer;
     }
   `) }
+`
+
+export const ComboBoxError = styled(InputError)``
+
+export const ComboBoxInput = styled.input`
+  
+  &[aria-invalid] {
+
+    & ~ ${ ComboBoxContentContainer } {
+
+      ${ ComboBoxRole } {
+        border-color: ${ ({ theme }) => theme.colors.red };
+      }
+    }
+    
+    & ~ ${ ComboBoxError } {
+      display: block;
+    }
+  }
 `

@@ -12,6 +12,7 @@ import {
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "./store.hooks";
 import { selectStaff, setStaff } from "@/store/slices/staff.slice";
+import { useHeader } from "@/components/layout/header/header.hook";
 
 
 // --------General--------
@@ -207,7 +208,7 @@ export const useExpansion = () =>{
 }
 
 export const useProfileExpansion = () => {
-  const { isExpanded, handleExpansion } = useExpansion()
+  const { isExpanded, handleExpansion } = useHeader()
   const wrapperRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() =>{

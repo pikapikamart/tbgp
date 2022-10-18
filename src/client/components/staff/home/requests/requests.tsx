@@ -1,4 +1,8 @@
+import { CreateStoryModal } from "@/components/collections/modals/staff/createStory"
+import { BaseModal } from "@/components/shared/modal"
+import { ModalFocusBack } from "@/components/shared/modal/modal.styled"
 import { TabInterface } from "@/components/shared/tablist"
+import { useExpansion } from "@/lib/hooks"
 import { useSelectStaff } from "@/lib/hooks/store.hooks"
 import { useModalContext } from "@/store/context/modal/modal"
 import { StaffState } from "@/store/slices/staff.slice"
@@ -19,33 +23,47 @@ const isEditor = ( staff: StaffState ) =>{
 
 const Requests = () =>{
   const staff = useSelectStaff()
-  const modalContent = useModalContext()
+  const modalContext = useModalContext()
+  const { isExpanded, handleExpansion } = useExpansion()
 
   const handleSetModal = () =>{
+    handleExpansion()
+    modalContext.addModal(
+      <BaseModal exit={ handleExpansion }>
+        <CreateStoryModal />
+      </BaseModal>
+    )
   }
 
   return (
     <RequestsWrapper>
-      <TabInterface 
-        paramsPaths={ isEditor(staff)? requestsParamsEditor : requestsParams }
-        extraChildren={ <>
-          <CreateRequestButton 
-            colored="darkBlue"
-            onClick={ handleSetModal }>
-            <img 
-              src="/icons/icon-add.svg" 
-              alt=""
-              width="7px" />
-            <img 
-              src="/icons/icon-add-large.svg" 
-              alt="" />
-            <span>
-              Create Request
-            </span>
-          </CreateRequestButton>
-        </> } >
-      
-      </TabInterface>
+      <ModalFocusBack
+        ref={ modalContext.focusBackElement }
+        tabIndex={ -1 }>
+        <TabInterface 
+          paramsPaths={ isEditor(staff)? requestsParamsEditor : requestsParams }
+          extraChildren={ isEditor(staff)? 
+          <>
+            <CreateRequestButton 
+              colored="darkBlue"
+              onClick={ handleSetModal }
+              aria-expanded={ isExpanded } >
+              <img 
+                src="/icons/icon-add.svg" 
+                alt=""
+                width="7px" />
+              <img 
+                src="/icons/icon-add-large.svg" 
+                alt="" />
+              <span>
+                Create Request
+              </span>
+            </CreateRequestButton>
+          </> :
+          <></>
+          } >
+        </TabInterface>
+      </ModalFocusBack>  
     </RequestsWrapper>
   )
 }

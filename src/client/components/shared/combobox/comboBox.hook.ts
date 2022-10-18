@@ -3,23 +3,20 @@ import {
   useRef,
   useState,
   useEffect } from "react"
-import { PositionState } from "../requestPosition.hook"
-import { positionsData } from "./data"
 
 
-type UsePositionComboBoxProps = ( position: PositionState ) => void
 
-export const usePositionComboBox = ( handleSetPosition : UsePositionComboBoxProps) =>{
+export const useComboBox = ( ) =>{
   const { isExpanded, handleExpansion } = useExpansion()
-  const comboBoxRef = useRef<HTMLButtonElement | null>(null)
-  const listBoxRef = useRef<HTMLDivElement | null>(null)
-  const listItemsArrayRef = useRef<HTMLDivElement[]>([])
   const [ selectedIndex, setSelectedIndex ] = useState<number | null>(null)
   const [ traversingIndex, setTraversingIndex ] = useState(0)
+  const comboBoxRef = useRef<HTMLButtonElement | null>(null)
+  const listBoxRef = useRef<HTMLDivElement | null>(null)
+  const listBoxOptions = useRef<HTMLDivElement[]>([])
 
   const addListOptionsRef = ( element: HTMLDivElement | null ) => {
-    if( element && !listItemsArrayRef.current.includes(element) ) {
-      listItemsArrayRef.current.push(element)
+    if( element && !listBoxOptions.current.includes(element) ) {
+      listBoxOptions.current.push(element)
     }
   }
 
@@ -37,10 +34,8 @@ export const usePositionComboBox = ( handleSetPosition : UsePositionComboBoxProp
       return 
     }
 
-    const position = positionsData[optionIndex]
-    comboBoxRef.current.textContent = positionsData[optionIndex].name
     setSelectedIndex(optionIndex)
-    handleSetPosition(position)
+    setTraversingIndex(optionIndex)
     handleExpansion()
  
     setTimeout(() =>{
@@ -51,7 +46,7 @@ export const usePositionComboBox = ( handleSetPosition : UsePositionComboBoxProp
 
   const handleListboxTraversing = ( event: React.KeyboardEvent<HTMLDivElement> ) => {
     const { key } = event
-    const arrayLength = positionsData.length
+    const optionsLength = listBoxOptions.current.length
 
     if ( !comboBoxRef.current ) {
       return
@@ -60,12 +55,12 @@ export const usePositionComboBox = ( handleSetPosition : UsePositionComboBoxProp
     switch(key) {
       case "ArrowLeft":
       case "ArrowUp":
-        setTraversingIndex(prev => prev-1===-1? arrayLength-1 : prev-1)  
+        setTraversingIndex(prev => prev-1===-1? optionsLength-1 : prev-1)  
 
         return
       case "ArrowRight":
       case "ArrowDown":
-        setTraversingIndex(prev => prev+1===arrayLength? 0 : prev+1)  
+        setTraversingIndex(prev => prev+1===optionsLength? 0 : prev+1)  
 
         return
       case "Enter":
@@ -75,15 +70,10 @@ export const usePositionComboBox = ( handleSetPosition : UsePositionComboBoxProp
   }
 
   useEffect(() =>{
-    if ( comboBoxRef.current ) {
-      if ( isExpanded ) {
-        comboBoxRef.current.setAttribute("aria-activedescendant", positionsData[traversingIndex].id)
-        listItemsArrayRef.current.map(el => el.classList.remove("selected"))
-        listItemsArrayRef.current[traversingIndex].classList.add("selected")
-      } else {
-        comboBoxRef.current.removeAttribute("aria-activedescendant")
-      }
-    }
+    if ( isExpanded ) {
+      listBoxOptions.current.map(el => el.classList.remove("selected"))
+      listBoxOptions.current[traversingIndex].classList.add("selected")
+    } 
   }, [ traversingIndex, isExpanded ])
 
   return {
@@ -91,6 +81,7 @@ export const usePositionComboBox = ( handleSetPosition : UsePositionComboBoxProp
     comboBoxRef,
     listBoxRef,
     selectedIndex,
+    traversingIndex,
     handleOptionSelection,
     handleListboxExpansion,
     addListOptionsRef,

@@ -1,9 +1,9 @@
+import { useFormValidation } from "@/lib/hooks"
 import { useAppDispatch } from "@/lib/hooks/store.hooks"
 import { trpc } from "@/lib/trpc"
 import { useModalContext } from "@/store/context/modal/modal"
 import { sendStaffVerification } from "@/store/slices/staff.slice"
-import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect } from "react"
 
 
 export type PositionState = {
@@ -12,7 +12,12 @@ export type PositionState = {
 }
 
 export const useSendPositionRequest = () =>{
-  const router = useRouter()
+  const {
+    addFieldRef,
+    getFieldsRef,
+    isValidData,
+    handleFormSubmit
+  } = useFormValidation()
   const modalContext = useModalContext()
   const dispatch = useAppDispatch()
   const mutation = trpc.useMutation(["staff.request-position"], {
@@ -21,27 +26,20 @@ export const useSendPositionRequest = () =>{
       modalContext.removeModal()
     }
   })
-  const [ position, setPosition ] = useState<PositionState>({
-    name: "",
-    role: ""
-  })
 
-  const handlePositionRequest = ( event: React.FormEvent ) =>{
-    event.preventDefault()
-
-    if ( !position.name && !position.role ) {
-      return
+  useEffect(() =>{
+    if ( isValidData ) {
+      const positionInput = getFieldsRef()[0]
+      
+      mutation.mutate({
+        name: positionInput.dataset.name as string,
+        role: positionInput.value
+      })
     }
-
-    mutation.mutate(position)
-  }
-
-  const handleSetPosition = ( position: PositionState ) => {
-    setPosition(position)
-  }
+  }, [ isValidData ])
 
   return {
-    handleSetPosition,
-    handlePositionRequest
+    addFieldRef,
+    handleFormSubmit,
   }
 }

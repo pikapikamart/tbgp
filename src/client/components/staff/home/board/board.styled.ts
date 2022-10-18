@@ -169,6 +169,7 @@ export const BoardMenu = styled.button`
       position: absolute;
       top: calc(100% + ${ rem(2) });
       width: 100%;
+      z-index: 10;
     }
   }
 

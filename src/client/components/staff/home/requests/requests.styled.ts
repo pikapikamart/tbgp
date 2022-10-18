@@ -40,7 +40,7 @@ export const CreateRequestButton = styled(ColoredBaseButton)`
     align-items: center;
     border-radius: ${ rem(4) };
     display: flex;  
-    flex: 1 0 ${ rem(136) };
+    flex: 1 0 ${ rem(141) };
     height: revert;
     margin-left: ${ rem(16) };
     position: static;

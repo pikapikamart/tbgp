@@ -1,26 +1,29 @@
+import { ComboBox } from "@/components/shared/combobox"
 import { useTrapFocus } from "@/lib/hooks"
 import { useModalContext } from "@/store/context/modal/modal"
 import { ColoredMediumButton } from "@/styled/collections/button"
 import { FormBottomControls } from "@/styled/shared/form"
-import { PositionComboBox } from "./combobox"
+import { rolesAndPositions } from "./data"
 import { useSendPositionRequest } from "./requestPosition.hook"
 import { RequestPositionWrapper } from "./requestPosition.styled"
 
 
 const RequestPosition = () =>{
   const { 
-    handleSetPosition,
-    handlePositionRequest } = useSendPositionRequest()
+    addFieldRef,
+    handleFormSubmit } = useSendPositionRequest()
   const [ registerControl, registerTrapContainer ] = useTrapFocus()
   const modalContext = useModalContext()
 
   return (
     <RequestPositionWrapper
       onKeyDown={ registerTrapContainer }
-      onSubmit={ handlePositionRequest }>
-      <PositionComboBox 
-        registerControl={ registerControl }
-        handleSetPosition={ handleSetPosition } />
+      onSubmit={ handleFormSubmit }>
+        <ComboBox
+          labelText="Please select your position"
+          name="position"
+          addFieldRef={ addFieldRef }
+          listBoxOptions={ rolesAndPositions } />
       <FormBottomControls>
         <ColoredMediumButton
           colored="darkBlue"
