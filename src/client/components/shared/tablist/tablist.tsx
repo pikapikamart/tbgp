@@ -5,23 +5,28 @@ import {
   TabSelections } from "./tablist.styled"
 
 
-type TablistProps = {
-  children: React.ReactNode,
-  selectionNames: string[]
+export type ParamsPath = {
+  name: string,
+  query: string
 }
 
-const Tablist = ( { children, selectionNames }: TablistProps ) =>{
+type TablistProps = {
+  children: React.ReactNode,
+  paramsPaths: ParamsPath[]
+}
+
+const Tablist = ( { children, paramsPaths }: TablistProps ) =>{
   const {
     currentTabindex,
     addTabRef,
     handleChangeTabFocus,
     handleChangeCurrentTabindex
-  } = useTablistSelection()
+  } = useTablistSelection(paramsPaths)
 
   const renderTabSelections = () => {
-    const tabSelections = selectionNames.map((name, index) => (
+    const tabSelections = paramsPaths.map((params, index) => (
       <Tab 
-        key={ name }
+        key={ params.name }
         id={ `selection-${ index }` }
         role="tab"
         ref={ addTabRef }
@@ -29,7 +34,7 @@ const Tablist = ( { children, selectionNames }: TablistProps ) =>{
         onClick={ handleChangeCurrentTabindex }
         data-index={ index }
         aria-controls="tablist-content"
-        aria-selected={ currentTabindex===index }> { name }
+        aria-selected={ currentTabindex===index }> { params.name }
       </Tab>
     ))
 

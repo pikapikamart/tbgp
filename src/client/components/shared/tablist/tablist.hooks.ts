@@ -1,13 +1,16 @@
+import { useRouter } from "next/router"
 import { 
   useState,
-  useRef } from "react"
+  useRef, 
+  useEffect} from "react"
+import { ParamsPath } from "./tablist"
 
 
-export const useTablistSelection = () => {
+export const useTablistSelection = ( paramsPaths : ParamsPath[]) => {
   const [ currentTabindex, setCurrentTabindex ] = useState(0)
   const tabsRefs = useRef<HTMLButtonElement[]>([])
   const currentFocusIndexRef = useRef(0)
-  const tablistContentRef = useRef<HTMLDivElement | null>(null)
+  const router = useRouter()
 
   const addTabRef = ( element: HTMLButtonElement | null ) => {
     if ( element && !tabsRefs.current.includes(element) ) {
@@ -40,8 +43,19 @@ export const useTablistSelection = () => {
     
     if ( dataset.index && parseInt(dataset.index)!==currentTabindex ) {
       setCurrentTabindex(parseInt(dataset.index))
+      router.replace(router.pathname + `?tab=${ paramsPaths[parseInt(dataset.index)].query }`)
     }
   }
+
+  useEffect(() =>{
+    if ( router.query["tab"] ) {
+      const tabIndex = paramsPaths.findIndex(params => params.query===router.query["tab"])
+
+      if ( tabIndex!==-1 ) {
+        setCurrentTabindex(tabIndex)
+      }
+    }
+  }, [ router.query ])
 
   return {
     currentTabindex,

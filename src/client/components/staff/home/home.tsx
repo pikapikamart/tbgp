@@ -1,9 +1,10 @@
 import { ModalProvider } from "@/store/context/modal"
 import { SrOnly } from "@/styled/shared/helpers"
-import { StaffBoard } from "./board"
+import { StaffBoardSection } from "./board"
 import { 
   MainContentContainer, 
   MainWrapper } from "./home.styled"
+import { StaffRequestsSection } from "./requests"
 
 
 const Home = () =>{
@@ -13,7 +14,8 @@ const Home = () =>{
       <MainWrapper>
         <MainContentContainer>
           <SrOnly as="h1">See all story requests</SrOnly>
-          <StaffBoard />
+          <StaffBoardSection />
+          <StaffRequestsSection />
         </MainContentContainer>
       </MainWrapper>
     </ModalProvider>

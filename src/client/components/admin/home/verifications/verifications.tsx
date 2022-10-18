@@ -5,13 +5,20 @@ import { VerificationsList } from "./list";
 import { VerificationsWrapper } from "./verifications.styled";
 
 
+const verificationsParams = [
+  {
+    name: "All",
+    query: "all"
+  }
+]
+
 const Verifications = () =>{
 
   return (
     <VerificationsWrapper>
       <HomeFrameHeading>Positions</HomeFrameHeading>
       <DefaultText>Verify bastion members position requests</DefaultText>
-      <TabInterface selectionNames={["Verifications"]}>
+      <TabInterface paramsPaths={ verificationsParams }>
         <VerificationsList />
       </TabInterface>
     </VerificationsWrapper>

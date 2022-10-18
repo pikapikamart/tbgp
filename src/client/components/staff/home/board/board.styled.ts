@@ -9,6 +9,7 @@ import { RowCenterBetween } from "@/styled/shared/helpers"
 export const BoardWrapper = styled(RowCenterBetween)`
   border-radius: ${ rem(4) };
   height: ${ rem(64) };
+  margin-bottom: ${ rem(24) };
   padding: 0 ${ rem(16) };
   position: relative;
 
@@ -27,6 +28,7 @@ export const BoardWrapper = styled(RowCenterBetween)`
     display: block;
     height: revert;
     margin-right: ${ rem(24) };
+    margin-bottom: 0;
     max-width: ${ rem(240) };
     padding-bottom: ${ rem(64) };
   `) }
