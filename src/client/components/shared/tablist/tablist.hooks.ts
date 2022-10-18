@@ -42,8 +42,14 @@ export const useTablistSelection = ( paramsPaths : ParamsPath[]) => {
     const { dataset } = event.currentTarget
     
     if ( dataset.index && parseInt(dataset.index)!==currentTabindex ) {
-      setCurrentTabindex(parseInt(dataset.index))
-      router.replace(router.pathname + `?tab=${ paramsPaths[parseInt(dataset.index)].query }`)
+      const dataIndex = parseInt(dataset.index)
+      setCurrentTabindex(dataIndex)
+
+      if ( paramsPaths[dataIndex].query ) {
+        router.replace(router.pathname + `?tab=${ paramsPaths[dataIndex].query }`)
+      } else {
+        router.replace(router.pathname.split("?")[0])
+      }
     }
   }
 
@@ -54,6 +60,8 @@ export const useTablistSelection = ( paramsPaths : ParamsPath[]) => {
       if ( tabIndex!==-1 ) {
         setCurrentTabindex(tabIndex)
       }
+    } else {
+      setCurrentTabindex(0)
     }
   }, [ router.query ])
 
@@ -61,6 +69,7 @@ export const useTablistSelection = ( paramsPaths : ParamsPath[]) => {
     currentTabindex,
     addTabRef,
     handleChangeTabFocus,
-    handleChangeCurrentTabindex
+    handleChangeCurrentTabindex,
+    query: router.query["tab"]
   }
 }

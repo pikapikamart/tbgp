@@ -3,14 +3,8 @@ import { DefaultText } from "@/styled/collections/text";
 import { HomeFrameHeading } from "../home.styled";
 import { VerificationsList } from "./list";
 import { VerificationsWrapper } from "./verifications.styled";
+import { verificationsParams } from "./data"
 
-
-const verificationsParams = [
-  {
-    name: "All",
-    query: "all"
-  }
-]
 
 const Verifications = () =>{
 

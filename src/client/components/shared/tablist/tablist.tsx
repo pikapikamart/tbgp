@@ -2,7 +2,8 @@ import { useTablistSelection } from "./tablist.hooks"
 import { 
   Tab,
   TablistWrapper, 
-  TabSelections } from "./tablist.styled"
+  TabSelections, 
+  TabSelectionsWrapper} from "./tablist.styled"
 
 
 export type ParamsPath = {
@@ -12,15 +13,17 @@ export type ParamsPath = {
 
 type TablistProps = {
   children: React.ReactNode,
-  paramsPaths: ParamsPath[]
+  paramsPaths: ParamsPath[],
+  extraChildren?: React.ReactElement
 }
 
-const Tablist = ( { children, paramsPaths }: TablistProps ) =>{
+const Tablist = ( { children, paramsPaths, extraChildren }: TablistProps ) =>{
   const {
     currentTabindex,
     addTabRef,
     handleChangeTabFocus,
-    handleChangeCurrentTabindex
+    handleChangeCurrentTabindex,
+    query
   } = useTablistSelection(paramsPaths)
 
   const renderTabSelections = () => {
@@ -43,10 +46,15 @@ const Tablist = ( { children, paramsPaths }: TablistProps ) =>{
 
   return (
     <TablistWrapper onKeyDown={ handleChangeTabFocus }>
-      <TabSelections 
-        role="tablist" 
-        aria-label="user selections"> { renderTabSelections() }
-      </TabSelections>
+      <TabSelectionsWrapper>
+        <TabSelections 
+          role="tablist" 
+          aria-label="user selections"> { renderTabSelections() }
+        </TabSelections>
+        { extraChildren && <>
+          { extraChildren }
+        </>}
+      </TabSelectionsWrapper>
       <div 
         id="tablist-content"
         role="tabpanel"

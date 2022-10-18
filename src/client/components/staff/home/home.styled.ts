@@ -15,4 +15,10 @@ export const MainWrapper = styled.main`
 
 export const MainContentContainer = styled.div`
   margin: 0 auto;
+  max-width: ${ rem(1224) };
+
+  ${ breakpoint("desktop", `
+    align-items: flex-start;
+    display: flex;
+  `) }
 `

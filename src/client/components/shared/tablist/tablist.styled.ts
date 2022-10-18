@@ -10,9 +10,15 @@ export const TablistWrapper = styled.div`
 
 `
 
+export const TabSelectionsWrapper = styled(RowCenter)`
+  align-items: stretch;
+  width: 100%;
+`
+
 export const TabSelections = styled(RowCenter)`
   border-radius: ${ rem(4) };
-  margin-bottom: ${ rem(24) };
+  flex-basis: 100%;
+  flex-shrink: 1;
   min-height: ${ rem(48) };
   padding: 0 ${ rem(16) };
 

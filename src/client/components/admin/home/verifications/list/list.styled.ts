@@ -9,6 +9,7 @@ import { SmallButton } from "@/styled/collections/button"
 
 
 export const VerificationsListWrapper = styled.ul`
+  margin-top: ${ rem(24) };
   outline: none;
 `
 
