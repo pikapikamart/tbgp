@@ -1,11 +1,13 @@
 import { useFormValidation } from "@/lib/hooks"
+import { useAppDispatch } from "@/lib/hooks/store.hooks"
 import { trpc } from "@/lib/trpc"
 import { UpdateStaffSchema } from "@/src/server/schemas/staff.schema"
+import { updateStaff } from "@/store/slices/staff.slice"
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 
-type StaffBody = UpdateStaffSchema & {
+type UpdateStaffBody = UpdateStaffSchema & {
   [ key: string ] : string
 }
 
@@ -16,12 +18,20 @@ export const useUpdateSettings = ( username: string ) =>{
     handleFormSubmit,
     getFieldsRef
   } = useFormValidation()
+  const updateStaffRef = useRef<UpdateStaffBody>({
+    firstname: "",
+    lastname: "",
+    bio: ""
+  })
   const router = useRouter()
+  const dispatch = useAppDispatch()
   const mutation = trpc.useMutation(["staff.edit"], {
     onSuccess: () =>{
+      dispatch(updateStaff(updateStaffRef.current))
       router.replace(`/storybuilder/${ username }`)
     }
   })
+  
 
   useEffect(() => {
     if ( isValidData ) {
@@ -29,8 +39,9 @@ export const useUpdateSettings = ( username: string ) =>{
         accu[cur.name] = cur.value
 
         return accu
-      }, {} as StaffBody)
+      }, {} as UpdateStaffBody)
       
+      updateStaffRef.current = userData
       mutation.mutate(userData)
     }
   }, [ isValidData ])

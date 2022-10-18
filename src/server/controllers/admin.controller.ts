@@ -53,7 +53,7 @@ export const createAdminHandler = async ( input: AdminSchema ) =>{
     return trpcError("BAD_REQUEST", "Admin password incorrect in creation")
   }
 
-  await createAdmin(input);
+  await createAdminService(input);
 
   return apiResult("Admin created", true);
 }

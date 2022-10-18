@@ -29,7 +29,7 @@ export const positionsData = [
   {
     name: "Sports Editor",
     role: "sectionEditor",
-    id: "writer"
+    id: "sportsEditor"
   },
   {
     name: "Layout Editor",

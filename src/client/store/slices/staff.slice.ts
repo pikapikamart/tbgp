@@ -1,7 +1,10 @@
 import { createSlice  } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { Staff } from "@/src/server/models/staff.model";
-import { setStaffReducer } from "../reducers/staff.reducer";
+import { 
+  sendStaffVerificationReducer, 
+  setStaffReducer, 
+  updateStaffReducer} from "../reducers/staff.reducer";
 import { RootState } from "..";
 
 
@@ -26,7 +29,9 @@ export const staffSlice = createSlice({
   name: "staff",
   initialState,
   reducers: {
-    setStaff: setStaffReducer
+    setStaff: setStaffReducer,
+    sendStaffVerification: sendStaffVerificationReducer,
+    updateStaff: updateStaffReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -39,7 +44,9 @@ export const staffSlice = createSlice({
 })
 
 export const {
-  setStaff
+  setStaff,
+  sendStaffVerification,
+  updateStaff
 } = staffSlice.actions
 export const selectStaff = ( state: RootState ) => state.staff
 
