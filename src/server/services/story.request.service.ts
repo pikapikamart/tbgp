@@ -10,8 +10,9 @@ import {
   StoryRequest, 
   StoryRequestModel } from "../models/story.request.model";
 
+const here = {} as StoryRequest
 
-export const createStoryRequest = async( storyRequest: DocumentDefinition<StoryRequest> ) => (
+export const createStoryRequestService = async( storyRequest: DocumentDefinition<StoryRequest> ) => (
   StoryRequestModel.create(storyRequest)
 )
 

@@ -2,7 +2,9 @@ import { Context } from "../context/context";
 import { MiddlewareResult } from "@trpc/server/src/internals/middlewares";
 import { findStaff } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
-import { StaffDocument } from "../models/staff.model";
+import { 
+  StaffDocument, 
+  VerifiedStaffDocument } from "../models/staff.model";
 import { AdminDocument } from "../models/admin.model";
 import { findAdminService } from "../services/admin.service";
 
@@ -35,10 +37,24 @@ export const isValidStaff = async( ctx: Context, next: TrpcNext ) =>{
 }
 
 export const isVerifiedStaff = async( ctx: StaffContext, next: TrpcNext ) => {
-  if ( !ctx.staff.position ) {
+  
+  const isVerified = ( context: StaffContext | VerifiedStaffContext ): context is VerifiedStaffContext => {
+    return ( context as VerifiedStaffContext ).staff.position !== null
+  }
+
+  if ( !isVerified(ctx) ){
     return trpcError("FORBIDDEN", "Make sure to be verified first");
   }
-  
+
+  return next({ ctx })
+}
+
+export const isStaffEditor = async( ctx: VerifiedStaffContext, next: TrpcNext ) =>{
+
+  if ( (ctx.staff.position.role!=="sectionEditor" && ctx.staff.position.role!=="seniorEditor") ) {
+    return trpcError("FORBIDDEN", "Only position as an editor is allowed")
+  }
+
   return next({ ctx })
 }
 
@@ -66,6 +82,10 @@ export const isValidAdmin = async( ctx: Context, next: TrpcNext ) => {
 
 export type StaffContext = Context & {
   staff: StaffDocument
+}
+
+export type VerifiedStaffContext = Context & {
+  staff: VerifiedStaffDocument
 }
 
 export type AdminContext = Context & {

@@ -163,7 +163,7 @@ export const BoardMenu = styled.button`
     + ${ BoardInfoList } {
       background-color: ${ ({ theme }) => theme.colors.white2 };
       border-radius: ${ rem(4) };
-      box-shadow: 0 0 4px 2px rgba(0, 0, 0, .15);
+      border: 1px solid ${ ({ theme }) => theme.colors.grey2 };
       display: block;
       padding: ${ rem(12) } ${ rem(16) };
       position: absolute;

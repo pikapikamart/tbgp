@@ -9,6 +9,7 @@ import {
   getMultipleAssignedStoryRequestsHandler,
   getMultipleCreatedStoryRequestHandler } from "../controllers/story.request.controller";
 import { 
+  isStaffEditor,
   isValidStaff, 
   isVerifiedStaff } from "../middlewares/router.middleware";
 import { createRouter } from "../router/createRouter";
@@ -31,18 +32,20 @@ export const storyRequestRouter = createRouter()
   .query("get-multiple-assigned", {
     resolve: () => getMultipleAssignedStoryRequestsHandler()
   })
-  .mutation("create", {
-    input: storyRequestSchema,
-    resolve: ({ input, ctx }) => createStoryRequestHandler(input, ctx)
-  })
   // verification
   .middleware(({ ctx, next }) => isVerifiedStaff(ctx, next))
-  .query("get-multiple-created", {
-    resolve: ({ ctx }) => getMultipleCreatedStoryRequestHandler(ctx)
-  })
   .mutation("apply", {
     input: storyRequestIdSchema,
     resolve: ({ input, ctx }) => applyStoryRequestHandler(input, ctx)
+  })
+  // verification
+  .middleware(({ ctx, next }) => isStaffEditor(ctx, next))
+  .query("get-multiple-created", {
+    resolve: ({ ctx }) => getMultipleCreatedStoryRequestHandler(ctx)
+  })
+  .mutation("create", {
+    input: storyRequestSchema,
+    resolve: ({ input, ctx }) => createStoryRequestHandler(input, ctx)
   })
   .mutation("accept", {
     input: acceptStoryRequestSchema,

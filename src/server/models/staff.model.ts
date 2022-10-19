@@ -8,6 +8,7 @@ import {
   BaseUser, 
   BaseUserDocument, 
   baseUserModel} from "./base.user.model";
+import { ModifyType } from "types/utils";
 
 
 export type Role = "writer" | "sectionEditor" | "seniorEditor"
@@ -48,6 +49,11 @@ export type Staff = BaseUser & {
 }
 
 export type StaffDocument = Staff & BaseUserDocument & {};
+export type VerifiedStaffDocument = ModifyType<Staff, {
+  position: Position,
+  storyRequests: StoryRequests,
+  writeups: Writeups
+}> & BaseUserDocument
 
 export const Roles: ["writer", "sectionEditor", "seniorEditor"] = [ "writer", "sectionEditor", "seniorEditor"]
 

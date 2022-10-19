@@ -5,20 +5,30 @@ import {
 
 export const storyRequestSchema = z
   .object({
-    title: z.string({ required_error: "Title is required" }),
-    category: z.string({ required_error: "Category is required" }),
-    instruction: z.string({ required_error: "Instruction is required" }),
+    title: z
+      .string({ required_error: "Title is required" })
+      .min(1, "Title should not be empty"),
+    category: z
+      .string({ required_error: "Category is required" })
+      .min(1, "Category should not be empty"),
+    instruction: z
+      .string({ required_error: "Instruction is required" })
+      .min(1, "Instruction should not be empty"),
     assignedMembers: z.array(z.string()).optional()
   })
 
 export const storyRequestIdSchema = z
   .object({
-    storyRequestId: z.string({ required_error: "Story request storyRequestId is required" })
+    storyRequestId: z
+      .string({ required_error: "Story request's Id is required" })
+      .min(1, "Story request's Id should not be empty")
   })
 
 export const acceptStoryRequestSchema = z
   .object({
-    bastionId: z.string({ required_error: "Bastion Id is required" }),
+    bastionId: z
+      .string({ required_error: "Bastion Id is required" })
+      .min(1, "Bastion Id should not be empty"),
   })
   .merge(storyRequestIdSchema)
 

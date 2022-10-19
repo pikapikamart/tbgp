@@ -29,3 +29,7 @@ export const modelComparePassword = async(
     return false;
   }
 }
+
+export const convertToObjectId = ( id: string ) => {
+  return new mongoose.Types.ObjectId(id)
+}

@@ -1,8 +1,7 @@
-import { CATEGORIES } from "../models/story.request.model";
+import { storyCategories } from "../models/story.request.model";
 import { 
   Staff,
-  StaffDocument, 
-  STAFF_POSITIONS } from "../models/staff.model";
+  StaffDocument } from "../models/staff.model";
 import { 
   StoryRequestSchema,
   AcceptStoryRequestSchema,
@@ -13,7 +12,7 @@ import {
   updateStaffService } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { 
-  createStoryRequest, 
+  createStoryRequestService, 
   deleteStoryRequest, 
   findManyStoryRequest, 
   findStoryRequest, 
@@ -24,7 +23,7 @@ import {
 import { nanoid } from "nanoid";
 import { AnyBulkWriteOperation } from "mongodb";
 import { createWriteup } from "../services/writeup.service";
-import { StaffContext } from "../middlewares/router.middleware";
+import { StaffContext, VerifiedStaffContext } from "../middlewares/router.middleware";
 import { 
   getCurrentAvailableStoryRequest, 
   getOwnedAvailableStoryRequest, 
@@ -92,11 +91,9 @@ export const getMultipleAssignedStoryRequestsHandler = async() => {
   return apiResultWithData(true, storyRequests)
 }
 
-export const getMultipleCreatedStoryRequestHandler = async( { staff }: StaffContext ) => {
-  
-  if ( staff.position!==STAFF_POSITIONS.editorInChief ) {
-    return trpcError("FORBIDDEN", "Only editor in chief can access created story requests")
-  }
+// ----Verified Editor ----
+
+export const getMultipleCreatedStoryRequestHandler = async( { staff }: VerifiedStaffContext ) => {
 
   const storyRequests = await findManyStoryRequest(
     {
@@ -110,42 +107,6 @@ export const getMultipleCreatedStoryRequestHandler = async( { staff }: StaffCont
 }
 
 // --------Mutations--------
-
-export const createStoryRequestHandler = async( request: StoryRequestSchema, { staff }: StaffContext ) =>{
-
-  if ( STAFF_POSITIONS.editorInChief!==staff.position ) {
-    return trpcError("FORBIDDEN", "Only editor in chief can request story")
-  }
-
-  const foundStoryRequest = await findStoryRequest({ title: request.title });
-
-  if ( foundStoryRequest ) {
-    return trpcError("CONFLICT", "Request already created")
-  }
-
-  const newStoryRequest = await createStoryRequest(
-    {
-      ...request,
-      storyRequestId: nanoid(14),
-      category: CATEGORIES[request.category],
-      assignedMembers: request.assignedMembers? Array.from(new Set(request.assignedMembers)) : [],
-      owner: staff._id,
-      started: false,
-      members: [],
-      requests: []
-    }
-  );
-  await updateStaffService(
-    { bastionId: staff.bastionId },
-    { 
-      $push: {
-        "storyRequests.created": newStoryRequest._id
-      } 
-    } 
-  )
-
-  return apiResult("Story request created", newStoryRequest.storyRequestId);
-}
 
 export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
   const foundStoryRequest = await getCurrentAvailableStoryRequest(storyRequestId);
@@ -183,7 +144,43 @@ export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestI
   return apiResult("Successfully applied to story", true);
 }
 
-export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchema, { staff }: StaffContext ) => {
+// ----Verified Editor ----
+
+export const createStoryRequestHandler = async( request: StoryRequestSchema, { staff }: VerifiedStaffContext ) =>{
+
+  const foundStoryRequest = await findStoryRequest({ title: request.title });
+
+  if ( foundStoryRequest ) {
+    return trpcError("CONFLICT", "Request already created")
+  }
+
+  const newStoryRequest = await createStoryRequestService(
+    {
+      ...request,
+      storyRequestId: nanoid(14),
+      category: storyCategories[request.category],
+      owner: staff._id,
+      assignedMembers: request.assignedMembers? Array.from(new Set(request.assignedMembers)) : null,
+      started: false,
+      members: [],
+      requests: [],
+      writeupId: null
+    }
+  )
+  
+  await updateStaffService(
+    { bastionId: staff.bastionId },
+    { 
+      $push: {
+        "storyRequests.created": newStoryRequest._id
+      } 
+    } 
+  )
+
+  return apiResult("Story request created", newStoryRequest.storyRequestId);
+}
+
+export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchema, { staff }: VerifiedStaffContext ) => {
   const foundRequester = await findStaff({ bastionId: request.bastionId });
   
   if ( !foundRequester ) {
@@ -226,7 +223,7 @@ export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchem
   return apiResult("Successfully accepted a member", true);
 }
 
-export const deleteStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
+export const deleteStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: VerifiedStaffContext ) => {
   const foundStoryRequest = await getOwnedAvailableStoryRequest(storyRequestId, staff._id);
 
   const membersAndRequesters = foundStoryRequest.members.concat(foundStoryRequest.requests);
@@ -259,7 +256,7 @@ export const deleteStoryRequestHandler = async( { storyRequestId }: StoryRequest
   return apiResult("Successfully deleted story request", true);
 }
 
-export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
+export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: VerifiedStaffContext ) => {
   const storyRequest = await getOwnedAvailableStoryRequest(storyRequestId, staff._id);
   const newWriteup = await createWriteup({
     request: storyRequest._id,
@@ -322,7 +319,6 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
   await updateStoryRequest(
     { storyRequestId: storyRequestId }, 
     {
-      requests: [],
       started: true,
       writeupId: newWriteup.writeupId
     }

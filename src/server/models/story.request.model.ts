@@ -1,36 +1,38 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+import { ModifyType } from "types/utils";
 import { 
   StoryRequestSchema } from "../schemas/story.request.schema";
 import { StaffDocument } from "./staff.model";
 
 
-type Categories = {
-  [ key: string ]: string,
-  sports: "Sports",
-  education: "Education",
-  devCom: "DevCom",
-  literary: "Literary",
-  news: "News"
+type CategoriesIndex = {
+  [ key: string ]: string
 }
 
-export const CATEGORIES: Categories = {
+export const storyCategories: CategoriesIndex = {
+  news: "News",
+  editorial: "Editorial",
+  opinions: "Opinion",
+  features: "Features",
+  literary: "Literary",
+  devComm: "DevComm",
   sports: "Sports",
   education: "Education",
-  devCom: "DevCom",
-  literary: "Literary",
-  news: "News"
 }
 
-export type StoryRequest = StoryRequestSchema & {
+export type StoryRequest = ModifyType<StoryRequestSchema, {
+  assignedMembers: string[] | null
+}> & {
   storyRequestId: string,
   owner: StaffDocument["_id"],
   started: boolean,
   members: StaffDocument["_id"][],
   requests: StaffDocument["_id"][],
-  writeupId?: string
+  writeupId: string | null
 }
 
-export type StoryRequestDocument = StoryRequest & mongoose.Document & {
+export type StoryRequestDocument = StoryRequest & mongoose.Document<mongoose.Types.ObjectId> & {
+  _id: mongoose.Types.ObjectId,
   createdAt: Date
 }
 
@@ -65,12 +67,18 @@ export const storyRequestSchema: mongoose.Schema<StoryRequestDocument> = new mon
     type: String,
     required: true
   },
-  assignedMembers: [{
-    type: String,
-    ref: "Staff"
-  }],
+  assignedMembers: {
+    type: [{
+      type: String,
+      ref: "Staff"
+    }],
+    default: null
+  },
   started: Boolean,
-  writeupId: String
+  writeupId: {
+    type: String,
+    default: null
+  }
 },{ timestamps: true }
 )
 

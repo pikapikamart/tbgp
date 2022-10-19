@@ -41,6 +41,7 @@ export const ComboBoxRole = styled(InputWrapper)<ComboBoxRoleProps>`
   background: url("/icons/icon-triangle.svg") no-repeat calc(100% - ${ rem(14) }) center;
   font-weight: 600;
   min-height: ${ rem(43) };
+  text-align: left;
   width: 100%;
 
   &[aria-expanded="true"] {

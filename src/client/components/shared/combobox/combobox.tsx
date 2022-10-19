@@ -33,7 +33,8 @@ const ComboBox = ({
   labelText,
   addFieldRef, 
   listBoxOptions,
-  registerControl }: ComboBoxProps) => {
+  registerControl 
+}: ComboBoxProps) => {
   const {
     isExpanded,
     listBoxRef,

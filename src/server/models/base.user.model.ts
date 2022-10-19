@@ -6,7 +6,8 @@ export type BaseUser = {
   password: string
 }
 
-export type BaseUserDocument = BaseUser & mongoose.Document & {
+export type BaseUserDocument = BaseUser & mongoose.Document<mongoose.Types.ObjectId> & {
+  _id: mongoose.Types.ObjectId,
   comparePassword: ( pasword: string ) => Promise<boolean>
 }
 

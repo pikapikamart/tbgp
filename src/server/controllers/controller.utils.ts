@@ -3,7 +3,7 @@ import {
   PopulateOptions,
   ProjectionType,
   QueryOptions} from "mongoose";
-import { StaffDocument } from "../models/staff.model";
+import { StaffDocument, VerifiedStaffDocument } from "../models/staff.model";
 import { 
   StoryRequest, 
   StoryRequestDocument } from "../models/story.request.model";
