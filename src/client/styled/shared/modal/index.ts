@@ -31,7 +31,11 @@ export const ModalWrapper = styled(BaseModalWrapper)<ModalWrapperProps>`
     switch(size) {
       case "small": 
         return css`max-width: ${ fluid(330, 70, 528) };`
+
       case "medium": 
+        return css`max-width: ${ fluid(330, 75, 560) };`
+
+      case "large": 
         return css`max-width: ${ fluid(330, 80, 624) };`
     }
   } }

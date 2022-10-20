@@ -39,7 +39,7 @@ export const useSetupStaffProfile = ( bastionId: string ) =>{
   useEffect(() =>{
     if ( isValidData ) {
       const staffData = getFieldsRef().reduce((accu, cur) =>{
-        accu[cur.name] = cur.value
+        accu[cur.name] = cur.value.trim()
 
         return accu
       }, {} as StaffBody)

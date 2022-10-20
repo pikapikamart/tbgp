@@ -1,4 +1,3 @@
-import { CreateStoryModal } from "@/components/collections/modals/staff/createStory"
 import { BaseModal } from "@/components/shared/modal"
 import { ModalFocusBack } from "@/components/shared/modal/modal.styled"
 import { TabInterface } from "@/components/shared/tablist"
@@ -14,6 +13,7 @@ import {
   CreateRequestButton, 
   RequestsWrapper, 
   StoryRequestsContentContainer } from "./requests.styled"
+import { CreateStoryRequestModal } from "@/components/collections/modals/storyRequest/create"
 
 
 const isEditor = ( staff: StaffState ) =>{
@@ -34,7 +34,7 @@ const Requests = () =>{
     handleExpansion()
     modalContext.addModal(
       <BaseModal exit={ handleExpansion }>
-        <CreateStoryModal />
+        <CreateStoryRequestModal />
       </BaseModal>
     )
   }

@@ -128,7 +128,6 @@ export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema
   return trpcSuccess(true, aggregatedStoryRequests);
 }
 
-
 // --------Mutations--------
 
 export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {

@@ -38,7 +38,7 @@ export const useSignupValidation = () => {
 
   useEffect(() =>{
     if ( isValidData ) {
-      setBastionId(getFieldsRef()[0].value)
+      setBastionId(getFieldsRef()[0].value.trim())
       setShouldFetch(true)
     }
   }, [ isValidData ])

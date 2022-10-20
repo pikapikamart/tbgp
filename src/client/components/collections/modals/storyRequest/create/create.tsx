@@ -8,7 +8,7 @@ const CreateStory = () =>{
 
   return (
     <ModalWrapper
-      size="medium"
+      size="large"
       padding="medium">
         <ModalHeading
           size="medium"

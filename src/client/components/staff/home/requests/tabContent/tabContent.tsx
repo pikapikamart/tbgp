@@ -1,4 +1,4 @@
-import { InitialStoryRequest } from "@/components/shared/storyRequest"
+import { InitialStoryRequest } from "@/components/shared/storyRequest/initial"
 import { StoryRequestTabSchema } from "@/src/server/schemas/story.request.schema"
 import { Plock } from "react-plock"
 import { masonryBreakpoints } from "../data"

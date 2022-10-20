@@ -16,3 +16,8 @@ export const HeadingLarge = styled.h1`
   color: ${ ({ theme }) => theme.colors.dark1 };
   font-size: ${ fluid(20, 5, 32) };
 `
+
+export const HeadingVSmall = styled.h3`
+  color: ${ ({ theme }) => theme.colors.dark1 };
+  font-size: ${ fluid(18, 1.7, 22) };
+`

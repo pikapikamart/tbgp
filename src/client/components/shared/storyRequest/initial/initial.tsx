@@ -1,6 +1,9 @@
+import { useExpansion } from "@/lib/hooks"
+import { useModalContext } from "@/store/context/modal/modal"
 import { InitialStoryRequest } from "@/store/slices/storyRequests.slice"
 import { RowCenter } from "@/styled/shared/helpers"
-import { categoryColors } from "./data"
+import { BaseModal } from "@/components/shared/modal"
+import { categoryColors } from "../data"
 import { 
   StoryRequestWrapper,
   Header,
@@ -10,7 +13,7 @@ import {
   Footer,
   Instruction,
   CreatedDate
- } from "./storyRequest.styled"
+ } from "./initial.styled"
 
 
 type StoryRequestProps = {
@@ -25,11 +28,23 @@ export const convertDateToString = ( date: string ) =>{
 }
 
 const StoryRequest = ({ request }: StoryRequestProps) =>{
+  const { isExpanded, handleExpansion } = useExpansion()
+  const modalContext = useModalContext()
+
+  const handleSetModal = () =>{
+    handleExpansion()
+    modalContext.addModal(
+      <BaseModal exit={ handleExpansion }>
+      </BaseModal>
+    )
+  }
 
   return (
     <StoryRequestWrapper>
       <Header>
-        <Title>{ request.title }</Title>
+        <Title
+          onClick={ handleSetModal }
+          aria-expanded={ isExpanded }>{ request.title }</Title>
         <RowCenter>
           <Category colored={ categoryColors[request.category] }>{ request.category.toLowerCase() }</Category>
           <JoinedCount as="p">

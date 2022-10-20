@@ -171,7 +171,7 @@ export const useUserLogin = (
   useEffect(() =>{
     if ( isValidData ) {
       const user = getFieldsRef().reduce((accu, cur) =>{
-        accu[cur.name] = cur.value
+        accu[cur.name] = cur.value.trim()
 
         return accu
       }, {} as UserInformation)

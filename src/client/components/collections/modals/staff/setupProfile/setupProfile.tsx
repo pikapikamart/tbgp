@@ -12,7 +12,7 @@ const SetupProfile = ({ bastionId }: SetupProfileProps) =>{
 
   return (
     <ModalWrapper
-      size="medium"
+      size="large"
       padding="large">
         <ModalHeading
           size="medium"

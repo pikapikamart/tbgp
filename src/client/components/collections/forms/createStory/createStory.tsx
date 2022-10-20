@@ -17,7 +17,7 @@ import {
   CreateStoryWrapper } from "./createStory.styled"
 import { storyCategories } from "./data"
 import { useCreateStoryRequest } from "./createStory.hook"
-import { AssignMembersModal } from "@/components/collections/modals/staff/createStory/assignMembers"
+import { AssignMembersModal } from "@/components/collections/modals/storyRequest/create/assign"
 import { AssignMembersForm } from "./assignMembers"
 
 

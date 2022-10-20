@@ -36,7 +36,7 @@ export const useUpdateSettings = ( username: string ) =>{
   useEffect(() => {
     if ( isValidData ) {
       const userData = getFieldsRef().reduce((accu, cur) =>{
-        accu[cur.name] = cur.value
+        accu[cur.name] = cur.value.trim()
 
         return accu
       }, {} as UpdateStaffBody)

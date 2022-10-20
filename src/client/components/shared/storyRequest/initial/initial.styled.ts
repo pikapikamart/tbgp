@@ -26,11 +26,12 @@ export const Header = styled.div`
   ` }
 `
 
-export const Title = styled.p`
+export const Title = styled.button`
   color: ${ ({ theme }) => theme.colors.dark2 };
   font-size: ${ fluid(15, 1.3, 17) };
   font-weight: 700;
   margin-bottom: ${ rem(8) };
+  text-align: left;
 `
 
 type CategoryProps = {

@@ -12,7 +12,6 @@ const Admin = () =>{
     addFieldRef,
     ariaLive,
     handleFormSubmit,
-    data
   } = useUserLogin("admin", "/admin", "admin.validate")
 
   return (
