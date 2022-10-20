@@ -5,9 +5,7 @@ import {
   deleteStoryRequestHandler,
   startStoryRequestHandler,
   getMultipleStoryRequestsHandler, 
-  getStoryRequestHandler,
-  getMultipleAssignedStoryRequestsHandler,
-  getMultipleCreatedStoryRequestHandler } from "../controllers/story.request.controller";
+  getStoryRequestHandler } from "../controllers/story.request.controller";
 import { 
   isStaffEditor,
   isValidStaff, 
@@ -31,9 +29,6 @@ export const storyRequestRouter = createRouter()
     input: storyRequestTabSchema,
     resolve: ({ ctx, input }) => getMultipleStoryRequestsHandler(input, ctx)
   })
-  .query("get-multiple-assigned", {
-    resolve: () => getMultipleAssignedStoryRequestsHandler()
-  })
   // verification
   .middleware(({ ctx, next }) => isVerifiedStaff(ctx, next))
   .mutation("apply", {
@@ -42,9 +37,6 @@ export const storyRequestRouter = createRouter()
   })
   // verification
   .middleware(({ ctx, next }) => isStaffEditor(ctx, next))
-  .query("get-multiple-created", {
-    resolve: ({ ctx }) => getMultipleCreatedStoryRequestHandler(ctx)
-  })
   .mutation("create", {
     input: storyRequestSchema,
     resolve: ({ input, ctx }) => createStoryRequestHandler(input, ctx)

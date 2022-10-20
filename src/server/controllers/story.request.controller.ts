@@ -72,11 +72,6 @@ export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema
   let matchQuery: any = {};
   
   switch( tab ) {
-    case "open":
-      matchQuery.assignedMembers = {
-        $eq: null
-      }
-      break
     case "assigned":
       matchQuery.assignedMembers = {
         $ne:null
@@ -88,6 +83,11 @@ export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema
       }
 
       matchQuery.owner = staff._id
+      break
+    default:
+      matchQuery.assignedMembers = {
+        $eq: null
+      }
   }
 
   const aggregatedStoryRequests = await findManyStoryRequestAggregator(
@@ -124,39 +124,10 @@ export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema
       }
     ]
   )
-
+   
   return trpcSuccess(true, aggregatedStoryRequests);
 }
 
-export const getMultipleAssignedStoryRequestsHandler = async() => {
-  const storyRequests = await findManyStoryRequestService(
-    {
-      started: false,
-      assignedMembers: {
-        $ne: []
-      }
-    },
-    "-_id -owner -assignedMembers -requests",
-    optionsStoryRequest
-  )
-
-  return trpcSuccess(true, storyRequests)
-}
-
-// ----Verified Editor ----
-
-export const getMultipleCreatedStoryRequestHandler = async( { staff }: VerifiedStaffContext ) => {
-
-  const storyRequests = await findManyStoryRequestService(
-    {
-      owner: staff._id
-    },
-    "-_id -owner -assignedMembers ",
-    optionsStoryRequest
-  );
-
-  return trpcSuccess(true, storyRequests);
-}
 
 // --------Mutations--------
 
