@@ -1,6 +1,6 @@
 import { Context } from "../context/context";
 import { MiddlewareResult } from "@trpc/server/src/internals/middlewares";
-import { findStaff } from "../services/staff.service";
+import { findStaffService } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { 
   StaffDocument, 
@@ -22,7 +22,7 @@ export const isValidStaff = async( ctx: Context, next: TrpcNext ) =>{
     return trpcError("FORBIDDEN", "Only staff account can proceed")
   }
 
-  const foundStaff = await findStaff({ email: ctx.token?.email }, {}, { lean: false });
+  const foundStaff = await findStaffService({ email: ctx.token?.email }, {}, { lean: false });
 
   if ( !foundStaff ) {
     return trpcError("UNAUTHORIZED", "Please login as staff properly")

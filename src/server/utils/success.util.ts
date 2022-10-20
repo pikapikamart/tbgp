@@ -7,7 +7,7 @@ export const apiResult = ( message: string, success: boolean | string ) => (
   }
 )
 
-export const apiResultWithData = <T>( success: boolean, data: T ) => {
+export const trpcSuccess = <T>( success: boolean, data: T ) => {
 
   return {
     success,

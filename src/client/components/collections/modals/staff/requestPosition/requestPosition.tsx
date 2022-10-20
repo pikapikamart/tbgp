@@ -10,9 +10,7 @@ const RequestPosition = () => {
     <ModalWrapper
       size="small"
       padding="large">
-        <ModalHeading
-          size="medium"
-          id="modal-heading">Verify your account now
+        <ModalHeading size="medium">Verify your account now
         </ModalHeading>
         <RequestPositionForm />
     </ModalWrapper>

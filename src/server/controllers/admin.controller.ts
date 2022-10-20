@@ -11,7 +11,7 @@ import { updateStaffService } from "../services/staff.service";
 import { Staff } from "../models/staff.model";
 import { 
   apiResult, 
-  apiResultWithData } from "../utils/success.util";
+  trpcSuccess } from "../utils/success.util";
 import { AdminContext } from "../middlewares/router.middleware";
 import { BaseUserSchema } from "../schemas/base.user.schema";
 import { adminValidator } from "./controller.utils";
@@ -32,7 +32,7 @@ export const validateAdminHandler = async( { email, password }: BaseUserSchema )
 
 export const getProfileHandler = async({ admin }: AdminContext) =>{
   
-  return apiResultWithData(true,{
+  return trpcSuccess(true,{
     bastionIds: admin.bastionIds,
     verifications: admin.verifications
   })
@@ -73,7 +73,7 @@ export const createBastionIdHandler = async( { admin }: AdminContext ) =>{
     }
   })
 
-  return apiResultWithData(true, createdBastionId);
+  return trpcSuccess(true, createdBastionId);
 }
 
 export const verifyPositionHandler = async ( 

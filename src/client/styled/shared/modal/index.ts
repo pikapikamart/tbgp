@@ -55,7 +55,9 @@ type ModalHeadingProps = {
   align?: string
 }
 
-export const ModalHeading = styled.h2<ModalHeadingProps>`
+export const ModalHeading = styled.h2.attrs({
+  id: "modal-heading"
+})<ModalHeadingProps>`
   text-align: ${ ({ align }) => align? align : "center" };
 
   ${ ({ size }) => {

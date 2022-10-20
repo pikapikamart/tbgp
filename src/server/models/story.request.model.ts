@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import { ModifyType } from "types/utils";
 import { 
   StoryRequestSchema } from "../schemas/story.request.schema";

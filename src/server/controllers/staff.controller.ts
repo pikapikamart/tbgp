@@ -10,14 +10,15 @@ import {
   UsernameSchema} from "../schemas/staff.schema";
 import { updateAdminService } from "../services/admin.service";
 import { 
-  createStaff, 
-  findStaff, 
+  createStaffService, 
+  findManyStaffsService, 
+  findStaffService, 
   staffPopulatorService, 
   updateStaffService } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { 
   apiResult, 
-  apiResultWithData } from "../utils/success.util";
+  trpcSuccess } from "../utils/success.util";
 import { 
   checkBastionIdExistence, 
   getCurrentAdmin, 
@@ -33,7 +34,7 @@ export const validateBastionIdHandler = async( bastionId: BastionIdSchema ) => {
 }
 
 export const validateStaffHandler = async( { email, password }: BaseUserSchema ) => {
-  const foundStaff = await findStaff({ email }, {}, { lean: false })
+  const foundStaff = await findStaffService({ email }, {}, { lean: false })
 
   if ( !foundStaff ) {
     return trpcError("NOT_FOUND", "No user found with email")
@@ -47,17 +48,17 @@ export const validateStaffHandler = async( { email, password }: BaseUserSchema )
 }
 
 export const getStaffHandler = async( username: UsernameSchema, { staff: staffCtx }: StaffContext ) => {
-  const staff = staffValidator(await findStaff(
+  const staff = staffValidator(await findStaffService(
     { username },
     "-_id firstname lastname bastionId position bio"
   ))
     // add the writings since this will be used when visiting a writer
 
-  return apiResultWithData(true, staff)
+  return trpcSuccess(true, staff)
 }
 
 export const getProfileHandler = async( { staff }: StaffContext ) =>{
-  const populatedStaff = staffValidator(await findStaff(
+  const populatedStaff = staffValidator(await findStaffService(
     { email: staff.email },
     "-_id -__v -password",
     {},
@@ -75,7 +76,7 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
     }
   )
 
-  return apiResultWithData(true, populatedStaff)
+  return trpcSuccess(true, populatedStaff)
 }
 
 export const populateStaffStoryRequests = async({ staff }: StaffContext ) => {
@@ -107,7 +108,7 @@ export const populateStaffStoryRequests = async({ staff }: StaffContext ) => {
     }
   }
 
-  return apiResultWithData(true, requestsData);
+  return trpcSuccess(true, requestsData);
 }
 
 export const populateStaffWriteups = async({ staff }: StaffContext ) => {
@@ -121,7 +122,18 @@ export const populateStaffWriteups = async({ staff }: StaffContext ) => {
 
   const writeupsData = Object.assign({}, staff.writeups);
 
-  return apiResultWithData(true, writeupsData);
+  return trpcSuccess(true, writeupsData);
+}
+
+// ----Verified Editor ----
+
+export const getWritersNamesHandler = async() =>{
+  const writers = await findManyStaffsService(
+    { position: { $ne: null } },
+    "-_id bastionId firstname lastname"
+  )
+
+  return trpcSuccess(true, writers)
 }
 
 // --------Mutations--------
@@ -129,13 +141,13 @@ export const populateStaffWriteups = async({ staff }: StaffContext ) => {
 export const registerStaffHandler = async( staffBody: StaffSchema ) => {
   await checkBastionIdExistence(staffBody.bastionId);
 
-  const foundStaff = await findStaff({ email: staffBody.email });
+  const foundStaff = await findStaffService({ email: staffBody.email });
 
   if ( foundStaff ) {
     return trpcError("CONFLICT", "Email is already in use")
   }
 
-  await createStaff(
+  await createStaffService(
     {
       ...staffBody,
       username: staffBody.email.split("@")[0],
@@ -152,7 +164,7 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
     }
   })
 
-  return apiResultWithData(true, staffBody)
+  return trpcSuccess(true, staffBody)
 }
 
 export const requestStaffPositionHandler = async( position: Position, { staff }: StaffContext ) => {

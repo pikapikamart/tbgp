@@ -7,8 +7,8 @@ import {
   AcceptStoryRequestSchema,
   StoryRequestIdSchema} from "../schemas/story.request.schema";
 import { 
-  bulkUpdateStaff,
-  findStaff, 
+  bulkUpdateStaffService,
+  findStaffService, 
   updateStaffService } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
 import { 
@@ -19,7 +19,7 @@ import {
   updateStoryRequest } from "../services/story.request.service";
 import { 
   apiResult, 
-  apiResultWithData } from "../utils/success.util";
+  trpcSuccess } from "../utils/success.util";
 import { nanoid } from "nanoid";
 import { AnyBulkWriteOperation } from "mongodb";
 import { createWriteup } from "../services/writeup.service";
@@ -73,7 +73,7 @@ export const getMultipleStoryRequestsHandler = async() => {
     optionsStoryRequest
   );
 
-  return apiResultWithData(true, storyRequests);
+  return trpcSuccess(true, storyRequests);
 }
 
 export const getMultipleAssignedStoryRequestsHandler = async() => {
@@ -88,7 +88,7 @@ export const getMultipleAssignedStoryRequestsHandler = async() => {
     optionsStoryRequest
   )
 
-  return apiResultWithData(true, storyRequests)
+  return trpcSuccess(true, storyRequests)
 }
 
 // ----Verified Editor ----
@@ -103,7 +103,7 @@ export const getMultipleCreatedStoryRequestHandler = async( { staff }: VerifiedS
     optionsStoryRequest
   );
 
-  return apiResultWithData(true, storyRequests);
+  return trpcSuccess(true, storyRequests);
 }
 
 // --------Mutations--------
@@ -181,7 +181,7 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
 }
 
 export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchema, { staff }: VerifiedStaffContext ) => {
-  const foundRequester = await findStaff({ bastionId: request.bastionId });
+  const foundRequester = await findStaffService({ bastionId: request.bastionId });
   
   if ( !foundRequester ) {
     return trpcError("BAD_REQUEST", "Use valid requester bastion Id")
@@ -228,7 +228,7 @@ export const deleteStoryRequestHandler = async( { storyRequestId }: StoryRequest
 
   const membersAndRequesters = foundStoryRequest.members.concat(foundStoryRequest.requests);
 
-  await bulkUpdateStaff(membersAndRequesters.map(( storyRequestId ): AnyBulkWriteOperation<Staff> => (
+  await bulkUpdateStaffService(membersAndRequesters.map(( storyRequestId ): AnyBulkWriteOperation<Staff> => (
     {
       updateOne: {
         filter: {
@@ -287,7 +287,7 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
   }
 
   // remove all request made by users to the story
-  await bulkUpdateStaff(storyRequest.requests.map(( storyRequestId: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
+  await bulkUpdateStaffService(storyRequest.requests.map(( storyRequestId: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
     {
       updateOne: {
         filter: {
@@ -302,7 +302,7 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
     }
   )));
   // // add the writeup to all members of the story
-  await bulkUpdateStaff(storyRequest.members.map(( storyRequestId: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
+  await bulkUpdateStaffService(storyRequest.members.map(( storyRequestId: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
     {
       updateOne: {
         filter: {

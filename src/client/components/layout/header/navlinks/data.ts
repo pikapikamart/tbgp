@@ -27,10 +27,10 @@ export const linksData: Links = {
       name: "Writings",
       path: "/storybuilder/writings"
     },
-    {
-      name: "People",
-      path: "/storybuilder/people"
-    }
+    // {
+    //   name: "People",
+    //   path: "/storybuilder/people"
+    // }
   ],
   guest: [
 

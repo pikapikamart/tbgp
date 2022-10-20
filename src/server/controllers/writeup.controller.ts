@@ -6,7 +6,7 @@ import { updateWriteup } from "../services/writeup.service";
 import { trpcError } from "../utils/error.util";
 import { 
   apiResult, 
-  apiResultWithData } from "../utils/success.util";
+  trpcSuccess } from "../utils/success.util";
 import { 
   getSingleOwnedWriteup, 
   getSingleWriteup } from "./controller.utils";
@@ -27,7 +27,7 @@ export const getWriteupHandler = async( writeupId : WriteupIdSchema ) => {
     }
   );
 
-  return apiResultWithData(true, writeup);
+  return trpcSuccess(true, writeup);
 }
 
 // --------Mutations--------

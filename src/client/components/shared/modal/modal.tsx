@@ -1,5 +1,4 @@
 import { useModalContext } from "@/store/context/modal/modal"
-import { useEffect } from "react"
 import { useFocusModal } from "./modal.hooks"
 import { 
   BaseModalWrapper, 
@@ -9,18 +8,21 @@ import {
 
 type ModalProps = {
   children: React.ReactNode,
+  isChild?: boolean,
   exit?: () => void
 }
 
-const Modal = ({ children, exit }: ModalProps) => {
+const Modal = ({ children, isChild, exit }: ModalProps) => {
   const { modalRef } = useFocusModal()
   const modalContext = useModalContext()
 
-  useEffect(() =>{
-    document.body.classList.add("no-scroll")
+  const handleExitModal = () =>{
+    exit? exit() : null
 
-    return () => document.body.classList.remove("no-scroll")
-  }, [])
+    if ( !isChild ) {
+      modalContext.removeModal()
+    }
+  }
 
   return (
     <BaseModalWrapper
@@ -29,10 +31,7 @@ const Modal = ({ children, exit }: ModalProps) => {
       ref={ modalRef }
       aria-labelledby="modal-heading">
       <ModalDocument role="document">
-        <ModalExit onClick={ () => {
-          modalContext.removeModal()
-          exit? exit() : null
-        } } />
+        <ModalExit onClick={ handleExitModal } />
         { children }
       </ModalDocument>
     </BaseModalWrapper>

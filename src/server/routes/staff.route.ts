@@ -7,8 +7,10 @@ import {
   updateStaffHandler,
   populateStaffStoryRequests,
   populateStaffWriteups,
-  getProfileHandler} from "../controllers/staff.controller";
+  getProfileHandler,
+  getWritersNamesHandler} from "../controllers/staff.controller";
 import { 
+  isStaffEditor,
   isValidStaff, 
   isVerifiedStaff } from "../middlewares/router.middleware";
 import { createRouter } from "../router/createRouter";
@@ -58,4 +60,9 @@ export const staffRouter = createRouter()
   })
   .query("populate-writeups", {
     resolve: ({ ctx }) => populateStaffWriteups(ctx)
+  })
+  // verification
+  .middleware(({ ctx, next }) => isStaffEditor(ctx, next))
+  .query("get-writers-name", {
+    resolve: () => getWritersNamesHandler()
   })

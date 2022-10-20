@@ -16,8 +16,7 @@ const SetupProfile = ({ bastionId }: SetupProfileProps) =>{
       padding="large">
         <ModalHeading
           size="medium"
-          align="left"
-          id="modal-heading">Fill up profile
+          align="left">Fill up profile
         </ModalHeading>
         <SetupStaffForm bastionId={ bastionId } />
     </ModalWrapper>

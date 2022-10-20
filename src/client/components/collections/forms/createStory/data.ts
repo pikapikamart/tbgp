@@ -1,14 +1,18 @@
 
 
-export const storyCategories = [
-  {
-    name: "Sports",
-    value: "sports",
-    id: "sports"
-  },
-  {
-    name: "News",
-    value: "news",
-    id: "news"
-  }
-]
+const categories = {
+  news: "News",
+  editorial: "Editorial",
+  opinions: "Opinion",
+  features: "Features",
+  literary: "Literary",
+  devComm: "DevComm",
+  sports: "Sports",
+  education: "Education",
+}
+
+export const storyCategories = Object.entries(categories).map(category => ({
+  name: category[1],
+  value: category[0],
+  id: category[0]
+}))

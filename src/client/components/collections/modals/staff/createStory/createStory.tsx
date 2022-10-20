@@ -11,7 +11,6 @@ const CreateStory = () =>{
       size="medium"
       padding="medium">
         <ModalHeading
-          id="modal-heading"
           size="medium"
           align="left">Story Request
         </ModalHeading>

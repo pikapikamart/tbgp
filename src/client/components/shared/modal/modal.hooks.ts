@@ -12,6 +12,12 @@ export const useFocusModal = () =>{
     }
   }, [])
 
+  useEffect(() =>{
+    document.body.classList.add("no-scroll")
+
+    return () => document.body.classList.remove("no-scroll")
+  }, [])
+
   return {
     modalRef
   }

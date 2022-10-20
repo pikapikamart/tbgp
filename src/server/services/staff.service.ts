@@ -12,7 +12,7 @@ import {
   StaffModel } from "../models/staff.model";
 
 
-export const findStaff = async( 
+export const findStaffService = async( 
   query: FilterQuery<Staff>,
   projection: ProjectionType<Staff> = {},
   options: QueryOptions = { lean: true } ,
@@ -21,7 +21,7 @@ export const findStaff = async(
   populate? StaffModel.findOne(query, projection, options).populate(populate) : StaffModel.findOne(query, projection, options)
 )
 
-export const createStaff = async( staff: DocumentDefinition<Staff> ) => (
+export const createStaffService = async( staff: DocumentDefinition<Staff> ) => (
   StaffModel.create(staff)
 )
 
@@ -32,7 +32,7 @@ export const updateStaffService = async(
   StaffModel.findOneAndUpdate(query, update)
 )
 
-export const bulkUpdateStaff = async( input: any ) => (
+export const bulkUpdateStaffService = async( input: any ) => (
   StaffModel.bulkWrite(input)
 )
 
@@ -41,4 +41,12 @@ export const staffPopulatorService = async(
   populate: PopulateOptions
 ) => (
   await staff.populate(populate)
+)
+
+export const findManyStaffsService = async( 
+  query: FilterQuery<Staff>,
+  projection: ProjectionType<Staff> = {},
+  options: QueryOptions = { lean: true } 
+) => (
+  StaffModel.find(query, projection, options)
 )

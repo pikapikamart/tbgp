@@ -5,7 +5,7 @@ import { connectDatabase } from "src/server/database";
 import { StaffDocument } from "src/server/models/staff.model";
 import { AdminDocument } from "src/server/models/admin.model";
 import { findAdminService } from "src/server/services/admin.service";
-import { findStaff } from "src/server/services/staff.service";
+import { findStaffService } from "src/server/services/staff.service";
 
 
 export const nextAuthOptions: NextAuthOptions = {
@@ -28,7 +28,7 @@ export const nextAuthOptions: NextAuthOptions = {
         if ( user.userType==="admin" ) {
           userExistence = await findAdminService({ email: user.email });
         } else if ( user.userType==="staff" ) {
-          userExistence = await findStaff({ email: user.email }, {}, { lean: false })
+          userExistence = await findStaffService({ email: user.email }, {}, { lean: false })
         }
 
         if ( !userExistence || !await userExistence.comparePassword(user.password as string) ) {

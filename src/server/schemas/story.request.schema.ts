@@ -1,6 +1,7 @@
 import { 
   TypeOf, 
   z } from "zod";
+import { bastionIdSchema } from "./staff.schema";
 
 
 export const storyRequestSchema = z
@@ -14,7 +15,7 @@ export const storyRequestSchema = z
     instruction: z
       .string({ required_error: "Instruction is required" })
       .min(1, "Instruction should not be empty"),
-    assignedMembers: z.array(z.string()).optional()
+    assignedMembers: z.array(bastionIdSchema).optional()
   })
 
 export const storyRequestIdSchema = z
