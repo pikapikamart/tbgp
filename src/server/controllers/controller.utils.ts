@@ -58,7 +58,7 @@ export const staffValidator = <T,>( staff: T ) => {
 
 export const storyRequestValidator = <T,>( story: T ) => {
   if ( !story ) {
-    return trpcError("BAD_REQUEST", "Send a valid story request Id")
+    return trpcError("NOT_FOUND", "No story request found with this id")
   }
 
   return story

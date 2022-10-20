@@ -6,7 +6,7 @@ import {
 import { ParamsPath } from "./tablist"
 
 
-export const useTablistSelection = ( paramsPaths : ParamsPath[]) => {
+export const useTablistSelection = ( paramsPaths : ParamsPath[], isRouting: boolean = true ) => {
   const [ currentTabindex, setCurrentTabindex ] = useState(0)
   const tabsRefs = useRef<HTMLButtonElement[]>([])
   const currentFocusIndexRef = useRef(0)
@@ -45,10 +45,12 @@ export const useTablistSelection = ( paramsPaths : ParamsPath[]) => {
       const dataIndex = parseInt(dataset.index)
       setCurrentTabindex(dataIndex)
 
-      if ( paramsPaths[dataIndex].query ) {
-        router.replace(router.pathname + `?tab=${ paramsPaths[dataIndex].query }`)
-      } else {
-        router.replace(router.pathname.split("?")[0])
+      if ( isRouting ) {
+        if ( paramsPaths[dataIndex].query ) {
+          router.replace(router.pathname + `?tab=${ paramsPaths[dataIndex].query }`)
+        } else {
+          router.replace(router.pathname.split("?")[0])
+        }
       }
     }
   }

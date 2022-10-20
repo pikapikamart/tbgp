@@ -11,6 +11,21 @@ export type InitialStoryRequest = ModifyType<Omit<StoryRequest, "owner" | "reque
   createdAt: string
 }>
 
+type StaffProfile = {
+  firstname: string,
+  lastname: string,
+  username: string,
+  bastionId: string
+}
+
+export type FullStoryRequest = ModifyType<StoryRequest, {
+  owner: StaffProfile,
+  members: StaffProfile[],
+  assignedMember: StaffProfile[],
+  requests: StaffProfile[],
+  createdAt: string
+}>
+
 export type StoryRequestsState = {
   open: InitialStoryRequest[],
   assigned: InitialStoryRequest[],

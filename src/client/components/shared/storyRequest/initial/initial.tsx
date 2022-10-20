@@ -14,6 +14,7 @@ import {
   Instruction,
   CreatedDate
  } from "./initial.styled"
+import { StoryRequestModal } from "@/components/collections/modals/storyRequest"
 
 
 type StoryRequestProps = {
@@ -35,6 +36,7 @@ const StoryRequest = ({ request }: StoryRequestProps) =>{
     handleExpansion()
     modalContext.addModal(
       <BaseModal exit={ handleExpansion }>
+        <StoryRequestModal storyRequestId={ request.storyRequestId } />
       </BaseModal>
     )
   }

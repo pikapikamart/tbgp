@@ -8,10 +8,11 @@ import {
 import { RootState } from "..";
 
 
-export type StaffState = Omit<Staff, "password" | "bastionId">
+export type StaffState = Omit<Staff, "password">
 
 const initialState: StaffState = {
   email: "",
+  bastionId: "",
   username: "",
   firstname: "",
   lastname: "",

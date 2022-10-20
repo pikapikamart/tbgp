@@ -46,26 +46,30 @@ export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdS
   const foundStoryRequest = storyRequestValidator(await findStoryRequest({ storyRequestId }, "owner"));
   
   if ( foundStoryRequest.owner.equals(staff._id) ) {
-    return await findStoryRequest(
+    const storyRequest = storyRequestValidator(await findStoryRequest(
       { storyRequestId },
       "-_id",
       { lean: false },
       {
         path: "owner requests members assignedMembers",
-        select: "-_id bastionId firstname lastname"
+        select: "-_id bastionId firstname lastname username"
       }
-    )
+    ))
+
+    return trpcSuccess(true, storyRequest)
   } 
 
-  return await getCurrentAvailableStoryRequest(
+  const storyRequest = await getCurrentAvailableStoryRequest(
     storyRequestId,
     "-_id -requests",
     { lean: true },
     {
       path: "owner members assignedMembers",
-      select: "-_id bastionId firstname lastname"
+      select: "-_id bastionId firstname lastname username"
     }
-  );
+  )
+
+  return trpcSuccess(true, storyRequest)
 }
 
 export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema, { staff }: StaffContext ) => {

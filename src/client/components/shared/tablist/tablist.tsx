@@ -14,17 +14,17 @@ export type ParamsPath = {
 type TablistProps = {
   children: React.ReactNode,
   paramsPaths: ParamsPath[],
-  extraChildren?: React.ReactElement
+  extraChildren?: React.ReactElement,
+  isRouting?: boolean
 }
 
-const Tablist = ( { children, paramsPaths, extraChildren }: TablistProps ) =>{
+const Tablist = ( { children, paramsPaths, extraChildren, isRouting }: TablistProps ) =>{
   const {
     currentTabindex,
     addTabRef,
     handleChangeTabFocus,
     handleChangeCurrentTabindex,
-    query
-  } = useTablistSelection(paramsPaths)
+  } = useTablistSelection(paramsPaths, isRouting)
 
   const renderTabSelections = () => {
     const tabSelections = paramsPaths.map((params, index) => (
@@ -45,8 +45,8 @@ const Tablist = ( { children, paramsPaths, extraChildren }: TablistProps ) =>{
   }
 
   return (
-    <TablistWrapper onKeyDown={ handleChangeTabFocus }>
-      <TabSelectionsWrapper>
+    <TablistWrapper>
+      <TabSelectionsWrapper onKeyDown={ handleChangeTabFocus }>
         <TabSelections 
           role="tablist" 
           aria-label="user selections"> { renderTabSelections() }
