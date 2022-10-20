@@ -5,7 +5,7 @@ import { useOpenStoryRequests } from "./open.hook"
 
 
 const Open = () =>{
-  const openStoryRequests = useOpenStoryRequests()
+  const openStoryRequests = useOpenStoryRequests("open")
 
   return (
     <Plock

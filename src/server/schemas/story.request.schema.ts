@@ -33,6 +33,9 @@ export const acceptStoryRequestSchema = z
   })
   .merge(storyRequestIdSchema)
 
+export const storyRequestTabSchema = z.enum(["open", "assigned", "created"])
+
 export type StoryRequestSchema = TypeOf<typeof storyRequestSchema>;
 export type StoryRequestIdSchema = TypeOf<typeof storyRequestIdSchema>;
 export type AcceptStoryRequestSchema = TypeOf<typeof acceptStoryRequestSchema>;
+export type StoryRequestTabSchema = TypeOf<typeof storyRequestTabSchema>

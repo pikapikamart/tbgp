@@ -5,7 +5,8 @@ import {
 import { 
   StoryRequestSchema,
   AcceptStoryRequestSchema,
-  StoryRequestIdSchema} from "../schemas/story.request.schema";
+  StoryRequestIdSchema,
+  StoryRequestTabSchema} from "../schemas/story.request.schema";
 import { 
   bulkUpdateStaffService,
   findStaffService, 
@@ -43,7 +44,7 @@ const optionsStoryRequest = {
 
 export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
   const foundStoryRequest = storyRequestValidator(await findStoryRequest({ storyRequestId }, "owner"));
-
+  
   if ( foundStoryRequest.owner.equals(staff._id) ) {
     return await findStoryRequest(
       { storyRequestId },
@@ -67,9 +68,36 @@ export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdS
   );
 }
 
-export const getMultipleStoryRequestsHandler = async() => {
+export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema, { staff }: StaffContext ) => {
+  let matchQuery: any = {};
+  
+  switch( tab ) {
+    case "open":
+      matchQuery.assignedMembers = {
+        $eq: null
+      }
+      break
+    case "assigned":
+      matchQuery.assignedMembers = {
+        $ne:null
+      }
+      break
+    case "created":
+      if ( staff.position?.role==="writer" ) {
+        return trpcError("FORBIDDEN", "Only valid editor is allowed")
+      }
+
+      matchQuery.owner = staff._id
+  }
+
   const aggregatedStoryRequests = await findManyStoryRequestAggregator(
     [
+      {
+        $match: {
+          started: false,
+          ...matchQuery
+        }
+      },
       {
         $sort: {
           createdAt: 1
@@ -77,11 +105,6 @@ export const getMultipleStoryRequestsHandler = async() => {
       },
       {
         $limit: 9
-      },
-      {
-        $match: {
-          started: false,
-        }
       },
       {
         $project: {

@@ -16,7 +16,8 @@ import { createRouter } from "../router/createRouter";
 import { 
   acceptStoryRequestSchema,
   storyRequestIdSchema, 
-  storyRequestSchema } from "../schemas/story.request.schema";
+  storyRequestSchema,
+  storyRequestTabSchema } from "../schemas/story.request.schema";
 
 
 export const storyRequestRouter = createRouter()
@@ -27,7 +28,8 @@ export const storyRequestRouter = createRouter()
     resolve: ({ input, ctx }) => getStoryRequestHandler(input, ctx)
   })
   .query("get-multiple", {
-    resolve: () => getMultipleStoryRequestsHandler()
+    input: storyRequestTabSchema,
+    resolve: ({ ctx, input }) => getMultipleStoryRequestsHandler(input, ctx)
   })
   .query("get-multiple-assigned", {
     resolve: () => getMultipleAssignedStoryRequestsHandler()
