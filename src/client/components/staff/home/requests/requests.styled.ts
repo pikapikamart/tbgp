@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { 
   rem,
+  fluid,
   breakpoint } from "@/styled/functions"
 import { ColoredBaseButton } from "@/styled/collections/button"
 
@@ -65,4 +66,8 @@ export const CreateRequestButton = styled(ColoredBaseButton)`
       position: static;
     }
   `) }
+`
+
+export const StoryRequestsContentContainer = styled.div`
+  margin-top: ${ fluid(24, 4.5, 32) };
 `

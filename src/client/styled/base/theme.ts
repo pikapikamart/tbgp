@@ -11,6 +11,7 @@ const theme: DefaultTheme = {
     white3: "#F3F3F3",
     white4: "#E9E9E9",
     whiteBlue1: "#ECEBFF",
+    whiteBlue2: "#FAFBFC",
     grey1: "#6A6A6A",
     grey2: "#A4A4A4",
     grey3: "#C9C9C9",

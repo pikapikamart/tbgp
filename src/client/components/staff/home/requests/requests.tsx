@@ -9,7 +9,11 @@ import { StaffState } from "@/store/slices/staff.slice"
 import { 
   requestsParams, 
   requestsParamsEditor } from "./data"
-import { CreateRequestButton, RequestsWrapper } from "./requests.styled"
+import { OpenRequestsTabContent } from "./open"
+import { 
+  CreateRequestButton, 
+  RequestsWrapper, 
+  StoryRequestsContentContainer } from "./requests.styled"
 
 
 const isEditor = ( staff: StaffState ) =>{
@@ -62,6 +66,11 @@ const Requests = () =>{
           </> :
           <></>
           } >
+          <StoryRequestsContentContainer>
+            <OpenRequestsTabContent />
+          </StoryRequestsContentContainer>
+          <StoryRequestsContentContainer>
+          </StoryRequestsContentContainer>
         </TabInterface>
       </ModalFocusBack>  
     </RequestsWrapper>

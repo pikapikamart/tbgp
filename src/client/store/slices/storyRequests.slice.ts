@@ -3,6 +3,7 @@ import { HYDRATE } from "next-redux-wrapper";
 import { RootState } from "..";
 import { StoryRequest } from "@/src/server/models/story.request.model";
 import { ModifyType } from "types/utils";
+import { setOpenStoryRequestsReducer } from "../reducers/storyRequests.reducer";
 
 
 export type InitialStoryRequest = ModifyType<Omit<StoryRequest, "owner" | "requests" | "writeupId">, {
@@ -26,6 +27,7 @@ export const storyRequests = createSlice({
   name: "storyRequests",
   initialState,
   reducers: {
+    setOpenStoryRequests: setOpenStoryRequestsReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -38,9 +40,10 @@ export const storyRequests = createSlice({
 })
 
 export const {
-
+  setOpenStoryRequests
 } = storyRequests.actions
 
 export const selectStoryRequests = ( state: RootState  ) => state.storyRequests
+export const selectOpenStoryRequests = ( state: RootState ) => state.storyRequests.open
 
 export default storyRequests.reducer

@@ -52,7 +52,7 @@ export const useCreateStoryRequest = () =>{
   useEffect(() => {
     if ( isValidData ) {
       const storyRequest = getFieldsRef().reduce((accu, cur) =>{
-        accu[cur.name] = cur.value
+        accu[cur.name] = cur.value.trim()
 
         return accu
       }, {} as StoryRequestData)
