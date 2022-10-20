@@ -2,6 +2,7 @@ import "../models"
 import { 
   DocumentDefinition, 
   FilterQuery, 
+  PipelineStage, 
   PopulateOptions, 
   ProjectionType, 
   QueryOptions, 
@@ -38,10 +39,14 @@ export const deleteStoryRequest = async( request: FilterQuery<StoryRequest> ) =>
 
 // --------Multiple--------
 
-export const findManyStoryRequest = async(
+export const findManyStoryRequestService = async(
   query: FilterQuery<StoryRequest>,
   projection: ProjectionType<StoryRequest> = "",
   option: QueryOptions
 ) => (
   StoryRequestModel.find(query, projection, option)
+)
+
+export const findManyStoryRequestAggregator = async( aggregate: PipelineStage[] ) => (
+  StoryRequestModel.aggregate(aggregate)
 )

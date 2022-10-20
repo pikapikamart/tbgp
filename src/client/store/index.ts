@@ -3,6 +3,7 @@ import {
   ThunkAction } from "@reduxjs/toolkit";
 import adminReducer from "./slices/admin.slice";
 import staffReducer from "./slices/staff.slice"
+import storyRequestsReducer from "./slices/storyRequests.slice"
 import { Action } from "redux"
 import { createWrapper } from "next-redux-wrapper"
 
@@ -11,6 +12,7 @@ export const store = () => configureStore({
   reducer: {
     admin: adminReducer,
     staff: staffReducer,
+    storyRequests: storyRequestsReducer
   },
   devTools: true
 })

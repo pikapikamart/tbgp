@@ -1,13 +1,12 @@
 import { StaffContext } from "../middlewares/router.middleware";
-import { 
-  Position, 
-  rolesAndPosition } from "../models/staff.model";
+import { rolesAndPosition } from "../models/staff.model";
 import { BaseUserSchema } from "../schemas/base.user.schema";
 import { 
   StaffSchema, 
   BastionIdSchema, 
   UpdateStaffSchema,
-  UsernameSchema} from "../schemas/staff.schema";
+  UsernameSchema,
+  PositionSchema} from "../schemas/staff.schema";
 import { updateAdminService } from "../services/admin.service";
 import { 
   createStaffService, 
@@ -167,7 +166,7 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
   return trpcSuccess(true, staffBody)
 }
 
-export const requestStaffPositionHandler = async( position: Position, { staff }: StaffContext ) => {
+export const requestStaffPositionHandler = async( position: PositionSchema, { staff }: StaffContext ) => {
   const admin = await getCurrentAdmin();
 
   if ( !Object.keys(rolesAndPosition).includes(position.role) ) {

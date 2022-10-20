@@ -9,6 +9,7 @@ import {
   BaseUserDocument, 
   baseUserModel} from "./base.user.model";
 import { ModifyType } from "types/utils";
+import { PositionSchema } from "../schemas/staff.schema";
 
 
 export type Role = "writer" | "sectionEditor" | "seniorEditor"
@@ -17,11 +18,7 @@ type RolesAndPositionIndex = RolesAndPosition & {
   [ key: string ]: string[]
 }
 
-export type Position = {
-  name: string,
-  role: Role
-}
-
+export type Position = PositionSchema
 export type BastionId = string;
 
 export type StoryRequests = {

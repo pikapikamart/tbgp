@@ -4,7 +4,7 @@ import {
   ColoredMediumButton, 
   SmallButton } from "@/styled/collections/button"
 import { FormBottomControls } from "@/styled/shared/form"
-import { InputField } from "../../inputs/regular"
+import { InputField } from "@/components/collections/inputs/regular"
 import { 
   InputBlock, 
   InputError, 
@@ -17,7 +17,7 @@ import {
   CreateStoryWrapper } from "./createStory.styled"
 import { storyCategories } from "./data"
 import { useCreateStoryRequest } from "./createStory.hook"
-import { AssignMembersModal } from "../../modals/staff/createStory/assignMembers"
+import { AssignMembersModal } from "@/components/collections/modals/staff/createStory/assignMembers"
 import { AssignMembersForm } from "./assignMembers"
 
 

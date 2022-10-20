@@ -14,7 +14,8 @@ import { trpcError } from "../utils/error.util";
 import { 
   createStoryRequestService, 
   deleteStoryRequest, 
-  findManyStoryRequest, 
+  findManyStoryRequestAggregator, 
+  findManyStoryRequestService, 
   findStoryRequest, 
   updateStoryRequest } from "../services/story.request.service";
 import { 
@@ -67,17 +68,45 @@ export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdS
 }
 
 export const getMultipleStoryRequestsHandler = async() => {
-  const storyRequests = await findManyStoryRequest(
-    { started: false },
-    "-_id -owner -assignedMembers -requests",
-    optionsStoryRequest
-  );
+  const aggregatedStoryRequests = await findManyStoryRequestAggregator(
+    [
+      {
+        $sort: {
+          createdAt: 1
+        }
+      },
+      {
+        $limit: 9
+      },
+      {
+        $match: {
+          started: false,
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          owner: 0,
+          assignedMembers: 0,
+          requests: 0,
+          writeupId: 0
+        }
+      },
+      {
+        $set: {
+          members: {
+            $size: "$members"
+          }
+        }
+      }
+    ]
+  )
 
-  return trpcSuccess(true, storyRequests);
+  return trpcSuccess(true, aggregatedStoryRequests);
 }
 
 export const getMultipleAssignedStoryRequestsHandler = async() => {
-  const storyRequests = await findManyStoryRequest(
+  const storyRequests = await findManyStoryRequestService(
     {
       started: false,
       assignedMembers: {
@@ -95,7 +124,7 @@ export const getMultipleAssignedStoryRequestsHandler = async() => {
 
 export const getMultipleCreatedStoryRequestHandler = async( { staff }: VerifiedStaffContext ) => {
 
-  const storyRequests = await findManyStoryRequest(
+  const storyRequests = await findManyStoryRequestService(
     {
       owner: staff._id
     },

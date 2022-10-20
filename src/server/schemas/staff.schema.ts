@@ -31,9 +31,7 @@ export const positionSchema = z
     name: z
       .string({ required_error: "Position's name is required" })
       .min(1, "Position's name should not be empty"),
-    role: z
-      .string({ required_error: "Position's role is required" })
-      .min(1, "Position's role should not be empty")
+    role: z.enum(["writer", "sectionEditor", "seniorEditor"])
   })
 
 export const updateStaffSchema = z
@@ -51,3 +49,4 @@ export type StaffSchema = TypeOf<typeof staffSchema>;
 export type UpdateStaffSchema = TypeOf<typeof updateStaffSchema>;
 export type StaffWritingsSchema = TypeOf<typeof staffWritingsSchema>;
 export type UsernameSchema = TypeOf<typeof usernameSchema>
+export type PositionSchema = TypeOf<typeof positionSchema>

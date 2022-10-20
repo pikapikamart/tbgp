@@ -1,6 +1,7 @@
 import { useFormValidation } from "@/lib/hooks"
 import { useAppDispatch } from "@/lib/hooks/store.hooks"
 import { trpc } from "@/lib/trpc"
+import { Role } from "@/src/server/models/staff.model"
 import { useModalContext } from "@/store/context/modal/modal"
 import { sendStaffVerification } from "@/store/slices/staff.slice"
 import { useEffect } from "react"
@@ -33,7 +34,7 @@ export const useSendPositionRequest = () =>{
       
       mutation.mutate({
         name: positionInput.dataset.name as string,
-        role: positionInput.value
+        role: positionInput.value as Role
       })
     }
   }, [ isValidData ])
