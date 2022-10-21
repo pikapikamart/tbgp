@@ -1,21 +1,21 @@
+import { Note } from "@/components/shared/note"
 import { categoryColors } from "@/components/shared/storyRequest/data"
 import { convertDateToString } from "@/components/shared/storyRequest/initial/initial"
 import { 
   Category, 
   CreatedDate } from "@/components/shared/storyRequest/initial/initial.styled"
 import { TabInterface } from "@/components/shared/tablist"
-import { useSelectStaff } from "@/lib/hooks/store.hooks"
-import { trpc } from "@/lib/trpc"
-import { FullStoryRequest } from "@/store/slices/storyRequests.slice"
 import { ColoredMediumButton } from "@/styled/collections/button"
 import { 
   DefaultText, 
   HeadingVSmall } from "@/styled/collections/text"
 import { FormBottomControls } from "@/styled/shared/form"
 import Link from "next/link"
-import { useState } from "react"
 import { storyRequestParamsPath } from "./data"
-import { useStoryRequest } from "./storyRequest.hook"
+import { 
+  useApplyStoryRequest, 
+  useStartStoryRequest, 
+  useStoryRequest } from "./storyRequest.hook"
 import {
   StoryRequestWrapper,
   RequestHeader,
@@ -24,8 +24,9 @@ import {
   ContentContainer,
   RowContentContainer,
   SubHeading,
-  Members,
-  RequestHeaderContent
+  RequestMembers,
+  RequestHeaderContent,
+  RequestNoteWrapper
 } from "./storyRequest.styled"
 
 
@@ -37,10 +38,14 @@ const StoryRequest = ({ storyRequestId }: StoryRequestProps) =>{
   const {
     storyRequest,
     isOwned,
-    handleStartStoryRequest,
-    handleApplyStoryRequest,
+    isMember,
+    hasRequested,
     removeModal
   } = useStoryRequest(storyRequestId)
+  const { handleStartStoryRequest } = useStartStoryRequest( storyRequestId )
+  const {
+    hasApplied, 
+    handleApplyStoryRequest } = useApplyStoryRequest( storyRequestId )
 
   return (
     <>
@@ -74,7 +79,7 @@ const StoryRequest = ({ storyRequestId }: StoryRequestProps) =>{
                 </RowContentContainer>
                 <RowContentContainer>
                   <SubHeading>Members: </SubHeading>
-                  <Members>
+                  <RequestMembers>
                     { storyRequest.members.map(member => (
                       <li key={ member.bastionId }>
                         <Link
@@ -84,25 +89,44 @@ const StoryRequest = ({ storyRequestId }: StoryRequestProps) =>{
                         </Link>
                       </li>
                     )) }
-                  </Members>
+                  </RequestMembers>
                 </RowContentContainer>
                 <CreatedDate>{ convertDateToString(storyRequest.createdAt) }</CreatedDate>
               </ContentContainer>
             </TabInterface> 
+            <>
+              { (hasRequested!==-1 || hasApplied) && (
+                <RequestNoteWrapper>
+                  <Note text="Request already sent. This note will be removed if your request has been denied or it will change if you are accepted." />
+                </RequestNoteWrapper>
+              ) }
+              { isMember!==-1 && (
+                <RequestNoteWrapper>
+                  <Note text="Reqest has been successfully accepted. Wait for the owner to start the story request." />
+                </RequestNoteWrapper>
+              ) }
+            </>
             <FormBottomControls marginTop={ 24 }>
-                { isOwned && (
-                  <ColoredMediumButton 
-                    colored="blue"
-                    onClick={ handleStartStoryRequest }>
-                      Start
-                  </ColoredMediumButton>
-                ) }
+              { isOwned && (
                 <ColoredMediumButton 
-                  colored="grey"
-                  onClick={ removeModal }>
-                    Close
+                  colored="blue"
+                  onClick={ handleStartStoryRequest }>
+                    Start
                 </ColoredMediumButton>
-              </FormBottomControls>
+              ) }
+              { !isOwned && !hasApplied && hasRequested===-1 && (
+                <ColoredMediumButton 
+                  colored="darkBlue"
+                  onClick={ handleApplyStoryRequest }>
+                    Request
+                </ColoredMediumButton>
+              ) }
+              <ColoredMediumButton 
+                colored="grey"
+                onClick={ removeModal }>
+                  Close
+              </ColoredMediumButton>
+            </FormBottomControls>
           </InnerContainer>
         </StoryRequestWrapper>
       ) }

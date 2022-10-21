@@ -46,26 +46,12 @@ const optionsStoryRequest = {
 export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
   const foundStoryRequest = storyRequestValidator(await findStoryRequest({ storyRequestId }, "owner"));
   
-  if ( foundStoryRequest.owner.equals(staff._id) ) {
-    const storyRequest = storyRequestValidator(await findStoryRequest(
-      { storyRequestId },
-      "-_id",
-      { lean: false },
-      {
-        path: "owner requests members assignedMembers",
-        select: "-_id bastionId firstname lastname username"
-      }
-    ))
-
-    return trpcSuccess(true, storyRequest)
-  } 
-
   const storyRequest = await getCurrentAvailableStoryRequest(
     storyRequestId,
-    "-_id -requests",
+    "-_id",
     { lean: true },
     {
-      path: "owner members assignedMembers",
+      path: "owner requests members assignedMembers",
       select: "-_id bastionId firstname lastname username"
     }
   )
@@ -142,8 +128,7 @@ export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestI
     return trpcError("CONFLICT", "Already applied to story request")
   }
 
-  if ( foundStoryRequest.assignedMembers?.length 
-      && !foundStoryRequest.assignedMembers.includes(staff.bastionId) ) {
+  if ( foundStoryRequest.assignedMembers && !foundStoryRequest.assignedMembers.find(member => member.equals(staff._id)) ) {
     return trpcError("FORBIDDEN", "Can't apply to story request when you are not assigned")
   }
 
@@ -163,7 +148,7 @@ export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestI
     { bastionId: staff.bastionId },
     {
       $push: {
-        "requests.story": foundStoryRequest._id
+        "storyRequests.requested": foundStoryRequest._id
       }
     }
   )
@@ -196,7 +181,7 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
       storyRequestId: nanoid(14),
       category: storyCategories[request.category],
       owner: staff._id,
-      assignedMembers: assignedMembers.map(member => member._id),
+      assignedMembers: assignedMembers.length? assignedMembers.map(member => member._id) : null,
       started: false,
       members: [],
       requests: [],

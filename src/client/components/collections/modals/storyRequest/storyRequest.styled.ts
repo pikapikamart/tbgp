@@ -78,7 +78,11 @@ export const SubHeading = styled.h4`
   font-size: ${ fluid(13, 2, 14) };
 `
 
-export const Members = styled.ul`
+export const RequestMembers = styled.ul`
   display: flex;
   flex-wrap: wrap;
+`
+
+export const RequestNoteWrapper = styled.div`
+  margin-top: ${ rem(16) };
 `
