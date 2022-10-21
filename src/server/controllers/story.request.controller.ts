@@ -4,7 +4,7 @@ import {
   StaffDocument } from "../models/staff.model";
 import { 
   StoryRequestSchema,
-  AcceptStoryRequestSchema,
+  AcceptRejectStoryRequestSchema,
   StoryRequestIdSchema,
   StoryRequestTabSchema} from "../schemas/story.request.schema";
 import { 
@@ -30,6 +30,7 @@ import { StaffContext, VerifiedStaffContext } from "../middlewares/router.middle
 import { 
   getCurrentAvailableStoryRequest, 
   getOwnedAvailableStoryRequest, 
+  staffValidator, 
   storyRequestValidator} from "./controller.utils";
 import { 
   createWriteupPhase, 
@@ -201,47 +202,54 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
   return apiResult("Story request created", newStoryRequest.storyRequestId);
 }
 
-export const acceptStoryRequestHandler = async( request: AcceptStoryRequestSchema, { staff }: VerifiedStaffContext ) => {
-  const foundRequester = await findStaffService({ bastionId: request.bastionId });
+export const acceptRejectStoryRequestHandler = async( request: AcceptRejectStoryRequestSchema, { staff }: VerifiedStaffContext ) => {
+  const foundRequester = staffValidator(await findStaffService({ bastionId: request.bastionId }))
   
-  if ( !foundRequester ) {
-    return trpcError("BAD_REQUEST", "Use valid requester bastion Id")
-  }
-
   const foundStoryRequest = await getOwnedAvailableStoryRequest(request.storyRequestId, staff._id);
   
   if ( !foundStoryRequest.requests.find(request => request.equals(foundRequester._id)) ) {
-    return trpcError("CONFLICT", "Send a valid requester bastion Id")
+    return trpcError("CONFLICT", "Found staff is not a valid requester in the story request")
   }
 
   if ( foundStoryRequest.members.find(member => member.equals(foundRequester._id)) ) {
-    return trpcError("CONFLICT", "Requester is already a member")
+    return trpcError("CONFLICT", "Found staff is already a member")
   }
  
   await updateStoryRequest(
     { storyRequestId: request.storyRequestId }, 
-    { 
-      $push: {
-        members: foundRequester._id
-      },
-      $pull: {
-        requests: foundRequester._id
-      }
-    }
+    Object.assign(
+      { 
+        $pull: {
+          requests: foundRequester._id
+        }
+      }, request.choice? {
+        $push: {
+          members: foundRequester._id
+        }
+      } : undefined
+    )
   )
   await updateStaffService(
     { bastionId: request.bastionId }, 
-    {
-      $push: {
-        "storyRequests.joined": foundStoryRequest._id
-      },
-      $pull: {
-        "requests.story": foundStoryRequest._id
-      }
-    }
+    Object.assign(
+      {
+        $pull: {
+          "storyRequests.requested": foundStoryRequest._id
+        }
+      }, request.choice? {
+        $push: {
+          "storyRequests.joined": foundStoryRequest._id
+        }
+      } : undefined
+    )
   )
 
-  return apiResult("Successfully accepted a member", true);
+  return trpcSuccess(true, 
+    { 
+      choice: request.choice,
+      bastionId: request.bastionId 
+    }
+  )
 }
 
 export const deleteStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: VerifiedStaffContext ) => {

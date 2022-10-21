@@ -25,11 +25,13 @@ export const storyRequestIdSchema = z
       .min(1, "Story request's Id should not be empty")
   })
 
-export const acceptStoryRequestSchema = z
+export const acceptRejectStoryRequestSchema = z
   .object({
     bastionId: z
       .string({ required_error: "Bastion Id is required" })
       .min(1, "Bastion Id should not be empty"),
+      choice: z
+      .boolean({ required_error: "Choice is required" })
   })
   .merge(storyRequestIdSchema)
 
@@ -37,5 +39,5 @@ export const storyRequestTabSchema = z.enum(["open", "assigned", "created", ""])
 
 export type StoryRequestSchema = TypeOf<typeof storyRequestSchema>;
 export type StoryRequestIdSchema = TypeOf<typeof storyRequestIdSchema>;
-export type AcceptStoryRequestSchema = TypeOf<typeof acceptStoryRequestSchema>;
+export type AcceptRejectStoryRequestSchema = TypeOf<typeof acceptRejectStoryRequestSchema>;
 export type StoryRequestTabSchema = TypeOf<typeof storyRequestTabSchema>

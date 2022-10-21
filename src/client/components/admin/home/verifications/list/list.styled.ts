@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import {
   rem,
   fluid,
@@ -13,7 +13,11 @@ export const VerificationsListWrapper = styled.ul`
   outline: none;
 `
 
-export const VerificationItem = styled.li`
+type VerificationItemProps = {
+  customed?: boolean
+}
+
+export const VerificationItem = styled.li<VerificationItemProps>`
   border-radius: ${ rem(4) };
   border: 1px solid ${({ theme }) => theme.colors.grey3};
   padding: ${ rem(12) };
@@ -28,6 +32,34 @@ export const VerificationItem = styled.li`
     grid-template-columns: 1fr min-content;
     grid-template-rows: repeat(2, auto);
   `) }
+
+  ${ ({ customed }) => {
+    switch(customed) {
+      case true:
+        return css `
+
+          > p {
+            margin-bottom: ${ rem(4) };
+          }
+    
+          ${ breakpoint(450, `
+            display: flex;
+
+            > p {
+              grid-row: 1 / 3;
+              margin-bottom: 0;
+            }
+
+            > button {
+
+              &:first-of-type {
+                margin-left: auto;
+              }
+            }
+          `) }
+      `
+    }
+  } }
 
   ${ breakpoint("tablet", `
     align-items: center;

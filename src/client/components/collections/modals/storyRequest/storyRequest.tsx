@@ -11,7 +11,9 @@ import {
   HeadingVSmall } from "@/styled/collections/text"
 import { FormBottomControls } from "@/styled/shared/form"
 import Link from "next/link"
+import { StoryRequestContent } from "./content"
 import { storyRequestParamsPath } from "./data"
+import { StoryRequestRequests } from "./requests"
 import { 
   useApplyStoryRequest, 
   useStartStoryRequest, 
@@ -68,31 +70,8 @@ const StoryRequest = ({ storyRequestId }: StoryRequestProps) =>{
             <TabInterface
               paramsPaths={ isOwned? storyRequestParamsPath.owned : storyRequestParamsPath.staff }
               isRouting={ false }>
-              <ContentContainer>
-                <RowContentContainer>
-                  <SubHeading>Genre: </SubHeading>
-                  <Category colored={ categoryColors[storyRequest.category] } >{ storyRequest.category.toLowerCase() }</Category>
-                </RowContentContainer>
-                <RowContentContainer>
-                  <SubHeading>Instruction: </SubHeading>
-                  <DefaultText>{ storyRequest.instruction }</DefaultText>
-                </RowContentContainer>
-                <RowContentContainer>
-                  <SubHeading>Members: </SubHeading>
-                  <RequestMembers>
-                    { storyRequest.members.map(member => (
-                      <li key={ member.bastionId }>
-                        <Link
-                          href={ `/storybuilder/${ member.username }` }
-                          passHref>
-                          <a>{ member.firstname + " " + member.lastname }</a>
-                        </Link>
-                      </li>
-                    )) }
-                  </RequestMembers>
-                </RowContentContainer>
-                <CreatedDate>{ convertDateToString(storyRequest.createdAt) }</CreatedDate>
-              </ContentContainer>
+              <StoryRequestContent storyRequest={ storyRequest } />
+              <StoryRequestRequests storyRequest={ storyRequest } />
             </TabInterface> 
             <>
               { (hasRequested!==-1 || hasApplied) && (

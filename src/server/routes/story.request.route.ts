@@ -1,5 +1,5 @@
 import { 
-  acceptStoryRequestHandler, 
+  acceptRejectStoryRequestHandler, 
   applyStoryRequestHandler, 
   createStoryRequestHandler, 
   deleteStoryRequestHandler,
@@ -12,7 +12,7 @@ import {
   isVerifiedStaff } from "../middlewares/router.middleware";
 import { createRouter } from "../router/createRouter";
 import { 
-  acceptStoryRequestSchema,
+  acceptRejectStoryRequestSchema,
   storyRequestIdSchema, 
   storyRequestSchema,
   storyRequestTabSchema } from "../schemas/story.request.schema";
@@ -41,9 +41,9 @@ export const storyRequestRouter = createRouter()
     input: storyRequestSchema,
     resolve: ({ input, ctx }) => createStoryRequestHandler(input, ctx)
   })
-  .mutation("accept", {
-    input: acceptStoryRequestSchema,
-    resolve: ({ input, ctx }) => acceptStoryRequestHandler(input, ctx)
+  .mutation("accept-reject", {
+    input: acceptRejectStoryRequestSchema,
+    resolve: ({ input, ctx }) => acceptRejectStoryRequestHandler(input, ctx)
   })
   .mutation("delete", {
     input: storyRequestIdSchema,
