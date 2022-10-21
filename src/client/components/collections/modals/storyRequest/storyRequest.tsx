@@ -14,6 +14,7 @@ import {
 import { FormBottomControls } from "@/styled/shared/form"
 import Link from "next/link"
 import { useState } from "react"
+import { storyRequestParamsPath } from "./data"
 import { useStoryRequest } from "./storyRequest.hook"
 import {
   StoryRequestWrapper,
@@ -60,7 +61,7 @@ const StoryRequest = ({ storyRequestId }: StoryRequestProps) =>{
           </RequestHeader>
           <InnerContainer>
             <TabInterface
-              paramsPaths={[{ name: "Information", query: "" }]}
+              paramsPaths={ isOwned? storyRequestParamsPath.owned : storyRequestParamsPath.staff }
               isRouting={ false }>
               <ContentContainer>
                 <RowContentContainer>

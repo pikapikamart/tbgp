@@ -1,4 +1,4 @@
-import { StaffContext } from "../middlewares/router.middleware";
+import { StaffContext, VerifiedStaffContext } from "../middlewares/router.middleware";
 import { rolesAndPosition } from "../models/staff.model";
 import { BaseUserSchema } from "../schemas/base.user.schema";
 import { 
@@ -126,9 +126,14 @@ export const populateStaffWriteups = async({ staff }: StaffContext ) => {
 
 // ----Verified Editor ----
 
-export const getWritersNamesHandler = async() =>{
+export const getWritersNamesHandler = async( { staff }: VerifiedStaffContext ) =>{
   const writers = await findManyStaffsService(
-    { position: { $ne: null } },
+    { 
+      position: { $ne: null },
+      "_id": {
+        $ne: staff._id
+      }
+     },
     "-_id bastionId firstname lastname"
   )
 

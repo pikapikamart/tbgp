@@ -3,7 +3,7 @@ import { trpc } from "@/lib/trpc"
 import { useModalContext } from "@/store/context/modal/modal"
 import { FullStoryRequest } from "@/store/slices/storyRequests.slice"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 export const useStoryRequest = ( storyRequestId: string ) =>{
@@ -11,12 +11,14 @@ export const useStoryRequest = ( storyRequestId: string ) =>{
   const router = useRouter()
   const modalContext = useModalContext()
   const staff = useSelectStaff()
-  trpc.useQuery(["storyRequest.get", { storyRequestId }], {
+  const query = trpc.useQuery(["storyRequest.get", { storyRequestId }], {
+    refetchOnWindowFocus: false,
+    enabled: false,
     onSuccess: ({ data }) => {
       setStoryRequest(JSON.parse(JSON.stringify(data)))
     }
   })
-  const startMutation = trpc.useMutation(["storyRequest.start"],{
+  const startMutation = trpc.useMutation(["storyRequest.start"], {
     onSuccess: () =>{
       router.reload()
     }
@@ -29,6 +31,10 @@ export const useStoryRequest = ( storyRequestId: string ) =>{
   const handleApplyStoryRequest = () => {
 
   }
+
+  useEffect(() =>{
+    query.refetch()
+  }, [])
 
   return {
     storyRequest,

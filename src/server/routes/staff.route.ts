@@ -64,5 +64,5 @@ export const staffRouter = createRouter()
   // verification
   .middleware(({ ctx, next }) => isStaffEditor(ctx, next))
   .query("get-writers-name", {
-    resolve: () => getWritersNamesHandler()
+    resolve: ({ ctx }) => getWritersNamesHandler(ctx)
   })

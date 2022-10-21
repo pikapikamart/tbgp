@@ -9,6 +9,7 @@ import {
   StoryRequestTabSchema} from "../schemas/story.request.schema";
 import { 
   bulkUpdateStaffService,
+  findManyStaffsService,
   findStaffService, 
   updateStaffService } from "../services/staff.service";
 import { trpcError } from "../utils/error.util";
@@ -180,13 +181,22 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
     return trpcError("CONFLICT", "Request already created")
   }
 
+  const assignedMembers = await findManyStaffsService(
+    {
+      bastionId: {
+        $in: request.assignedMembers?? []
+      }
+    },
+    "_id"
+  )
+
   const newStoryRequest = await createStoryRequestService(
     {
       ...request,
       storyRequestId: nanoid(14),
       category: storyCategories[request.category],
       owner: staff._id,
-      assignedMembers: request.assignedMembers? Array.from(new Set(request.assignedMembers)) : null,
+      assignedMembers: assignedMembers.map(member => member._id),
       started: false,
       members: [],
       requests: [],

@@ -21,7 +21,7 @@ export const storyCategories: CategoriesIndex = {
 }
 
 export type StoryRequest = ModifyType<StoryRequestSchema, {
-  assignedMembers: string[] | null
+  assignedMembers: StaffDocument["_id"][] | null
 }> & {
   storyRequestId: string,
   owner: StaffDocument["_id"],
@@ -69,7 +69,7 @@ export const storyRequestSchema: mongoose.Schema<StoryRequestDocument> = new mon
   },
   assignedMembers: {
     type: [{
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Staff"
     }],
     default: null
