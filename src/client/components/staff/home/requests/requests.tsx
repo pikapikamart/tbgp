@@ -4,7 +4,7 @@ import { TabInterface } from "@/components/shared/tablist"
 import { useExpansion } from "@/lib/hooks"
 import { useSelectStaff } from "@/lib/hooks/store.hooks"
 import { useModalContext } from "@/store/context/modal/modal"
-import { StaffState } from "@/store/slices/staff.slice"
+import { InitialStaffState } from "@/store/slices/staff.slice"
 import { 
   requestsParams, 
   requestsParamsEditor } from "./data"
@@ -16,7 +16,7 @@ import {
 import { CreateStoryRequestModal } from "@/components/collections/modals/storyRequest/create"
 
 
-const isEditor = ( staff: StaffState ) =>{
+const isEditor = ( staff: InitialStaffState ) =>{
   
   if ( !staff.position ) {
     return false

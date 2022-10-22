@@ -45,12 +45,14 @@ export type Staff = BaseUser & {
   writeups: Writeups | null,
 }
 
-export type StaffDocument = Staff & BaseUserDocument & {};
-export type VerifiedStaffDocument = ModifyType<Staff, {
+export type VerifiedStaff = ModifyType<Staff, {
   position: Position,
   storyRequests: StoryRequests,
   writeups: Writeups
-}> & BaseUserDocument
+}>
+
+export type StaffDocument = Staff & BaseUserDocument & {};
+export type VerifiedStaffDocument = VerifiedStaff & BaseUserDocument
 
 export const Roles: ["writer", "sectionEditor", "seniorEditor"] = [ "writer", "sectionEditor", "seniorEditor"]
 

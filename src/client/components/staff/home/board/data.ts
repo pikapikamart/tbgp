@@ -1,7 +1,7 @@
-import { StaffState } from "@/store/slices/staff.slice";
+import { InitialStaffState } from "@/store/slices/staff.slice";
 
 
-export const getStoryRequests = ( staff: StaffState ) =>{
+export const getStoryRequests = ( staff: InitialStaffState ) =>{
   const requests = [
     {
       name: "Pending",

@@ -49,7 +49,7 @@ export const validateStaffHandler = async( { email, password }: BaseUserSchema )
 export const getStaffHandler = async( username: UsernameSchema, { staff: staffCtx }: StaffContext ) => {
   const staff = staffValidator(await findStaffService(
     { username },
-    "-_id firstname lastname bastionId position bio"
+    "-_id firstname lastname bastionId bio position"
   ))
     // add the writings since this will be used when visiting a writer
 

@@ -3,12 +3,15 @@ import { PayloadAction } from "@reduxjs/toolkit"
 import type { WritableDraft } from "immer/dist/internal"
 import { AppThunk } from ".."
 import { 
+  FullStaffState,
   setStaff, 
-  StaffState } from "../slices/staff.slice"
+  InitialStaffState, 
+  isVerifiedStaffState} from "../slices/staff.slice"
+import { FullStoryRequest, InitialStoryRequest } from "../slices/storyRequests.slice"
 
-type State = WritableDraft<StaffState>
+type State = WritableDraft<InitialStaffState>
 
-export const setStaffReducer = ( state: State, action: PayloadAction<StaffState> ) => {
+export const setStaffReducer = ( state: State, action: PayloadAction<InitialStaffState> ) => {
   state = Object.assign(state, action.payload)
 }
 
@@ -21,7 +24,13 @@ export const updateStaffReducer = ( state: State, action: PayloadAction<UpdateSt
 }
 
 export const thunkSetStaffReducer = 
-  ( staff: StaffState ): AppThunk => 
+  ( staff: InitialStaffState ): AppThunk => 
   async dispatch => {
     dispatch(setStaff(staff))
 } 
+
+export const addCreatedStoryRequestReducer = ( state: State, action: PayloadAction<InitialStoryRequest> ) =>{
+  if ( isVerifiedStaffState(state) ) {
+    state.storyRequests.created.push(action.payload) 
+  } 
+}
