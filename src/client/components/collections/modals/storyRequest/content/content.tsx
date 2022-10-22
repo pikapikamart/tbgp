@@ -2,7 +2,8 @@ import {
   ContentContainer,
   SubHeading,
   RowContentContainer,
-  RequestMembers
+  RequestMembers,
+  RequestMemberLink
 } from "../storyRequest.styled"
 import { 
   Category,
@@ -30,6 +31,22 @@ const Content = ({ storyRequest }: ContentProps) =>{
         <SubHeading>Instruction: </SubHeading>
         <DefaultText>{ storyRequest.instruction }</DefaultText>
       </RowContentContainer>
+      { storyRequest.assignedMembers && (
+        <RowContentContainer>
+          <SubHeading>Assigned members: </SubHeading>
+          <RequestMembers>
+            { storyRequest.assignedMembers.map(member => (
+              <li key={ member.bastionId }>
+                <Link
+                  href={ `/storybuilder/${ member.username }` }
+                  passHref>
+                  <RequestMemberLink>{ member.firstname + " " + member.lastname }</RequestMemberLink>
+                </Link>
+              </li>
+            )) }
+          </RequestMembers>
+        </RowContentContainer>
+      ) }
       <RowContentContainer>
         <SubHeading>Members: </SubHeading>
         <RequestMembers>
@@ -38,7 +55,7 @@ const Content = ({ storyRequest }: ContentProps) =>{
               <Link
                 href={ `/storybuilder/${ member.username }` }
                 passHref>
-                <a>{ member.firstname + " " + member.lastname }</a>
+                <RequestMemberLink>{ member.firstname + " " + member.lastname }</RequestMemberLink>
               </Link>
             </li>
           )) }

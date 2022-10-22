@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { 
   rem,
   fluid,
@@ -6,7 +6,11 @@ import {
 import { SmallButton } from "@/styled/collections/button"
 
 
-export const NoteWrapper = styled.div`
+type NoteWrapperProps = {
+  colored?: string
+}
+
+export const NoteWrapper = styled.div<NoteWrapperProps>`
   border-radius: ${ rem(4) };
   padding: ${ fluid(12, 1.1, 16) };
 
@@ -29,6 +33,19 @@ export const NoteWrapper = styled.div`
       background-color: ${ colors.white4 };
     `) }
   ` }
+
+  ${ ({ colored, theme: { colors } }) => {
+    switch(colored) {
+      case "blue": 
+        return css`
+          ${ breakpoint("tablet", `
+            background: url("/icons/icon-information-white.svg") no-repeat ${ rem(16) } ${ rem(16) };
+            background-color: ${ colors.blue };
+            color: ${ colors.white1 };
+            `) }
+        `
+    }
+  } }
 `
 
 type NoteTextProps = {

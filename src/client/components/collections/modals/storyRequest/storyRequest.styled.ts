@@ -83,6 +83,10 @@ export const RequestMembers = styled.ul`
   flex-wrap: wrap;
 `
 
+export const RequestMemberLink = styled.a`
+  text-decoration: underline;
+`
+
 export const RequestNoteWrapper = styled.div`
   margin-top: ${ rem(16) };
 `

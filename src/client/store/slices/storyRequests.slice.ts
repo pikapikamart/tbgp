@@ -21,7 +21,7 @@ type StaffProfile = {
 export type FullStoryRequest = ModifyType<StoryRequest, {
   owner: StaffProfile,
   members: StaffProfile[],
-  assignedMember: StaffProfile[],
+  assignedMembers: StaffProfile[] | null,
   requests: StaffProfile[],
   createdAt: string
 }>
