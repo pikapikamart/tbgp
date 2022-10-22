@@ -27,8 +27,7 @@ const VerifyStaffModal = ({ accepted, verification }: VerifyStaffModalProps) => 
     <ModalWrapper
       size="small"
       onKeyDown={ registerTrapContainer }>
-      <ModalHeading size="medium">Continue with this choice?
-      </ModalHeading>
+      <ModalHeading size="medium">Continue with this choice?</ModalHeading>
       <VerificationDescription>
         { accepted ? 
           <>

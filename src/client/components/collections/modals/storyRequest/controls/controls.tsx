@@ -1,3 +1,4 @@
+import { RegisterControl } from "@/lib/hooks"
 import { useModalContext } from "@/store/context/modal/modal"
 import { ColoredMediumButton } from "@/styled/collections/button"
 import { FormBottomControls } from "@/styled/shared/form"
@@ -6,12 +7,20 @@ import { getStoryRequestInformation } from "../utils"
 
 
 type ControlsProps = {
+  registerControl: RegisterControl,
   hasApplied: boolean,
   request: ReturnType<typeof getStoryRequestInformation>,
-  handleApplyStoryRequest: () => void
+  handleApplyStoryRequest: () => void,
+  handleDeleteStoryRequest: () => void
 }
 
-const Controls = ({ hasApplied, request, handleApplyStoryRequest }: ControlsProps) =>{
+const Controls = ({ 
+  registerControl, 
+  hasApplied, 
+  request, 
+  handleApplyStoryRequest,
+  handleDeleteStoryRequest }: ControlsProps
+) =>{
   const {
     storyRequest,
     bastionId,
@@ -26,7 +35,8 @@ const Controls = ({ hasApplied, request, handleApplyStoryRequest }: ControlsProp
   if ( hasRequested!==-1 || hasApplied || isMember!==-1 ) {
     return (
       <FormBottomControls marginTop={ 24 }>
-        <ColoredMediumButton 
+        <ColoredMediumButton
+          ref={ registerControl } 
           colored="grey"
           onClick={ modalContext.removeModal }>Close
         </ColoredMediumButton>
@@ -43,7 +53,8 @@ const Controls = ({ hasApplied, request, handleApplyStoryRequest }: ControlsProp
             onClick={ handleApplyStoryRequest }>Request
           </ColoredMediumButton>
         ) }
-        <ColoredMediumButton 
+        <ColoredMediumButton
+          ref={ registerControl } 
           colored="grey"
           onClick={ modalContext.removeModal }>Close
         </ColoredMediumButton>
@@ -60,6 +71,11 @@ const Controls = ({ hasApplied, request, handleApplyStoryRequest }: ControlsProp
         </ColoredMediumButton>
       ) }
       <ColoredMediumButton 
+        colored="red"
+        onClick={ handleDeleteStoryRequest }>Delete
+      </ColoredMediumButton>
+      <ColoredMediumButton
+        ref={ registerControl } 
         colored="grey"
         onClick={ modalContext.removeModal }>Close
       </ColoredMediumButton>

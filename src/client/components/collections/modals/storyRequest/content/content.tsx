@@ -48,7 +48,7 @@ const Content = ({ storyRequest }: ContentProps) =>{
         </RowContentContainer>
       ) }
       <RowContentContainer>
-        <SubHeading>Members: </SubHeading>
+        <SubHeading>Members joined: </SubHeading>
         <RequestMembers>
           { storyRequest.members.map(member => (
             <li key={ member.bastionId }>

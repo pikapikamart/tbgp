@@ -3,12 +3,13 @@ import { createContext, useContext, useRef, useState } from "react"
 
 type Modal = React.ReactElement
 type FocusBackElement = HTMLDivElement | null
+export type EmptyFunction = () => void
 
 export type ModalContextProps = {
   modal: Modal | null,
   focusBackElement: React.MutableRefObject<FocusBackElement>,
   addModal: ( modal: Modal ) => void,
-  removeModal: () => void
+  removeModal: EmptyFunction
 }
 
 export const ModalContext = createContext<ModalContextProps | null>(null)

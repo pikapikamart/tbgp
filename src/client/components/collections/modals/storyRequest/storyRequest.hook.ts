@@ -87,3 +87,27 @@ export const useAcceptOrRejectRequest = ( storyRequest: FullStoryRequest ) =>{
     filteredRequests
   }
 }
+
+export const useDeleteStoryRequest = ( storyRequestId: string ) =>{
+  const router = useRouter()
+  const [ isDeleting, setIsDeleting ] = useState(false)
+  const mutation = trpc.useMutation(["storyRequest.delete"], {
+    onSuccess: () =>{
+      router.reload()
+    }
+  })
+
+  const handleDeleteStoryRequest = () =>{
+    setIsDeleting(prev => !prev)
+  }
+
+  const handleConfirmDeleteStoryRequest = () =>{
+    mutation.mutate({ storyRequestId })
+  }
+
+  return {
+    isDeleting,
+    handleDeleteStoryRequest,
+    handleConfirmDeleteStoryRequest
+  }
+}

@@ -12,7 +12,16 @@ const Note = ({ hasApplied, request }: NoteProps) =>{
   const { 
     storyRequest,
     hasRequested,
-    isMember } = request
+    isMember,
+    isOwned } = request
+
+  if ( isOwned && storyRequest?.members.length===0 ) {
+    return (
+      <RequestNoteWrapper >
+        <NoteComp text="Story request can be started when there is atleast 1 member joined." />
+      </RequestNoteWrapper>
+    )
+  }
 
   return (
     <>

@@ -37,11 +37,6 @@ import {
   updateWriteupPhase } from "../services/writeup.phase.service";
 
 
-const optionsStoryRequest = {
-  limit: 9,
-  sort: "-createdAt"
-}
-
 // --------Queries--------
 
 export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
@@ -265,8 +260,8 @@ export const deleteStoryRequestHandler = async( { storyRequestId }: StoryRequest
         },
         update: {
           $pull: {
-            "storyRequests.joined": foundStoryRequest._id,
-            "requests.story": foundStoryRequest._id
+            "storyRequests.requested": foundStoryRequest._id,
+            "storyRequests.joined": foundStoryRequest._id
           },
         }
       }
@@ -287,6 +282,11 @@ export const deleteStoryRequestHandler = async( { storyRequestId }: StoryRequest
 
 export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: VerifiedStaffContext ) => {
   const storyRequest = await getOwnedAvailableStoryRequest(storyRequestId, staff._id);
+  
+  if ( !storyRequest.members.length ) {
+    return trpcError("BAD_REQUEST", "Story request can be started when there is atleast 1 member joined.")
+  }
+
   const newWriteup = await createWriteup({
     request: storyRequest._id,
     writeupId: nanoid(14),
