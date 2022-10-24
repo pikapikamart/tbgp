@@ -17,7 +17,6 @@ import {
   createStoryRequestService, 
   deleteStoryRequest, 
   findManyStoryRequestAggregator, 
-  findManyStoryRequestService, 
   findStoryRequest, 
   updateStoryRequest } from "../services/story.request.service";
 import { 

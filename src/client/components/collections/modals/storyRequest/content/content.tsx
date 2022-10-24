@@ -9,7 +9,7 @@ import {
   Category,
   CreatedDate } from "@/components/shared/storyRequest/initial/initial.styled"
 import { categoryColors } from "@/components/shared/storyRequest/data"
-import { FullStoryRequest } from "@/store/slices/storyRequests.slice"
+import { FullStoryRequest } from "@/store/store.types"
 import { DefaultText } from "@/styled/collections/text"
 import Link from "next/link"
 import { convertDateToString } from "@/components/shared/storyRequest/initial/initial"

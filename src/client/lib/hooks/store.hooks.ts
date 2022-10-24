@@ -4,7 +4,6 @@ import {
 import { 
   selectStaff, 
   setStaff } from "@/store/slices/staff.slice";
-import { selectOpenStoryRequests } from "@/store/slices/storyRequests.slice";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -49,10 +48,4 @@ export const useSelectStaff = () =>{
   const staff = useAppSelector(selectStaff)
 
   return staff
-}
-
-export const useSelectOpenStoryRequests = () =>{
-  const storyRequests = useAppSelector(selectOpenStoryRequests)
-
-  return storyRequests
 }

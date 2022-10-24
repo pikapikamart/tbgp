@@ -71,10 +71,14 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
     populatedStaff,
     {
       path: "storyRequests.created",
-      select: "-_id -__v"
+      select: "-_id -__v -owner -assignedMembers",
+      populate: {
+        path: "requests members",
+        select: "-_id username"
+      }
     }
   )
-
+// aggregate in future
   return trpcSuccess(true, populatedStaff)
 }
 

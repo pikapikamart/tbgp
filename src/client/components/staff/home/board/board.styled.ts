@@ -82,7 +82,7 @@ export const BoardOwnerName = styled.p`
 
     > span {
       color: ${ colors.dark3 };
-      font-weight: 400;
+      font-weight: 500;
     }
   ` }
 `

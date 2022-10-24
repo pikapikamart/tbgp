@@ -1,6 +1,6 @@
 import { useSelectStaff } from "@/lib/hooks/store.hooks"
 import { trpc } from "@/lib/trpc"
-import { FullStoryRequest } from "@/store/slices/storyRequests.slice"
+import { FullStoryRequest } from "@/store/store.types"
 import { useRouter } from "next/router"
 import { 
   useEffect, 

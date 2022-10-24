@@ -1,5 +1,8 @@
-import { VerificationItem, VerificationOption, VerificationRequester } from "@/components/admin/home/verifications/list/list.styled"
-import { FullStoryRequest } from "@/store/slices/storyRequests.slice"
+import { 
+  VerificationItem, 
+  VerificationOption, 
+  VerificationRequester } from "@/components/admin/home/verifications/list/list.styled"
+import { FullStoryRequest } from "@/store/store.types"
 import { useAcceptOrRejectRequest } from "../storyRequest.hook"
 import {
   ContentContainer

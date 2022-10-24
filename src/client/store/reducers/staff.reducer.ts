@@ -6,13 +6,18 @@ import {
   FullStaffState,
   setStaff, 
   InitialStaffState, 
-  isVerifiedStaffState} from "../slices/staff.slice"
-import { FullStoryRequest, InitialStoryRequest } from "../slices/storyRequests.slice"
+  isVerifiedWritableStaffState,
+  EditorStaffState} from "../slices/staff.slice"
+import { 
+  FullStoryRequest, 
+  InitialStoryRequest } from "../store.types"
 
-type State = WritableDraft<InitialStaffState>
+
+type State = WritableDraft<InitialStaffState> | WritableDraft<FullStaffState> | WritableDraft<EditorStaffState>
 
 export const setStaffReducer = ( state: State, action: PayloadAction<InitialStaffState> ) => {
   state = Object.assign(state, action.payload)
+  console.log(action.payload)
 }
 
 export const sendStaffVerificationReducer = ( state: State ) =>{
@@ -30,7 +35,7 @@ export const thunkSetStaffReducer =
 } 
 
 export const addCreatedStoryRequestReducer = ( state: State, action: PayloadAction<InitialStoryRequest> ) =>{
-  if ( isVerifiedStaffState(state) ) {
+  if ( isVerifiedWritableStaffState(state) ) {
     state.storyRequests.created.push(action.payload) 
   } 
 }

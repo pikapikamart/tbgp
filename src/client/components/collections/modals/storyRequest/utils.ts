@@ -1,4 +1,4 @@
-import { FullStoryRequest } from "@/store/slices/storyRequests.slice";
+import { FullStoryRequest } from "@/store/store.types";
 
 
 export const getStoryRequestInformation = ( storyRequest: FullStoryRequest | null, bastionId: string ) => {

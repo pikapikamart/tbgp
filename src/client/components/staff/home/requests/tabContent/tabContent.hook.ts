@@ -1,6 +1,6 @@
 import { trpc } from "@/lib/trpc"
 import { StoryRequestTabSchema } from "@/src/server/schemas/story.request.schema"
-import { InitialStoryRequest } from "@/store/slices/storyRequests.slice"
+import { InitialStoryRequest } from "@/store/store.types"
 import { useEffect } from "react"
 import { useRouter } from "next/router"
 

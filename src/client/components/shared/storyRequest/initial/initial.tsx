@@ -1,6 +1,6 @@
 import { useExpansion } from "@/lib/hooks"
 import { useModalContext } from "@/store/context/modal/modal"
-import { InitialStoryRequest } from "@/store/slices/storyRequests.slice"
+import { InitialStoryRequest } from "@/store/store.types"
 import { RowCenter } from "@/styled/shared/helpers"
 import { BaseModal } from "@/components/shared/modal"
 import { categoryColors } from "../data"
