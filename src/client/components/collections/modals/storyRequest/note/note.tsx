@@ -1,20 +1,16 @@
 import { RequestNoteWrapper } from "../storyRequest.styled"
-import { getStoryRequestInformation } from "../utils"
 import { Note as NoteComp } from "@/components/shared/note"
+import { useSelectStaff } from "@/lib/hooks/store.hooks"
+import { useTrackedStoryRequest } from "../storyRequest.tracked"
 
 
-type NoteProps = {
-  hasApplied: boolean,
-  request: ReturnType<typeof getStoryRequestInformation>
-}
-
-const Note = ({ hasApplied, request }: NoteProps) =>{
+const Note = () =>{
   const { 
     storyRequest,
     hasRequested,
-    isMember,
-    isOwned } = request
-  console.log(hasRequested)
+    isOwned,
+    isMember } = useTrackedStoryRequest()
+    
   if ( isOwned && storyRequest?.members.length===0 ) {
     return (
       <RequestNoteWrapper >
@@ -25,12 +21,12 @@ const Note = ({ hasApplied, request }: NoteProps) =>{
 
   return (
     <>
-      { (hasRequested!==-1 || hasApplied) && (
+      { hasRequested && (
         <RequestNoteWrapper >
           <NoteComp text="Request already sent. This note will be removed if your request has been denied or it will change if you are accepted." />
         </RequestNoteWrapper>
       ) }
-      { isMember!==-1 && (
+      { isMember && (
         <RequestNoteWrapper>
           <NoteComp
             colored="blue" 

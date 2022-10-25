@@ -1,38 +1,34 @@
 import { RegisterControl } from "@/lib/hooks"
+import { useSelectStaff } from "@/lib/hooks/store.hooks"
 import { useModalContext } from "@/store/context/modal/modal"
 import { ColoredMediumButton } from "@/styled/collections/button"
 import { FormBottomControls } from "@/styled/shared/form"
-import { useStartStoryRequest } from "../storyRequest.hook"
-import { getStoryRequestInformation } from "../utils"
+import { MarginLeft } from "@/styled/shared/helpers"
+import { 
+  useApplyStoryRequest, 
+  useStartStoryRequest } from "../storyRequest.hook"
+import { useTrackedStoryRequest } from "../storyRequest.tracked"
 
 
 type ControlsProps = {
   registerControl: RegisterControl,
-  hasApplied: boolean,
-  request: ReturnType<typeof getStoryRequestInformation>,
-  handleApplyStoryRequest: () => void,
   handleDeleteStoryRequest: () => void
 }
 
-const Controls = ({ 
-  registerControl, 
-  hasApplied, 
-  request, 
-  handleApplyStoryRequest,
-  handleDeleteStoryRequest }: ControlsProps
-) =>{
+const Controls = ({ registerControl, handleDeleteStoryRequest }: ControlsProps) =>{
+  const staff = useSelectStaff()
   const {
     storyRequest,
-    bastionId,
-    isOwned,
-    isMember,
-    isAssigned,
     hasRequested,
-  } = request
-  const { handleStartStoryRequest } = useStartStoryRequest(bastionId)
+    isOwned,
+    isAssigned,
+    isAssignedMember,
+    isMember } = useTrackedStoryRequest()
+  const { handleApplyStoryRequest } = useApplyStoryRequest()
+  const { handleStartStoryRequest } = useStartStoryRequest(staff.bastionId)
   const modalContext = useModalContext()
   
-  if ( hasRequested!==-1 || hasApplied || isMember!==-1 ) {
+  if ( hasRequested || isMember ) {
     return (
       <FormBottomControls marginTop={ 24 }>
         <ColoredMediumButton
@@ -47,7 +43,7 @@ const Controls = ({
   if ( !isOwned ) {
     return (
       <FormBottomControls marginTop={ 24 }>
-        { ((isAssigned.assigned && isAssigned.member!==-1) || !isAssigned.assigned) && (
+        { ((isAssigned && isAssignedMember) || !isAssigned) && (
           <ColoredMediumButton 
             colored="blue"
             onClick={ handleApplyStoryRequest }>Request
@@ -70,15 +66,17 @@ const Controls = ({
           onClick={ handleStartStoryRequest }>Start
         </ColoredMediumButton>
       ) }
-      <ColoredMediumButton 
-        colored="red"
-        onClick={ handleDeleteStoryRequest }>Delete
-      </ColoredMediumButton>
       <ColoredMediumButton
-        ref={ registerControl } 
         colored="grey"
         onClick={ modalContext.removeModal }>Close
       </ColoredMediumButton>
+      <MarginLeft pause={ storyRequest?.members.length===0 }>
+        <ColoredMediumButton 
+          ref={ registerControl } 
+          colored="red"
+          onClick={ handleDeleteStoryRequest }>Delete
+        </ColoredMediumButton>
+      </MarginLeft>
     </FormBottomControls>
   )
 }

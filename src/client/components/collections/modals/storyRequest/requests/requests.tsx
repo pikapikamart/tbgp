@@ -2,21 +2,16 @@ import {
   VerificationItem, 
   VerificationOption, 
   VerificationRequester } from "@/components/admin/home/verifications/list/list.styled"
-import { FullStoryRequest } from "@/store/store.types"
 import { useAcceptOrRejectRequest } from "../storyRequest.hook"
 import {
   ContentContainer
 } from "../storyRequest.styled"
 
 
-type RequestsProps = {
-  storyRequest: FullStoryRequest
-}
-
-const Requests = ({ storyRequest }: RequestsProps) =>{
+const Requests = () =>{
   const {
     filteredRequests, 
-    handleRequestChoice } = useAcceptOrRejectRequest( storyRequest )
+    handleRequestChoice } = useAcceptOrRejectRequest()
 
   return (
     <ContentContainer as="ul">

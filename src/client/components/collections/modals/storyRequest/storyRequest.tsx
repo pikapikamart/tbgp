@@ -10,7 +10,6 @@ import { DeleteStoryRequestModal } from "./delete"
 import { StoryRequestNote } from "./note"
 import { StoryRequestRequests } from "./requests"
 import { 
-  useApplyStoryRequest, 
   useStoryRequest,
   useDeleteStoryRequest } from "./storyRequest.hook"
 import {
@@ -20,7 +19,7 @@ import {
   InnerContainer,
   RequestHeaderContent,
 } from "./storyRequest.styled"
-import { getStoryRequestInformation } from "./utils"
+import { useTrackedStoryRequest } from "./storyRequest.tracked"
 
 
 type StoryRequestProps = {
@@ -28,15 +27,14 @@ type StoryRequestProps = {
 }
 
 const StoryRequest = ({ storyRequestId }: StoryRequestProps) =>{
-  const { storyRequest, bastionId } = useStoryRequest(storyRequestId)
+  useStoryRequest(storyRequestId)
+  const { storyRequest, isOwned } = useTrackedStoryRequest()
   const [ registerControl, registerTrapContainer ] = useTrapFocus()
-  const { isOwned } = getStoryRequestInformation( storyRequest, bastionId )
-  const { hasApplied, handleApplyStoryRequest } = useApplyStoryRequest( storyRequestId )
   const { 
     isDeleting, 
     handleDeleteStoryRequest,
     handleConfirmDeleteStoryRequest } = useDeleteStoryRequest(storyRequestId)
-
+    
   return (
     <>
       { isDeleting && (
@@ -56,7 +54,7 @@ const StoryRequest = ({ storyRequestId }: StoryRequestProps) =>{
             <RequestHeaderContent>
               <HeadingVSmall>{ storyRequest.title }</HeadingVSmall>
               <RequestOwner>
-                requested by: { " "}
+                requested by: { " " }
                 <Link
                   href={ `/storybuilder/${ storyRequest.owner.username }` }
                   passHref>
@@ -69,17 +67,12 @@ const StoryRequest = ({ storyRequestId }: StoryRequestProps) =>{
             <TabInterface
               paramsPaths={ isOwned? storyRequestParamsPath.owned : storyRequestParamsPath.staff }
               isRouting={ false }>
-              <StoryRequestContent storyRequest={ storyRequest } />
-              <StoryRequestRequests storyRequest={ storyRequest } />
+              <StoryRequestContent />
+              <StoryRequestRequests />
             </TabInterface> 
-            <StoryRequestNote
-              hasApplied={ hasApplied }
-              request={ getStoryRequestInformation(storyRequest, bastionId) } />
+            <StoryRequestNote/>
             <StoryRequestControls
               registerControl={ registerControl }
-              hasApplied={ hasApplied }
-              request={ getStoryRequestInformation(storyRequest, bastionId) }
-              handleApplyStoryRequest={ handleApplyStoryRequest }
               handleDeleteStoryRequest={ handleDeleteStoryRequest } />
           </InnerContainer>
         </StoryRequestWrapper>

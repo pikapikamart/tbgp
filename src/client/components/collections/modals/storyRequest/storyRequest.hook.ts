@@ -5,31 +5,36 @@ import { useRouter } from "next/router"
 import { 
   useEffect, 
   useState } from "react"
+import { 
+  useStoryDispatch, 
+  useTrackedStoryRequest } from "./storyRequest.tracked"
 
 
 export const useStoryRequest = ( storyRequestId: string ) =>{
-  const [ storyRequest, setStoryRequest ] = useState<FullStoryRequest | null>(null)
+  const dispatch = useStoryDispatch()
   const staff = useSelectStaff()
   const query = trpc.useQuery(["storyRequest.get", { storyRequestId }], {
     refetchOnWindowFocus: false,
     enabled: false,
     onSuccess: ({ data }) => {
-      setStoryRequest(JSON.parse(JSON.stringify(data)))
+      dispatch({
+        type: "SET_STORYREQUEST",
+        payload: {
+          storyRequest: JSON.parse(JSON.stringify(data)),
+          staff
+        }
+      })
     }
   })
 
   useEffect(() =>{
     query.refetch()
   }, [])
-  
-  return {
-    storyRequest,
-    bastionId: staff.bastionId,
-  }
 }
 
 export const useStartStoryRequest = ( storyRequestId: string ) =>{
   const router = useRouter()
+  const { storyRequest } = useTrackedStoryRequest()
   const mutation = trpc.useMutation(["storyRequest.start"], {
     onSuccess: () =>{
       router.reload()
@@ -37,7 +42,7 @@ export const useStartStoryRequest = ( storyRequestId: string ) =>{
   })
 
   const handleStartStoryRequest = () => {
-    mutation.mutate({ storyRequestId })
+    mutation.mutate({ storyRequestId: storyRequest?.storyRequestId?? "" })
   }
 
   return {
@@ -45,40 +50,60 @@ export const useStartStoryRequest = ( storyRequestId: string ) =>{
   }
 }
 
-export const useApplyStoryRequest = ( storyRequestId: string ) =>{
-  const [ hasRequested, setHasRequested ] = useState(false)
-  const mutation = trpc.useMutation(["storyRequest.apply"])
+export const useApplyStoryRequest = () =>{
+  const { storyRequest } = useTrackedStoryRequest()
+  const dispatch = useStoryDispatch()
+  const mutation = trpc.useMutation(["storyRequest.apply"], {
+    onSuccess: () =>{
+      dispatch({ type: "APPLY" })
+    }
+  })
 
   const handleApplyStoryRequest = () => {
-    setHasRequested(true)
-    mutation.mutate({ storyRequestId })
+    mutation.mutate({ storyRequestId: storyRequest?.storyRequestId?? "" })
   }
 
   return {
-    hasApplied: hasRequested,
     handleApplyStoryRequest
   }
 }
 
-export const useAcceptOrRejectRequest = ( storyRequest: FullStoryRequest ) =>{
-  const [ filteredRequests, setFilteredRequests ] = useState(storyRequest.requests)
+export const useAcceptOrRejectRequest = () =>{
+  const { storyRequest } = useTrackedStoryRequest()
+  const dispatch = useStoryDispatch()
+  const [ filteredRequests, setFilteredRequests ] = useState(storyRequest?.requests?? [])
   const [ hasRejected, setHasRejected ] = useState(false)
   const [ hasAccepted, setHasAccepted ] = useState(true)
   const mutation = trpc.useMutation(["storyRequest.accept-reject"], {
     onSuccess: ({ data }) =>{
       data.choice? setHasAccepted(true) : setHasRejected(true)
-      setFilteredRequests(prev => prev.filter(request => request.bastionId!==data.bastionId))
-      // timeout in here for animation something
+      setFilteredRequests(prev => prev.filter(request => request.bastionId!==data.staff.bastionId))
+      dispatch({
+        type: "ACCEPT_REJECT",
+        payload: data
+      })
     }
   })
 
   const handleRequestChoice = ( choice: boolean, bastionId: string ) =>{
     mutation.mutate({
       choice,
-      storyRequestId: storyRequest.storyRequestId,
+      storyRequestId: storyRequest?.storyRequestId?? "",
       bastionId
     })
   }
+
+  useEffect(() =>{
+    if ( hasRejected || hasAccepted ) {
+
+      const timeout = setTimeout(() =>{
+        setHasRejected(false)
+        setHasAccepted(false)
+      }, 2000)
+
+      return () => clearTimeout(timeout) 
+    }
+  }, [ hasRejected, hasAccepted ])
 
   return {
     handleRequestChoice,

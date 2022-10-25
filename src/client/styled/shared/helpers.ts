@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { rem } from "../functions"
 
 
 export const SrOnly = styled.span`
@@ -53,4 +54,13 @@ export const ColumCenterCenter = styled.div`
 
 export const BlockLink = styled.a`
   display: block;
+`
+
+type MarginLeftProps = {
+  pause?: boolean
+}
+
+export const MarginLeft = styled.div<MarginLeftProps>`
+  max-width: max-content;
+  margin-left: ${ ({ pause }) => pause? `${ rem(8) }` : "auto" };
 `

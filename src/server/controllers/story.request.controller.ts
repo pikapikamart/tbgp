@@ -233,6 +233,7 @@ export const acceptRejectStoryRequestHandler = async( request: AcceptRejectStory
       } : undefined
     )
   )
+
   await updateStaffService(
     { bastionId: request.bastionId }, 
     Object.assign(
@@ -251,7 +252,12 @@ export const acceptRejectStoryRequestHandler = async( request: AcceptRejectStory
   return trpcSuccess(true, 
     { 
       choice: request.choice,
-      bastionId: request.bastionId 
+      staff: {
+        bastionId: request.bastionId ,
+        firstname: foundRequester.firstname,
+        lastname: foundRequester.lastname,
+        username: foundRequester.username
+      }
     }
   )
 }
