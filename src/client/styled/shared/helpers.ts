@@ -25,6 +25,7 @@ const BaseRowCenter = css`
 export const RowCenterBetween = styled.div`
   ${ BaseRowCenter };
 
+  flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
 `

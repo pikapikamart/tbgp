@@ -13,10 +13,12 @@ export const useInitialStoryRequests = ( tab: StoryRequestTabSchema ) =>{
   })
 
   useEffect(() =>{
-    if ( router.query["tab"]===tab || ( !router.query["tab"] && !tab ) ){
+    const param = router.query["tab"]
+
+    if ( param!=="created" && param===tab || ( !param && !tab ) ){
       query.refetch()
     }
-  }, [ router.query ])
+  }, [ router.query, tab ])
 
   return query.isSuccess? JSON.parse(JSON.stringify(query.data.data)) as InitialStoryRequest[] : []
 }

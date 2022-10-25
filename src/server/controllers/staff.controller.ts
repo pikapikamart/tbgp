@@ -1,4 +1,6 @@
-import { StaffContext, VerifiedStaffContext } from "../middlewares/router.middleware";
+import { 
+  StaffContext, 
+  VerifiedStaffContext } from "../middlewares/router.middleware";
 import { rolesAndPosition } from "../models/staff.model";
 import { BaseUserSchema } from "../schemas/base.user.schema";
 import { 
@@ -71,7 +73,7 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
     populatedStaff,
     {
       path: "storyRequests.created",
-      select: "-_id -__v -owner -assignedMembers",
+      select: "-_id -__v -owner -assignedMembers -writeupId",
       populate: {
         path: "requests members",
         select: "-_id username"

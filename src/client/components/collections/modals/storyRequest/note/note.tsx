@@ -14,7 +14,7 @@ const Note = ({ hasApplied, request }: NoteProps) =>{
     hasRequested,
     isMember,
     isOwned } = request
-
+  console.log(hasRequested)
   if ( isOwned && storyRequest?.members.length===0 ) {
     return (
       <RequestNoteWrapper >
@@ -25,7 +25,7 @@ const Note = ({ hasApplied, request }: NoteProps) =>{
 
   return (
     <>
-      { hasRequested!==-1 || hasApplied && (
+      { (hasRequested!==-1 || hasApplied) && (
         <RequestNoteWrapper >
           <NoteComp text="Request already sent. This note will be removed if your request has been denied or it will change if you are accepted." />
         </RequestNoteWrapper>

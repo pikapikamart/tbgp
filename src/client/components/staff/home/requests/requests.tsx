@@ -4,7 +4,7 @@ import { TabInterface } from "@/components/shared/tablist"
 import { useExpansion } from "@/lib/hooks"
 import { useSelectStaff } from "@/lib/hooks/store.hooks"
 import { useModalContext } from "@/store/context/modal/modal"
-import { InitialStaffState } from "@/store/slices/staff.slice"
+import { isEditorStaffState } from "@/store/slices/staff.slice"
 import { 
   requestsParams, 
   requestsParamsEditor } from "./data"
@@ -15,15 +15,6 @@ import {
   StoryRequestsContentContainer } from "./requests.styled"
 import { CreateStoryRequestModal } from "@/components/collections/modals/storyRequest/create"
 
-
-const isEditor = ( staff: InitialStaffState ) =>{
-  
-  if ( !staff.position ) {
-    return false
-  }
-
-  return staff.position.role==="sectionEditor" || staff.position.role==="seniorEditor"
-}
 
 const Requests = () =>{
   const staff = useSelectStaff()
@@ -45,8 +36,8 @@ const Requests = () =>{
         ref={ modalContext.focusBackElement }
         tabIndex={ -1 }>
         <TabInterface 
-          paramsPaths={ isEditor(staff)? requestsParamsEditor : requestsParams }
-          extraChildren={ isEditor(staff)? 
+          paramsPaths={ isEditorStaffState(staff)? requestsParamsEditor : requestsParams }
+          extraChildren={ isEditorStaffState(staff)? 
           <>
             <CreateRequestButton 
               colored="darkBlue"
@@ -72,9 +63,11 @@ const Requests = () =>{
           <StoryRequestsContentContainer>
             <StoryRequestsTabContent tab="assigned" />
           </StoryRequestsContentContainer>
-          { isEditor(staff) && (
+          { isEditorStaffState(staff) && (
             <StoryRequestsContentContainer>
-              <StoryRequestsTabContent tab="created" />
+              <StoryRequestsTabContent 
+                tab="created"
+                createdStoryRequests={ staff.storyRequests.created } />
             </StoryRequestsContentContainer>
           ) }
         </TabInterface>

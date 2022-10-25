@@ -13,6 +13,8 @@ import { useRouter } from "next/router"
 import { trpc } from "@/lib/trpc"
 import { StoryRequestSchema } from "@/src/server/schemas/story.request.schema"
 import { useModalContext } from "@/store/context/modal/modal"
+import { useAppDispatch } from "@/lib/hooks/store.hooks"
+import { addCreatedStoryRequest } from "@/store/slices/staff.slice"
 
 
 export type SelectOption = {
@@ -38,9 +40,11 @@ export const useCreateStoryRequest = () =>{
   } = useFormValidation()
   const [ registerControl, registerTrapContainer ] = useTrapFocus()
   const [ assignedMembers, setAssignedMembers ] = useState<MultiValue<SelectOption>>([])
+  const dispatch = useAppDispatch()
   const mutation = trpc.useMutation("storyRequest.create", {
-    onSuccess: () =>{
+    onSuccess: ({ data }) =>{
       router.replace("/storybuilder?tab=created")
+      dispatch(addCreatedStoryRequest(JSON.parse(JSON.stringify(data))))
       modalContext.removeModal()
     } 
   })

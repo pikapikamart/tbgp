@@ -7,7 +7,7 @@ export type InitialStoryRequest = ModifyType<Omit<StoryRequest, "owner" | "reque
   createdAt: string
 }>
 
-type StaffProfile = {
+export type StaffProfile = {
   firstname: string,
   lastname: string,
   username: string,

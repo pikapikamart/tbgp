@@ -45,6 +45,7 @@ export const useComboBox = ( ) =>{
 
 
   const handleListboxTraversing = ( event: React.KeyboardEvent<HTMLDivElement> ) => {
+    event.preventDefault()
     const { key } = event
     const optionsLength = listBoxOptions.current.length
 

@@ -8,16 +8,13 @@ import {
   InitialStaffState, 
   isVerifiedWritableStaffState,
   EditorStaffState} from "../slices/staff.slice"
-import { 
-  FullStoryRequest, 
-  InitialStoryRequest } from "../store.types"
+import { InitialStoryRequest } from "../store.types"
 
 
 type State = WritableDraft<InitialStaffState> | WritableDraft<FullStaffState> | WritableDraft<EditorStaffState>
 
 export const setStaffReducer = ( state: State, action: PayloadAction<InitialStaffState> ) => {
   state = Object.assign(state, action.payload)
-  console.log(action.payload)
 }
 
 export const sendStaffVerificationReducer = ( state: State ) =>{

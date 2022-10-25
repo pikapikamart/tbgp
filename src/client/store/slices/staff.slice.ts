@@ -11,12 +11,13 @@ import {
 import { RootState } from "..";
 import { ModifyType } from "types/utils";
 import { 
-  FullStoryRequest, 
-  InitialStoryRequest } from "../store.types";
+  InitialStoryRequest, 
+  StaffProfile} from "../store.types";
 import { WritableDraft } from "immer/dist/internal";
 
 
 export type InitialStaffState = Omit<Staff, "password">
+
 export type FullStaffState = ModifyType<InitialStaffState, {
   position: Position,
   storyRequests: {
@@ -25,13 +26,21 @@ export type FullStaffState = ModifyType<InitialStaffState, {
     created: InitialStoryRequest[]
   }
 }>
+
+export type CreatedStoryRequest = ModifyType<InitialStoryRequest, {
+  members: string[]
+}> & {
+  requests: Pick<StaffProfile, "username">[]
+}
+
 export type EditorStaffState = ModifyType<FullStaffState, {
   storyRequests: {
     requested: InitialStoryRequest[],
     joined: InitialStoryRequest[],
-    created: FullStoryRequest[]
+    created: CreatedStoryRequest[]
   }
 }>
+
 export type StaffState = InitialStaffState | FullStaffState | EditorStaffState
 
 const initialState: InitialStaffState = {
@@ -69,7 +78,8 @@ export const staffSlice = createSlice({
 export const {
   setStaff,
   sendStaffVerification,
-  updateStaff
+  updateStaff,
+  addCreatedStoryRequest
 } = staffSlice.actions
 export const selectStaff = ( state: RootState ) => state.staff
 
@@ -84,5 +94,10 @@ export const isEditorStaffState = ( state: StaffState ): state is EditorStaffSta
 
   return role==="sectionEditor" || role==="seniorEditor"
 }
+
+export const isCreatedStoryRequest = ( storyRequest: InitialStoryRequest | CreatedStoryRequest ): storyRequest is CreatedStoryRequest => {
+  return ( storyRequest as CreatedStoryRequest ).requests!==undefined
+}
+
 
 export default staffSlice.reducer

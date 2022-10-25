@@ -193,7 +193,17 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
     } 
   )
 
-  return apiResult("Story request created", newStoryRequest.storyRequestId);
+  const filtedCreatedStoryRequest = {
+    storyRequestId: newStoryRequest.storyRequestId,
+    title: newStoryRequest.title,
+    category: newStoryRequest.category,
+    members: [],
+    instruction: newStoryRequest.instruction,
+    requests: [],
+    createdAt: newStoryRequest.createdAt
+  }
+
+  return trpcSuccess(true, filtedCreatedStoryRequest);
 }
 
 export const acceptRejectStoryRequestHandler = async( request: AcceptRejectStoryRequestSchema, { staff }: VerifiedStaffContext ) => {

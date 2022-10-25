@@ -16,7 +16,7 @@ export const StoryRequestWrapper = styled.div`
   ` }
 `
 
-export const Header = styled.div`
+export const InitialRequestHeader = styled.div`
   padding: ${ fluid(16, 2, 24) } ${ fluid(12, 1.2, 16) } ${ fluid(12, 1.2, 16) };
 
   ${ ({ theme: { colors } }) => `
@@ -72,7 +72,7 @@ export const JoinedCount = styled(RowCenter)`
   }
 `
 
-export const Footer = styled.div`
+export const InitialRequestFooter = styled.div`
   padding: ${ rem(16) } ${ fluid(12, 1, 16) } 0;
 `
 

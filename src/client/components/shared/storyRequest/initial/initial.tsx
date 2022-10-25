@@ -1,31 +1,26 @@
 import { useExpansion } from "@/lib/hooks"
 import { useModalContext } from "@/store/context/modal/modal"
 import { InitialStoryRequest } from "@/store/store.types"
-import { RowCenter } from "@/styled/shared/helpers"
+import { RowCenter, RowCenterBetween } from "@/styled/shared/helpers"
 import { BaseModal } from "@/components/shared/modal"
 import { categoryColors } from "../data"
 import { 
   StoryRequestWrapper,
-  Header,
+  InitialRequestHeader,
   Title,
   Category,
   JoinedCount,
-  Footer,
+  InitialRequestFooter,
   Instruction,
   CreatedDate
  } from "./initial.styled"
 import { StoryRequestModal } from "@/components/collections/modals/storyRequest"
+import { CreatedStoryRequest, isCreatedStoryRequest } from "@/store/slices/staff.slice"
+import { convertDateToString } from "./utils"
 
 
 type StoryRequestProps = {
-  request: InitialStoryRequest
-}
-
-export const convertDateToString = ( date: string ) =>{
-  const newDate = new Date(date)
-  const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' } as const
-
-  return newDate.toLocaleDateString(undefined, dateOptions)
+  request: InitialStoryRequest | CreatedStoryRequest
 }
 
 const StoryRequest = ({ request }: StoryRequestProps) =>{
@@ -43,7 +38,7 @@ const StoryRequest = ({ request }: StoryRequestProps) =>{
 
   return (
     <StoryRequestWrapper>
-      <Header>
+      <InitialRequestHeader>
         <Title
           onClick={ handleSetModal }
           aria-expanded={ isExpanded }>{ request.title }</Title>
@@ -53,14 +48,19 @@ const StoryRequest = ({ request }: StoryRequestProps) =>{
             <img 
             src="/icons/icon-profile-small.svg"
             alt="" />
-            <span>{ request.members } joined</span>
+            <span>{ isCreatedStoryRequest(request)? request.members.length : request.members } joined</span>
           </JoinedCount>
         </RowCenter>
-      </Header>
-      <Footer>
+      </InitialRequestHeader>
+      <InitialRequestFooter>
         <Instruction>{ request.instruction }</Instruction>
-        <CreatedDate>{ convertDateToString(request.createdAt) }</CreatedDate>
-      </Footer>
+        <RowCenterBetween>
+          <CreatedDate>{ convertDateToString(request.createdAt) }</CreatedDate>
+          { isCreatedStoryRequest(request) && request.requests.length!==0 && (
+            <Category colored="orange">{ request.requests.length } open { request.requests.length>1? "requests" : "request" }!</Category>
+          ) }
+        </RowCenterBetween>
+      </InitialRequestFooter>
     </StoryRequestWrapper>
   )
 }

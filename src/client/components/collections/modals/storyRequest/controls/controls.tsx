@@ -47,7 +47,7 @@ const Controls = ({
   if ( !isOwned ) {
     return (
       <FormBottomControls marginTop={ 24 }>
-        { isAssigned.assigned && isAssigned.member!==-1 && (
+        { ((isAssigned.assigned && isAssigned.member!==-1) || !isAssigned.assigned) && (
           <ColoredMediumButton 
             colored="blue"
             onClick={ handleApplyStoryRequest }>Request
