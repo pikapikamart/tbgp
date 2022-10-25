@@ -66,7 +66,7 @@ export const useAcceptOrRejectRequest = ( storyRequest: FullStoryRequest ) =>{
   const [ hasAccepted, setHasAccepted ] = useState(true)
   const mutation = trpc.useMutation(["storyRequest.accept-reject"], {
     onSuccess: ({ data }) =>{
-      data? setHasAccepted(true) : setHasRejected(true)
+      data.choice? setHasAccepted(true) : setHasRejected(true)
       setFilteredRequests(prev => prev.filter(request => request.bastionId!==data.bastionId))
       // timeout in here for animation something
     }

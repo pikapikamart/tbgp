@@ -1,1 +1,1 @@
-export { default as StoryRequestModal } from "./storyRequest"
+export { default as StoryRequestModal } from "./storyRequest.tracked"
