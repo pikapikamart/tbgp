@@ -1,24 +1,39 @@
 import mongoose from "mongoose";
-import { BastionId } from "./staff.model";
+import { StaffDocument } from "./staff.model";
 import { StoryRequestDocument } from "./story.request.model";
 
 
 export type WriteupPhases = 
-  | "writeup" | "revision" | "finalEdit" | "graphics" | "finalizations"
+  | "writeup" | "revision" | "finalEdit" | "graphics" | "finalization"
 
-type WriteupContent = {
-  [ key in WriteupPhases ]: any[]
+type WriteupNote = {
+  title: string,
+  message: string
+}
+
+type WriteupContent<K = keyof WriteupPhases> = {
+  phase: K,
+  title: string,
+  caption: string,
+  data: any[],
+  notes: WriteupNote[],
+  handledBy?: StaffDocument["_id"],
+  isSubmitted: boolean,
+  reSubmit: boolean
 }
 
 export type Writeup = {
   request: StoryRequestDocument["_id"],
   writeupId: string,
-  title: string,
-  caption: string,
-  banner: string,
-  content: Partial<WriteupContent>,
-  isEditingBy: BastionId,
-  phase: WriteupPhases
+  banner: any,
+  content: [
+    WriteupContent<"writer">,
+    WriteupContent<"revision"> | null,
+    WriteupContent<"finalEdit"> | null,
+    WriteupContent<"graphics"> | null,
+    WriteupContent<"finalization"> | null
+  ],
+  currentPhase: WriteupPhases
 }
 
 export type WriteupDocument = Writeup & mongoose.Document & {
@@ -36,17 +51,27 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
     required: true,
     unique: true
   },
-  title: {
+  banner: String,
+  content: [{
+    phase: String,
+    title: String,
+    caption: String,
+    data: [],
+    notes: [{
+      title: String,
+      message: String
+    }],
+    handledBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Staff"
+    },
+    isSubmitted: Boolean,
+    reSubmit: Boolean
+  }],
+  currentPhase: {
     type: String,
     required: true
   },
-  caption: String,
-  banner: String,
-  content: {
-    type: Map,
-    of: []
-  },
-  isEditingBy: String
 },{ timestamps: true }
 )
 

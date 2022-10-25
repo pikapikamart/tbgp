@@ -31,9 +31,6 @@ import {
   getOwnedAvailableStoryRequest, 
   staffValidator, 
   storyRequestValidator} from "./controller.utils";
-import { 
-  createWriteupPhase, 
-  updateWriteupPhase } from "../services/writeup.phase.service";
 
 
 // --------Queries--------
@@ -305,30 +302,20 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
   const newWriteup = await createWriteup({
     request: storyRequest._id,
     writeupId: nanoid(14),
-    title: storyRequest.title,
-    caption: "",
     banner: "",
-    content: {},
-    isEditingBy: "",
-    phase: "writeup"
-  }) 
-  const updatedWriteupPhase = await updateWriteupPhase(
-    { phase: "writeup" },
-    {
-      $push: {
-        writeups: newWriteup._id
-      }
-    }
-  )
-
-  if ( !updatedWriteupPhase ) {
-    await createWriteupPhase(
+    content: [
       {
-        phase: "writeup",
-        writeups: [ newWriteup._id ]
-      }
-    )
-  }
+        phase: "writer",
+        title: storyRequest.title,
+        caption: "",
+      },
+      null,
+      null,
+      null,
+      null
+    ],
+    currentPhase: "writeup"
+  }) 
 
   // remove all request made by users to the story
   await bulkUpdateStaffService(storyRequest.requests.map(( storyRequestId: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
@@ -359,14 +346,15 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
         }
       }
     }
-  )));
+  )))
+  
   await updateStoryRequest(
     { storyRequestId: storyRequestId }, 
     {
       started: true,
       writeupId: newWriteup.writeupId
     }
-  );
+  )
   
   return apiResult("Successfully started the request", true);
 }

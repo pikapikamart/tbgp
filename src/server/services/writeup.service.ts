@@ -10,7 +10,7 @@ import {
   WriteupModel } from "../models/writeup.model";
 
 
-export const createWriteup = async( writeup: DocumentDefinition<Writeup> ) => (
+export const createWriteup = async( writeup: Writeup ) => (
   WriteupModel.create(writeup)
 )
 
