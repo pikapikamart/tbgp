@@ -9,6 +9,7 @@ import {
   UpdateStaffSchema,
   UsernameSchema,
   PositionSchema} from "../schemas/staff.schema";
+import { WritingsTabSchema } from "../schemas/writeup.schema";
 import { updateAdminService } from "../services/admin.service";
 import { 
   createStaffService, 
@@ -84,50 +85,36 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
   return trpcSuccess(true, populatedStaff)
 }
 
-export const populateStaffStoryRequests = async({ staff }: StaffContext ) => {
-  await staffPopulatorService(
-    staff,
-    {
-      path: "storyRequests.requested storyRequests.joined",
-      select: "-_id storyRequestId"
-    }
-  )
+export const getWritingsHandler = async( tab: WritingsTabSchema, { staff }: VerifiedStaffContext ) => {
+  
+  if ( tab==="tasks" && staff.position?.role==="writer" ) {
+    return trpcError("FORBIDDEN", "Only editor is allowed")
+  }
 
   await staffPopulatorService(
     staff,
     {
-      path: "storyRequests.created",
-      select: "-_id ",
-      populate: {
-        path: "owner members requests assignedMembers",
-        select: "-_id email firstname lastname"
+      path: `writeups.${ tab }`,
+      select: "-_id category content isPublished writeupId",
+      options: {
+        lean: true,
+      },
+      transform: ( doc, id ) =>{
+        const {
+          phase,
+          data,
+          notes,
+          _id,
+          ...rest
+        } = doc.content[0]
+        doc.content = rest
+
+        return doc
       }
     }
   )
 
-  const requestsData = {
-    storyRequests: {
-      requested: staff.storyRequests?.requested,
-      joined: staff.storyRequests?.joined,
-      created: staff.storyRequests?.created
-    }
-  }
-
-  return trpcSuccess(true, requestsData);
-}
-
-export const populateStaffWriteups = async({ staff }: StaffContext ) => {
-  await staffPopulatorService(
-    staff,
-    {
-      path: "writeups.solo writeups.collaborated writeups.task",
-      select: "-_id writeupId"
-    }
-  )
-
-  const writeupsData = Object.assign({}, staff.writeups);
-
-  return trpcSuccess(true, writeupsData);
+  return trpcSuccess(true, staff.writeups[tab]);
 }
 
 // ----Verified Editor ----

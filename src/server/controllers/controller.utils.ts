@@ -7,7 +7,7 @@ import { StaffDocument } from "../models/staff.model";
 import { 
   StoryRequest, 
   StoryRequestDocument } from "../models/story.request.model";
-import { Writeup } from "../models/writeup.model";
+import { Writeup, WriteupPhases, WRITEUP_PHASES } from "../models/writeup.model";
 import { BastionIdSchema } from "../schemas/staff.schema";
 import { findAdminService } from "../services/admin.service"
 import { findStoryRequest } from "../services/story.request.service";
@@ -133,4 +133,14 @@ export const customNanoid = ( length: number ) =>{
   const nanoid = customAlphabet(alphabet)
 
   return nanoid(length)
+}
+
+export const writeupPhaseIndex = ( searchPhase: string ) => {
+  const foundIndex =  WRITEUP_PHASES.findIndex(phase => phase===searchPhase)
+
+  if ( foundIndex===-1 ) {
+    return trpcError("BAD_REQUEST", "Make sure to send a valid writeup phase")
+  } 
+
+  return foundIndex
 }

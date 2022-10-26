@@ -304,6 +304,8 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
     writeupId: customNanoid(14),
     banner: "",
     category: storyRequest.category,
+    currentPhase: "writeup",
+    isPublished: false,
     content: [
       {
         phase: "writeup",
@@ -320,7 +322,6 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
       null,
       null
     ],
-    currentPhase: "writeup"
   }) 
 
   // remove all request made by users to the story

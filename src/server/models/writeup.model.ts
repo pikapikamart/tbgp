@@ -30,6 +30,8 @@ export type Writeup = {
   writeupId: string,
   banner: any,
   category: string,
+  currentPhase: WriteupPhases,
+  isPublished: boolean,
   content: [
     WriteupContent<"writeup">,
     WriteupContent<"revision"> | null,
@@ -37,7 +39,6 @@ export type Writeup = {
     WriteupContent<"graphics"> | null,
     WriteupContent<"finalization"> | null
   ],
-  currentPhase: WriteupPhases
 }
 
 export type WriteupDocument = Writeup & mongoose.Document & {
@@ -60,6 +61,14 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
     type: String,
     required: true
   },
+  currentPhase: {
+    type: String,
+    required: true
+  },
+  isPublished: {
+    type: Boolean,
+    required: true
+  },
   content: [{
     phase: String,
     title: String,
@@ -77,10 +86,6 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
     isAccepted: Boolean,
     reSubmit: Boolean
   }],
-  currentPhase: {
-    type: String,
-    required: true
-  },
 },{ timestamps: true }
 )
 

@@ -28,6 +28,7 @@ export type StoryRequests = {
 }
 
 export type Writeups = {
+  [ key: string ] : WriteupDocument["_id"][],
   solo: WriteupDocument["_id"][],
   collaborated: WriteupDocument["_id"][],
   task: WriteupDocument["_id"][]

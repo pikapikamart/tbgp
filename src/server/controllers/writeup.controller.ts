@@ -2,7 +2,7 @@ import { StaffContext } from "../middlewares/router.middleware";
 import { 
   SaveWriteupSchema, 
   WriteupIdSchema,
-  WriteupPhaseSchema} from "../schemas/writeup.schema";
+  ActivitiesTabSchema } from "../schemas/writeup.schema";
 import { 
   findMultipleWriteupAggregator, 
   updateWriteup } from "../services/writeup.service";
@@ -12,7 +12,8 @@ import {
   trpcSuccess } from "../utils/success.util";
 import { 
   getSingleOwnedWriteup, 
-  getSingleWriteup } from "./controller.utils";
+  getSingleWriteup, 
+  writeupPhaseIndex} from "./controller.utils";
 
 
 // --------Queries--------
@@ -33,7 +34,7 @@ export const getWriteupHandler = async( writeupId : WriteupIdSchema ) => {
   return trpcSuccess(true, writeup);
 }
 
-export const getMultipleWriteupHandler = async({ phase }: WriteupPhaseSchema) =>{
+export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
   const aggregatedWriteups = await findMultipleWriteupAggregator([
     {
       $match: { currentPhase: phase }
@@ -47,7 +48,7 @@ export const getMultipleWriteupHandler = async({ phase }: WriteupPhaseSchema) =>
         category: 1,
         writeupId: 1,
         content: {
-          $arrayElemAt: [ "$content", 0 ]
+          $arrayElemAt: [ "$content", writeupPhaseIndex(phase) ]
         }
       }
     },

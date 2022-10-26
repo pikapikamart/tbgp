@@ -5,8 +5,7 @@ import {
   validateStaffHandler,
   getStaffHandler,
   updateStaffHandler,
-  populateStaffStoryRequests,
-  populateStaffWriteups,
+  getWritingsHandler,
   getProfileHandler,
   getWritersNamesHandler} from "../controllers/staff.controller";
 import { 
@@ -21,6 +20,7 @@ import {
   positionSchema,
   updateStaffSchema, 
   usernameSchema} from "../schemas/staff.schema";
+import { writingsTabSchema } from "../schemas/writeup.schema";
 
 
 export const staffRouter = createRouter()
@@ -55,11 +55,9 @@ export const staffRouter = createRouter()
   })
   // verification
   .middleware(({ ctx, next }) => isVerifiedStaff(ctx, next))
-  .query("populate-storyRequests", {
-    resolve: ({ ctx }) => populateStaffStoryRequests(ctx)
-  })
-  .query("populate-writeups", {
-    resolve: ({ ctx }) => populateStaffWriteups(ctx)
+  .query("get-writings", {
+    input: writingsTabSchema,
+    resolve: ({ ctx, input }) => getWritingsHandler(input, ctx)
   })
   // verification
   .middleware(({ ctx, next }) => isStaffEditor(ctx, next))

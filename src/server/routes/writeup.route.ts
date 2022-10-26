@@ -7,7 +7,7 @@ import { createRouter } from "../router/createRouter";
 import { 
   saveWriteupSchema,
   writeupIdSchema, 
-  writeupPhaseSchema} from "../schemas/writeup.schema";
+  activitiesTabSchema } from "../schemas/writeup.schema";
 
 
 export const writeupRouter = createRouter()
@@ -18,7 +18,7 @@ export const writeupRouter = createRouter()
     resolve: ({ input }) => getWriteupHandler(input)
   })
   .query("get-multiple", {
-    input: writeupPhaseSchema,
+    input: activitiesTabSchema,
     resolve: ({ input }) => getMultipleWriteupHandler(input)
   })
   .mutation("save", {
