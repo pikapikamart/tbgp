@@ -2,7 +2,9 @@ import "../models"
 import { 
   DocumentDefinition, 
   FilterQuery, 
+  PipelineStage, 
   PopulateOptions, 
+  ProjectionType, 
   QueryOptions, 
   UpdateQuery} from "mongoose";
 import { 
@@ -21,7 +23,7 @@ export const updateWriteup = async(
   WriteupModel.findOneAndUpdate(query, update)
 )
 
-export const findWriteup = async(
+export const findWriteupService = async(
   query: FilterQuery<Writeup>,
   populate?: PopulateOptions 
 ) => (
@@ -30,10 +32,15 @@ export const findWriteup = async(
 
 // --------Multiple--------
 
-export const findManyWriteup = async(
+export const findMultipleWriteupService = async(
   query: FilterQuery<Writeup>,
+  projection: ProjectionType<Writeup> = "",
   option: QueryOptions,
   populate?: PopulateOptions
 ) => (
-  populate? WriteupModel.find(query, "", option).populate(populate) : WriteupModel.find(query, "", option)
+  populate? WriteupModel.find(query, projection, option).populate(populate) : WriteupModel.find(query, projection, option)
+)
+
+export const findMultipleWriteupAggregator = async( aggregate: PipelineStage[] ) => (
+  WriteupModel.aggregate(aggregate)
 )

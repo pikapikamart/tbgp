@@ -22,11 +22,11 @@ import {
 import { 
   apiResult, 
   trpcSuccess } from "../utils/success.util";
-import { nanoid } from "nanoid";
 import { AnyBulkWriteOperation } from "mongodb";
 import { createWriteup } from "../services/writeup.service";
 import { StaffContext, VerifiedStaffContext } from "../middlewares/router.middleware";
 import { 
+  customNanoid,
   getCurrentAvailableStoryRequest, 
   getOwnedAvailableStoryRequest, 
   staffValidator, 
@@ -170,7 +170,7 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
   const newStoryRequest = await createStoryRequestService(
     {
       ...request,
-      storyRequestId: nanoid(14),
+      storyRequestId: customNanoid(14),
       category: storyCategories[request.category],
       owner: staff._id,
       assignedMembers: assignedMembers.length? assignedMembers.map(member => member._id) : null,
@@ -301,13 +301,19 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
 
   const newWriteup = await createWriteup({
     request: storyRequest._id,
-    writeupId: nanoid(14),
+    writeupId: customNanoid(14),
     banner: "",
+    category: storyRequest.category,
     content: [
       {
-        phase: "writer",
+        phase: "writeup",
         title: storyRequest.title,
         caption: "",
+        data: [],
+        notes: [],
+        isSubmitted: false,
+        isAccepted: false,
+        reSubmit: false
       },
       null,
       null,

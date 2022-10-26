@@ -6,12 +6,14 @@ import { StoryRequestDocument } from "./story.request.model";
 export type WriteupPhases = 
   | "writeup" | "revision" | "finalEdit" | "graphics" | "finalization"
 
+export const WRITEUP_PHASES: readonly WriteupPhases[] = ["writeup", "revision", "finalEdit", "graphics", "finalization"] as const
+
 type WriteupNote = {
   title: string,
   message: string
 }
 
-type WriteupContent<K = keyof WriteupPhases> = {
+type WriteupContent<K extends WriteupPhases> = {
   phase: K,
   title: string,
   caption: string,
@@ -19,6 +21,7 @@ type WriteupContent<K = keyof WriteupPhases> = {
   notes: WriteupNote[],
   handledBy?: StaffDocument["_id"],
   isSubmitted: boolean,
+  isAccepted: boolean,
   reSubmit: boolean
 }
 
@@ -26,8 +29,9 @@ export type Writeup = {
   request: StoryRequestDocument["_id"],
   writeupId: string,
   banner: any,
+  category: string,
   content: [
-    WriteupContent<"writer">,
+    WriteupContent<"writeup">,
     WriteupContent<"revision"> | null,
     WriteupContent<"finalEdit"> | null,
     WriteupContent<"graphics"> | null,
@@ -52,6 +56,10 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
     unique: true
   },
   banner: String,
+  category: {
+    type: String,
+    required: true
+  },
   content: [{
     phase: String,
     title: String,
@@ -66,6 +74,7 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
       ref: "Staff"
     },
     isSubmitted: Boolean,
+    isAccepted: Boolean,
     reSubmit: Boolean
   }],
   currentPhase: {

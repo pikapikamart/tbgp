@@ -3,7 +3,7 @@ import {
   PopulateOptions,
   ProjectionType,
   QueryOptions} from "mongoose";
-import { StaffDocument, VerifiedStaffDocument } from "../models/staff.model";
+import { StaffDocument } from "../models/staff.model";
 import { 
   StoryRequest, 
   StoryRequestDocument } from "../models/story.request.model";
@@ -11,8 +11,9 @@ import { Writeup } from "../models/writeup.model";
 import { BastionIdSchema } from "../schemas/staff.schema";
 import { findAdminService } from "../services/admin.service"
 import { findStoryRequest } from "../services/story.request.service";
-import { findWriteup } from "../services/writeup.service";
+import { findWriteupService } from "../services/writeup.service";
 import { trpcError } from "../utils/error.util";
+import { customAlphabet } from "nanoid"
 
 
 // --------Admin--------
@@ -101,7 +102,7 @@ export type WriteupQuery = {
 // --------Writeup--------
 
 export const getSingleWriteup = async( query: FilterQuery<Writeup>, populate?: PopulateOptions ) => {
-  const foundWriteup = await findWriteup(query, populate);
+  const foundWriteup = await findWriteupService(query, populate);
 
   if ( !foundWriteup ) {
     return trpcError("NOT_FOUND", "No write up found")
@@ -123,4 +124,13 @@ export const getSingleOwnedWriteup = async( query: FilterQuery<Writeup>, staff: 
   }
 
   return writeup;
+}
+
+// -------- Random --------
+
+export const customNanoid = ( length: number ) =>{
+  const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_"
+  const nanoid = customAlphabet(alphabet)
+
+  return nanoid(length)
 }

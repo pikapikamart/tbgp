@@ -1,8 +1,11 @@
 import { StaffContext } from "../middlewares/router.middleware";
 import { 
   SaveWriteupSchema, 
-  WriteupIdSchema} from "../schemas/writeup.schema";
-import { updateWriteup } from "../services/writeup.service";
+  WriteupIdSchema,
+  WriteupPhaseSchema} from "../schemas/writeup.schema";
+import { 
+  findMultipleWriteupAggregator, 
+  updateWriteup } from "../services/writeup.service";
 import { trpcError } from "../utils/error.util";
 import { 
   apiResult, 
@@ -30,25 +33,38 @@ export const getWriteupHandler = async( writeupId : WriteupIdSchema ) => {
   return trpcSuccess(true, writeup);
 }
 
-// --------Mutations--------
+export const getMultipleWriteupHandler = async({ phase }: WriteupPhaseSchema) =>{
+  const aggregatedWriteups = await findMultipleWriteupAggregator([
+    {
+      $match: { currentPhase: phase }
+    },
+    {
+      $sort: { createdAt: 1 }
+    },
+    {
+      $project: {
+        _id: 0,
+        category: 1,
+        writeupId: 1,
+        content: {
+          $arrayElemAt: [ "$content", 0 ]
+        }
+      }
+    },
+    {
+      $project: {
+        category: 1,
+        writeupId: 1,
+        "content.title": 1,
+        "content.caption": 1
+      }
+    }
+  ])
 
-export const editWriteupHandler = async( writeupId: WriteupIdSchema, { staff }: StaffContext ) => {
-  const writeup = await getSingleOwnedWriteup(
-    { writeupId }, 
-    staff
-  );
-
-  if ( writeup.isEditingBy ) {
-    return trpcError("CONFLICT", "Someone is already editing, wait for it to finish")
-  }
-
-  await updateWriteup(
-    { writeupId },
-    { isEditingBy: staff.bastionId }
-  )
-
-  return apiResult("You can now edit the write up", true);
+  return trpcSuccess(true, aggregatedWriteups)
 }
+
+// --------Mutations--------
 
 export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff }: StaffContext ) => {
   await getSingleOwnedWriteup(
@@ -76,22 +92,4 @@ export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff
   }
 
   return apiResult("Successfully saved writeup", true);
-}
-
-export const exitWriteupHandler = async( writeupId: WriteupIdSchema, { staff }: StaffContext ) => {
-  const writeup = await getSingleOwnedWriteup(
-    { writeupId },
-    staff  
-  );
-
-  if ( writeup.isEditingBy!==staff.bastionId ) {
-    return trpcError("FORBIDDEN", "You can only terminate editing if you are the current editor")
-  }
-
-  await updateWriteup(
-    { writeupId },
-    { isEditingBy: "" }
-  )
-
-  return apiResult("Successfully exited editing writeup", true);
 }

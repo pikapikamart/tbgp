@@ -1,6 +1,5 @@
 import { 
-  editWriteupHandler, 
-  exitWriteupHandler, 
+  getMultipleWriteupHandler,
   getWriteupHandler, 
   saveWriteupHandler} from "../controllers/writeup.controller";
 import { isValidStaff } from "../middlewares/router.middleware";
@@ -20,17 +19,9 @@ export const writeupRouter = createRouter()
   })
   .query("get-multiple", {
     input: writeupPhaseSchema,
-    resolve: () => {}
-  })
-  .mutation("edit", {
-    input: writeupIdSchema,
-    resolve: ({ input, ctx }) => editWriteupHandler(input, ctx)
+    resolve: ({ input }) => getMultipleWriteupHandler(input)
   })
   .mutation("save", {
     input: saveWriteupSchema,
     resolve: ({ input, ctx }) => saveWriteupHandler(input, ctx)
-  })
-  .mutation("exit", {
-    input: writeupIdSchema,
-    resolve: ({ input, ctx }) => exitWriteupHandler(input, ctx)
   })
