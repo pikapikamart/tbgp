@@ -2,7 +2,8 @@ import {
   getMultipleWriteupHandler,
   getWriteupHandler, 
   saveWriteupHandler,
-  saveWriteupPhaseHandler} from "../controllers/writeup.controller";
+  saveWriteupPhaseHandler,
+  submitWriteupPhaseHandler} from "../controllers/writeup.controller";
 import { 
   isValidStaff, 
   isVerifiedStaff } from "../middlewares/router.middleware";
@@ -10,7 +11,9 @@ import { createRouter } from "../router/createRouter";
 import { 
   saveWriteupSchema,
   writeupIdSchema, 
-  activitiesTabSchema, 
+  activitiesTabSchema,
+  submitWriteupSchema,
+  saveWriteupPhaseSchema, 
 } from "../schemas/writeup.schema";
 
 
@@ -26,12 +29,16 @@ export const writeupRouter = createRouter()
     resolve: ({ input }) => getMultipleWriteupHandler(input)
   })
   .middleware(({ ctx, next }) => isVerifiedStaff(ctx, next))
-  .mutation("save", {
-    input: saveWriteupSchema,
-    resolve: ({ input, ctx }) => saveWriteupHandler(input, ctx)
-  })
   .mutation("save-writeupPhase", {
-    input: saveWriteupSchema,
+    input: saveWriteupPhaseSchema,
     resolve: ({ input, ctx }) => saveWriteupPhaseHandler(input, ctx)
   })
+  .mutation("submit-writeupPhase", {
+    input: submitWriteupSchema,
+    resolve: ({ input, ctx }) => submitWriteupPhaseHandler(input, ctx)
+  })
+  // .mutation("save", {
+  //   input: saveWriteupSchema,
+  //   resolve: ({ input, ctx }) => saveWriteupHandler(input, ctx)
+  // })
   

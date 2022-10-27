@@ -1,19 +1,18 @@
-import { StaffContext, VerifiedStaffContext } from "../middlewares/router.middleware";
+import { VerifiedStaffContext } from "../middlewares/router.middleware";
 import { StoryRequest } from "../models/story.request.model";
+import { WRITEUP_PHASES } from "../models/writeup.model";
 import { 
   SaveWriteupSchema, 
   WriteupIdSchema,
-  ActivitiesTabSchema } from "../schemas/writeup.schema";
+  ActivitiesTabSchema, 
+  SubmitWriteupSchema} from "../schemas/writeup.schema";
 import { 
   findMultipleWriteupAggregator, 
   findWriteupService, 
   updateWriteup } from "../services/writeup.service";
 import { trpcError } from "../utils/error.util";
+import { trpcSuccess } from "../utils/success.util";
 import { 
-  apiResult, 
-  trpcSuccess } from "../utils/success.util";
-import { 
-  getSingleOwnedWriteup, 
   getSingleWriteup, 
   isStoryRequest, 
   writeupPhaseIndex,
@@ -82,10 +81,6 @@ export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
 
 export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupSchema, { staff }: VerifiedStaffContext) =>{
   
-  if ( !writeupBody.phase  || writeupBody.phase!=="writeup" ) {
-    return trpcError("BAD_REQUEST", "Phase should not be empty")
-  }
-
   const writeup = writeupValidator(await findWriteupService<{ request: StoryRequest }>(
     {
       writeupId: writeupBody.writeupId
@@ -121,37 +116,52 @@ export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupSchema, { s
       }
     }
   )
-
+  
   return trpcSuccess(true, "Successfully saved")
+}
 
+export const submitWriteupPhaseHandler = async( submit: SubmitWriteupSchema, { staff }: VerifiedStaffContext ) =>{
+  const writeup = writeupValidator(await findWriteupService<{ request: StoryRequest }>(
+    {
+      writeupId: submit.writeupId
+    },
+    {
+      path: "request",
+      select: "members storyRequestId"
+    }
+  ))
+
+  if ( isStoryRequest(writeup.request) && !writeup.request.members.find(member => member.equals(staff._id)) ) {
+    return trpcError("FORBIDDEN", "Only members of writeup are allowed")  
+  }
+
+  if ( writeup.content[0].isSubmitted ) {
+    return trpcError("CONFLICT", "Writeup is already submitted")
+  }
+
+  if ( writeup.content[0].isAccepted ) {
+    return trpcError("CONFLICT", "Writeup is already accepted in this phase")
+  }
+
+  if ( writeup.isPublished ) {
+    return trpcError("CONFLICT", "Writeup is already published")
+  }
+
+  await updateWriteup(
+    {
+      writeupId: submit.writeupId,
+      "content.phase": "writeup"
+    },
+    {
+      "content.$.isSubmitted" : true,
+      "content.1": writeup.content[0],
+      currentPhase: WRITEUP_PHASES[writeupPhaseIndex("writeup")+1]
+    }
+  )
+  
+  return trpcSuccess(true, "Successfully submitted")
 }
 
 export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff }: VerifiedStaffContext ) => {
-  
-
-  await getSingleOwnedWriteup(
-    { writeupId: writeupBody.writeupId },
-    staff
-  );
-  
-  const updatedWriteup = await updateWriteup(
-    {
-      writeupId: writeupBody.writeupId,
-      isEditingBy: staff.bastionId
-    },
-    {
-      title: writeupBody.title,
-      caption: writeupBody.caption,
-      banner: writeupBody.banner,
-      $set: {
-        [`content.${ writeupBody.phase }`]: writeupBody.content
-      }
-    }
-  )
-
-  if ( !updatedWriteup ) {
-    return trpcError("CONFLICT", "Someone is already editing, wait for it to finish")
-  }
-
-  return apiResult("Successfully saved writeup", true);
+  writeupPhaseIndex(writeupBody.phase)
 }

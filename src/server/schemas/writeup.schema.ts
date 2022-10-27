@@ -23,10 +23,20 @@ export const saveWriteupSchema = z
     banner: z.string().optional(),
     content: z.array(z.any()),
     writeupId: writeupIdSchema,
-    phase: activitiesTabSchema
+    phase: z.enum(["writeup", "revision", "finalEdit", "graphics", "finalization"])
+  })
+
+export const saveWriteupPhaseSchema = saveWriteupSchema.extend({
+  phase: z.literal("writeup")
+})
+
+export const submitWriteupSchema = z
+  .object({
+    writeupId: writeupIdSchema,
   })
 
 export type WriteupIdSchema = TypeOf<typeof writeupIdSchema>
 export type SaveWriteupSchema = TypeOf<typeof saveWriteupSchema>;
 export type ActivitiesTabSchema = TypeOf<typeof activitiesTabSchema>;
 export type WritingsTabSchema = TypeOf<typeof writingsTabSchema>
+export type SubmitWriteupSchema = TypeOf<typeof submitWriteupSchema>

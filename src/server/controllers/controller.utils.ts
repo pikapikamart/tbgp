@@ -123,21 +123,6 @@ export const getSingleWriteup = async( query: FilterQuery<Writeup>, populate?: P
   return foundWriteup;
 }
 
-export const getSingleOwnedWriteup = async( query: FilterQuery<Writeup>, staff: StaffDocument ) => {
-  const writeup = await getSingleWriteup(query, 
-    {
-      path: "request",
-      select: "-_id members"
-    }
-  );
-
-  if ( !writeup.request.members.find(( member: StoryRequestDocument ) => member.equals(staff._id)) ) {
-    return trpcError("FORBIDDEN", "Make sure to be a member first to edit")
-  }
-
-  return writeup;
-}
-
 // -------- Random --------
 
 export const customNanoid = ( length: number ) =>{
