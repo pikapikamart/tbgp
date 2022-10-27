@@ -20,7 +20,12 @@ export const TabSelections = styled(RowCenter)`
   flex-basis: 100%;
   flex-shrink: 1;
   min-height: ${ rem(48) };
+  overflow: auto hidden;
   padding: 0 ${ rem(16) };
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   ${({ theme: { colors } }) => `
     background-color: ${ colors.white3 };
@@ -31,7 +36,12 @@ export const TabSelections = styled(RowCenter)`
 export const Tab = styled.button`
   font-weight: 500;
   font-size: ${ fluid(13, 1.4, 14) };
+  min-width: max-content;
   padding: 0 ${ fluid(12, 1.2, 16) };
+
+  &:not(:last-of-type) {
+    margin-right: ${ fluid(8, 1.5, 16) };
+  }
 
   ${({ theme: { colors } }) => `
     color: ${ colors.grey2 };  

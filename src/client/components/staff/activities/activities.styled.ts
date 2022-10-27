@@ -1,5 +1,7 @@
 import styled from "styled-components"
-import { rem } from "@/styled/functions"
+import { 
+  rem,
+  fluid } from "@/styled/functions"
 import { HeadingVSmall } from "@/styled/collections/text"
 
 
@@ -13,6 +15,8 @@ export const MainContentContainer = styled.div`
 `
 
 export const MainHeadingContainer = styled.div`
+  margin-bottom: ${ fluid(16, 2.5, 18) };
+
   ${ HeadingVSmall } {
     margin-bottom: ${ rem(8) }
   }

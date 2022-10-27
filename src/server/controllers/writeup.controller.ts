@@ -34,6 +34,15 @@ export const getWriteupHandler = async( writeupId : WriteupIdSchema ) => {
   return trpcSuccess(true, writeup);
 }
 
+export type InitialWriteup = {
+  writeupId: string,
+  category: string,
+  content: {
+    title: string,
+    caption: string
+  }
+}
+
 export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
   const aggregatedWriteups = await findMultipleWriteupAggregator([
     {
@@ -62,7 +71,7 @@ export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
     }
   ])
 
-  return trpcSuccess(true, aggregatedWriteups)
+  return trpcSuccess(true, aggregatedWriteups as InitialWriteup[])
 }
 
 // --------Mutations--------
