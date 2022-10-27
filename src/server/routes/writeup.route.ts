@@ -3,6 +3,7 @@ import {
   requestReSubmitHandler,
   saveWriteupHandler,
   saveWriteupPhaseHandler,
+  submitWriteupHandler,
   submitWriteupPhaseHandler,
   takeWriteupTaskHandler} from "../controllers/writeup.controller";
 import { 
@@ -43,6 +44,10 @@ export const writeupRouter = createRouter()
   .mutation("save", {
     input: saveWriteupSchema,
     resolve: ({ input, ctx }) => saveWriteupHandler(input, ctx)
+  })
+  .mutation("submit", {
+    input: writeupIdSchema,
+    resolve: ({ input, ctx }) => submitWriteupHandler(input, ctx)
   })
   .mutation("re-submit", {
     input: reSubmitWriteupSchema,

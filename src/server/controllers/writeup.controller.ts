@@ -70,7 +70,8 @@ export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema
   
   const writeup = writeupValidator(await findWriteupPopulatorService<{ request: StoryRequest }>(
     {
-      writeupId: writeupBody.writeupId
+      writeupId: writeupBody.writeupId,
+      isPublished: false
     },
     {
       path: "request",
@@ -110,7 +111,8 @@ export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema
 export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext ) =>{
   const writeup = writeupValidator(await findWriteupPopulatorService<{ request: StoryRequest }>(
     {
-      writeupId
+      writeupId,
+      isPublished: false
     },
     {
       path: "request",
@@ -128,10 +130,6 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
 
   if ( writeup.content[0].isAccepted ) {
     return trpcError("CONFLICT", "Writeup is already accepted in this phase")
-  }
-
-  if ( writeup.isPublished ) {
-    return trpcError("CONFLICT", "Writeup is already published")
   }
 
   if ( writeup.content[0].reSubmit ) {
@@ -176,14 +174,13 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
 
 export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext) =>{
   const writeup = writeupValidator(await findWriteupService(
-    { writeupId },
+    { 
+      writeupId,
+      isPublished: false
+    },
     "",
     { lean: true })
   )
-
-  if ( writeup.isPublished ) {
-    return trpcError("CONFLICT", "Writeup is already published")
-  }
 
   if ( writeup.currentPhase==="finalization" && staff.position.role!=="seniorEditor" ) {
     return trpcError("FORBIDDEN", "Only senior editor is allowed for the finalization")
@@ -224,7 +221,10 @@ export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff 
 
 export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff }: VerifiedStaffContext ) => {
   const writeup = writeupValidator(await findWriteupService(
-    { writeupId: writeupBody.writeupId },
+    { 
+      writeupId: writeupBody.writeupId,
+      isPublished: false
+    },
     "", 
     { lean: true })
   )
@@ -261,9 +261,83 @@ export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff
   return trpcSuccess(true, "Successfully saved")
 }
 
+export const submitWriteupHandler = async( writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext ) => {
+  const writeup = writeupValidator(await findWriteupService(
+    { 
+      writeupId,
+      isPublished: false
+    },
+    "", 
+    { lean: true })
+  )
+
+  if ( writeup.currentPhase==="finalization" ) {
+    return trpcError("CONFLICT", "Can't submit into a higher phase")
+  }
+
+  const phaseIndex = writeupPhaseIndex(writeup.currentPhase)
+  const currentContent = writeup.content[phaseIndex]
+
+  if ( !currentContent?.handledBy?.equals(staff._id) ) {
+    return trpcError("FORBIDDEN", "Only editor that took the task is allowed")
+  }
+
+  if ( currentContent.isSubmitted ) {
+    return trpcError("CONFLICT", "Writeup is already submitted")
+  }
+
+  if ( currentContent.isAccepted ) {
+    return trpcError("CONFLICT", "Writeup is already accepted in this phase")
+  }
+
+  const nextPhase = WRITEUP_PHASES[phaseIndex+1]
+
+  if ( currentContent.reSubmit ) {
+    await updateWriteupService(
+      {
+        writeupId,
+        "content.phase": writeup.currentPhase
+      },
+      {
+        "content.$.isSubmitted" : true,
+        "content.$.reSubmit": false,
+        [`content.${ phaseIndex+1 }`]: Object.assign( currentContent, { 
+          phase: nextPhase, 
+          reSubmit: false,
+          notes: [],
+          handledBy: writeup.content[phaseIndex+1]?.handledBy
+        } ),
+        currentPhase: nextPhase
+      }
+    )
+
+    return trpcSuccess(true, "Successfully submitted")
+  } 
+
+  // update the previous
+  await updateWriteupService(
+    {
+      writeupId,
+      "content.phase": writeup.currentPhase
+    },
+    {
+      "content.$.isSubmitted" : true,
+      "content.$.reSubmit": false,
+      [`content.${ phaseIndex+1 }`]: Object.assign( currentContent, { phase: nextPhase } ),
+      [`content.${ phaseIndex-1 }.isAccepted`]: true,
+      currentPhase: nextPhase
+    }
+  )
+
+  return trpcSuccess(true, "Successfully submitted")
+}
+
 export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam, { staff }: VerifiedStaffContext ) =>{
   const writeup = writeupValidator(await findWriteupService(
-    { writeupId: reSubmitBody.writeupId },
+    { 
+      writeupId: reSubmitBody.writeupId,
+      isPublished: false
+    },
     "", 
     { lean: true })
   )

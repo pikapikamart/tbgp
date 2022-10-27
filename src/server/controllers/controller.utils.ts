@@ -103,7 +103,7 @@ export type WriteupQuery = {
 
 export const writeupValidator = <T,>( story: T ) => {
   if ( !story ) {
-    return trpcError("NOT_FOUND", "No writeup found with this id")
+    return trpcError("NOT_FOUND", "No writeup found or available")
   }
 
   return story
