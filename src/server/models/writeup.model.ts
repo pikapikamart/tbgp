@@ -41,7 +41,8 @@ export type Writeup = {
   ],
 }
 
-export type WriteupDocument = Writeup & mongoose.Document & {
+export type WriteupDocument = Writeup & mongoose.Document<mongoose.Types.ObjectId> & {
+  _id: mongoose.Types.ObjectId,
   createdAt: Date,
   updatedAt: Date
 };

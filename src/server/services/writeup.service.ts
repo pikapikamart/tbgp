@@ -15,7 +15,7 @@ export const createWriteup = async( writeup: Writeup ) => (
   WriteupModel.create(writeup)
 )
 
-export const updateWriteup = async(
+export const updateWriteupService = async(
   query: FilterQuery<Writeup>,
   update: UpdateQuery<Writeup>
 ) => (

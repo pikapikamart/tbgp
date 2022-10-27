@@ -71,6 +71,7 @@ export const rolesAndPosition: RolesAndPositionIndex = {
     "Editor in Chief",
     "Associate Editor",
     "Managing Editor",
+    "Senior Staff"
   ],
 }
 

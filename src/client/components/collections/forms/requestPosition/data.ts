@@ -51,4 +51,9 @@ export const rolesAndPositions = [
     value: "seniorEditor",
     id: "managingEditor"
   },
+  {
+    name: "Senior Staff",
+    value: "seniorEditor",
+    id: "seniorStaff"
+  },
 ] 
