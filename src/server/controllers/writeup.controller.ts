@@ -5,7 +5,8 @@ import {
   SaveWriteupSchema, 
   WriteupIdSchema,
   ActivitiesTabSchema, 
-  SaveWriteupPhaseSchema} from "../schemas/writeup.schema";
+  SaveWriteupPhaseSchema,
+  ReSubmitWriteupScheam} from "../schemas/writeup.schema";
 import { updateStaffService } from "../services/staff.service";
 import { 
   findMultipleWriteupAggregator, 
@@ -133,6 +134,28 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
     return trpcError("CONFLICT", "Writeup is already published")
   }
 
+  if ( writeup.content[0].reSubmit ) {
+    await updateWriteupService(
+      {
+        writeupId,
+        "content.phase": "writeup"
+      },
+      {
+        "content.$.isSubmitted" : true,
+        "content.$.reSubmit": false,
+        "content.1": Object.assign( writeup.content[0], { 
+          phase: "revision", 
+          reSubmit: false,
+          notes: [],
+          handledBy: writeup.content[1]?.handledBy
+        } ),
+        currentPhase: WRITEUP_PHASES[writeupPhaseIndex("writeup")+1]
+      }
+    )
+
+    return trpcSuccess(true, "Successfully submitted")
+  } 
+
   await updateWriteupService(
     {
       writeupId,
@@ -140,6 +163,7 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
     },
     {
       "content.$.isSubmitted" : true,
+      "content.$.reSubmit": false,
       "content.1": Object.assign( writeup.content[0], { phase: "revision" } ),
       currentPhase: WRITEUP_PHASES[writeupPhaseIndex("writeup")+1]
     }
@@ -204,8 +228,13 @@ export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff
     "", 
     { lean: true })
   )
+  const phaseIndex = writeupPhaseIndex(writeup.currentPhase)
 
-  if ( writeup.content[writeupPhaseIndex(writeup.currentPhase)-1]?.reSubmit ) {
+  if ( !writeup.content[phaseIndex]?.handledBy?.equals(staff._id) ) {
+    return trpcError("FORBIDDEN", "Only editor that took the task is allowed")
+  }
+
+  if ( writeup.content[phaseIndex-1]?.reSubmit ) {
     return trpcError("CONFLICT", "You can only save when resubmission of lower phase is done")
   }
 
@@ -230,4 +259,45 @@ export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff
   }
 
   return trpcSuccess(true, "Successfully saved")
+}
+
+export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam, { staff }: VerifiedStaffContext ) =>{
+  const writeup = writeupValidator(await findWriteupService(
+    { writeupId: reSubmitBody.writeupId },
+    "", 
+    { lean: true })
+  )
+  const phaseIndex = writeupPhaseIndex(writeup.currentPhase)
+  const currentContent = writeup.content[phaseIndex]
+
+  if ( !currentContent?.handledBy?.equals(staff._id) ) {
+    return trpcError("FORBIDDEN", "Only editor that took the task is allowed")
+  }
+
+  if ( currentContent?.isSubmitted ) {
+    return trpcError("CONFLICT", "Re-submit is not allowed when you already submitted the writeup")
+  }
+
+  if ( writeup.content[phaseIndex-1]?.reSubmit ) {
+    return trpcError("CONFLICT", "Wait for the re-submission to be finished before requesting again")
+  }
+
+  if ( writeup.content[phaseIndex-1]?.isAccepted ) {
+    return trpcError("CONFLICT", "Re-submit is not allowed when you submitted your task. Take responsibility")
+  }
+
+  await updateWriteupService(
+    {
+      writeupId: reSubmitBody.writeupId,
+      "content.phase": WRITEUP_PHASES[phaseIndex-1]
+    },
+    {
+      "content.$.isSubmitted": false,
+      "content.$.reSubmit": true,
+      "content.$.notes": reSubmitBody.notes,
+      currentPhase: WRITEUP_PHASES[phaseIndex-1]
+    }
+  )
+
+  return trpcSuccess(true, "Requested re-submission successfully")
 }

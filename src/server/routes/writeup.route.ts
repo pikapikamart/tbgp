@@ -1,5 +1,6 @@
 import { 
   getMultipleWriteupHandler,
+  requestReSubmitHandler,
   saveWriteupHandler,
   saveWriteupPhaseHandler,
   submitWriteupPhaseHandler,
@@ -14,6 +15,7 @@ import {
   writeupIdSchema, 
   activitiesTabSchema,
   saveWriteupPhaseSchema,
+  reSubmitWriteupSchema,
 } from "../schemas/writeup.schema";
 
 
@@ -41,4 +43,8 @@ export const writeupRouter = createRouter()
   .mutation("save", {
     input: saveWriteupSchema,
     resolve: ({ input, ctx }) => saveWriteupHandler(input, ctx)
+  })
+  .mutation("re-submit", {
+    input: reSubmitWriteupSchema,
+    resolve: ({ input, ctx }) => requestReSubmitHandler(input, ctx)
   })

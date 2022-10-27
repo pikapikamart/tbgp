@@ -28,9 +28,23 @@ export const submitWriteupSchema = z
     writeupId: writeupIdSchema,
   })
 
+export const reSubmitWriteupSchema = z
+  .object({
+    writeupId: writeupIdSchema,
+    notes: z.array(z.object({
+      title: z
+        .string({ required_error: "Title is required" })
+        .min(1, "Title should not be empty"),
+      message: z
+        .string({ required_error: "Message is required" })
+        .min(1, "Message should not be empty"),
+    }))
+  })
+
 export type WriteupIdSchema = TypeOf<typeof writeupIdSchema>
 export type SaveWriteupSchema = TypeOf<typeof saveWriteupSchema>;
 export type ActivitiesTabSchema = TypeOf<typeof activitiesTabSchema>;
 export type WritingsTabSchema = TypeOf<typeof writingsTabSchema>
 export type SubmitWriteupSchema = TypeOf<typeof submitWriteupSchema>
 export type SaveWriteupPhaseSchema = TypeOf<typeof saveWriteupPhaseSchema>
+export type ReSubmitWriteupScheam = TypeOf<typeof reSubmitWriteupSchema>
