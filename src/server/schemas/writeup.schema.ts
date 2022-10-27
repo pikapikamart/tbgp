@@ -19,7 +19,7 @@ export const saveWriteupSchema = z
     banner: z.string().optional(),
     content: z.array(z.any()),
     writeupId: writeupIdSchema,
-    phase: z.enum(["revision", "finalEdit", "graphics", "finalization"])
+    // phase: z.enum(["revision", "finalEdit", "graphics", "finalization"])
   })
 
 export const saveWriteupPhaseSchema = saveWriteupSchema.extend({

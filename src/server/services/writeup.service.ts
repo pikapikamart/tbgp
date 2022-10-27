@@ -24,9 +24,17 @@ export const updateWriteupService = async(
 
 export const findWriteupService = async<T = {}, >(
   query: FilterQuery<Writeup>,
-  populate?: PopulateOptions 
+  projection: ProjectionType<Writeup> = "",
+  option: QueryOptions = {},
 ) => (
-  populate? WriteupModel.findOne(query).populate<T>(populate) : WriteupModel.findOne(query)
+  WriteupModel.findOne(query, projection, option)
+)
+
+export const findWriteupPopulatorService = async<T = {},>(
+  query: FilterQuery<Writeup>,
+  populate: PopulateOptions 
+) => (
+  WriteupModel.findOne(query).populate(populate)
 )
 
 // --------Multiple--------

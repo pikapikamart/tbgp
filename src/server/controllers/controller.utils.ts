@@ -1,17 +1,13 @@
 import mongoose, { 
-  FilterQuery, 
   PopulateOptions,
   ProjectionType,
   QueryOptions} from "mongoose";
 import { StaffDocument } from "../models/staff.model";
-import { 
-  StoryRequest, 
-  StoryRequestDocument } from "../models/story.request.model";
-import { Writeup, WriteupPhases, WRITEUP_PHASES } from "../models/writeup.model";
+import { StoryRequest } from "../models/story.request.model";
+import { WRITEUP_PHASES } from "../models/writeup.model";
 import { BastionIdSchema } from "../schemas/staff.schema";
 import { findAdminService } from "../services/admin.service"
 import { findStoryRequest } from "../services/story.request.service";
-import { findWriteupService } from "../services/writeup.service";
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid"
 
@@ -111,16 +107,6 @@ export const writeupValidator = <T,>( story: T ) => {
   }
 
   return story
-}
-
-export const getSingleWriteup = async( query: FilterQuery<Writeup>, populate?: PopulateOptions ) => {
-  const foundWriteup = await findWriteupService(query, populate);
-
-  if ( !foundWriteup ) {
-    return trpcError("NOT_FOUND", "No write up found")
-  }
-
-  return foundWriteup;
 }
 
 // -------- Random --------

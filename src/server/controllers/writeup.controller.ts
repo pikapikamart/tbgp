@@ -4,18 +4,16 @@ import { WRITEUP_PHASES } from "../models/writeup.model";
 import { 
   SaveWriteupSchema, 
   WriteupIdSchema,
-  ActivitiesTabSchema, 
-  SubmitWriteupSchema,
-  SaveWriteupPhaseSchema} from "../schemas/writeup.schema";
+  ActivitiesTabSchema } from "../schemas/writeup.schema";
 import { updateStaffService } from "../services/staff.service";
 import { 
   findMultipleWriteupAggregator, 
+  findWriteupPopulatorService, 
   findWriteupService, 
   updateWriteupService } from "../services/writeup.service";
 import { trpcError } from "../utils/error.util";
 import { trpcSuccess } from "../utils/success.util";
 import { 
-  getSingleWriteup, 
   isStoryRequest, 
   writeupPhaseIndex,
   writeupValidator} from "./controller.utils";
@@ -23,21 +21,6 @@ import {
 
 // --------Queries--------
 
-export const getWriteupHandler = async( writeupId : WriteupIdSchema ) => {
-  const writeup = await getSingleWriteup(
-    { writeupId },
-    {
-      path: "request",
-      select: "-_id -requests -assignedmembers",
-      populate: {
-        path: "owner members",
-        select: "-_id firstname lastname bastionId"
-      }
-    }
-  );
-
-  return trpcSuccess(true, writeup);
-}
 
 export type InitialWriteup = {
   writeupId: string,
@@ -81,9 +64,9 @@ export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
 
 // --------Mutations--------
 
-export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema, { staff }: VerifiedStaffContext) =>{
+export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupSchema, { staff }: VerifiedStaffContext) =>{
   
-  const writeup = writeupValidator(await findWriteupService<{ request: StoryRequest }>(
+  const writeup = writeupValidator(await findWriteupPopulatorService<{ request: StoryRequest }>(
     {
       writeupId: writeupBody.writeupId
     },
@@ -123,7 +106,7 @@ export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema
 }
 
 export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext ) =>{
-  const writeup = writeupValidator(await findWriteupService<{ request: StoryRequest }>(
+  const writeup = writeupValidator(await findWriteupPopulatorService<{ request: StoryRequest }>(
     {
       writeupId
     },
@@ -164,8 +147,10 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
   return trpcSuccess(true, "Successfully submitted")
 }
 
+// ----Verified Editors----
+
 export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext) =>{
-  const writeup = writeupValidator(await findWriteupService<{ request: StoryRequest }>({ writeupId }))
+  const writeup = writeupValidator(await findWriteupService({ writeupId }, "", { lean: true }))
 
   if ( writeup.isPublished ) {
     return trpcError("CONFLICT", "Writeup is already published")
@@ -209,5 +194,14 @@ export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff 
 }
 
 export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff }: VerifiedStaffContext ) => {
-  writeupPhaseIndex(writeupBody.phase)
+  const writeup = await findWriteupService({ writeupId: writeupBody.writeupId }, "", { lean: true })
+  const updatedWriteup = await updateWriteupService(
+    {
+      writeupId: writeupBody.writeupId,
+      "content.phase": 1,
+    },
+    {
+
+    }
+  )
 }
