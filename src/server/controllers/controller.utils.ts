@@ -1,4 +1,4 @@
-import { 
+import mongoose, { 
   FilterQuery, 
   PopulateOptions,
   ProjectionType,
@@ -65,6 +65,10 @@ export const storyRequestValidator = <T,>( story: T ) => {
   return story
 }
 
+export const isStoryRequest = ( storyRequest: mongoose.Types.ObjectId | StoryRequest ): storyRequest is StoryRequest => {
+  return ( storyRequest as StoryRequest ).storyRequestId!==undefined
+}
+
 export const getCurrentAvailableStoryRequest = async( 
   storyRequestId: string,
   projection: ProjectionType<StoryRequest> = "",
@@ -100,6 +104,14 @@ export type WriteupQuery = {
 }
 
 // --------Writeup--------
+
+export const writeupValidator = <T,>( story: T ) => {
+  if ( !story ) {
+    return trpcError("NOT_FOUND", "No writeup found with this id")
+  }
+
+  return story
+}
 
 export const getSingleWriteup = async( query: FilterQuery<Writeup>, populate?: PopulateOptions ) => {
   const foundWriteup = await findWriteupService(query, populate);

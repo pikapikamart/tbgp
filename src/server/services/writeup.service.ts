@@ -22,11 +22,11 @@ export const updateWriteup = async(
   WriteupModel.findOneAndUpdate(query, update)
 )
 
-export const findWriteupService = async(
+export const findWriteupService = async<T = {}, >(
   query: FilterQuery<Writeup>,
   populate?: PopulateOptions 
 ) => (
-  populate? WriteupModel.findOne(query).populate(populate) : WriteupModel.findOne(query)
+  populate? WriteupModel.findOne(query).populate<T>(populate) : WriteupModel.findOne(query)
 )
 
 // --------Multiple--------
