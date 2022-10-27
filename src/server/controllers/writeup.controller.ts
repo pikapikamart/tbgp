@@ -4,7 +4,8 @@ import { WRITEUP_PHASES } from "../models/writeup.model";
 import { 
   SaveWriteupSchema, 
   WriteupIdSchema,
-  ActivitiesTabSchema } from "../schemas/writeup.schema";
+  ActivitiesTabSchema, 
+  SaveWriteupPhaseSchema} from "../schemas/writeup.schema";
 import { updateStaffService } from "../services/staff.service";
 import { 
   findMultipleWriteupAggregator, 
@@ -64,7 +65,7 @@ export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
 
 // --------Mutations--------
 
-export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupSchema, { staff }: VerifiedStaffContext) =>{
+export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema, { staff }: VerifiedStaffContext) =>{
   
   const writeup = writeupValidator(await findWriteupPopulatorService<{ request: StoryRequest }>(
     {
@@ -150,7 +151,11 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
 // ----Verified Editors----
 
 export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext) =>{
-  const writeup = writeupValidator(await findWriteupService({ writeupId }, "", { lean: true }))
+  const writeup = writeupValidator(await findWriteupService(
+    { writeupId },
+    "",
+    { lean: true })
+  )
 
   if ( writeup.isPublished ) {
     return trpcError("CONFLICT", "Writeup is already published")
@@ -194,14 +199,35 @@ export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff 
 }
 
 export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff }: VerifiedStaffContext ) => {
-  const writeup = await findWriteupService({ writeupId: writeupBody.writeupId }, "", { lean: true })
+  const writeup = writeupValidator(await findWriteupService(
+    { writeupId: writeupBody.writeupId },
+    "", 
+    { lean: true })
+  )
+
+  if ( writeup.content[writeupPhaseIndex(writeup.currentPhase)-1]?.reSubmit ) {
+    return trpcError("CONFLICT", "You can only save when resubmission of lower phase is done")
+  }
+
+  const graphicsUpdate = writeup.currentPhase==="graphics"? { banner: writeupBody.banner } : {}
+
   const updatedWriteup = await updateWriteupService(
     {
       writeupId: writeupBody.writeupId,
-      "content.phase": 1,
+      "content.phase": writeup.currentPhase,
+      "content.handledBy": staff._id
     },
     {
-
+      ...graphicsUpdate,
+      "content.$.title": writeupBody.title,
+      "content.$.caption": writeupBody.caption,
+      "content.$.data": writeupBody.content
     }
   )
+
+  if ( !updatedWriteup ) {
+    return trpcError("FORBIDDEN", "You can only save writeups in your tasks")
+  }
+
+  return trpcSuccess(true, "Successfully saved")
 }

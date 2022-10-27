@@ -13,6 +13,7 @@ import {
   saveWriteupSchema,
   writeupIdSchema, 
   activitiesTabSchema,
+  saveWriteupPhaseSchema,
 } from "../schemas/writeup.schema";
 
 
@@ -25,7 +26,7 @@ export const writeupRouter = createRouter()
   })
   .middleware(({ ctx, next }) => isVerifiedStaff(ctx, next))
   .mutation("save-writeupPhase", {
-    input: saveWriteupSchema,
+    input: saveWriteupPhaseSchema,
     resolve: ({ input, ctx }) => saveWriteupPhaseHandler(input, ctx)
   })
   .mutation("submit-writeupPhase", {
