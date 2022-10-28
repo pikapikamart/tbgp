@@ -4,6 +4,7 @@ import {
   fluid
 } from "@/styled/functions"
 import { ModalWrapper } from "@/styled/shared/modal"
+import { VerificationItem } from "@/components/admin/home/verifications/list/list.styled"
 
 
 export const StoryRequestWrapper = styled(ModalWrapper)`
@@ -62,6 +63,13 @@ export const ContentContainer = styled.div`
     border-bottom: 1px solid ${ colors.grey3 };
     color: ${ colors.dark2 };
   ` }
+
+  > ${ VerificationItem } {
+    
+    &:not(:last-of-type) {
+      margin-bottom: 0;
+    }
+  }
 `
 
 export const RowContentContainer = styled.div`
@@ -81,6 +89,13 @@ export const SubHeading = styled.h4`
 export const RequestMembers = styled.ul`
   display: flex;
   flex-wrap: wrap;
+
+  > li {
+    
+    &:not(:last-of-type) {
+      margin-right: ${ rem(4) }
+    }
+  }
 `
 
 export const RequestMemberLink = styled.a`

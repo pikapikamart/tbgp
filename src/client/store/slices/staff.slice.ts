@@ -101,11 +101,11 @@ export const isVerifiedWritableStaffState = ( state: WritableStaffState ): state
 }
 
 export const isFullStaffState = ( state: StaffState ): state is FullStaffState => {
-  return ( state as FullStaffState ).storyRequests!==undefined
+  return ( state as FullStaffState ).storyRequests!==null
 }
 
 export const isEditorStaffState = ( state: StaffState ): state is EditorStaffState => {
-  const role = ( state as EditorStaffState ).position.role
+  const role = ( state as EditorStaffState ).position?.role
 
   return role==="sectionEditor" || role==="seniorEditor"
 }

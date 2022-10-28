@@ -7,13 +7,20 @@ import {
   setStaff, 
   InitialStaffState, 
   isVerifiedWritableStaffState,
-  EditorStaffState} from "../slices/staff.slice"
+  EditorStaffState,
+  isFullStaffState, 
+  StaffState} from "../slices/staff.slice"
 import { InitialStoryRequest } from "../store.types"
 
 
 type State = WritableDraft<InitialStaffState> | WritableDraft<FullStaffState> | WritableDraft<EditorStaffState>
 
-export const setStaffReducer = ( state: State, action: PayloadAction<InitialStaffState> ) => {
+export const setStaffReducer = ( state: State, action: PayloadAction<StaffState> ) => {
+  
+  if ( isFullStaffState(action.payload) ) {
+    action.payload.storyRequests.created = action.payload.storyRequests.created.filter(request => !request.started)
+  }
+
   state = Object.assign(state, action.payload)
 }
 

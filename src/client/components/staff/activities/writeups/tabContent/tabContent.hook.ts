@@ -12,9 +12,10 @@ export const useInitialWriteups = ( tab: WriteupPhases ) =>{
   })
 
   useEffect(() =>{
-    if ( router.query["tab"]===tab ) {
+    if ( router.query["tab"]===tab || ( !router.query["tab"] && tab==="writeup" ) ) {
       query.refetch()
     }
+
   }, [ router.query ])
 
   return query.isSuccess? query.data.data : []

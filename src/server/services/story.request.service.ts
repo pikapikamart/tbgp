@@ -17,7 +17,7 @@ export const createStoryRequestService = async( storyRequest: DocumentDefinition
   StoryRequestModel.create(storyRequest)
 )
 
-export const findStoryRequest = async( 
+export const findStoryRequestService = async( 
   query: FilterQuery<StoryRequest>,
   projection: ProjectionType<StoryRequest> = "",
   options: QueryOptions = { lean: true },

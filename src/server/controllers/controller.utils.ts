@@ -8,7 +8,7 @@ import { StoryRequest } from "../models/story.request.model";
 import { Writeup, WriteupDocument, WRITEUP_PHASES } from "../models/writeup.model";
 import { BastionIdSchema } from "../schemas/staff.schema";
 import { findAdminService } from "../services/admin.service"
-import { findStoryRequest } from "../services/story.request.service";
+import { findStoryRequestService } from "../services/story.request.service";
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid"
 import { findWriteupPopulatorService, findWriteupService } from "../services/writeup.service";
@@ -73,7 +73,7 @@ export const getCurrentAvailableStoryRequest = async(
   options: QueryOptions = { lean: true },
   populate?: PopulateOptions, 
 ) =>{
-  const foundStoryRequest = storyRequestValidator(await findStoryRequest(
+  const foundStoryRequest = storyRequestValidator(await findStoryRequestService(
     {
       storyRequestId,
       started: false

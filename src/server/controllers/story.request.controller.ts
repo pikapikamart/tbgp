@@ -17,7 +17,7 @@ import {
   createStoryRequestService, 
   deleteStoryRequest, 
   findManyStoryRequestAggregator, 
-  findStoryRequest, 
+  findStoryRequestService, 
   updateStoryRequest } from "../services/story.request.service";
 import { 
   apiResult, 
@@ -36,8 +36,6 @@ import {
 // --------Queries--------
 
 export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: StaffContext ) => {
-  const foundStoryRequest = storyRequestValidator(await findStoryRequest({ storyRequestId }, "owner"));
-  
   const storyRequest = await getCurrentAvailableStoryRequest(
     storyRequestId,
     "-_id",
@@ -152,7 +150,7 @@ export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestI
 
 export const createStoryRequestHandler = async( request: StoryRequestSchema, { staff }: VerifiedStaffContext ) =>{
 
-  const foundStoryRequest = await findStoryRequest({ title: request.title });
+  const foundStoryRequest = await findStoryRequestService({ title: request.title });
 
   if ( foundStoryRequest ) {
     return trpcError("CONFLICT", "Request already created")

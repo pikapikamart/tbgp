@@ -82,7 +82,7 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
       }
     }
   )
-
+  
   await staffPopulatorService(
     populatedStaff,
     {
