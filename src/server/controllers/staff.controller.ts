@@ -2,6 +2,7 @@ import {
   StaffContext, 
   VerifiedStaffContext } from "../middlewares/router.middleware";
 import { rolesAndPosition } from "../models/staff.model";
+import { Writeup } from "../models/writeup.model";
 import { BaseUserSchema } from "../schemas/base.user.schema";
 import { 
   StaffSchema, 
@@ -65,7 +66,7 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
     "-_id -__v -password",
     {},
     {
-      path: "storyRequests.requested storyRequests.joined writeups",
+      path: "storyRequests.requested storyRequests.joined",
       select: "-_id storyRequestId"
     }
   ))
@@ -81,7 +82,39 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
       }
     }
   )
-// aggregate in future
+
+  await staffPopulatorService(
+    populatedStaff,
+    {
+      path: "writeups.solo writeups.collaborated",
+      select: "-_id writeupId category content.title content.caption content.phase content.isSubmitted content.isAccepted content.reSubmit content.requestResubmit handledBy",
+      transform: ( doc: Writeup ) =>{
+        
+        return {
+          writeupId: doc.writeupId,
+          category: doc.category,
+          content: doc.content[0]
+        }
+      }
+    }
+  )
+
+  await staffPopulatorService(
+    populatedStaff,
+    {
+      path: "writeups.task",
+      select: "-_id writeupId category content.title content.caption content.phase content.isSubmitted content.isAccepted content.reSubmit content.requestResubmit content.handledBy ",
+      transform: ( doc: Writeup ) =>{
+
+        return {
+          writeupId: doc.writeupId,
+          category: doc.category,
+          content: doc.content.slice().reverse().find(phase => phase?.handledBy?.equals(staff._id))
+        }
+      }
+    }
+  )
+
   return trpcSuccess(true, populatedStaff)
 }
 

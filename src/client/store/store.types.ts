@@ -1,3 +1,4 @@
+import { InitialWriteup } from "@/src/server/controllers/writeup.controller"
 import { StoryRequest } from "@/src/server/models/story.request.model"
 import { ModifyType } from "types/utils"
 
@@ -27,3 +28,15 @@ export type StoryRequestsState = {
   assigned: InitialStoryRequest[],
   created: InitialStoryRequest[]
 }
+
+export type PopulatedInitialWriteup = ModifyType<InitialWriteup, {
+  content: {
+    title: string,
+    caption: string,
+    phase: string,
+    isSubmitted: boolean,
+    isAccepted: boolean,
+    reSubmit: boolean,
+    requestedResubmit: boolean
+  }
+}>

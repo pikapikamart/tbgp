@@ -13,7 +13,7 @@ type WriteupNote = {
   message: string
 }
 
-type WriteupContent<K extends WriteupPhases> = {
+export type WriteupContent<K extends WriteupPhases> = {
   phase: K,
   title: string,
   caption: string,
