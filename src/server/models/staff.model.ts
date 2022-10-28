@@ -58,7 +58,10 @@ export type VerifiedStaffDocument = VerifiedStaff & BaseUserDocument
 export const Roles: ["writer", "sectionEditor", "seniorEditor"] = [ "writer", "sectionEditor", "seniorEditor"]
 
 export const rolesAndPosition: RolesAndPositionIndex = {
-  writer: ["Writer"],
+  writer: [
+    "Junior Staff",
+    "Senior Staff"
+  ],
   sectionEditor: [
     "News Editor",
     "Features Editor",
@@ -71,7 +74,6 @@ export const rolesAndPosition: RolesAndPositionIndex = {
     "Editor in Chief",
     "Associate Editor",
     "Managing Editor",
-    "Senior Staff"
   ],
 }
 

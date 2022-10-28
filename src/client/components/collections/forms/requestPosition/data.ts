@@ -2,9 +2,14 @@
 
 export const rolesAndPositions = [
   {
-    name: "Writer",
+    name: "Junior Staff",
     value: "writer",
-    id: "writer"
+    id: "juniorStaff"
+  },
+  {
+    name: "Senior Staff",
+    value: "writer",
+    id: "seniorStaff"
   },
   {
     name: "News Editor",
@@ -50,10 +55,5 @@ export const rolesAndPositions = [
     name: "Managing Editor",
     value: "seniorEditor",
     id: "managingEditor"
-  },
-  {
-    name: "Senior Staff",
-    value: "seniorEditor",
-    id: "seniorStaff"
   },
 ] 

@@ -32,6 +32,12 @@ export const updateStaffReducer = ( state: State, action: PayloadAction<UpdateSt
   state = Object.assign(state, action.payload)
 }
 
+export const addStoryRequestApplicationReducer = ( state: State, action: PayloadAction<string> ) => {
+  if ( isVerifiedWritableStaffState(state) ) {
+    state.storyRequests.requested.push(action.payload)
+  }
+}
+
 export const thunkSetStaffReducer = 
   ( staff: InitialStaffState ): AppThunk => 
   async dispatch => {

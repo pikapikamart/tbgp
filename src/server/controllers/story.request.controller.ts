@@ -143,7 +143,7 @@ export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestI
     }
   )
 
-  return apiResult("Successfully applied to story", true);
+  return trpcSuccess(true, storyRequestId)
 }
 
 // ----Verified Editor ----

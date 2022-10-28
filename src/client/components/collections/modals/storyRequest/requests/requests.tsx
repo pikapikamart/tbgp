@@ -2,10 +2,8 @@ import {
   VerificationItem, 
   VerificationOption, 
   VerificationRequester } from "@/components/admin/home/verifications/list/list.styled"
-import { useAcceptOrRejectRequest } from "../storyRequest.hook"
-import {
-  ContentContainer
-} from "../storyRequest.styled"
+import { useAcceptOrRejectRequest } from "./requests.hook"
+import { ContentContainer } from "../storyRequest.styled"
 
 
 const Requests = () =>{

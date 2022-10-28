@@ -5,6 +5,7 @@ import {
   Staff } from "@/src/server/models/staff.model";
 import { 
   addCreatedStoryRequestReducer,
+  addStoryRequestApplicationReducer,
   sendStaffVerificationReducer, 
   setStaffReducer, 
   updateStaffReducer} from "../reducers/staff.reducer";
@@ -23,8 +24,8 @@ export type InitialStaffState = Omit<Staff, "password">
 export type FullStaffState = ModifyType<InitialStaffState, {
   position: Position,
   storyRequests: {
-    requested: InitialStoryRequest[],
-    joined: InitialStoryRequest[],
+    requested: string[],
+    joined: string[],
     created: InitialStoryRequest[]
   },
   writeups: {
@@ -41,8 +42,8 @@ export type CreatedStoryRequest = ModifyType<InitialStoryRequest, {
 
 export type EditorStaffState = ModifyType<FullStaffState, {
   storyRequests: {
-    requested: InitialStoryRequest[],
-    joined: InitialStoryRequest[],
+    requested: string[],
+    joined: string[],
     created: CreatedStoryRequest[]
   },
   writeups: {
@@ -75,6 +76,7 @@ export const staffSlice = createSlice({
     sendStaffVerification: sendStaffVerificationReducer,
     updateStaff: updateStaffReducer,
     addCreatedStoryRequest: addCreatedStoryRequestReducer,
+    addStoryRequestApplication: addStoryRequestApplicationReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -90,7 +92,8 @@ export const {
   setStaff,
   sendStaffVerification,
   updateStaff,
-  addCreatedStoryRequest
+  addCreatedStoryRequest,
+  addStoryRequestApplication
 } = staffSlice.actions
 export const selectStaff = ( state: RootState ) => state.staff
 
