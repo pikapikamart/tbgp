@@ -1,15 +1,17 @@
 import mongoose, { 
+  FilterQuery,
   PopulateOptions,
   ProjectionType,
   QueryOptions} from "mongoose";
 import { StaffDocument } from "../models/staff.model";
 import { StoryRequest } from "../models/story.request.model";
-import { WRITEUP_PHASES } from "../models/writeup.model";
+import { Writeup, WriteupDocument, WRITEUP_PHASES } from "../models/writeup.model";
 import { BastionIdSchema } from "../schemas/staff.schema";
 import { findAdminService } from "../services/admin.service"
 import { findStoryRequest } from "../services/story.request.service";
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid"
+import { findWriteupPopulatorService, findWriteupService } from "../services/writeup.service";
 
 
 // --------Admin--------
@@ -101,12 +103,72 @@ export type WriteupQuery = {
 
 // --------Writeup--------
 
-export const writeupValidator = <T,>( story: T ) => {
-  if ( !story ) {
+const writeupSubmissionError = ( writeup: WriteupDocument, phaseIndex: number ) => {
+  if ( writeup.content[phaseIndex]?.isSubmitted ) {
+    return trpcError("CONFLICT", "Writeup is already submitted")
+  }
+
+  if ( writeup.content[phaseIndex]?.isAccepted ) {
+    return trpcError("CONFLICT", "Writeup is already accepted")
+  }
+}
+
+export const writeupValidator = <T,>( writeup: T ) => {
+  if ( !writeup ) {
     return trpcError("NOT_FOUND", "No writeup found or available")
   }
 
-  return story
+  return writeup
+}
+
+export const writeupSubmissionValidator = ( writeupQuery: WriteupDocument | null ) => {
+  const writeup = writeupValidator(writeupQuery)
+  const phaseIndex = writeupPhaseIndex(writeup.currentPhase)
+  const currentContent = writeup.content[phaseIndex]
+  writeupSubmissionError(writeup, phaseIndex)
+
+  if ( !currentContent ) {
+    return trpcError("INTERNAL_SERVER_ERROR", "Server error")
+  }
+
+  return {
+    writeup,
+    phaseIndex,
+    currentContent
+  }
+}
+
+export const populateWriteupHelper = async( writeupId: string, staffId: mongoose.Types.ObjectId ) =>{
+  const writeup = writeupValidator(await findWriteupPopulatorService<{ request: StoryRequest }>(
+    {
+      writeupId,
+      isPublished: false
+    },
+    {
+      path: "request",
+      select: "members storyRequestId"
+    }
+  ))
+  writeupSubmissionError(writeup, 0)
+
+  if ( isStoryRequest(writeup.request) && !writeup.request.members.find(member => member.equals(staffId)) ) {
+    return trpcError("FORBIDDEN", "Only members of writeup are allowed")  
+  }
+
+  return writeup
+}
+
+export const findWriteupHelper = async( writeupId: string ) =>{
+  const submissionData = writeupSubmissionValidator(await findWriteupService(
+    { 
+      writeupId,
+      isPublished: false
+    },
+    "", 
+    { lean: true })
+  )
+
+  return submissionData
 }
 
 // -------- Random --------
