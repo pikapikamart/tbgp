@@ -1,17 +1,48 @@
 import { InitialWriteup } from "@/src/server/controllers/writeup.controller"
+import { isPopulatedInitialWriteup } from "@/store/slices/staff.slice"
+import { PopulatedInitialWriteup } from "@/store/store.types"
 import Link from "next/link"
+import { Category } from "../../storyRequest/initial/initial.styled"
 import { 
   InitialWriteupWrapper,
   WriteupTitle,
-  WriteupCaption
+  WriteupCaption,
+  WriteupStatusContainer
  } from "./initial.styled"
 
 
 type InitialProps = {
-  writeup: InitialWriteup,
+  writeup: InitialWriteup | PopulatedInitialWriteup,
 }
 
 const Initial = ({ writeup }: InitialProps) =>{
+
+  const returnStatus = () =>{
+
+    if ( !isPopulatedInitialWriteup(writeup) ) {
+      return <></>
+    }
+
+    const content = writeup.content
+
+    if ( content.requestedResubmit ) {
+      return <Category colored="red">re-submit requested</Category>
+    }
+
+    if ( content.reSubmit ) {
+      return <Category colored="red">re-submit needed</Category>
+    }
+
+    if ( content.isAccepted ) {
+      return <Category colored="skyBlue">accepted</Category>
+    }
+
+    if ( content.isSubmitted ) {
+      return <Category colored="skyBlue">submitted</Category>
+    }
+
+    return <Category colored="green">ongoing</Category>
+  }
 
   return (
     <InitialWriteupWrapper>
@@ -22,6 +53,14 @@ const Initial = ({ writeup }: InitialProps) =>{
         </Link>
       </WriteupTitle>
       <WriteupCaption>{ writeup.content.caption }</WriteupCaption>
+      { isPopulatedInitialWriteup(writeup) && (
+        <WriteupStatusContainer>
+          { writeup.content.phase!=="writeup" && (
+            <Category colored="blue">{ writeup.content.phase.split(/(?=[A-Z])/).map(word => word.toLowerCase()).join(" ") }</Category>
+          ) }
+          { returnStatus() }
+        </WriteupStatusContainer>
+      ) }
     </InitialWriteupWrapper>
   )
 }

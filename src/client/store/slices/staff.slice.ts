@@ -26,6 +26,10 @@ export type FullStaffState = ModifyType<InitialStaffState, {
     requested: InitialStoryRequest[],
     joined: InitialStoryRequest[],
     created: InitialStoryRequest[]
+  },
+  writeups: {
+    solo: PopulatedInitialWriteup[],
+    collaborated: PopulatedInitialWriteup[]
   }
 }>
 
@@ -40,6 +44,11 @@ export type EditorStaffState = ModifyType<FullStaffState, {
     requested: InitialStoryRequest[],
     joined: InitialStoryRequest[],
     created: CreatedStoryRequest[]
+  },
+  writeups: {
+    solo: PopulatedInitialWriteup[],
+    collaborated: PopulatedInitialWriteup[],
+    task: PopulatedInitialWriteup[]
   }
 }>
 
@@ -89,6 +98,10 @@ export type WritableStaffState = WritableDraft<InitialStaffState> | WritableDraf
 
 export const isVerifiedWritableStaffState = ( state: WritableStaffState ): state is WritableDraft<FullStaffState> => {
   return ( state as WritableDraft<FullStaffState> ).position!==null
+}
+
+export const isFullStaffState = ( state: StaffState ): state is FullStaffState => {
+  return ( state as FullStaffState ).storyRequests!==undefined
 }
 
 export const isEditorStaffState = ( state: StaffState ): state is EditorStaffState => {
