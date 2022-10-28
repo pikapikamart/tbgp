@@ -313,9 +313,6 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
         caption: "",
         data: [],
         notes: [],
-        isSubmitted: false,
-        isAccepted: false,
-        reSubmit: false
       },
       null,
       null,

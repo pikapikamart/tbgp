@@ -20,9 +20,10 @@ type WriteupContent<K extends WriteupPhases> = {
   data: any[],
   notes: WriteupNote[],
   handledBy?: StaffDocument["_id"],
-  isSubmitted: boolean,
-  isAccepted: boolean,
-  reSubmit: boolean
+  isSubmitted?: boolean,
+  isAccepted?: boolean,
+  reSubmit?: boolean,
+  requestedResubmit?: boolean
 }
 
 export type Writeup = {
@@ -83,9 +84,22 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
       type: mongoose.Schema.Types.ObjectId,
       ref: "Staff"
     },
-    isSubmitted: Boolean,
-    isAccepted: Boolean,
-    reSubmit: Boolean
+    isSubmitted: {
+      type: Boolean,
+      default: false
+    },
+    isAccepted: {
+      type: Boolean,
+      default: false
+    },
+    reSubmit: {
+      type: Boolean,
+      default: false
+    },
+    requestedResubmit: {
+      type: Boolean,
+      default: false
+    }
   }],
 },{ timestamps: true }
 )

@@ -104,6 +104,7 @@ export type WriteupQuery = {
 // --------Writeup--------
 
 const writeupSubmissionError = ( writeup: WriteupDocument, phaseIndex: number ) => {
+  
   if ( writeup.content[phaseIndex]?.isSubmitted ) {
     return trpcError("CONFLICT", "Writeup is already submitted")
   }
@@ -149,11 +150,12 @@ export const populateWriteupHelper = async( writeupId: string, staffId: mongoose
       select: "members storyRequestId"
     }
   ))
-  writeupSubmissionError(writeup, 0)
-
+  
   if ( isStoryRequest(writeup.request) && !writeup.request.members.find(member => member.equals(staffId)) ) {
     return trpcError("FORBIDDEN", "Only members of writeup are allowed")  
   }
+
+  writeupSubmissionError(writeup, 0)
 
   return writeup
 }

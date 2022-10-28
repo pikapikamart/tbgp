@@ -42,6 +42,7 @@ const baseSaveUpdateBody = ( saveBody: SaveWriteupSchema ) => ({
 const baseSubmitUpdateBody = ( phaseIndex: number ) => ({
   "content.$.isSubmitted" : true,
   "content.$.reSubmit": false,
+  "content.$.requestedResubmit": false,
   currentPhase: WRITEUP_PHASES[phaseIndex+1]
 })
 
@@ -201,7 +202,7 @@ export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff
   const { writeup, phaseIndex, currentContent } = await findWriteupHelper(writeupBody.writeupId)
   const graphicsUpdate = writeup.currentPhase==="graphics"? { banner: writeupBody.banner } : {}
 
-  if ( writeup.content[phaseIndex-1]?.reSubmit ) {
+  if ( currentContent?.requestedResubmit ) {
     return trpcError("CONFLICT", "You can only save when resubmission of lower phase is done")
   }
 
@@ -252,29 +253,15 @@ export const submitWriteupHandler = async( writeupId: WriteupIdSchema, { staff }
 export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam, { staff }: VerifiedStaffContext ) =>{;;;
   const { writeup, phaseIndex, currentContent } = await findWriteupHelper(reSubmitBody.writeupId)
   
-  if ( !phaseIndex && !writeup.content[phaseIndex+1] ) {
+  if ( !phaseIndex && !writeup.content[phaseIndex+1]  ) {
     return trpcError("CONFLICT", "Writeup is yet to be submitted")
-  }
-
-  if ( !phaseIndex ) {
-    if ( !writeup.content[phaseIndex+1]?.handledBy?.equals(staff._id) ){
-      return trpcError("FORBIDDEN", "Only editor that took the task is allowed")
-    }
-
-    if ( writeup.content[phaseIndex]?.reSubmit ) {
-      return trpcError("CONFLICT", "Wait for the re-submission to be finished before requesting again")
-    }
-  
-    if ( writeup.content[phaseIndex]?.isAccepted ) {
-      return trpcError("CONFLICT", "Re-submit is not allowed when you submitted your task. Take responsibility")
-    }
   }
 
   if ( !currentContent.handledBy?.equals(staff._id) ) {
     return trpcError("FORBIDDEN", "Only editor that took the task is allowed")
   }
 
-  if ( writeup.content[phaseIndex-1]?.reSubmit ) {
+  if ( writeup.content[phaseIndex]?.requestedResubmit ) {
     return trpcError("CONFLICT", "Wait for the re-submission to be finished before requesting again")
   }
 
@@ -293,6 +280,14 @@ export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam
       "content.$.notes": reSubmitBody.notes,
       currentPhase: WRITEUP_PHASES[phaseIndex-1]
     }
+  )
+
+  await updateWriteupService(
+    {
+      writeupId: reSubmitBody.writeupId,
+      "content.phase": writeup.currentPhase
+    },
+    { "content.$.requestedResubmit": true }
   )
 
   return trpcSuccess(true, "Requested re-submission successfully")
