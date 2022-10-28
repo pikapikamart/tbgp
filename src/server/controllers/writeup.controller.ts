@@ -1,5 +1,7 @@
 import { ArrayElement } from "mongodb";
-import { VerifiedStaffContext } from "../middlewares/router.middleware";
+import { 
+  StaffContext, 
+  VerifiedStaffContext } from "../middlewares/router.middleware";
 import { 
   WriteupDocument, 
   WRITEUP_PHASES } from "../models/writeup.model";
@@ -8,19 +10,20 @@ import {
   WriteupIdSchema,
   ActivitiesTabSchema, 
   SaveWriteupPhaseSchema,
-  ReSubmitWriteupScheam} from "../schemas/writeup.schema";
+  ReSubmitWriteupScheam,
+  SingleWriteupSchema} from "../schemas/writeup.schema";
 import { updateStaffService } from "../services/staff.service";
 import { 
   findMultipleWriteupAggregator, 
-  findWriteupService, 
-  updateWriteupService } from "../services/writeup.service";
+  findWriteupPopulatorService, 
+  updateWriteupService, 
+  writeupPopulatorService} from "../services/writeup.service";
 import { trpcError } from "../utils/error.util";
 import { trpcSuccess } from "../utils/success.util";
 import { 
   findWriteupHelper,
   populateWriteupHelper, 
-  writeupPhaseIndex,
-  writeupSubmissionValidator,
+  writeupPhaseIndex, 
   writeupValidator} from "./controller.utils";
 
 
@@ -94,6 +97,31 @@ export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
   ])
 
   return trpcSuccess(true, aggregatedWriteups as InitialWriteup[])
+}
+
+export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: StaffContext ) => {
+  const writeup = writeupValidator(await findWriteupPopulatorService(
+    {
+      writeupId: query.writeupId,
+      "content.phase": query.phase
+    },
+    {
+      path: "request",
+      select: "-_id members title category instruction content.$ createdAt",
+      populate: {
+        path: "members",
+        select: "-_id firstname lastname username"
+      }
+    },
+    "-_id request writeupId banner content.$ currentPhase"
+  ))
+
+  await writeupPopulatorService(writeup, {
+    path: "content.handledBy",
+    select: "-_id firstname lastname username"
+  })
+  
+  return trpcSuccess(true, writeup)
 }
 
 // --------Mutations--------

@@ -1,5 +1,6 @@
 import { 
   getMultipleWriteupHandler,
+  getWriteupHandler,
   requestReSubmitHandler,
   saveWriteupHandler,
   saveWriteupPhaseHandler,
@@ -17,6 +18,7 @@ import {
   activitiesTabSchema,
   saveWriteupPhaseSchema,
   reSubmitWriteupSchema,
+  singleWriteupSchema,
 } from "../schemas/writeup.schema";
 
 
@@ -27,6 +29,11 @@ export const writeupRouter = createRouter()
     input: activitiesTabSchema,
     resolve: ({ input }) => getMultipleWriteupHandler(input)
   })
+  .query("get", {
+    input: singleWriteupSchema,
+    resolve: ({ input, ctx }) => getWriteupHandler(input, ctx)
+  })
+  // authentication
   .middleware(({ ctx, next }) => isVerifiedStaff(ctx, next))
   .mutation("save-writeupPhase", {
     input: saveWriteupPhaseSchema,
@@ -36,6 +43,7 @@ export const writeupRouter = createRouter()
     input: writeupIdSchema,
     resolve: ({ input, ctx }) => submitWriteupPhaseHandler(input, ctx)
   })
+  // authentication
   .middleware(({ ctx, next }) => isStaffEditor(ctx, next))
   .mutation("take-task", {
     input: writeupIdSchema,

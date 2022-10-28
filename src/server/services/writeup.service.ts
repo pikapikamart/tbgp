@@ -8,6 +8,7 @@ import {
   UpdateQuery} from "mongoose";
 import { 
   Writeup, 
+  WriteupDocument, 
   WriteupModel } from "../models/writeup.model";
 
 
@@ -22,7 +23,7 @@ export const updateWriteupService = async(
   WriteupModel.findOneAndUpdate(query, update)
 )
 
-export const findWriteupService = async<T = {}, >(
+export const findWriteupService = async(
   query: FilterQuery<Writeup>,
   projection: ProjectionType<Writeup> = "",
   option: QueryOptions = {},
@@ -30,11 +31,20 @@ export const findWriteupService = async<T = {}, >(
   WriteupModel.findOne(query, projection, option)
 )
 
+export const writeupPopulatorService = async(
+  writeup: WriteupDocument,
+  populate: PopulateOptions
+) => (
+  writeup.populate(populate)
+)
+
 export const findWriteupPopulatorService = async<T = {},>(
   query: FilterQuery<Writeup>,
-  populate: PopulateOptions 
+  populate: PopulateOptions,
+  projection: ProjectionType<Writeup> = "",
+  options: QueryOptions = {}
 ) => (
-  WriteupModel.findOne(query).populate(populate)
+  WriteupModel.findOne(query, projection, options).populate(populate)
 )
 
 // --------Multiple--------

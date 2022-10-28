@@ -7,7 +7,7 @@ export const writeupIdSchema = z
   .string({ required_error: "Writeup Id is required" })
   .min(1, "Writeup Id should not be empty")
   
-export const activitiesTabSchema = z.enum(["", "writeup", "revision", "finalEdit", "graphics", "finalization"])
+export const activitiesTabSchema = z.enum(["writeup", "revision", "finalEdit", "graphics", "finalization"])
 export const writingsTabSchema = z.enum(["", "solo", "collaborated", "tasks"])
 
 export const saveWriteupSchema = z
@@ -41,6 +41,12 @@ export const reSubmitWriteupSchema = z
     }))
   })
 
+export const singleWriteupSchema = z
+  .object({
+    writeupId: writeupIdSchema,
+    phase: activitiesTabSchema
+  })
+
 export type WriteupIdSchema = TypeOf<typeof writeupIdSchema>
 export type SaveWriteupSchema = TypeOf<typeof saveWriteupSchema>;
 export type ActivitiesTabSchema = TypeOf<typeof activitiesTabSchema>;
@@ -48,3 +54,4 @@ export type WritingsTabSchema = TypeOf<typeof writingsTabSchema>
 export type SubmitWriteupSchema = TypeOf<typeof submitWriteupSchema>
 export type SaveWriteupPhaseSchema = TypeOf<typeof saveWriteupPhaseSchema>
 export type ReSubmitWriteupScheam = TypeOf<typeof reSubmitWriteupSchema>
+export type SingleWriteupSchema = TypeOf<typeof singleWriteupSchema>
