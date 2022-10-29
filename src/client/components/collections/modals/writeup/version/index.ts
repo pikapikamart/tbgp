@@ -1,1 +1,1 @@
-export { default WriteupVersionModal } from "./version"
+export { default as WriteupVersionModal } from "./version"

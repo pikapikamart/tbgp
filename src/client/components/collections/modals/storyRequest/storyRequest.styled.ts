@@ -16,19 +16,6 @@ export const RequestHeader = styled.div`
   border-radius: ${ rem(8) } ${ rem(8) };
   padding: ${ rem(32) } ${ fluid(16, 3.5, 32) } ${ rem(24) };
   position: relative;
-
-  // &::before {
-  //   content: "";
-  //   border-radius: ${ rem(8) } ${ rem(8) } 0 0;
-  //   height: calc(100% + ${ rem(24) });
-  //   inset: 0;
-  //   position: absolute;
-
-  //   ${ ({ theme: { colors } }) => `
-  //   background-color: ${ colors.whiteBlue2 };
-  //   border-bottom: 1px solid ${ colors.grey3 };
-  // ` }
-  // }
 `
 
 export const RequestHeaderContent = styled.div`
