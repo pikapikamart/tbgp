@@ -1,0 +1,1 @@
+export { default as SlateSection } from "./slate"

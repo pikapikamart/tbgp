@@ -53,7 +53,7 @@ const Input = ({
           registerControl? registerControl(el) : null
         } }
         aria-required="true" />
-      <InputError>{ error?? `Please enter a valid ${ name } value` }</InputError>
+      <InputError id={ "error-" + name }>{ error?? `Please enter a valid ${ name } value` }</InputError>
     </InputBlock>
   )
 }

@@ -5,7 +5,7 @@ import { ColoredMediumButton } from "@/styled/collections/button"
 import { ControlsUpdates } from "../controls.styled"
 import { 
   isWriteupEditable, 
-  isWriteupMember } from "../utils"
+  isWriteupMember } from "../../utils"
 
 
 const Pull = () =>{

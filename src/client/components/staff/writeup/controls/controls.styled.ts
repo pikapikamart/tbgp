@@ -40,7 +40,7 @@ export const ControlsUpdates = styled.div`
   ${ ColoredMediumButton } {
 
     &:not(:last-of-type) {
-      margin-right: ${ rem(16) };
+      margin-right: ${ rem(8) };
     }
   }
 `

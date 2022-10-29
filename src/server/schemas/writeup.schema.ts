@@ -15,7 +15,9 @@ export const saveWriteupSchema = z
     title: z
       .string({ required_error: "Title is required" })
       .min(1, "Title should not be empty"),
-    caption: z.string({ required_error: "Caption is required" }),
+    caption: z
+      .string({ required_error: "Caption is required" })
+      .min(1, "Caption should not be empty"),
     banner: z.string().optional(),
     content: z.array(z.any()),
     writeupId: writeupIdSchema,
