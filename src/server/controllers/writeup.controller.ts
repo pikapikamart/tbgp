@@ -8,6 +8,7 @@ import {
 import { 
   WriteupDocument, 
   WriteupNote, 
+  WriteupPhases, 
   WRITEUP_PHASES } from "../models/writeup.model";
 import { 
   SaveWriteupSchema, 
@@ -102,11 +103,11 @@ export type PopulatedWriteup = {
     title: string,
     category: string,
     instruction: string,
-    createdAt: Date
+    createdAt: string
   },
   writeupId: string,
   banner: string,
-  currentPhase: string,
+  currentPhase: WriteupPhases,
   content: [{
     phase: string,
     title: string,
@@ -116,6 +117,7 @@ export type PopulatedWriteup = {
     isSubmitted: boolean,
     isAccepted: boolean,
     reSubmit: boolean,
+    handledBy?: StaffProfile,
     requestedResubmit: boolean,
   }]
 }

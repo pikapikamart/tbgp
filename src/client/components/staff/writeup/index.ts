@@ -1,1 +1,0 @@
-export { default as StaffWriteup } from "./writeup"

@@ -5,7 +5,7 @@ import {
 
 
 type ColoredButtonProps = {
-  colored?: "darkBlue" | "green" | "blue" | "red" | "skyBlue" | "violet" | "orange" | "grey"
+  colored?: "darkBlue" | "green" | "blue" | "red" | "skyBlue" | "violet" | "orange" | "grey" | "borderGray"
 }
 
 const BaseButton = styled.button<ColoredButtonProps>`
@@ -28,6 +28,11 @@ const BaseButton = styled.button<ColoredButtonProps>`
         return css`background-color: ${ colors.blue };`
       case "red":
         return css`background-color: ${ colors.red };`
+      case "borderGray":
+        return css `
+          border: 1px solid ${ colors.grey2 };
+          color: ${ colors.dark2 };
+        `
     }
   } }
 `

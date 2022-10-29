@@ -33,7 +33,6 @@ export const useSetupStaff = () =>{
     refetchOnWindowFocus: false,
     enabled: false,
     onSuccess: ( { data } ) =>{
-      
       dispatch(setStaff(data))
     }
   })
@@ -53,12 +52,13 @@ export const useSelectStaff = () =>{
   return staff
 }
 
-export const useSelectWriteup = ( writeupId: string, phase: WriteupPhases ) => {
+export const useSelectWriteup = () => {
+  const router = useRouter()
   const writeup = useAppSelector(selectWriteup)
   const dispatch = useAppDispatch()
   const query = trpc.useQuery(["writeup.get", {
-    writeupId,
-    phase
+    writeupId: router.query["writeup"] as string,
+    phase: router.query["phase"] as WriteupPhases
   }], {
     refetchOnWindowFocus: false,
     enabled: false,
@@ -71,7 +71,7 @@ export const useSelectWriteup = ( writeupId: string, phase: WriteupPhases ) => {
     if ( !writeup.writeupId ) {
       query.refetch()
     }
-  }, [ writeup ])
+  }, [ writeup.writeupId ])
 
   return writeup
 }

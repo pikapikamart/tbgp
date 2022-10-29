@@ -3,9 +3,13 @@ import { HYDRATE } from "next-redux-wrapper";
 import { RootState } from "..";
 import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller";
 import { setWriteupReducer } from "../reducers/writeup.reducer";
+import { WriteupPhases } from "@/src/server/models/writeup.model";
+import { ModifyType } from "types/utils";
 
 
-export type WriteupState = PopulatedWriteup
+export type WriteupState = ModifyType<PopulatedWriteup, {
+  currentPhase: "" | WriteupPhases
+}>
 
 const initialState: WriteupState = {
   request: {
@@ -13,7 +17,7 @@ const initialState: WriteupState = {
     title: "",
     category: "",
     instruction: "",
-    createdAt: new Date()
+    createdAt: ""
   },
   writeupId: "",
   banner: "",
