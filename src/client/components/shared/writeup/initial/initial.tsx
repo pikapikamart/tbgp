@@ -1,6 +1,7 @@
-import { InitialWriteup } from "@/src/server/controllers/writeup.controller"
 import { isPopulatedInitialWriteup } from "@/store/slices/staff.slice"
-import { PopulatedInitialWriteup } from "@/store/store.types"
+import { 
+  InitialWriteup, 
+  PopulatedInitialWriteup } from "@/store/store.types"
 import Link from "next/link"
 import { Category } from "../../storyRequest/initial/initial.styled"
 import { 
@@ -48,7 +49,7 @@ const Initial = ({ writeup }: InitialProps) =>{
     <InitialWriteupWrapper>
       <WriteupTitle>
         <Link 
-          href={ `/storybuilder/writeup/${ writeup.writeupId }` }>
+          href={ `/storybuilder/writeup/${ writeup.writeupId }/${ writeup.content.phase }` }>
           <a>{ writeup.content.title }</a>
         </Link>
       </WriteupTitle>

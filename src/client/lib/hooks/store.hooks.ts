@@ -1,11 +1,14 @@
+import { WriteupPhases } from "@/src/server/models/writeup.model";
 import { 
   AppDispatch, 
   RootState } from "@/store/index";
 import { 
   selectStaff, 
   setStaff } from "@/store/slices/staff.slice";
+import { selectWriteup, setWriteup } from "@/store/slices/writeup.slice";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { 
   TypedUseSelectorHook, 
@@ -48,4 +51,27 @@ export const useSelectStaff = () =>{
   const staff = useAppSelector(selectStaff)
 
   return staff
+}
+
+export const useSelectWriteup = ( writeupId: string, phase: WriteupPhases ) => {
+  const writeup = useAppSelector(selectWriteup)
+  const dispatch = useAppDispatch()
+  const query = trpc.useQuery(["writeup.get", {
+    writeupId,
+    phase
+  }], {
+    refetchOnWindowFocus: false,
+    enabled: false,
+    onSuccess: ({ data }) => {
+      dispatch(setWriteup(data))
+    }
+  })
+
+  useEffect(() =>{
+    if ( !writeup.writeupId ) {
+      query.refetch()
+    }
+  }, [ writeup ])
+
+  return writeup
 }

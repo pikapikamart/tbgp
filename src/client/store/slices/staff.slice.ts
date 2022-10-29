@@ -13,10 +13,10 @@ import { RootState } from "..";
 import { ModifyType } from "types/utils";
 import { 
   InitialStoryRequest, 
+  InitialWriteup,
   PopulatedInitialWriteup, 
   StaffProfile} from "../store.types";
 import { WritableDraft } from "immer/dist/internal";
-import { InitialWriteup } from "@/src/server/controllers/writeup.controller";
 
 
 export type InitialStaffState = Omit<Staff, "password">
@@ -118,7 +118,7 @@ export const isCreatedStoryRequest = ( storyRequest: InitialStoryRequest | Creat
 }
 
 export const isPopulatedInitialWriteup = ( writeup: InitialWriteup | PopulatedInitialWriteup ): writeup is PopulatedInitialWriteup => {
-  return ( writeup as PopulatedInitialWriteup ).content.phase!==undefined
+  return ( writeup as PopulatedInitialWriteup ).content.isSubmitted!==undefined
 }
 
 

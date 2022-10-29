@@ -1,4 +1,3 @@
-import { InitialWriteup } from "@/src/server/controllers/writeup.controller"
 import { StoryRequest } from "@/src/server/models/story.request.model"
 import { ModifyType } from "types/utils"
 
@@ -40,3 +39,13 @@ export type PopulatedInitialWriteup = ModifyType<InitialWriteup, {
     requestedResubmit: boolean
   }
 }>
+
+export type InitialWriteup = {
+  writeupId: string,
+  category: string,
+  content: {
+    title: string,
+    caption: string,
+    phase: string
+  }
+}

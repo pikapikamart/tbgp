@@ -18,6 +18,7 @@ export const RequestPositionWrapper = styled.form`
   ${ ComboBoxRole } {
     border: none;
     border-bottom: 1px solid ${ ({ theme }) => theme.colors.grey1 };
+    padding-left: 0;
     text-align: center;
     width: ${ rem(200) };
   }

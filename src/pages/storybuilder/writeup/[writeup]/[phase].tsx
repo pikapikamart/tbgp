@@ -1,15 +1,12 @@
 import { BuilderLayout } from "@/components/layout/builder"
+import { StaffWriteup } from "@/components/staff/writeup"
 import { NextPageWithLayout } from "@/pages/_app"
-import { useRouter } from "next/router"
 
 
 const WriteupPage: NextPageWithLayout = () =>{
-  const router = useRouter()
 
   return (
-    <>
-      { JSON.stringify(router.query) }
-    </>
+    <StaffWriteup />
   )
 }
 

@@ -8,7 +8,7 @@ export type WriteupPhases =
 
 export const WRITEUP_PHASES: readonly WriteupPhases[] = ["writeup", "revision", "finalEdit", "graphics", "finalization"] as const
 
-type WriteupNote = {
+export type WriteupNote = {
   title: string,
   message: string
 }

@@ -1,9 +1,13 @@
+import { 
+  InitialWriteup, 
+  StaffProfile } from "@/store/store.types";
 import { ArrayElement } from "mongodb";
 import { 
   StaffContext, 
   VerifiedStaffContext } from "../middlewares/router.middleware";
 import { 
   WriteupDocument, 
+  WriteupNote, 
   WRITEUP_PHASES } from "../models/writeup.model";
 import { 
   SaveWriteupSchema, 
@@ -60,15 +64,6 @@ const baseResubmitUpdateBody = ( writeup: WriteupDocument, currentContent: NonNu
 
 // --------Queries--------
 
-export type InitialWriteup = {
-  writeupId: string,
-  category: string,
-  content: {
-    title: string,
-    caption: string
-  }
-}
-
 export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
   const aggregatedWriteups = await findMultipleWriteupAggregator([
     {
@@ -92,12 +87,37 @@ export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
         category: 1,
         writeupId: 1,
         "content.title": 1,
-        "content.caption": 1
+        "content.caption": 1,
+        "content.phase": 1
       }
     }
   ])
 
   return trpcSuccess(true, aggregatedWriteups as InitialWriteup[])
+}
+
+export type PopulatedWriteup = {
+  request: {
+    members: StaffProfile[],
+    title: string,
+    category: string,
+    instruction: string,
+    createdAt: Date
+  },
+  writeupId: string,
+  banner: string,
+  currentPhase: string,
+  content: [{
+    phase: string,
+    title: string,
+    caption: string,
+    data: any[],
+    notes: WriteupNote[],
+    isSubmitted: boolean,
+    isAccepted: boolean,
+    reSubmit: boolean,
+    requestedResubmit: boolean,
+  }]
 }
 
 export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: StaffContext ) => {
@@ -111,7 +131,7 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
       select: "-_id members title category instruction content.$ createdAt",
       populate: {
         path: "members",
-        select: "-_id firstname lastname username"
+        select: "-_id firstname lastname username bastionId"
       }
     },
     "-_id request writeupId banner content.$ currentPhase"
@@ -122,7 +142,7 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
     select: "-_id firstname lastname username"
   })
   
-  return trpcSuccess(true, writeup)
+  return trpcSuccess(true, (writeup as never) as PopulatedWriteup)
 }
 
 // --------Mutations--------
