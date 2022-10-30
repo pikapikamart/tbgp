@@ -53,4 +53,44 @@ export const MarkButton = styled.button<MarkButtonProps>`
     } }
 
   color: ${ ({ theme: { colors }, isActive }) => isActive? colors.blue : colors.dark3 };
+
+  ${ breakpoint("desktop", `
+    transition: background-color .3s ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, .1);
+    }
+  `) }
+
+  > span {
+    font-size: ${ rem(12) };
+  }
+`
+
+export const HeadingMarkTrigger = styled(MarkButton)`
+  background: url("/icons/icon-dropdown-down-small.svg") no-repeat right center;  
+
+  &[aria-expanded="true"] {
+    background-color: rgba(0, 0, 0, .1);
+  }
+`
+
+export const HeadingListWrapper = styled.ul`
+
+  ${ breakpoint("tablet", `
+    border-radius: ${ rem(4) };
+    background-color: white;
+    box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .2);
+    display: flex;
+    padding: ${ rem(4) } ${ rem(8) };
+    position: absolute;
+    top: 100%;
+
+    ${ MarkButton } {
+      
+      &:not(:last-of-type) {
+        margin-right: ${ rem(4) };
+      }
+    }
+  `) }
 `

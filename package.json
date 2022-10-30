@@ -30,6 +30,7 @@
     "react-tracked": "^1.7.10",
     "redux": "^4.2.0",
     "slate": "^0.84.0",
+    "slate-history": "^0.66.0",
     "slate-react": "^0.83.2",
     "styled-components": "^5.3.5",
     "superjson": "^1.9.1",

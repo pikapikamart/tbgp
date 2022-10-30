@@ -1,9 +1,7 @@
 import { 
-  useState,
-  useCallback } from "react"
-import { 
-  createEditor, 
-  Descendant } from "slate"
+  useCallback, 
+  useMemo} from "react"
+import { createEditor } from "slate"
 import {
   Slate as SlateComp,
   Editable,
@@ -11,20 +9,16 @@ import {
   RenderElementProps,
   RenderLeafProps
 } from "slate-react"
+import { withHistory } from "slate-history"
 import { RenderElements } from "./element"
 import { RenderLeaves } from "./leaf"
 import { SlateToolbar } from "./toolbar"
+import { initialSlateValue } from "./data"
 
-const initialValue: Descendant[] = [
-  {
-    type: 'paragraph',
-    children: [{ text: 'Your story...' }],
-  },
-]
 
 const Slate = () => {
-  const [ editor ] = useState(() => withReact(createEditor()))
-
+  const editor = useMemo(() => withHistory(withReact(createEditor())), [])
+  
   const renderElement = useCallback((props: RenderElementProps) => {
     return <RenderElements {...props} />
   }, [])
@@ -36,9 +30,10 @@ const Slate = () => {
   return (
     <SlateComp 
       editor={ editor }
-      value={ initialValue }>
+      value={ initialSlateValue }>
         <SlateToolbar />
         <Editable
+          placeholder="Enter your story..."
           renderElement={ renderElement }
           renderLeaf={ renderLeaf } />
     </SlateComp>

@@ -1,5 +1,6 @@
 import { ToolbarMarkButton } from "./button"
 import { ToolbarBlockButton } from "./button/block"
+import { ToolbarHeadingList } from "./heading"
 import { ToolbarWrapper } from "./toolbar.styled"
 
 
@@ -11,10 +12,7 @@ const ToolBar = () => {
         text="P"
         format="paragraph"
         label="transform to paragraph" />
-      <ToolbarBlockButton
-        text="H"
-        format="heading"
-        label="transform to heading" />
+      <ToolbarHeadingList />
       <ToolbarMarkButton
         text="B"
         format="bold"
