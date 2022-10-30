@@ -1,1 +1,1 @@
-export { default as SlateSection } from "./slate"
+export { default as WriteSlateSection } from "./slate"

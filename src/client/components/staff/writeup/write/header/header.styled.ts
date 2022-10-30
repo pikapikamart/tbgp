@@ -16,6 +16,7 @@ export const HeaderTitle = styled.input`
   color: ${ ({ theme }) => theme.colors.dark2 };
   font-family: "Friz Quadrata Std Bold Italic";
   font-size: ${ fluid(24, 4, 40) };
+  font-weight: 700;
   width: 100%;
   
   &:focus-visible {
