@@ -11,6 +11,10 @@ const RenderLeaf = ({ attributes, children, leaf }: RenderLeafProps) =>{
     children = <i>{ children }</i>
   }
 
+  if ( leaf.underline ) {
+    children = <u>{ children }</u>
+  }
+
   return (
     <span { ...attributes } >
       { children }

@@ -7,6 +7,6 @@ export const MainWrapper = styled.main``
 export const MainContentContainer = styled.div`
   max-width: ${ rem(896) };
   margin: 0 auto;
-  padding-top: ${ rem(80) };
+  padding: ${ rem(80) } 0 ${ rem(80) };
   position: relative;
 `

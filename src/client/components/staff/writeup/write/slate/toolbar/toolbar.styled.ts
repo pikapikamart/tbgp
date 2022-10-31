@@ -34,9 +34,13 @@ type MarkButtonProps = {
 }
 
 export const MarkButton = styled.button<MarkButtonProps>`
+  align-items: center;
   border-radius: 50%;
+  color: ${ ({ theme }) => theme.colors.dark3 };
+  display: flex;
   font-size: ${ rem(22) };
   height: ${ rem(36) };
+  place-content: center;
   width: ${ rem(36) };
 
   ${ ({ decoration, theme }) => {
@@ -52,7 +56,22 @@ export const MarkButton = styled.button<MarkButtonProps>`
       }
     } }
 
-  color: ${ ({ theme: { colors }, isActive }) => isActive? colors.blue : colors.dark3 };
+  ${ ({ theme: { colors }, isActive }) => {
+    switch(isActive) {
+      case true: return css`
+        color: ${ colors.blue };
+
+        svg {
+          fill: ${ colors.blue };
+
+          g {
+            fill: ${ colors.blue };
+          }
+        }
+      `
+    }
+  } }
+  
 
   ${ breakpoint("desktop", `
     transition: background-color .3s ease;
@@ -62,9 +81,18 @@ export const MarkButton = styled.button<MarkButtonProps>`
     }
   `) }
 
+  &[aria-disabled="true"] {
+    opacity: .7;
+
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
+
   > span {
     font-size: ${ rem(12) };
   }
+  
 `
 
 export const HeadingMarkTrigger = styled(MarkButton)`
@@ -93,4 +121,15 @@ export const HeadingListWrapper = styled.ul`
       }
     }
   `) }
+`
+
+export const PasteLink = styled.input`
+  background-color: white;
+  border-radius: ${ rem(4) };
+  border: 1px solid ${ ({ theme }) => theme.colors.blue };
+  height: ${ rem(44) };
+  padding: ${ rem(4) } ${ rem(8) };
+  position: absolute;
+  top: 100%;
+  width: ${ rem(256) };
 `

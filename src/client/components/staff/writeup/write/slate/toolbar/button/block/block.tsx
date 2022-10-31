@@ -14,8 +14,6 @@ type BlockProps = {
   text: string,
   label: string ,
   format: CustomElementType,
-  decoration?: "underline" | "italic" | "bold",
-  icon?: string,
   extraChild?: React.ReactElement
 }
 
@@ -23,8 +21,6 @@ const Block = ({
   text,
   label, 
   format,
-  decoration,
-  icon,
   extraChild
 }: BlockProps) => {
   const editor = useSlate()
@@ -38,14 +34,8 @@ const Block = ({
     <ToolbarItem>
       <MarkButton
         isActive={ isBlockActive(editor, format) }
-        decoration={ decoration }
         onMouseDown={ handleMarking }>
-        { icon?
-          <img 
-            alt="" 
-            src={ icon }/> :
-          <>{ text }</>
-        }
+        { text }
         { extraChild && <>{ extraChild }</> }
         <SrOnly>{ label }</SrOnly>
       </MarkButton>

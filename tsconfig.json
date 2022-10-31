@@ -21,7 +21,8 @@
       "@/store/*": ["src/client/store/*"],
       "@/styled/*": ["src/client/styled/*"],
       "@/pages/*": ["src/pages/*"],
-      "@/src/*": ["src/*"]
+      "@/src/*": ["src/*"],
+      "@/public/*": ["public/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

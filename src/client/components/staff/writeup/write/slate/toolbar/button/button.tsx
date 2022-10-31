@@ -14,7 +14,6 @@ type ButtonProps = {
   label: string,
   format: string,
   decoration?: "underline" | "italic" | "bold",
-  icon?: string
 }
 
 const Button = ({ 
@@ -22,7 +21,6 @@ const Button = ({
   label, 
   format,
   decoration,
-  icon 
 }: ButtonProps) =>{
   const editor = useSlate()
 
@@ -37,12 +35,7 @@ const Button = ({
         isActive={ isMarkActive(editor, format) }
         decoration={ decoration }
         onMouseDown={ handleMarking }>
-        { icon?
-          <img 
-            alt="" 
-            src={ icon }/> :
-          <>{ text }</>
-        }
+        { text }
         <SrOnly>{ label }</SrOnly>
       </MarkButton>
     </ToolbarItem>

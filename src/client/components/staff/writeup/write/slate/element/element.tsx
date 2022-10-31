@@ -1,4 +1,10 @@
 import { RenderElementProps } from "slate-react";
+import { 
+  HeadingFour, 
+  HeadingThree, 
+  HeadingTwo, 
+  Paragraph } from "../slate.styled";
+import { LinkElement } from "./link";
 
 
 const RenderElement = ({ attributes, children, element }: RenderElementProps) =>{
@@ -6,27 +12,34 @@ const RenderElement = ({ attributes, children, element }: RenderElementProps) =>
   switch(element.type) {
     case "heading-two":
       return (
-        <h2 { ...attributes }>
+        <HeadingTwo { ...attributes }>
           { children }
-        </h2>
+        </HeadingTwo>
       )
     case "heading-three":
       return (
-        <h3 { ...attributes }>
+        <HeadingThree { ...attributes }>
           { children }
-        </h3>
+        </HeadingThree>
       )
     case "heading-four":
       return (
-        <h4 { ...attributes }>
+        <HeadingFour { ...attributes }>
           { children }
-        </h4>
+        </HeadingFour>
       )
     case "paragraph":
       return (
-        <p { ...attributes }>
+        <Paragraph { ...attributes }>
           { children }
-        </p>
+        </Paragraph>
+      )
+    case "link":
+      return (
+        <LinkElement
+          attributes={ attributes }
+          children={ children }
+          element={ element } />
       )
   }
   

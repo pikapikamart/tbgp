@@ -14,10 +14,11 @@ import { RenderElements } from "./element"
 import { RenderLeaves } from "./leaf"
 import { SlateToolbar } from "./toolbar"
 import { initialSlateValue } from "./data"
+import { slateKeyDown, withInlines } from "./utils"
 
 
 const Slate = () => {
-  const editor = useMemo(() => withHistory(withReact(createEditor())), [])
+  const editor = useMemo(() => withInlines(withHistory(withReact(createEditor()))), [])
   
   const renderElement = useCallback((props: RenderElementProps) => {
     return <RenderElements {...props} />
@@ -27,6 +28,7 @@ const Slate = () => {
     return <RenderLeaves { ...props } />
   }, [])
 
+
   return (
     <SlateComp 
       editor={ editor }
@@ -35,7 +37,8 @@ const Slate = () => {
         <Editable
           placeholder="Enter your story..."
           renderElement={ renderElement }
-          renderLeaf={ renderLeaf } />
+          renderLeaf={ renderLeaf }
+          onKeyDown={ event => slateKeyDown(event, editor) } />
     </SlateComp>
   )
 }

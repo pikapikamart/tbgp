@@ -9,7 +9,8 @@ declare module 'slate' {
     [ key: string ]: any,
     text: string,
     bold?: boolean,
-    italic?: boolean
+    italic?: boolean,
+    underline?: boolean
   }
   
   export type CustomText = FormattedText
@@ -34,6 +35,12 @@ declare module 'slate' {
     children: CustomText[]
   }
 
+  export type LinkElement = {
+    type: "link",
+    url: string,
+    children: CustomText[]
+  }
+
   export interface BaseElement {
     type: string
   }
@@ -47,7 +54,8 @@ declare module 'slate' {
   ParagraphElement | 
   HeadingTwoElement |
   HeadingThreeElement |
-  HeadingFourElement 
+  HeadingFourElement |
+  LinkElement
   
   export type CustomElementType = CustomElement["type"] 
 
