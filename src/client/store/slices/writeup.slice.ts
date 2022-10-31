@@ -2,14 +2,26 @@ import { createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { RootState } from "..";
 import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller";
-import { setWriteupReducer } from "../reducers/writeup.reducer";
+import { 
+  setInvalidHeadingReducer,
+  setInvalidSlateReducer,
+  setShouldSaveReducer,
+  setWriteupHeadingReducer,
+  setWriteupReducer, 
+  setWriteupSlateReducer} from "../reducers/writeup.reducer";
 import { WriteupPhases } from "@/src/server/models/writeup.model";
 import { ModifyType } from "types/utils";
 
 
 export type WriteupState = ModifyType<PopulatedWriteup, {
   currentPhase: "" | WriteupPhases
-}>
+}> & {
+  shouldSave: boolean,
+  isHeadingValid: boolean,
+  isSlateValid: boolean,
+  isHeadingError: boolean,
+  isSlateError: boolean
+}
 
 const initialState: WriteupState = {
   request: {
@@ -32,14 +44,24 @@ const initialState: WriteupState = {
     isAccepted: false,
     reSubmit: false,
     requestedResubmit: false
-  }]
+  }],
+  shouldSave: false,
+  isHeadingValid: false,
+  isSlateValid: false,
+  isHeadingError: false,
+  isSlateError: false
 }
 
 export const writeupSlice = createSlice({
   name:"writeup",
   initialState: initialState as WriteupState,
   reducers: {
-    setWriteup: setWriteupReducer
+    setWriteup: setWriteupReducer,
+    setShouldSave: setShouldSaveReducer,
+    setWriteupHeading: setWriteupHeadingReducer,
+    setInvalidHeading: setInvalidHeadingReducer,
+    setInvalidSlate: setInvalidSlateReducer,
+    setWriteupSlate: setWriteupSlateReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -52,7 +74,12 @@ export const writeupSlice = createSlice({
 })
 
 export const {
-  setWriteup
+  setWriteup,
+  setShouldSave,
+  setWriteupHeading,
+  setInvalidHeading,
+  setInvalidSlate,
+  setWriteupSlate
 } = writeupSlice.actions;
 export const selectWriteup = ( state: RootState ) => state.writeup;
 

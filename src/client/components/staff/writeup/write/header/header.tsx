@@ -2,7 +2,12 @@ import { InputError } from "@/components/collections/inputs/regular/input.styled
 import { 
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { isWriteupEditable, isWriteupHandler, isWriteupMember } from "../../utils"
+import { SrOnly } from "@/styled/shared/helpers"
+import { 
+  isWriteupEditable, 
+  isWriteupHandler, 
+  isWriteupMember } from "../../utils"
+import { useWriteupHeader } from "./header.hook"
 import { 
   HeaderCaption,
   HeaderTitle, 
@@ -14,19 +19,27 @@ type HeaderProps = {
 }
 
 const Header = ({}: HeaderProps) =>{
-  const writeup = useSelectWriteup()
-  const staff = useSelectStaff()
+  const {
+    writeup,
+    staff,
+    addFieldRef,
+    submitFormRef,
+    handleFormSubmit
+  } = useWriteupHeader()
 
   if ((isWriteupMember(writeup, staff.bastionId) || isWriteupHandler(writeup, staff.bastionId)) && isWriteupEditable(writeup) ) {
     return (
-      <HeaderWrapper>
+      <HeaderWrapper 
+        as="form"
+        onSubmit={ handleFormSubmit }>
         <div>
           <HeaderTitle 
             id="title"
             name="title"
             defaultValue={ writeup.content[0].title }
             placeholder="Story title"
-            aria-required="true" />
+            aria-required="true"
+            ref={ addFieldRef } />
               <InputError id="error-title">Title should not be empty</InputError>
         </div>
         <div>
@@ -35,9 +48,16 @@ const Header = ({}: HeaderProps) =>{
             name="caption"
             defaultValue={ writeup.content[0].title }
             placeholder="Enter story caption"
-            aria-required="true" />
+            aria-required="true"
+            ref={ addFieldRef } />
               <InputError id="error-caption">Caption should not be empty</InputError>
         </div>
+        <SrOnly
+          as="button"
+          hidden={ true }
+          aria-hidden="true"
+          ref={ submitFormRef }>
+        </SrOnly>
       </HeaderWrapper>
     )
   }

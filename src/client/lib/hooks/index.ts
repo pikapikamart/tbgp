@@ -61,6 +61,7 @@ type HandleFormSubmit = ( event: React.FormEvent ) => void
 
 export const useFormValidation = () => {
   const [ isValidData, setIsValidData ] = useState(false)
+  const [ isInvalidData, setIsInvalidData ] = useState(false)
   const [ isSubmitting, setIsSubmitting ] = useState(false)
   const formFieldsRefs = useRef<FormFields[]>([])
   const ariaLive = useRef<HTMLParagraphElement | null>(null)
@@ -110,9 +111,11 @@ export const useFormValidation = () => {
 
     if ( formHasError ) {
       configureLiveRegion(true)
+      setIsInvalidData(true)
       resetFormValidation()
     } else {
       setIsValidData(true)
+      setIsInvalidData(false)
     }
   }
 
@@ -123,6 +126,7 @@ export const useFormValidation = () => {
 
   return {
     isValidData,
+    isInvalidData,
     isSubmitting,
     ariaLive,
     addFieldRef,

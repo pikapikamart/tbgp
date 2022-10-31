@@ -4,7 +4,7 @@ import {
   Editor,
   Element, 
   LinkElement, 
-  Range, 
+  Range,
   Transforms} from "slate";
 import isUrl from "is-url"
 import isKeyHotkey from "is-hotkey"
