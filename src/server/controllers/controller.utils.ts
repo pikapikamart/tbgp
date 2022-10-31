@@ -1,17 +1,21 @@
 import mongoose, { 
-  FilterQuery,
   PopulateOptions,
   ProjectionType,
   QueryOptions} from "mongoose";
 import { StaffDocument } from "../models/staff.model";
 import { StoryRequest } from "../models/story.request.model";
-import { Writeup, WriteupDocument, WRITEUP_PHASES } from "../models/writeup.model";
+import {
+  WriteupDocument,
+  WRITEUP_PHASES } from "../models/writeup.model";
 import { BastionIdSchema } from "../schemas/staff.schema";
 import { findAdminService } from "../services/admin.service"
 import { findStoryRequestService } from "../services/story.request.service";
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid"
-import { findWriteupPopulatorService, findWriteupService } from "../services/writeup.service";
+import { 
+  findWriteupPopulatorService, 
+  findWriteupService } from "../services/writeup.service";
+import { isContentWriteupPhase } from "./writeup.controller";
 
 
 // --------Admin--------
@@ -146,22 +150,30 @@ export const populateWriteupHelper = async( writeupId: string, staffId: mongoose
       isPublished: false
     },
     {
-      path: "request",
+      path: "request content.submissions",
       select: "members storyRequestId"
     }
   ))
+  
+  if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(member => member.equals(staffId)) ) {
+    return trpcError("FORBIDDEN", "Already submitted your work")
+  }
   
   if ( isStoryRequest(writeup.request) && !writeup.request.members.find(member => member.equals(staffId)) ) {
     return trpcError("FORBIDDEN", "Only members of writeup are allowed")  
   }
 
-  writeupSubmissionError(writeup, 0)
+  writeupSubmissionError((writeup as never) as WriteupDocument , 0)
 
   return writeup
 }
 
 export const findWriteupHelper = async( writeupId: string ) =>{
-  const submissionData = writeupSubmissionValidator(await findWriteupService(
+  const {
+    writeup,
+    currentContent,
+    phaseIndex
+  } = writeupSubmissionValidator(await findWriteupService(
     { 
       writeupId,
       isPublished: false
@@ -170,7 +182,15 @@ export const findWriteupHelper = async( writeupId: string ) =>{
     { lean: true })
   )
 
-  return submissionData
+  if ( isContentWriteupPhase(currentContent) ) {
+    return trpcError("CONFLICT", "Can't access lower phase writeups")
+  }
+
+  return {
+    writeup,
+    currentContent,
+    phaseIndex
+  }
 }
 
 // -------- Random --------

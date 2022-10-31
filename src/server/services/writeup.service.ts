@@ -44,7 +44,7 @@ export const findWriteupPopulatorService = async<T = {},>(
   projection: ProjectionType<Writeup> = "",
   options: QueryOptions = {}
 ) => (
-  WriteupModel.findOne(query, projection, options).populate(populate)
+  WriteupModel.findOne(query, projection, options).populate<T>(populate)
 )
 
 // --------Multiple--------

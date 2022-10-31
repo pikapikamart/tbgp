@@ -1,12 +1,11 @@
 import { 
   InitialWriteup, 
   StaffProfile } from "@/store/store.types";
-import { ArrayElement } from "mongodb";
 import { 
   StaffContext, 
   VerifiedStaffContext } from "../middlewares/router.middleware";
 import { 
-  WriteupDocument, 
+  WriteupContent,
   WriteupNote, 
   WriteupPhases, 
   WRITEUP_PHASES } from "../models/writeup.model";
@@ -33,9 +32,9 @@ import {
 
 
 // ----Helpers----
-const updateQuery = ( writeup: WriteupDocument ) =>({
-  writeupId: writeup.writeupId,
-  "content.phase": writeup.currentPhase,
+const updateQuery = ( writeupId: string, currentPhase: WriteupPhases ) =>({
+  writeupId,
+  "content.phase": currentPhase,
 }) 
 
 const baseSaveUpdateBody = ( saveBody: SaveWriteupSchema ) => ({
@@ -51,15 +50,22 @@ const baseSubmitUpdateBody = ( phaseIndex: number ) => ({
   currentPhase: WRITEUP_PHASES[phaseIndex+1]
 })
 
-const baseResubmitUpdateBody = ( writeup: WriteupDocument, currentContent: NonNullable<ArrayElement<typeof writeup["content"]>>, phaseIndex: number ) => Object.assign(
+export const isContentWriteupPhase = ( currentContent: WriteupContent<WriteupPhases> ): currentContent is WriteupContent<"writeup"> =>{
+  return ( currentContent as WriteupContent<"writeup"> ).phase==="writeup"
+}
+
+const baseResubmitUpdateBody = ( nextContent: WriteupContent<WriteupPhases>, currentContent: WriteupContent<WriteupPhases>, phaseIndex: number ) => Object.assign(
   baseSubmitUpdateBody(phaseIndex),
   {
-    [ `content.${ phaseIndex+1 }` ]: Object.assign(currentContent, {
-      phase: WRITEUP_PHASES[phaseIndex+1], 
-      reSubmit: false,
-      notes: [],
-      handledBy: writeup.content[phaseIndex+1]?.handledBy
-    })
+    [ `content.${ phaseIndex+1 }` ]: Object.assign(
+      currentContent, 
+      {
+        phase: WRITEUP_PHASES[phaseIndex+1], 
+        reSubmit: false,
+        notes: [],  
+      },
+      !isContentWriteupPhase(nextContent)? { handledBy: nextContent.handledBy } : undefined
+    )
   }
 )
 
@@ -118,6 +124,7 @@ export type PopulatedWriteup = {
     isAccepted: boolean,
     reSubmit: boolean,
     handledBy?: StaffProfile,
+    submissions?: StaffProfile[],
     requestedResubmit: boolean,
   }]
 }
@@ -140,7 +147,7 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
   ))
 
   await writeupPopulatorService(writeup, {
-    path: "content.handledBy",
+    path: "content.handledBy content.submissions",
     select: "-_id firstname lastname username"
   })
   
@@ -153,7 +160,7 @@ export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema
   const writeup = await populateWriteupHelper(writeupBody.writeupId, staff._id)
 
   await updateWriteupService(
-    updateQuery(writeup),
+    updateQuery(writeup.writeupId, "writeup"),
     baseSaveUpdateBody(writeupBody)
   )
   
@@ -162,25 +169,43 @@ export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema
 
 export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext ) =>{
   const writeup = await populateWriteupHelper(writeupId, staff._id)
+  const currentContent = writeup.content[0]
 
-  if ( writeup.content[0].reSubmit ) {
+  if ( currentContent.reSubmit ) {
+    const nextContent = writeup.content[1]
+
+    if ( !nextContent ) {
+      return trpcError("INTERNAL_SERVER_ERROR", "Server error")
+    }
+
     await updateWriteupService(
-      updateQuery(writeup),
-      baseResubmitUpdateBody(writeup, writeup.content[0], 0)
+      updateQuery(writeup.writeupId, "writeup"),
+      baseResubmitUpdateBody(nextContent, currentContent, 0)
     )
 
     return trpcSuccess(true, "Successfully submitted")
   } 
 
+  if ( writeup.request.members.length-1===currentContent.submissions?.length ) {
+    await updateWriteupService(
+      updateQuery(writeup.writeupId, "writeup"),
+      Object.assign(baseSubmitUpdateBody(0), { "content.1": Object.assign( writeup.content[0], { 
+        phase: "revision",
+        reSubmit: false,
+        notes: [] 
+      } ),})
+    )
+  }
+
   await updateWriteupService(
-    updateQuery(writeup),
-    Object.assign(baseSubmitUpdateBody(0), { "content.1": Object.assign( writeup.content[0], { 
-      phase: "revision",
-      reSubmit: false,
-      notes: [] 
-    } ),})
+    updateQuery(writeup.writeupId, "writeup"),
+    {
+      $push: {
+        "content.submissions": staff._id
+      }
+    }
   )
-  
+
   return trpcSuccess(true, "Successfully submitted")
 }
 
@@ -202,7 +227,7 @@ export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff 
   }
 
   await updateWriteupService(
-    updateQuery(writeup),
+    updateQuery(writeup.writeupId, writeup.currentPhase),
     { "content.$.handledBy" : staff._id, }
   )
 
@@ -233,7 +258,7 @@ export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff
   }
 
   await updateWriteupService(
-    updateQuery(writeup),
+    updateQuery(writeup.writeupId, writeup.currentPhase),
     Object.assign(graphicsUpdate, baseSaveUpdateBody(writeupBody))
   )
 
@@ -252,9 +277,15 @@ export const submitWriteupHandler = async( writeupId: WriteupIdSchema, { staff }
   }
 
   if ( currentContent.reSubmit ) {
+    const nextContent = writeup.content[phaseIndex+1]
+
+    if ( !nextContent ) {
+      return trpcError("INTERNAL_SERVER_ERROR", "Server error")
+    }
+
     await updateWriteupService(
-      updateQuery(writeup),
-      baseResubmitUpdateBody(writeup, currentContent, phaseIndex)
+      updateQuery(writeup.writeupId, writeup.currentPhase),
+      baseResubmitUpdateBody(nextContent, currentContent, phaseIndex)
     )
 
     return trpcSuccess(true, "Successfully submitted")
@@ -262,7 +293,7 @@ export const submitWriteupHandler = async( writeupId: WriteupIdSchema, { staff }
 
   const { handledBy, ...restContent } = currentContent
   await updateWriteupService(
-    updateQuery(writeup),
+    updateQuery(writeup.writeupId, writeup.currentPhase),
     Object.assign(baseSubmitUpdateBody(phaseIndex), {
       [`content.${ phaseIndex+1 }`]: Object.assign( restContent, { phase: WRITEUP_PHASES[phaseIndex+1] } ),
       [`content.${ phaseIndex-1 }.isAccepted`]: true,
@@ -283,11 +314,17 @@ export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam
     return trpcError("FORBIDDEN", "Only editor that took the task is allowed")
   }
 
-  if ( writeup.content[phaseIndex]?.requestedResubmit ) {
+  if ( currentContent.requestedResubmit ) {
     return trpcError("CONFLICT", "Wait for the re-submission to be finished before requesting again")
   }
 
-  if ( writeup.content[phaseIndex-1]?.isAccepted ) {
+  const previousContent = writeup.content[phaseIndex-1]
+
+  if ( !previousContent ) {
+    return trpcError("INTERNAL_SERVER_ERROR", "Server error")
+  }
+
+  if ( previousContent.isAccepted ) {
     return trpcError("CONFLICT", "Re-submit is not allowed when you submitted your task. Take responsibility")
   }
 
@@ -296,12 +333,15 @@ export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam
       writeupId: reSubmitBody.writeupId,
       "content.phase": WRITEUP_PHASES[phaseIndex-1]
     },
-    {
-      "content.$.isSubmitted": false,
-      "content.$.reSubmit": true,
-      "content.$.notes": reSubmitBody.notes,
-      currentPhase: WRITEUP_PHASES[phaseIndex-1]
-    }
+    Object.assign(
+      {
+        "content.$.isSubmitted": false,
+        "content.$.reSubmit": true,
+        "content.$.notes": reSubmitBody.notes,
+        currentPhase: WRITEUP_PHASES[phaseIndex-1]
+      },
+      isContentWriteupPhase(previousContent)? { "content.$.submissions": [] } : undefined
+    )
   )
 
   await updateWriteupService(

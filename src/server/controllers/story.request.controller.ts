@@ -24,13 +24,13 @@ import {
   trpcSuccess } from "../utils/success.util";
 import { AnyBulkWriteOperation } from "mongodb";
 import { createWriteup } from "../services/writeup.service";
-import { StaffContext, VerifiedStaffContext } from "../middlewares/router.middleware";
+import { StaffContext, 
+  VerifiedStaffContext } from "../middlewares/router.middleware";
 import { 
   customNanoid,
   getCurrentAvailableStoryRequest, 
   getOwnedAvailableStoryRequest, 
-  staffValidator, 
-  storyRequestValidator} from "./controller.utils";
+  staffValidator } from "./controller.utils";
 
 
 // --------Queries--------
@@ -309,8 +309,10 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
         phase: "writeup",
         title: storyRequest.title,
         caption: "",
+        isSubmitted: false,
+        isAccepted: false,
+        reSubmit: false,
         data: [],
-        notes: [],
       },
       null,
       null,

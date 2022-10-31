@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react"
+import { useCallback } from "react"
 import {
   Slate as SlateComp,
   Editable,
@@ -8,7 +8,6 @@ import {
 import { RenderElements } from "./element"
 import { RenderLeaves } from "./leaf"
 import { SlateToolbar } from "./toolbar"
-import { initialSlateValue } from "./data"
 import { slateKeyDown } from "./utils"
 import { useSlate } from "./slate.hook"
 
@@ -16,7 +15,7 @@ import { useSlate } from "./slate.hook"
 const Slate = () => {
   const { 
     editor,
-    writeup } = useSlate()
+    initialValue } = useSlate()
   
   const renderElement = useCallback((props: RenderElementProps) => {
     return <RenderElements {...props} />
@@ -25,14 +24,6 @@ const Slate = () => {
   const renderLeaf = useCallback(( props: RenderLeafProps ) => {
     return <RenderLeaves { ...props } />
   }, [])
-  
-  const initialValue = useMemo(() =>{
-    if ( writeup.content[0].data.length ) {
-      editor.children = writeup.content[0].data
-    }
-
-    return initialSlateValue
-  }, [writeup.content])
   
   return (
     <SlateComp 

@@ -13,18 +13,23 @@ export type WriteupNote = {
   message: string
 }
 
-export type WriteupContent<K extends WriteupPhases> = {
-  phase: K,
+type BaseWriteupContent<T> = {
+  phase: T,
   title: string,
   caption: string,
   data: any[],
-  notes: WriteupNote[],
-  handledBy?: StaffDocument["_id"],
-  isSubmitted?: boolean,
-  isAccepted?: boolean,
-  reSubmit?: boolean,
-  requestedResubmit?: boolean
+  isSubmitted: boolean,
+  isAccepted: boolean,
+  reSubmit: boolean,
+  notes?: WriteupNote[]
 }
+
+export type WriteupContent<T extends WriteupPhases> = T extends "writeup"? 
+  BaseWriteupContent<T> & { submissions?: StaffDocument["_id"][] } :
+  BaseWriteupContent<T> & {
+    handledBy?: StaffDocument["_id"],
+    requestedResubmit: boolean
+  }
 
 export type Writeup = {
   request: StoryRequestDocument["_id"],
@@ -84,6 +89,10 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
       type: mongoose.Schema.Types.ObjectId,
       ref: "Staff"
     },
+    submissions: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Staff"
+    }],
     isSubmitted: {
       type: Boolean,
       default: false
