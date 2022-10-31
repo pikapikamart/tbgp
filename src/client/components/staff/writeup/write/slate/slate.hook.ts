@@ -1,7 +1,9 @@
 import { 
   useAppDispatch, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { setInvalidSlate, setWriteupSlate } from "@/store/slices/writeup.slice"
+import { 
+  setInvalidSlate, 
+  setWriteupSlate } from "@/store/slices/writeup.slice"
 import { 
   useMemo,
   useEffect } from "react"
@@ -27,6 +29,7 @@ export const useSlate = () =>{
   }, [ writeup.shouldSave ])
 
   return {
-    editor
+    editor,
+    writeup
   }
 }

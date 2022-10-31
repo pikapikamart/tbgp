@@ -1,11 +1,15 @@
 import { categoryColors } from "@/components/shared/storyRequest/data"
-import { Category, CreatedDate } from "@/components/shared/storyRequest/initial/initial.styled"
+import { 
+  Category, 
+  CreatedDate } from "@/components/shared/storyRequest/initial/initial.styled"
 import { convertDateToString } from "@/components/shared/storyRequest/initial/utils"
 import { useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { useModalContext } from "@/store/context/modal/modal"
 import { SrOnly } from "@/styled/shared/helpers"
 import Link from "next/link"
-import { RequestMemberLink, RequestMembers } from "../../storyRequest/storyRequest.styled"
+import { 
+  RequestMemberLink, 
+  RequestMembers } from "../../storyRequest/storyRequest.styled"
 import { 
   capitalizePhase,
   readonlyPhases, 

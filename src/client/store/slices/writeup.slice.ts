@@ -3,6 +3,7 @@ import { HYDRATE } from "next-redux-wrapper";
 import { RootState } from "..";
 import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller";
 import { 
+  resetSubmissionReducer,
   setInvalidHeadingReducer,
   setInvalidSlateReducer,
   setShouldSaveReducer,
@@ -23,6 +24,7 @@ export type WriteupState = ModifyType<PopulatedWriteup, {
   isSlateError: boolean
 }
 
+// bad redux
 const initialState: WriteupState = {
   request: {
     members: [],
@@ -61,7 +63,8 @@ export const writeupSlice = createSlice({
     setWriteupHeading: setWriteupHeadingReducer,
     setInvalidHeading: setInvalidHeadingReducer,
     setInvalidSlate: setInvalidSlateReducer,
-    setWriteupSlate: setWriteupSlateReducer
+    setWriteupSlate: setWriteupSlateReducer,
+    resetSubmission: resetSubmissionReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -79,7 +82,8 @@ export const {
   setWriteupHeading,
   setInvalidHeading,
   setInvalidSlate,
-  setWriteupSlate
+  setWriteupSlate,
+  resetSubmission
 } = writeupSlice.actions;
 export const selectWriteup = ( state: RootState ) => state.writeup;
 

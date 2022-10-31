@@ -36,3 +36,11 @@ export const setWriteupSlateReducer = ( state: DraftWriteupState, action: Payloa
   state.isSlateValid = true
   state.content[0].data = action.payload
 }
+
+export const resetSubmissionReducer = ( state: DraftWriteupState ) =>{
+  state.isHeadingError = false
+  state.isHeadingValid = false
+  state.isSlateError = false
+  state.isSlateValid = false
+  state.shouldSave = false
+}
