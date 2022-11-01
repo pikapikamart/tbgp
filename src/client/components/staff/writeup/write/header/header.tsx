@@ -6,7 +6,9 @@ import { SrOnly } from "@/styled/shared/helpers"
 import { 
   isWriteupEditable, 
   isWriteupHandler, 
-  isWriteupMember } from "../../utils"
+  isWriteupMember, 
+  isWriteupPhaseEditable,
+  isWriteupReadonly} from "../../utils"
 import { useWriteupHeader } from "./header.hook"
 import { 
   HeaderCaption,
@@ -26,8 +28,8 @@ const Header = ({}: HeaderProps) =>{
     submitFormRef,
     handleFormSubmit
   } = useWriteupHeader()
-
-  if ((isWriteupMember(writeup, staff.bastionId) || isWriteupHandler(writeup, staff.bastionId)) && isWriteupEditable(writeup) ) {
+  
+  if ( !isWriteupReadonly(writeup, staff.bastionId) ) {
     return (
       <HeaderWrapper 
         as="form"

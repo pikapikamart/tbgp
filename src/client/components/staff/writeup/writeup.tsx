@@ -1,20 +1,20 @@
 import { ModalFocusBack } from "@/components/shared/modal/modal.styled"
-import { useModalContext } from "@/store/context/modal/modal"
 import { ControlsSection } from "./controls"
 import { WriteSection } from "./write"
+import { useWriteup } from "./writeup.hook"
 import { 
   MainContentContainer, 
   MainWrapper } from "./writeup.styled"
 
 
 const Writeup = () =>{
-  const modalContext = useModalContext()
-  
+  const { focusBackElement } = useWriteup()
+
   return (
     <MainWrapper>
       <MainContentContainer>
         <ModalFocusBack
-          ref={ modalContext.focusBackElement }
+          ref={ focusBackElement }
           tabIndex={ -1 }>
           <ControlsSection />
           <WriteSection />

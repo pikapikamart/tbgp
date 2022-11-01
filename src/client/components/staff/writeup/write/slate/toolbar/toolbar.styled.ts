@@ -8,6 +8,10 @@ import {
 export const ToolbarWrapper = styled.ul`
   font-family: 'Source Serif Pro', serif;
 
+  &[inert="true"] {
+    opacity: .7;
+  }
+
   ${ ({ theme: { colors } }) => `
     ${ breakpoint("tablet", `
       display: flex;

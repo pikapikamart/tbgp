@@ -1,4 +1,5 @@
-import { useSelectWriteup } from "@/lib/hooks/store.hooks"
+import { useSelectStaff, useSelectWriteup } from "@/lib/hooks/store.hooks"
+import { isWriteupReadonly } from "../../../utils"
 import { ToolbarMarkButton } from "./button"
 import { ToolbarBlockButton } from "./button/block"
 import { ToolbarHeadingList } from "./heading"
@@ -8,9 +9,10 @@ import { ToolbarWrapper } from "./toolbar.styled"
 
 const ToolBar = () => {
   const writeup = useSelectWriteup()
+  const staff = useSelectStaff()
 
   return (
-    <ToolbarWrapper>
+    <ToolbarWrapper ref={ el => isWriteupReadonly(writeup, staff.bastionId)? el?.setAttribute("inert", "true") : el?.removeAttribute("inert") }>
       <ToolbarBlockButton
         text="P"
         format="paragraph"

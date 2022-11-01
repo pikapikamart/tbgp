@@ -1,5 +1,6 @@
 import { HeaderFields } from "@/components/staff/writeup/write/header/header.hook"
 import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller"
+import { WriteupContent, WriteupPhases } from "@/src/server/models/writeup.model"
 import { PayloadAction } from "@reduxjs/toolkit"
 import type { WritableDraft } from "immer/dist/internal"
 import { Descendant } from "slate"
@@ -49,4 +50,8 @@ export const removeMemberSubmissionReducer = ( state: DraftWriteupState, action:
   if ( state.currentPhase==="writeup" && state.content[0].submissions ) {
     state.content[0].submissions = state.content[0].submissions.filter(member => member.bastionId!==action.payload)
   }
+}
+
+export const resetWriteupReducer = ( state: DraftWriteupState ) => {
+  state.writeupId = ""
 }

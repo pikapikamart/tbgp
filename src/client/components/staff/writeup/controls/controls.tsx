@@ -1,8 +1,5 @@
-import { WriteupVersionModal } from "@/components/collections/modals/writeup/version"
-import { BaseModal } from "@/components/shared/modal"
-import { useExpansion } from "@/lib/hooks"
-import { useModalContext } from "@/store/context/modal/modal"
 import { SrOnly } from "@/styled/shared/helpers"
+import { useWriteupControl } from "./control.hook"
 import { 
   ControlsContainer, 
   ControlsMenu, 
@@ -12,23 +9,12 @@ import { ControlsPullTab } from "./pull"
 
 
 const Controls = () =>{
-  const { isExpanded, handleExpansion } = useExpansion()
   const {
-    isExpanded: requestIsExpanded,
-    handleExpansion: handleRequestExpansion
-  } = useExpansion()
-  const modalContext = useModalContext()
-
-  const handleAddModal = () =>{
-    handleRequestExpansion()
-    modalContext.addModal(
-      <BaseModal
-        exit={ handleRequestExpansion }
-        styleReset={ true }>
-          <WriteupVersionModal />
-      </BaseModal>
-    )
-  }
+    isExpanded,
+    handleExpansion,
+    requestIsExpanded,
+    handleAddModal
+  } = useWriteupControl()
 
   return (
     <ControlsContainer>

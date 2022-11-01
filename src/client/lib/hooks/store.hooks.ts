@@ -73,5 +73,9 @@ export const useSelectWriteup = () => {
     }
   }, [ writeup.writeupId ])
 
+  useEffect(() =>{
+    query.refetch()
+  }, [ router.query["phase"] ])
+
   return writeup
 }
