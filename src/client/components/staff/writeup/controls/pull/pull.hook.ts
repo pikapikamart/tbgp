@@ -30,7 +30,6 @@ export const useSaveWriteup = () =>{
 
   useEffect(() =>{
     if ( writeup.isSlateValid && writeup.isHeadingValid ) {
-      console.log(1)
       if ( writeup.currentPhase==="writeup" ) {
         const content = writeup.content[0]
         saveWriteupPhaseMutation.mutate({

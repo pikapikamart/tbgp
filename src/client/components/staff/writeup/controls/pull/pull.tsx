@@ -1,30 +1,29 @@
-import { ColoredMediumButton } from "@/styled/collections/button"
-import { ControlsUpdates } from "../controls.styled"
 import { 
-  isWriteupEditable, 
+  isWriteupCollaborative,
   isWriteupMember } from "../../utils"
-import { useSaveWriteup } from "./pull.hook"
+import { CollaborativeControl } from "./collaborative"
+import { SoloControl } from "./solo"
+import { isEditorStaffState } from "@/store/slices/staff.slice"
+import { TaskControl } from "./task"
+import { 
+  useSelectStaff, 
+  useSelectWriteup } from "@/lib/hooks/store.hooks"
 
 
 const Pull = () =>{
-  const {
-    staff,
-    writeup,
-    handleWriteupSave
-  } = useSaveWriteup()
+  const staff = useSelectStaff()
+  const writeup = useSelectWriteup()
 
   if ( writeup.currentPhase==="writeup" && isWriteupMember(writeup, staff.bastionId) ) {
-    if ( isWriteupEditable(writeup) ) {
-      return (
-        <ControlsUpdates>
-          <ColoredMediumButton
-            colored="borderGray"
-            onClick={ handleWriteupSave }>Save</ColoredMediumButton>
-          <ColoredMediumButton
-            colored="blue">Submit</ColoredMediumButton>
-        </ControlsUpdates>
-      )
-    }
+    if ( isWriteupCollaborative(writeup) ) {
+      return <CollaborativeControl />
+    } 
+
+    return <SoloControl />
+  }
+
+  if ( isEditorStaffState(staff) ) {
+    return <TaskControl />
   }
 
   return (

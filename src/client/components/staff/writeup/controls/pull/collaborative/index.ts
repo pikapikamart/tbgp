@@ -1,0 +1,1 @@
+export { default as CollaborativeControl } from "./collaborative"

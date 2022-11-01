@@ -3,7 +3,7 @@ import {
   useAppDispatch,
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { setInvalidHeading, setWriteupHeading } from "@/store/slices/writeup.slice"
+import { setWriteupHeading } from "@/store/slices/writeup.slice"
 import { 
   useEffect, 
   useRef } from "react"
@@ -24,7 +24,7 @@ export const useWriteupHeader = () =>{
     addFieldRef,
     handleFormSubmit,
     isValidData,
-    isInvalidData
+    resetFormValidation,
   } = useFormValidation()
   const submitFormRef = useRef<HTMLButtonElement | null>(null)
 
@@ -43,14 +43,9 @@ export const useWriteupHeader = () =>{
       }, {} as HeaderFields)
       
       dispatch(setWriteupHeading(fields))
+      resetFormValidation()
     }
   }, [ isValidData ])
-
-  useEffect(() =>{
-    if ( isInvalidData ) {
-      dispatch(setInvalidHeading)
-    }
-  }, [ isInvalidData ])
 
   return {
     writeup,

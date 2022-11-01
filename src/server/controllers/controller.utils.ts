@@ -150,7 +150,7 @@ export const populateWriteupHelper = async( writeupId: string, staffId: mongoose
       isPublished: false
     },
     {
-      path: "request content.submissions",
+      path: "request",
       select: "members storyRequestId"
     }
   ))

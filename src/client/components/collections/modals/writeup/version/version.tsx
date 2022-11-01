@@ -28,6 +28,7 @@ import {
 const Version = () =>{
   const modalContext = useModalContext()
   const writeup = useSelectWriteup()
+  const currentContent = writeup.content[0]
 
   return (
     <VersionWrapper>
@@ -56,14 +57,14 @@ const Version = () =>{
           <TopicsListItemHeading>Stage:</TopicsListItemHeading>
           <TopicsListItemInformation>{ capitalizePhase(writeup.currentPhase) }</TopicsListItemInformation>
         </TopicsListItem>
-        { writeup.content[0].handledBy!==undefined && (
+        { currentContent.handledBy!==undefined && (
           <TopicsListItem>
             <TopicsListItemHeading>Handled by:</TopicsListItemHeading>
             <TopicsListItemInformation>
               <Link
-                href={ `/storybuilder/${ writeup.content[0].handledBy.username }` }
+                href={ `/storybuilder/${ currentContent.handledBy.username }` }
                 passHref>
-                <RequestMemberLink>{ writeup.content[0].handledBy.firstname } { writeup.content[0].handledBy.lastname }</RequestMemberLink>
+                <RequestMemberLink>{ currentContent.handledBy.firstname } { currentContent.handledBy.lastname }</RequestMemberLink>
               </Link>
             </TopicsListItemInformation>
         </TopicsListItem>
@@ -90,6 +91,22 @@ const Version = () =>{
             )) }
           </RequestMembers>
         </TopicsListItem>
+        { writeup.currentPhase==="writeup" && !!currentContent.submissions && currentContent.submissions.length>0 && (
+          <TopicsListItem column={ true }>
+            <TopicsListItemHeading>Members submitted:</TopicsListItemHeading>
+            <RequestMembers>
+              { currentContent.submissions.map(member => (
+                <li key={ member.bastionId }>
+                  <Link
+                    href={ `/storybuilder/${ member.username }` }
+                    passHref>
+                    <RequestMemberLink>{ member.firstname + " " + member.lastname }</RequestMemberLink>
+                  </Link>
+                </li>
+              )) }
+            </RequestMembers>
+          </TopicsListItem>
+        ) }
         <CreatedDate>{ convertDateToString(writeup.request.createdAt) }</CreatedDate>
       </VersionStoryRequestContainer>
     </VersionWrapper>

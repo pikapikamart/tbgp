@@ -158,7 +158,7 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
 
 export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema, { staff }: VerifiedStaffContext) =>{
   const writeup = await populateWriteupHelper(writeupBody.writeupId, staff._id)
-
+  
   await updateWriteupService(
     updateQuery(writeup.writeupId, "writeup"),
     baseSaveUpdateBody(writeupBody)

@@ -46,7 +46,7 @@ const Header = ({}: HeaderProps) =>{
           <HeaderCaption 
             id="caption"
             name="caption"
-            defaultValue={ writeup.content[0].title }
+            defaultValue={ writeup.content[0].caption }
             placeholder="Enter story caption"
             aria-required="true"
             ref={ addFieldRef } />
