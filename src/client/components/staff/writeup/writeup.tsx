@@ -2,7 +2,6 @@ import { ModalFocusBack } from "@/components/shared/modal/modal.styled"
 import { useModalContext } from "@/store/context/modal/modal"
 import { ControlsSection } from "./controls"
 import { WriteSection } from "./write"
-import { useSaveWriteup } from "./writeup.hook"
 import { 
   MainContentContainer, 
   MainWrapper } from "./writeup.styled"
@@ -10,7 +9,6 @@ import {
 
 const Writeup = () =>{
   const modalContext = useModalContext()
-  const { isSuccess } = useSaveWriteup()
   
   return (
     <MainWrapper>

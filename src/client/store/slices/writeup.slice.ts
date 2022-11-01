@@ -4,8 +4,6 @@ import { RootState } from "..";
 import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller";
 import { 
   resetSubmissionReducer,
-  setInvalidHeadingReducer,
-  setInvalidSlateReducer,
   setShouldSaveReducer,
   setWriteupHeadingReducer,
   setWriteupReducer, 
@@ -20,8 +18,6 @@ export type WriteupState = ModifyType<PopulatedWriteup, {
   shouldSave: boolean,
   isHeadingValid: boolean,
   isSlateValid: boolean,
-  isHeadingError: boolean,
-  isSlateError: boolean
 }
 
 // bad redux
@@ -50,8 +46,6 @@ const initialState: WriteupState = {
   shouldSave: false,
   isHeadingValid: false,
   isSlateValid: false,
-  isHeadingError: false,
-  isSlateError: false
 }
 
 export const writeupSlice = createSlice({
@@ -61,8 +55,6 @@ export const writeupSlice = createSlice({
     setWriteup: setWriteupReducer,
     setShouldSave: setShouldSaveReducer,
     setWriteupHeading: setWriteupHeadingReducer,
-    setInvalidHeading: setInvalidHeadingReducer,
-    setInvalidSlate: setInvalidSlateReducer,
     setWriteupSlate: setWriteupSlateReducer,
     resetSubmission: resetSubmissionReducer
   },
@@ -80,8 +72,6 @@ export const {
   setWriteup,
   setShouldSave,
   setWriteupHeading,
-  setInvalidHeading,
-  setInvalidSlate,
   setWriteupSlate,
   resetSubmission
 } = writeupSlice.actions;
