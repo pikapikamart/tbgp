@@ -3,6 +3,8 @@ import { HYDRATE } from "next-redux-wrapper";
 import { RootState } from "..";
 import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller";
 import { 
+  addMemberSubmissionReducer,
+  DraftWriteupState,
   resetSubmissionReducer,
   setShouldSaveReducer,
   setWriteupHeadingReducer,
@@ -10,6 +12,7 @@ import {
   setWriteupSlateReducer} from "../reducers/writeup.reducer";
 import { WriteupPhases } from "@/src/server/models/writeup.model";
 import { ModifyType } from "types/utils";
+import { WritableDraft } from "immer/dist/internal";
 
 
 export type WriteupState = ModifyType<PopulatedWriteup, {
@@ -56,7 +59,8 @@ export const writeupSlice = createSlice({
     setShouldSave: setShouldSaveReducer,
     setWriteupHeading: setWriteupHeadingReducer,
     setWriteupSlate: setWriteupSlateReducer,
-    resetSubmission: resetSubmissionReducer
+    resetSubmission: resetSubmissionReducer,
+    addMemberSubmission: addMemberSubmissionReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -73,7 +77,8 @@ export const {
   setShouldSave,
   setWriteupHeading,
   setWriteupSlate,
-  resetSubmission
+  resetSubmission,
+  addMemberSubmission
 } = writeupSlice.actions;
 export const selectWriteup = ( state: RootState ) => state.writeup;
 

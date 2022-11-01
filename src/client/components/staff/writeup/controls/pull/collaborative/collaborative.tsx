@@ -15,19 +15,22 @@ const Collaborative = () => {
   } = useSaveWriteup()
   const {
     handleSubmissionModal,
-    handleCancelSubmissionModal
+    handleCancelSubmissionModal,
+    cancelModal,
+    submitModal
   } = useCollaborative()
 
   if ( !isWriteupEditable(writeup) ) {
     return <></>
   }
-
+  
   if ( isWriteupPartSubmitted(writeup, staff.bastionId) ) {
     return (
       <ControlsUpdates>
         <ColoredMediumButton
           colored="red"
-          onClick={ handleCancelSubmissionModal }>Cancel
+          onClick={ handleCancelSubmissionModal }
+          aria-expanded={ cancelModal }>Cancel
         </ColoredMediumButton>
       </ControlsUpdates>
     )
@@ -41,7 +44,8 @@ const Collaborative = () => {
       </ColoredMediumButton>
       <ColoredMediumButton
         colored="blue"
-        onClick={ handleSubmissionModal }>Submit
+        onClick={ handleSubmissionModal }
+        aria-expanded={ submitModal }>Submit
       </ColoredMediumButton>
     </ControlsUpdates>
   )

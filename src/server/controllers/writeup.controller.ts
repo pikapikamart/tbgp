@@ -148,7 +148,7 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
 
   await writeupPopulatorService(writeup, {
     path: "content.handledBy content.submissions",
-    select: "-_id firstname lastname username"
+    select: "-_id firstname lastname username bastionId"
   })
   
   return trpcSuccess(true, (writeup as never) as PopulatedWriteup)
@@ -196,16 +196,16 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
       } ),})
     )
   }
-
+  
   await updateWriteupService(
     updateQuery(writeup.writeupId, "writeup"),
     {
       $push: {
-        "content.submissions": staff._id
+        "content.$.submissions": staff._id
       }
     }
   )
-
+  
   return trpcSuccess(true, "Successfully submitted")
 }
 

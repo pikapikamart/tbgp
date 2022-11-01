@@ -3,10 +3,11 @@ import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller"
 import { PayloadAction } from "@reduxjs/toolkit"
 import type { WritableDraft } from "immer/dist/internal"
 import { Descendant } from "slate"
+import { StaffState } from "../slices/staff.slice"
 import { WriteupState } from "../slices/writeup.slice"
 
 
-type DraftWriteupState = WritableDraft<WriteupState>
+export type DraftWriteupState = WritableDraft<WriteupState>
 
 export const setWriteupReducer = ( state: DraftWriteupState, action: PayloadAction<PopulatedWriteup> ) => {
   state = Object.assign(state, action.payload)
@@ -31,4 +32,15 @@ export const resetSubmissionReducer = ( state: DraftWriteupState ) =>{
   state.isHeadingValid = false
   state.isSlateValid = false
   state.shouldSave = false
+}
+
+export const addMemberSubmissionReducer = ( state: DraftWriteupState, action: PayloadAction<StaffState> ) => {
+  if ( state.currentPhase==="writeup" && state.content[0].submissions ) {
+    state.content[0].submissions.push({
+      username: action.payload.username,
+      firstname: action.payload.firstname,
+      lastname: action.payload.lastname,
+      bastionId: action.payload.bastionId
+    })
+  }
 }
