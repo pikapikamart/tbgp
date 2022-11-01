@@ -6,9 +6,11 @@ import {
 import { 
   addCreatedStoryRequestReducer,
   addStoryRequestApplicationReducer,
+  addWriteupTaskReducer,
   sendStaffVerificationReducer, 
   setStaffReducer, 
-  updateStaffReducer} from "../reducers/staff.reducer";
+  updateStaffReducer,
+  updateWriteupReducer} from "../reducers/staff.reducer";
 import { RootState } from "..";
 import { ModifyType } from "types/utils";
 import { 
@@ -76,7 +78,9 @@ export const staffSlice = createSlice({
     sendStaffVerification: sendStaffVerificationReducer,
     updateStaff: updateStaffReducer,
     addCreatedStoryRequest: addCreatedStoryRequestReducer,
-    addStoryRequestApplication: addStoryRequestApplicationReducer
+    addStoryRequestApplication: addStoryRequestApplicationReducer,
+    updateWriteup: updateWriteupReducer,
+    addWriteupTask: addWriteupTaskReducer,
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -93,15 +97,13 @@ export const {
   sendStaffVerification,
   updateStaff,
   addCreatedStoryRequest,
-  addStoryRequestApplication
+  addStoryRequestApplication,
+  updateWriteup,
+  addWriteupTask
 } = staffSlice.actions
 export const selectStaff = ( state: RootState ) => state.staff
 
 export type WritableStaffState = WritableDraft<InitialStaffState> | WritableDraft<FullStaffState> | WritableDraft<EditorStaffState>
-
-export const isVerifiedWritableStaffState = ( state: WritableStaffState ): state is WritableDraft<FullStaffState> => {
-  return ( state as WritableDraft<FullStaffState> ).position!==null
-}
 
 export const isFullStaffState = ( state: StaffState ): state is FullStaffState => {
   return ( state as FullStaffState ).storyRequests!==null

@@ -87,7 +87,7 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
     populatedStaff,
     {
       path: "writeups.solo writeups.collaborated",
-      select: "-_id writeupId category content.title content.caption content.phase content.isSubmitted content.isAccepted content.reSubmit content.requestResubmit handledBy",
+      select: "-_id writeupId category content.title content.caption content.phase content.isSubmitted content.isAccepted content.reSubmit content.requestResubmit",
       transform: ( doc: Writeup ) =>{
         
         return {

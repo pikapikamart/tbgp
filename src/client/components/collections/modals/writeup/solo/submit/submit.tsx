@@ -7,11 +7,11 @@ import { useSubmitWriteup } from "../../writeup.hook"
 import { RoundChoice } from "../../writeup.styled"
 
 
-type SoloProps = {
+type SubmitProps = {
   exit: () => void
 }
 
-const Solo = ({ exit }: SoloProps) =>{
+const Submit = ({ exit }: SubmitProps) =>{
   const {
     registerControl,
     registerTrapContainer,
@@ -23,8 +23,8 @@ const Solo = ({ exit }: SoloProps) =>{
     <ModalWrapper
       size="small"
       onKeyDown={ registerTrapContainer }>
-        <ModalHeading size="medium">Continue submitting?</ModalHeading>
-        <VerificationDescription>When submitted, the writeup will go to the next phase for editors to take task. This will remove your access to edit this file.</VerificationDescription>
+      <ModalHeading size="medium">Continue submitting?</ModalHeading>
+      <VerificationDescription>When submitted, the writeup will go to the next phase for editors to take task. This will remove your access to edit this file.</VerificationDescription>
       <ColumCenterCenter>
         <RoundChoice
           colored="blue"
@@ -42,4 +42,4 @@ const Solo = ({ exit }: SoloProps) =>{
 }
 
 
-export default Solo
+export default Submit

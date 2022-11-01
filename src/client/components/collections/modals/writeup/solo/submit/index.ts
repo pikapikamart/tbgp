@@ -1,1 +1,1 @@
-export { default as WriteupSoloSubmitModal } from "./solo"
+export { default as WriteupSoloSubmitModal } from "./submit"

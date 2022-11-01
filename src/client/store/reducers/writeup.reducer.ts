@@ -1,3 +1,4 @@
+import { readonlyPhases, versionIndex } from "@/components/collections/modals/writeup/version/utils"
 import { HeaderFields } from "@/components/staff/writeup/write/header/header.hook"
 import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller"
 import { WriteupContent, WriteupPhases } from "@/src/server/models/writeup.model"
@@ -52,6 +53,26 @@ export const removeMemberSubmissionReducer = ( state: DraftWriteupState, action:
   }
 }
 
+export const submitWriteupReducer = ( state: DraftWriteupState ) => {
+  state.currentPhase = readonlyPhases[versionIndex(state.currentPhase)+1]
+  state.content[0].isSubmitted = true
+}
+ 
 export const resetWriteupReducer = ( state: DraftWriteupState ) => {
   state.writeupId = ""
+}
+
+export const takeWriteupTaskReducer = ( state: DraftWriteupState, action: PayloadAction<StaffState> ) => {
+  const {
+    firstname,
+    lastname,
+    username,
+    bastionId
+  } = action.payload
+  state.content[0].handledBy = {
+    firstname,
+    lastname,
+    username,
+    bastionId
+  }
 }

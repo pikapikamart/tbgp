@@ -5,15 +5,16 @@ import {
   useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { trpc } from "@/lib/trpc"
 import { useModalContext } from "@/store/context/modal/modal"
-import { addMemberSubmission } from "@/store/slices/writeup.slice"
-import { useRouter } from "next/router"
+import { updateWriteup } from "@/store/slices/staff.slice"
+import { 
+  addMemberSubmission, 
+  submitWriteup } from "@/store/slices/writeup.slice"
 
 
 export const useSubmitWriteup = ( exit: () => void, isWriteupPhase: boolean = true ) => {
   const [ registerControl, registerTrapContainer ] = useTrapFocus()
   const modalContext = useModalContext()
   const writeup = useSelectWriteup()
-  const router = useRouter()
   const staff = useSelectStaff()
   const dispatch = useAppDispatch()
   const writeupPhaseMutation = trpc.useMutation(["writeup.submit-writeupPhase"], {
@@ -22,13 +23,17 @@ export const useSubmitWriteup = ( exit: () => void, isWriteupPhase: boolean = tr
       dispatch(addMemberSubmission(staff))
 
       if ( writeup.content[0].submissions?.length===writeup.request.members.length-1 ) {
-        router.reload()
+        dispatch(submitWriteup())
+        dispatch(updateWriteup({
+          writeupId: writeup.writeupId,
+          members: writeup.request.members
+        }))
       }
     }
   })
   const writeupMutation = trpc.useMutation(["writeup.submit"], {
     onSuccess: () => {
-      router.reload()
+      dispatch(submitWriteup())
     }
   })
 

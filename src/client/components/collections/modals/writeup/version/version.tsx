@@ -4,6 +4,7 @@ import {
   CreatedDate } from "@/components/shared/storyRequest/initial/initial.styled"
 import { convertDateToString } from "@/components/shared/storyRequest/initial/utils"
 import { useSelectWriteup } from "@/lib/hooks/store.hooks"
+import { WriteupPhases } from "@/src/server/models/writeup.model"
 import { useModalContext } from "@/store/context/modal/modal"
 import { SrOnly } from "@/styled/shared/helpers"
 import Link from "next/link"
@@ -55,7 +56,7 @@ const Version = () =>{
       <VersionStoryRequestContainer>
         <TopicsListItem>
           <TopicsListItemHeading>Stage:</TopicsListItemHeading>
-          <TopicsListItemInformation>{ capitalizePhase(currentContent.phase) }</TopicsListItemInformation>
+          <TopicsListItemInformation>{ capitalizePhase(currentContent.phase as WriteupPhases) }</TopicsListItemInformation>
         </TopicsListItem>
         { currentContent.handledBy!==undefined && (
           <TopicsListItem>

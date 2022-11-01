@@ -4,17 +4,17 @@ import { RootState } from "..";
 import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller";
 import { 
   addMemberSubmissionReducer,
-  DraftWriteupState,
   removeMemberSubmissionReducer,
   resetSubmissionReducer,
   resetWriteupReducer,
   setShouldSaveReducer,
   setWriteupHeadingReducer,
   setWriteupReducer, 
-  setWriteupSlateReducer} from "../reducers/writeup.reducer";
+  setWriteupSlateReducer,
+  submitWriteupReducer,
+  takeWriteupTaskReducer} from "../reducers/writeup.reducer";
 import { WriteupPhases } from "@/src/server/models/writeup.model";
 import { ModifyType } from "types/utils";
-import { WritableDraft } from "immer/dist/internal";
 
 
 export type WriteupState = ModifyType<PopulatedWriteup, {
@@ -64,7 +64,9 @@ export const writeupSlice = createSlice({
     resetSubmission: resetSubmissionReducer,
     addMemberSubmission: addMemberSubmissionReducer,
     removeMemberSubmission: removeMemberSubmissionReducer,
-    resetWriteup: resetWriteupReducer
+    submitWriteup: submitWriteupReducer,
+    resetWriteup: resetWriteupReducer,
+    takeWriteupTask: takeWriteupTaskReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -84,7 +86,9 @@ export const {
   resetSubmission,
   addMemberSubmission,
   removeMemberSubmission,
-  resetWriteup
+  submitWriteup,
+  resetWriteup,
+  takeWriteupTask
 } = writeupSlice.actions;
 export const selectWriteup = ( state: RootState ) => state.writeup;
 
