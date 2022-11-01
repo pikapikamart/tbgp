@@ -3,8 +3,8 @@ import {
   ModalHeading, 
   ModalWrapper } from "@/styled/shared/modal"
 import { VerificationDescription } from "../../../verifyStaff/verifyStaff.styled"
+import { useSubmitWriteup } from "../../writeup.hook"
 import { RoundChoice } from "../../writeup.styled"
-import { useSubmitCollaborative } from "./submit.hook"
 
 
 type SubmitProps = {
@@ -17,7 +17,7 @@ const Submit = ({ exit }: SubmitProps) =>{
     registerTrapContainer,
     removeModal,
     handleSubmitWriteup
-  } = useSubmitCollaborative(exit)
+  } = useSubmitWriteup(exit)
 
   return (
     <ModalWrapper

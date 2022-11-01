@@ -55,7 +55,7 @@ const Version = () =>{
       <VersionStoryRequestContainer>
         <TopicsListItem>
           <TopicsListItemHeading>Stage:</TopicsListItemHeading>
-          <TopicsListItemInformation>{ capitalizePhase(writeup.currentPhase) }</TopicsListItemInformation>
+          <TopicsListItemInformation>{ capitalizePhase(currentContent.phase) }</TopicsListItemInformation>
         </TopicsListItem>
         { currentContent.handledBy!==undefined && (
           <TopicsListItem>

@@ -9,14 +9,14 @@ import { addMemberSubmission } from "@/store/slices/writeup.slice"
 import { useRouter } from "next/router"
 
 
-export const useSubmitCollaborative = ( exit: () => void ) => {
+export const useSubmitWriteup = ( exit: () => void, isWriteupPhase: boolean = true ) => {
   const [ registerControl, registerTrapContainer ] = useTrapFocus()
   const modalContext = useModalContext()
   const writeup = useSelectWriteup()
   const router = useRouter()
   const staff = useSelectStaff()
   const dispatch = useAppDispatch()
-  const mutation = trpc.useMutation(["writeup.submit-writeupPhase"], {
+  const writeupPhaseMutation = trpc.useMutation(["writeup.submit-writeupPhase"], {
     onSuccess: () => {
       removeModal()
       dispatch(addMemberSubmission(staff))
@@ -26,6 +26,11 @@ export const useSubmitCollaborative = ( exit: () => void ) => {
       }
     }
   })
+  const writeupMutation = trpc.useMutation(["writeup.submit"], {
+    onSuccess: () => {
+      router.reload()
+    }
+  })
 
   const removeModal = () =>{
     modalContext.removeModal()
@@ -33,7 +38,11 @@ export const useSubmitCollaborative = ( exit: () => void ) => {
   }
 
   const handleSubmitWriteup = () =>{
-    mutation.mutate(writeup.writeupId)
+    if ( isWriteupPhase ) {
+      return writeupPhaseMutation.mutate(writeup.writeupId)
+    }
+
+    return writeupMutation.mutate(writeup.writeupId)
   }
 
   return {

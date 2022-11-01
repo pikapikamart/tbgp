@@ -1,0 +1,1 @@
+export { default as WriteupSoloSubmitModal } from "./solo"
