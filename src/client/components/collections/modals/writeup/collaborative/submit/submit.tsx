@@ -4,14 +4,14 @@ import {
   ModalWrapper } from "@/styled/shared/modal"
 import { VerificationDescription } from "../../../verifyStaff/verifyStaff.styled"
 import { RoundChoice } from "../../writeup.styled"
-import { useSubmitCollaborative } from "./collaborative.hook"
+import { useSubmitCollaborative } from "./submit.hook"
 
 
-type CollaborativeProps = {
+type SubmitProps = {
   exit: () => void
 }
 
-const Collaborative = ({ exit }: CollaborativeProps) =>{
+const Submit = ({ exit }: SubmitProps) =>{
   const {
     registerControl,
     registerTrapContainer,
@@ -42,4 +42,4 @@ const Collaborative = ({ exit }: CollaborativeProps) =>{
 }
 
 
-export default Collaborative
+export default Submit

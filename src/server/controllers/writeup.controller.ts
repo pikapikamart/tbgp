@@ -159,6 +159,10 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
 export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema, { staff }: VerifiedStaffContext) =>{
   const writeup = await populateWriteupHelper(writeupBody.writeupId, staff._id)
   
+  if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(member => member.equals(staff._id)) ) {
+    return trpcError("FORBIDDEN", "Already submitted your work")
+  }
+
   await updateWriteupService(
     updateQuery(writeup.writeupId, "writeup"),
     baseSaveUpdateBody(writeupBody)
@@ -170,6 +174,10 @@ export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema
 export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext ) =>{
   const writeup = await populateWriteupHelper(writeupId, staff._id)
   const currentContent = writeup.content[0]
+
+  if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(member => member.equals(staff._id)) ) {
+    return trpcError("FORBIDDEN", "Already submitted your work")
+  }
 
   if ( currentContent.reSubmit ) {
     const nextContent = writeup.content[1]
@@ -207,6 +215,25 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
   )
   
   return trpcSuccess(true, "Successfully submitted")
+}
+
+export const cancelWriteupSubmissionHandler = async( writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext ) =>{
+  const writeup = await populateWriteupHelper(writeupId, staff._id)
+
+  if ( !writeup.content[0].submissions?.find(member => member.equals(staff._id)) ) {
+    return trpcError("CONFLICT", "You can only cancel when you made a submission.")
+  }
+
+  await updateWriteupService(
+    updateQuery(writeup.writeupId, "writeup"),
+    {
+      $pull: {
+        "content.$.submissions": staff._id
+      }
+    }
+  )
+
+  return trpcSuccess(true, "Successfully cancelled submission")
 }
 
 // ----Verified Editors----

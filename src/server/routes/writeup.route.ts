@@ -1,4 +1,5 @@
 import { 
+  cancelWriteupSubmissionHandler,
   getMultipleWriteupHandler,
   getWriteupHandler,
   requestReSubmitHandler,
@@ -42,6 +43,10 @@ export const writeupRouter = createRouter()
   .mutation("submit-writeupPhase", {
     input: writeupIdSchema,
     resolve: ({ input, ctx }) => submitWriteupPhaseHandler(input, ctx)
+  })
+  .mutation("cancel-writeupSubmission", {
+    input: writeupIdSchema,
+    resolve: ({ input, ctx }) => cancelWriteupSubmissionHandler(input, ctx)
   })
   // authentication
   .middleware(({ ctx, next }) => isStaffEditor(ctx, next))

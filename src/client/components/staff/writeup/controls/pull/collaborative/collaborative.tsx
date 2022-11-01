@@ -1,3 +1,4 @@
+import { memo } from "react"
 import { ColoredMediumButton } from "@/styled/collections/button"
 import { 
   isWriteupEditable, 
@@ -19,7 +20,7 @@ const Collaborative = () => {
     cancelModal,
     submitModal
   } = useCollaborative()
-
+ 
   if ( !isWriteupEditable(writeup) ) {
     return <></>
   }
@@ -52,4 +53,4 @@ const Collaborative = () => {
 }
 
 
-export default Collaborative
+export default memo(Collaborative)

@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { useModalContext } from "@/store/context/modal/modal"
 import { BaseModal } from "@/components/shared/modal"
-import { WriteupSubmitCollaborativeModal } from "@/components/collections/modals/writeup/submit/collaborative"
+import { WriteupSubmitCollaborativeModal } from "@/components/collections/modals/writeup/collaborative/submit"
+import { WriteupCancelCollaborativeModal } from "@/components/collections/modals/writeup/collaborative/cancel"
 
 
 export const useCollaborative = () =>{
@@ -19,7 +20,12 @@ export const useCollaborative = () =>{
   }
 
   const handleCancelSubmissionModal = () =>{
-    
+    setCancelModal(true)
+    modalContext.addModal(
+      <BaseModal exit={ () => setCancelModal(false) }>
+        <WriteupCancelCollaborativeModal exit={ () => setCancelModal(false) } />
+      </BaseModal>
+    )
   }
 
   return {

@@ -44,3 +44,9 @@ export const addMemberSubmissionReducer = ( state: DraftWriteupState, action: Pa
     })
   }
 }
+
+export const removeMemberSubmissionReducer = ( state: DraftWriteupState, action: PayloadAction<string> ) => {
+  if ( state.currentPhase==="writeup" && state.content[0].submissions ) {
+    state.content[0].submissions = state.content[0].submissions.filter(member => member.bastionId!==action.payload)
+  }
+}
