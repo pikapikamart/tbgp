@@ -9,6 +9,7 @@ import {
   isWriteupMember, 
   isWriteupPhaseEditable,
   isWriteupReadonly} from "../../utils"
+import { WriteHeaderCover } from "./cover"
 import { useWriteupHeader } from "./header.hook"
 import { 
   HeaderCaption,
@@ -54,6 +55,7 @@ const Header = ({}: HeaderProps) =>{
             ref={ addFieldRef } />
               <InputError id="error-caption">Caption should not be empty</InputError>
         </div>
+        <WriteHeaderCover />
         <SrOnly
           as="button"
           hidden={ true }

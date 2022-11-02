@@ -2,7 +2,6 @@ import { ColoredMediumButton } from "@/styled/collections/button"
 import { 
   isWriteupEditable, 
   isWriteupHandler, 
-  isWriteupRequestingSubmission,
   isWriteupResubmit} from "../../../utils"
 import { ControlsUpdates } from "../../controls.styled"
 import { useTask } from "./task.hook"
