@@ -9,7 +9,9 @@ import {
   isEditorStaffState,
   WritableStaffState} from "../slices/staff.slice"
 import { WriteupState } from "../slices/writeup.slice"
-import { InitialStoryRequest, StaffProfile } from "../store.types"
+import { 
+  InitialStoryRequest, 
+  StaffProfile } from "../store.types"
 
 
 export const setStaffReducer = ( state: WritableStaffState, action: PayloadAction<StaffState> ) => {
@@ -55,6 +57,13 @@ export const updateWriteupReducer = ( state: WritableStaffState, action: Payload
       const index = state.writeups.solo.findIndex(writeup => writeup.writeupId===action.payload.writeupId)
       state.writeups.solo[index].content.isSubmitted = true
     }
+  }
+}
+
+export const updateTaskReducer = ( state: WritableStaffState, action: PayloadAction<string> ) => {
+  if ( isEditorStaffState(state) ) {
+    const index = state.writeups.task.findIndex(writeup => writeup.writeupId===action.payload.writeupId)
+    state.writeups.task[index].content.isSubmitted = true
   }
 }
 

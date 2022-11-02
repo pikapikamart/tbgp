@@ -28,3 +28,7 @@ export const isWriteupHandler = ( writeup: WriteupState, bastionId: string ) =>{
 export const isWriteupReadonly = ( writeup: WriteupState, bastionId: string ) => {
   return !((isWriteupPhaseEditable(writeup, bastionId) || isWriteupHandler(writeup, bastionId)) && isWriteupEditable(writeup))
 }
+
+export const isWriteupResubmit = ( writeup: WriteupState ) => {
+  return writeup.content[0].requestedResubmit
+}

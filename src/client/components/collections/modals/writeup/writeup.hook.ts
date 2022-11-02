@@ -5,7 +5,7 @@ import {
   useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { trpc } from "@/lib/trpc"
 import { useModalContext } from "@/store/context/modal/modal"
-import { updateWriteup } from "@/store/slices/staff.slice"
+import { updateTask, updateWriteup } from "@/store/slices/staff.slice"
 import { 
   addMemberSubmission, 
   submitWriteup } from "@/store/slices/writeup.slice"
@@ -34,6 +34,7 @@ export const useSubmitWriteup = ( exit: () => void, isWriteupPhase: boolean = tr
   const writeupMutation = trpc.useMutation(["writeup.submit"], {
     onSuccess: () => {
       dispatch(submitWriteup())
+      dispatch(updateTask(writeup.writeupId))
     }
   })
 

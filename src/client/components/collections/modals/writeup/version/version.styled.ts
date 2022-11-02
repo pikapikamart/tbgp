@@ -10,9 +10,14 @@ export const VersionWrapper = styled.div`
   max-width: ${ rem(560) };
   min-height: 100vh;
   margin-left: auto;
-  padding: ${ rem(32) } 0 0;
   position: relative;
   width: 100vw;
+`
+
+export const VersionContentContainer = styled.div`
+  overflow: hidden;
+  padding: ${ rem(32) } 0 0;
+  position: relative;
 `
 
 export const VersionClose = styled.button`
