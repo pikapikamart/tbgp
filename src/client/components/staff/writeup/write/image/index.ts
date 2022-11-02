@@ -1,1 +1,1 @@
-export { default as AddImageModal } from "./"
+export { default as AddImageModal } from "./image"

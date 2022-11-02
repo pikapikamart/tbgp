@@ -3,6 +3,7 @@ import { useExpansion } from "@/lib/hooks"
 import { useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { useModalContext } from "@/store/context/modal/modal"
 import { SrOnly } from "@/styled/shared/helpers"
+import { exit } from "process"
 import { useState } from "react"
 import { AddImageModal } from "../../image"
 import { 
@@ -19,11 +20,13 @@ const Cover = () => {
   })
   const modalContext = useModalContext()
 
-  const extraImageData = ( image: string, caption: string ) => {
+  const extractImageData = ( image: string, caption: string ) => {
     setCover({
       image,
       caption
     })
+    modalContext.removeModal()
+    handleExpansion()
   }
 
   const handleAddModal = () =>{
@@ -31,8 +34,11 @@ const Cover = () => {
     modalContext.addModal(
       <BaseModal exit={ handleExpansion }>
         <AddImageModal
-          extractData={ extraImageData }
-          exit={ handleExpansion } />
+          extractData={ extractImageData }
+          exit={ () => {
+            modalContext.removeModal()
+            handleExpansion()
+          } } />
       </BaseModal>
     )
   }
