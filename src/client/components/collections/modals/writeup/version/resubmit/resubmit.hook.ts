@@ -1,5 +1,12 @@
 import { useExpansion } from "@/lib/hooks"
+import { 
+  useAppDispatch, 
+  useSelectWriteup } from "@/lib/hooks/store.hooks"
+import { trpc } from "@/lib/trpc"
 import { WriteupNote } from "@/src/server/models/writeup.model"
+import { useModalContext } from "@/store/context/modal/modal"
+import { resubmitTask } from "@/store/slices/staff.slice"
+import { resubmitWriteup } from "@/store/slices/writeup.slice"
 import { 
   useCallback, 
   useState,
@@ -9,12 +16,22 @@ import {
 export const useResubmit = () => {
   const { isExpanded, handleExpansion } = useExpansion()
   const [ isError, setIsError ] = useState(false)
+  const modalContext = useModalContext()
+  const writeup = useSelectWriteup()
+  const dispatch = useAppDispatch()
   const [ notes, setNotes ] = useState<WriteupNote[]>([
     {
       title: "",
       message: ""
     }
   ])
+  const mutation = trpc.useMutation(["writeup.re-submit"], {
+    onSuccess: () =>{
+      modalContext.removeModal()
+      dispatch(resubmitTask(writeup.writeupId))
+      dispatch(resubmitWriteup())
+    }
+  })
 
   const handleAddExtraNote = useCallback(() =>{
     setNotes(prev => {
@@ -36,9 +53,14 @@ export const useResubmit = () => {
         return
       }
     })
-    if ( !hasError ) {
+    if ( hasError ) {
       return
     }
+
+    mutation.mutate({
+      writeupId: writeup.writeupId,
+      notes
+    })
   }
 
   useEffect(() =>{

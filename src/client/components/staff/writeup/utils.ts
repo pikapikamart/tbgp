@@ -21,14 +21,18 @@ export const isWriteupEditable = ( writeup: WriteupState ) =>{
   return !writeup.content[0].isSubmitted
 }
 
+export const isWriteupRequestingSubmission = ( writeup: WriteupState ) =>{
+  return writeup.content[0].requestedResubmit
+}
+
 export const isWriteupHandler = ( writeup: WriteupState, bastionId: string ) =>{
   return writeup.content[0].handledBy?.bastionId===bastionId
 }
 
 export const isWriteupReadonly = ( writeup: WriteupState, bastionId: string ) => {
-  return !((isWriteupPhaseEditable(writeup, bastionId) || isWriteupHandler(writeup, bastionId)) && isWriteupEditable(writeup))
+  return !((isWriteupPhaseEditable(writeup, bastionId) || isWriteupHandler(writeup, bastionId)) && isWriteupEditable(writeup) && !isWriteupRequestingSubmission(writeup))
 }
 
 export const isWriteupResubmit = ( writeup: WriteupState ) => {
-  return writeup.content[0].requestedResubmit
+  return writeup.content[0].requestedResubmit || writeup.content[0].reSubmit
 }

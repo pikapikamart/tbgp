@@ -76,3 +76,7 @@ export const takeWriteupTaskReducer = ( state: DraftWriteupState, action: Payloa
     bastionId
   }
 }
+
+export const resubmitWriteupReducer = ( state: DraftWriteupState ) => {
+  state.content[0].requestedResubmit = true
+}

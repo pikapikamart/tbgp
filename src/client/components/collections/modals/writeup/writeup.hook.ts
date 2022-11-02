@@ -5,7 +5,9 @@ import {
   useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { trpc } from "@/lib/trpc"
 import { useModalContext } from "@/store/context/modal/modal"
-import { updateTask, updateWriteup } from "@/store/slices/staff.slice"
+import { 
+  updateTask, 
+  updateWriteup } from "@/store/slices/staff.slice"
 import { 
   addMemberSubmission, 
   submitWriteup } from "@/store/slices/writeup.slice"

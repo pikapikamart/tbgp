@@ -25,7 +25,7 @@ const Initial = ({ writeup }: InitialProps) =>{
     }
 
     const content = writeup.content
-
+    
     if ( content.requestedResubmit ) {
       return <Category colored="red">re-submit requested</Category>
     }

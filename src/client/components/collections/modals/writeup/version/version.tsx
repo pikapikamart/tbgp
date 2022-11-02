@@ -12,6 +12,7 @@ import Link from "next/link"
 import { 
   RequestMemberLink, 
   RequestMembers } from "../../storyRequest/storyRequest.styled"
+import { WriteupVersionNotes } from "./notes"
 import { ResubmitWriteup } from "./resubmit"
 import { 
   capitalizePhase,
@@ -34,7 +35,7 @@ const Version = () =>{
   const writeup = useSelectWriteup()
   const staff = useSelectStaff()
   const currentContent = writeup.content[0]
-
+  console.log(currentContent.notes)
   return (
     <VersionWrapper>
       <VersionClose onClick={ modalContext.removeModal }>
@@ -115,6 +116,7 @@ const Version = () =>{
           ) }
           <CreatedDate>{ convertDateToString(writeup.request.createdAt) }</CreatedDate>
         </VersionStoryRequestContainer>
+        { currentContent.notes.length>0 && <WriteupVersionNotes /> }
         { !isWriteupReadonly(writeup, staff.bastionId) && !isWriteupResubmit(writeup) && (
           <ResubmitWriteup />
         ) }

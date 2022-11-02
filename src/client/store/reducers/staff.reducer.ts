@@ -62,7 +62,7 @@ export const updateWriteupReducer = ( state: WritableStaffState, action: Payload
 
 export const updateTaskReducer = ( state: WritableStaffState, action: PayloadAction<string> ) => {
   if ( isEditorStaffState(state) ) {
-    const index = state.writeups.task.findIndex(writeup => writeup.writeupId===action.payload.writeupId)
+    const index = state.writeups.task.findIndex(writeup => writeup.writeupId===action.payload)
     state.writeups.task[index].content.isSubmitted = true
   }
 }
@@ -84,5 +84,12 @@ export const addWriteupTaskReducer = ( state: WritableStaffState, action: Payloa
         requestedResubmit: false
       }
     })
+  }
+}
+
+export const resubmitTaskReducer = ( state: WritableStaffState, action: PayloadAction<string> ) => {
+  if ( isEditorStaffState(state) ) {
+    const index = state.writeups.task.findIndex(writeup => writeup.writeupId===action.payload)
+    state.writeups.task[index].content.requestedResubmit = true
   }
 }

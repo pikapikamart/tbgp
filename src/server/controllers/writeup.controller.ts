@@ -355,6 +355,8 @@ export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam
     return trpcError("CONFLICT", "Re-submit is not allowed when you submitted your task. Take responsibility")
   }
 
+  const previousNotes = writeup.content[phaseIndex-1]?.notes??[]
+
   await updateWriteupService(
     {
       writeupId: reSubmitBody.writeupId,
@@ -364,7 +366,7 @@ export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam
       {
         "content.$.isSubmitted": false,
         "content.$.reSubmit": true,
-        "content.$.notes": reSubmitBody.notes,
+        "content.$.notes": previousNotes.concat(reSubmitBody.notes),
         currentPhase: WRITEUP_PHASES[phaseIndex-1]
       },
       isContentWriteupPhase(previousContent)? { "content.$.submissions": [] } : undefined

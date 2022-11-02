@@ -7,6 +7,7 @@ import {
   addCreatedStoryRequestReducer,
   addStoryRequestApplicationReducer,
   addWriteupTaskReducer,
+  resubmitTaskReducer,
   sendStaffVerificationReducer, 
   setStaffReducer, 
   updateStaffReducer,
@@ -82,7 +83,8 @@ export const staffSlice = createSlice({
     addStoryRequestApplication: addStoryRequestApplicationReducer,
     updateWriteup: updateWriteupReducer,
     addWriteupTask: addWriteupTaskReducer,
-    updateTask: updateTaskReducer
+    updateTask: updateTaskReducer,
+    resubmitTask: resubmitTaskReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -102,7 +104,8 @@ export const {
   addStoryRequestApplication,
   updateWriteup,
   addWriteupTask,
-  updateTask
+  updateTask,
+  resubmitTask
 } = staffSlice.actions
 export const selectStaff = ( state: RootState ) => state.staff
 

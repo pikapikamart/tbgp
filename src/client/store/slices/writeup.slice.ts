@@ -7,6 +7,7 @@ import {
   removeMemberSubmissionReducer,
   resetSubmissionReducer,
   resetWriteupReducer,
+  resubmitWriteupReducer,
   setShouldSaveReducer,
   setWriteupHeadingReducer,
   setWriteupReducer, 
@@ -66,7 +67,8 @@ export const writeupSlice = createSlice({
     removeMemberSubmission: removeMemberSubmissionReducer,
     submitWriteup: submitWriteupReducer,
     resetWriteup: resetWriteupReducer,
-    takeWriteupTask: takeWriteupTaskReducer
+    takeWriteupTask: takeWriteupTaskReducer,
+    resubmitWriteup: resubmitWriteupReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -88,7 +90,8 @@ export const {
   removeMemberSubmission,
   submitWriteup,
   resetWriteup,
-  takeWriteupTask
+  takeWriteupTask,
+  resubmitWriteup
 } = writeupSlice.actions;
 export const selectWriteup = ( state: RootState ) => state.writeup;
 

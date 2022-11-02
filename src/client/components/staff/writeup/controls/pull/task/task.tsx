@@ -1,7 +1,9 @@
 import { ColoredMediumButton } from "@/styled/collections/button"
 import { 
   isWriteupEditable, 
-  isWriteupHandler } from "../../../utils"
+  isWriteupHandler, 
+  isWriteupRequestingSubmission,
+  isWriteupResubmit} from "../../../utils"
 import { ControlsUpdates } from "../../controls.styled"
 import { useTask } from "./task.hook"
 
@@ -14,7 +16,7 @@ const Task = () =>{
     handleTakeTaskModal
   } = useTask()
 
-  if ( !isWriteupEditable(writeup) ) {
+  if ( !isWriteupEditable(writeup) || isWriteupResubmit(writeup) ) {
     return <></>
   }
 
