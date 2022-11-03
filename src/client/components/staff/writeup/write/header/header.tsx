@@ -10,6 +10,7 @@ import {
   isWriteupPhaseEditable,
   isWriteupReadonly} from "../../utils"
 import { WriteHeaderCover } from "./cover"
+import { CoverContainer, CoverImage } from "./cover/cover.styled"
 import { useWriteupHeader } from "./header.hook"
 import { 
   HeaderCaption,
@@ -70,6 +71,13 @@ const Header = ({}: HeaderProps) =>{
     <HeaderWrapper>
       <HeaderTitle as="h1">{ writeup.content[0].title }</HeaderTitle>
       <HeaderCaption as="p">{ writeup.content[0].caption }</HeaderCaption>
+      { writeup.currentPhase==="graphics" && writeup.banner.url!=="" && (
+        <CoverContainer>
+          <CoverImage
+            src={ writeup.banner.url }
+            al={ writeup.banner.caption } />
+        </CoverContainer>
+      ) }
     </HeaderWrapper>
   )
 }

@@ -13,7 +13,7 @@ import {
   submitWriteup } from "@/store/slices/writeup.slice"
 
 
-export const useSubmitWriteup = ( exit: () => void, isWriteupPhase: boolean = true ) => {
+export const useSubmitWriteup = ( exit: () => void ) => {
   const [ registerControl, registerTrapContainer ] = useTrapFocus()
   const modalContext = useModalContext()
   const writeup = useSelectWriteup()
@@ -37,6 +37,7 @@ export const useSubmitWriteup = ( exit: () => void, isWriteupPhase: boolean = tr
     onSuccess: () => {
       dispatch(submitWriteup())
       dispatch(updateTask(writeup.writeupId))
+      removeModal()
     }
   })
 
@@ -46,7 +47,7 @@ export const useSubmitWriteup = ( exit: () => void, isWriteupPhase: boolean = tr
   }
 
   const handleSubmitWriteup = () =>{
-    if ( isWriteupPhase ) {
+    if ( writeup.currentPhase==="writeup" ) {
       return writeupPhaseMutation.mutate(writeup.writeupId)
     }
 

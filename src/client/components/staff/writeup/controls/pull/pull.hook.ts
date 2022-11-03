@@ -30,14 +30,19 @@ export const useSaveWriteup = () =>{
 
   useEffect(() =>{
     if ( writeup.isSlateValid && writeup.isHeadingValid ) {
+      const content = writeup.content[0]
+      const writeupBody = {
+        title: content.title,
+        caption: content.caption,
+        writeupId: writeup.writeupId,
+        content: content.data
+      }
+
       if ( writeup.currentPhase==="writeup" ) {
-        const content = writeup.content[0]
-        saveWriteupPhaseMutation.mutate({
-          title: content.title,
-          caption: content.caption,
-          writeupId: writeup.writeupId,
-          content: content.data
-        })
+        saveWriteupPhaseMutation.mutate(writeupBody)
+      } else {
+        saveWriteupMutation.mutate(Object.assign(writeupBody,
+          writeup.currentPhase==="graphics"? { banner: writeup.banner }: undefined))
       }
     }
   }, [ writeup.isSlateValid, writeup.isHeadingValid ])

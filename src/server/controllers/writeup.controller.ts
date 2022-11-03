@@ -112,7 +112,10 @@ export type PopulatedWriteup = {
     createdAt: string
   },
   writeupId: string,
-  banner: string,
+  banner: {
+    url: string,
+    caption: string
+  },
   currentPhase: WriteupPhases,
   content: [{
     phase: string,

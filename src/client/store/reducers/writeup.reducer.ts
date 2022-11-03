@@ -1,7 +1,8 @@
-import { readonlyPhases, versionIndex } from "@/components/collections/modals/writeup/version/utils"
+import { 
+  readonlyPhases, 
+  versionIndex } from "@/components/collections/modals/writeup/version/utils"
 import { HeaderFields } from "@/components/staff/writeup/write/header/header.hook"
 import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller"
-import { WriteupContent, WriteupPhases } from "@/src/server/models/writeup.model"
 import { PayloadAction } from "@reduxjs/toolkit"
 import type { WritableDraft } from "immer/dist/internal"
 import { Descendant } from "slate"
@@ -79,4 +80,13 @@ export const takeWriteupTaskReducer = ( state: DraftWriteupState, action: Payloa
 
 export const resubmitWriteupReducer = ( state: DraftWriteupState ) => {
   state.content[0].requestedResubmit = true
+}
+
+export type WriteupBanner = {
+  url: string,
+  caption: string
+}
+
+export const addWriteupBannerReducer = ( state: DraftWriteupState, action: PayloadAction<WriteupBanner> ) => {
+  state.banner = action.payload
 }

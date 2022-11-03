@@ -300,7 +300,10 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
   const newWriteup = await createWriteup({
     request: storyRequest._id,
     writeupId: customNanoid(14),
-    banner: "",
+    banner: {
+      url: "",
+      caption: ""
+    },
     category: storyRequest.category,
     currentPhase: "writeup",
     isPublished: false,

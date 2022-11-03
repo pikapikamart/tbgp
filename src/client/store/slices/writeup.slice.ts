@@ -4,6 +4,7 @@ import { RootState } from "..";
 import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller";
 import { 
   addMemberSubmissionReducer,
+  addWriteupBannerReducer,
   removeMemberSubmissionReducer,
   resetSubmissionReducer,
   resetWriteupReducer,
@@ -36,7 +37,10 @@ const initialState: WriteupState = {
     createdAt: ""
   },
   writeupId: "",
-  banner: "",
+  banner: {
+    url: "",
+    caption: ""
+  },
   currentPhase: "",
   content: [{
     phase: "",
@@ -68,7 +72,8 @@ export const writeupSlice = createSlice({
     submitWriteup: submitWriteupReducer,
     resetWriteup: resetWriteupReducer,
     takeWriteupTask: takeWriteupTaskReducer,
-    resubmitWriteup: resubmitWriteupReducer
+    resubmitWriteup: resubmitWriteupReducer,
+    addWriteupBanner: addWriteupBannerReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -91,7 +96,8 @@ export const {
   submitWriteup,
   resetWriteup,
   takeWriteupTask,
-  resubmitWriteup
+  resubmitWriteup,
+  addWriteupBanner
 } = writeupSlice.actions;
 export const selectWriteup = ( state: RootState ) => state.writeup;
 

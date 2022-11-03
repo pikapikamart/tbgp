@@ -7,21 +7,28 @@ import {
 
 export const ToolbarWrapper = styled.ul`
   font-family: 'Source Serif Pro', serif;
+  z-index: 50;
+
+  ${ ({ theme: { colors } }) => `
+    box-shadow: 0 8px 12px 16px rgba(255, 255, 255, .8);
+    background-color: ${ colors.white1 };
+    border-top: 1px solid ${ colors.grey4 };
+    border-bottom: 1px solid ${ colors.grey4 };
+  ` }
+
+  ${ breakpoint("tablet", `
+      display: flex;
+      margin-bottom: ${ rem(32) };
+      padding: ${ rem(8) };
+      position: sticky;
+      top: 0;
+      width: 100%;
+    `) }
 
   &[inert="true"] {
     opacity: .7;
+    position: static;
   }
-
-  ${ ({ theme: { colors } }) => `
-    ${ breakpoint("tablet", `
-      display: flex;
-      border-top: 1px solid ${ colors.grey4 };
-      border-bottom: 1px solid ${ colors.grey4 };
-      margin-bottom: ${ rem(32) };
-      padding: ${ rem(8) };
-      width: 100%;
-    `) }
-  ` }
 `
 
 export const ToolbarItem = styled.li`

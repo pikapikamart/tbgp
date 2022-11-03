@@ -34,7 +34,7 @@ const Image = () =>{
 
   const handleAddImage = ( event: React.MouseEvent<HTMLButtonElement, MouseEvent> ) =>{
     
-    if ( writeup.currentPhase!=="graphics" && !isWriteupHandler(writeup, staff.bastionId) ) {
+    if ( writeup.currentPhase!=="graphics" && isWriteupHandler(writeup, staff.bastionId) ) {
       return
     }
 
@@ -55,7 +55,7 @@ const Image = () =>{
       <MarkButton
         onClick={ handleAddImage }
         aria-expanded={ isExpanded }
-        aria-disabled={ writeup.currentPhase!=="graphics" && !isWriteupHandler(writeup, staff.bastionId) }>
+        aria-disabled={ writeup.currentPhase!=="graphics" && isWriteupHandler(writeup, staff.bastionId) }>
         <ImageIcon />
         <SrOnly>add an image</SrOnly>
       </MarkButton>

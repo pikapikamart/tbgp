@@ -1,3 +1,5 @@
+import { readonlyPhases, versionIndex } from "@/components/collections/modals/writeup/version/utils"
+import { WriteupPhases } from "@/src/server/models/writeup.model"
 import { UpdateStaffSchema } from "@/src/server/schemas/staff.schema"
 import { PayloadAction } from "@reduxjs/toolkit"
 import { AppThunk } from ".."
@@ -64,11 +66,24 @@ export const updateTaskReducer = ( state: WritableStaffState, action: PayloadAct
   if ( isEditorStaffState(state) ) {
     const index = state.writeups.task.findIndex(writeup => writeup.writeupId===action.payload)
     state.writeups.task[index].content.isSubmitted = true
+    state.writeups.task[index].content.requestedResubmit = false
   }
 }
 
 export const addWriteupTaskReducer = ( state: WritableStaffState, action: PayloadAction<WriteupState> ) => {
   if ( isEditorStaffState(state) ) {
+
+    // check if task is already present
+    const foundTaskIndex = state.writeups.task.findIndex(task => task.writeupId===action.payload.writeupId)
+    if ( foundTaskIndex!==-1 ) {
+      const currentTask = state.writeups.task[foundTaskIndex]
+      const phaseIndex = versionIndex(currentTask.content.phase as WriteupPhases)
+      currentTask.content.phase = readonlyPhases[phaseIndex+1]
+      currentTask.content.isSubmitted = false
+
+      return
+    }
+
     const { payload } = action
     const content = payload.content[0]
     state.writeups.task.push({

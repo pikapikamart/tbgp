@@ -5,6 +5,10 @@ import {
   breakpoint } from "@/styled/functions"
 
 
+export const SlateWrapper = styled.div`
+  min-height: 80vh;
+`
+
 export const HeadingTwo = styled.h2`
   font-family: "Friz Quadrata Std Bold Italic";
   font-size: ${ fluid(21, 2.5, 32) };

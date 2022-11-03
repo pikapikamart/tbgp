@@ -18,7 +18,7 @@ export const BaseModalWrapper = styled(RowStartCenter)<BaseModalWrapperProps>`
   outline: none;
   overflow-y: scroll;
   position: fixed;
-  z-index: 100;
+  z-index: 10000;
 
   ${ ({ styleReset }) => {
     switch(styleReset) {

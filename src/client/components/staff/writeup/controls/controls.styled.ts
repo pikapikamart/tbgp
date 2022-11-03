@@ -13,16 +13,14 @@ export const ControlsContainer = styled.div`
     align-items: center;
     display: flex;
     flex-direction: column-reverse;
-    inset: 0 auto auto 50%;
-    position: absolute;
-    transform: translateX(-50%);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
   `) }
 `
 
 export const ControlsSelections = styled(RowCenterCenter)`
   border-radius: 0 0 ${ rem(8) } ${ rem(8) };
-  border: 1px solid ${ ({ theme }) => theme.colors.grey4 };
-  border-top: none;
   max-height: 0;
   height: ${ rem(60) };
   overflow: hidden;
@@ -31,7 +29,13 @@ export const ControlsSelections = styled(RowCenterCenter)`
     max-height .3s ease,
     padding-bottom .3s ease, 
     visibility .3s ease;
-  visibility: hidden
+  visibility: hidden;
+
+  ${ ({ theme: { colors } }) => `
+    background-color: ${ colors.white1 };
+    border: 1px solid ${ colors.grey4 };
+    border-top: none;
+  ` }
 `
 
 export const ControlsUpdates = styled.div`

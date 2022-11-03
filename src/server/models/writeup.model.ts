@@ -34,7 +34,10 @@ export type WriteupContent<T extends WriteupPhases> = T extends "writeup"?
 export type Writeup = {
   request: StoryRequestDocument["_id"],
   writeupId: string,
-  banner: any,
+  banner: {
+    url: string,
+    caption: string
+  },
   category: string,
   currentPhase: WriteupPhases,
   isPublished: boolean,
@@ -63,7 +66,10 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
     required: true,
     unique: true
   },
-  banner: String,
+  banner: {
+    url: String,
+    caption: String
+  },
   category: {
     type: String,
     required: true

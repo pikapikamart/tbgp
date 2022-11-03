@@ -1,3 +1,4 @@
+import { WriteupSoloSubmitModal } from "@/components/collections/modals/writeup/solo/submit"
 import { TakeTaskModal } from "@/components/collections/modals/writeup/task"
 import { BaseModal } from "@/components/shared/modal"
 import { 
@@ -12,6 +13,7 @@ export const useTask = () =>{
   const writeup = useSelectWriteup()
   const modalContext = useModalContext()
   const [ takeTaskModal, setTakeTaskModal ] = useState(false)
+  const [ submitModal, setSubmitModal ] = useState(false)
 
   const handleTakeTaskModal = () =>{
     setTakeTaskModal(true)
@@ -22,10 +24,21 @@ export const useTask = () =>{
     )
   }
 
+  const handleSubmissionModal = () => {
+    setSubmitModal(true)
+    modalContext.addModal(
+      <BaseModal exit={ () => setSubmitModal(false) }>
+        <WriteupSoloSubmitModal exit={ ()=> setSubmitModal(false) }/>
+      </BaseModal>
+    )
+  }
+
   return {
     staff,
     writeup,
     takeTaskModal,
-    handleTakeTaskModal
+    handleTakeTaskModal,
+    submitModal,
+    handleSubmissionModal
   }
 }

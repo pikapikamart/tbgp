@@ -18,7 +18,10 @@ export const saveWriteupSchema = z
     caption: z
       .string({ required_error: "Caption is required" })
       .min(1, "Caption should not be empty"),
-    banner: z.string().optional(),
+    banner: z.object({
+      url: z.string(),
+      caption: z.string().optional()
+    }).optional(),
     content: z.array(z.any()),
     writeupId: writeupIdSchema,
   })

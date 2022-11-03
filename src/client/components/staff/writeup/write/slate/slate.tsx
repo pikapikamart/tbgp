@@ -11,6 +11,7 @@ import { slateKeyDown } from "./utils"
 import { useSlate } from "./slate.hook"
 import { useSelectStaff } from "@/lib/hooks/store.hooks"
 import { isWriteupReadonly } from "../../utils"
+import { SlateWrapper } from "./slate.styled"
 
 
 const Slate = () => {
@@ -29,18 +30,20 @@ const Slate = () => {
   }, [])
   
   return (
-    <SlateComp 
-      editor={ editor }
-      value={ initialValue }>
-        <SlateToolbar />
-        <Editable
-          readOnly={ isWriteupReadonly(writeup, staff.bastionId) }
-          placeholder="Enter your story..."
-          renderElement={ renderElement }
-          renderLeaf={ renderLeaf }
-          onKeyDown={ event => slateKeyDown(event, editor) } 
-          />
-    </SlateComp>
+    <SlateWrapper>  
+      <SlateComp 
+        editor={ editor }
+        value={ initialValue }>
+          <SlateToolbar />
+          <Editable
+            readOnly={ isWriteupReadonly(writeup, staff.bastionId) }
+            placeholder="Enter your story..."
+            renderElement={ renderElement }
+            renderLeaf={ renderLeaf }
+            onKeyDown={ event => slateKeyDown(event, editor) } 
+            />
+      </SlateComp>
+    </SlateWrapper>
   )
 }
 

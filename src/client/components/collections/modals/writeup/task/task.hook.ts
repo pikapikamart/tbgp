@@ -19,6 +19,7 @@ export const useTakeTask = ( exit: () => void ) =>{
     onSuccess: () =>{
       dispatch(takeWriteupTask(staff))
       dispatch(addWriteupTask(writeup))
+      removeModal()
     }
   })
 
