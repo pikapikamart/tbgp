@@ -6,6 +6,14 @@ export const CoverContainer = styled.div`
   position: relative;
 `
 
+export const CoverImageContainer = styled.div`
+  margin-bottom: ${ rem(16) };
+`
+
+export const CoverImage = styled.img`
+  margin: 0 auto;
+`
+
 type CoverButtonProps = {
   isDone?: true
 }

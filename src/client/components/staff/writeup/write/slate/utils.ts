@@ -3,7 +3,9 @@ import {
   CustomElementType,
   Editor,
   Element, 
+  ImageElement, 
   LinkElement, 
+  Node, 
   Range,
   Transforms} from "slate";
 import isUrl from "is-url"
@@ -99,6 +101,38 @@ export const insertLink = ( editor: Editor, url: string ) => {
   }
 }
 
+export const createImageNode = (url: string, caption: string): ImageElement => ({
+  type: "image",
+  url,
+  caption,
+  children: [{ text: "" }]
+});
+
+export const insertImage = ( editor: Editor, url: string, caption: string ) => {
+  if ( !url ) {
+    return
+  }
+
+  const { selection } = editor
+  const image = createImageNode(url, caption)
+
+  if ( !!selection ) {
+    const [ parentNode, parentPath ] = Editor.parent(
+      editor,
+      selection.focus?.path
+    )
+
+    if ( editor.isVoid(parentNode as CustomElement) || Node.string(parentNode).length ) {
+      Transforms.insertNodes(editor, image)
+    } else {
+      Transforms.removeNodes(editor, { at: parentPath });
+      Transforms.insertNodes(editor, image);
+    }
+  } else {
+    Transforms.insertNodes(editor, image);
+  }
+}
+
 export const isLinkElement = ( element: CustomElement ): element is LinkElement => {
   return ( element as LinkElement )?.url!==undefined
 }
@@ -130,11 +164,26 @@ export const withInlines = ( editor: Editor ) => {
   return editor
 }
 
+export const withImages = ( editor: Editor ) => {
+  const { isVoid } = editor
+
+  editor.isVoid = ( element ) => {
+    return element.type==="image" ? true : isVoid(element)
+  }
+
+  return editor
+}
+
 export const slateKeyDown = (event: React.KeyboardEvent<HTMLDivElement>, editor: Editor ) => {
   const { selection } = editor
 
-  if (selection && Range.isCollapsed(selection)) {
-    const { nativeEvent } = event
+  if ( !selection ) {
+    return 
+  }
+
+  const { nativeEvent } = event
+
+  if (Range.isCollapsed(selection)) {
     if (isKeyHotkey('left', nativeEvent)) {
       event.preventDefault()
       Transforms.move(editor, { unit: 'offset', reverse: true })
@@ -145,5 +194,14 @@ export const slateKeyDown = (event: React.KeyboardEvent<HTMLDivElement>, editor:
       Transforms.move(editor, { unit: 'offset' })
       return
     }
+  }
+  
+  if ( isKeyHotkey("Enter", nativeEvent) ) {
+    Transforms.insertNodes(editor, {
+      type: "paragraph",
+      children: [{ text: "" }]
+    })
+    event.preventDefault()
+    return
   }
 }

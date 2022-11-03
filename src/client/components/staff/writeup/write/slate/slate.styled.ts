@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { 
   rem,
   fluid,
@@ -35,4 +35,28 @@ export const Paragraph = styled.p`
 export const LinkElement = styled.a`
   color: ${ ({ theme }) => theme.colors.blue };
   text-decoration: underline;
+`
+
+type ImageElementContainerProps = {
+  highlight?: boolean
+}
+
+export const ImageElement = styled.img`
+  margin: 0 auto;
+`
+
+export const ImageElementContainer = styled.div<ImageElementContainerProps>`
+  margin: ${ fluid(24, 4, 40) } 0;
+
+  ${ ({ highlight }) => {
+    switch(highlight) {
+      case true: 
+        return css`
+        
+          ${ ImageElement } {
+            box-shadow: 0 0 8px 2px rgba(0, 0, 255, .7);
+          }
+        `
+    }
+  } }
 `

@@ -1,3 +1,4 @@
+import { useTrapFocus } from "@/lib/hooks"
 import { useEffect, useState } from "react"
 import { ImageSize } from "./image"
 
@@ -7,6 +8,7 @@ export const useImageAddition = () =>{
     url: "",
     caption: ""
   })
+  const [ registerControl, registerTrapContainer ] = useTrapFocus()
   const [ imageSize, setImageSize ] = useState<ImageSize>("large")
   const [ imageFile, setImageFile ] = useState<File | null>(null)
 
@@ -87,6 +89,8 @@ export const useImageAddition = () =>{
 
   return {
     image,
+    registerControl,
+    registerTrapContainer,
     handleInputOnChange,
     handleSizeChange,
     handleAddCaption

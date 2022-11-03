@@ -100,6 +100,15 @@ export const CaptionHeading = styled(ImageSizeLegend)`
   }
 `
 
+export const CaptionLabel = styled.label`
+  ${ breakpoint("desktop", `
+
+    &:hover {
+      cursor: pointer;
+    }
+  `) }
+`
+
 export const CaptionInput = styled.input`
   border-radius: ${ rem(4) };
   font-size: ${ rem(15) };

@@ -4,6 +4,7 @@ import {
   HeadingThree, 
   HeadingTwo, 
   Paragraph } from "../slate.styled";
+import { ImageElement } from "./image";
 import { LinkElement } from "./link";
 
 
@@ -33,6 +34,13 @@ const RenderElement = ({ attributes, children, element }: RenderElementProps) =>
         <Paragraph { ...attributes }>
           { children }
         </Paragraph>
+      )
+    case "image": 
+      return (
+        <ImageElement
+          children={ children }
+          attributes={ attributes }
+          element={ element } />
       )
     case "link":
       return (

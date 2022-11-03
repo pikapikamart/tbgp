@@ -1,8 +1,11 @@
-import { useSelectStaff, useSelectWriteup } from "@/lib/hooks/store.hooks"
+import { 
+  useSelectStaff, 
+  useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { isWriteupReadonly } from "../../../utils"
 import { ToolbarMarkButton } from "./button"
 import { ToolbarBlockButton } from "./button/block"
 import { ToolbarHeadingList } from "./heading"
+import { ToolbarImage } from "./image"
 import { ToolbarLink } from "./link"
 import { ToolbarWrapper } from "./toolbar.styled"
 
@@ -34,6 +37,7 @@ const ToolBar = () => {
         label="transform text to underline"
         decoration="underline" />
       <ToolbarLink />
+      <ToolbarImage />
     </ToolbarWrapper>
   )
 }

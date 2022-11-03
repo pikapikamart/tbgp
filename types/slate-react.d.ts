@@ -35,6 +35,13 @@ declare module 'slate' {
     children: CustomText[]
   }
 
+  export type ImageElement = {
+    type: "image",
+    url: string,
+    caption: string,
+    children: CustomText[]
+  }
+
   export type LinkElement = {
     type: "link",
     url: string,
@@ -55,7 +62,8 @@ declare module 'slate' {
   HeadingTwoElement |
   HeadingThreeElement |
   HeadingFourElement |
-  LinkElement
+  LinkElement |
+  ImageElement
   
   export type CustomElementType = CustomElement["type"] 
 

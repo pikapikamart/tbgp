@@ -3,8 +3,7 @@ import {
   Slate as SlateComp,
   Editable,
   RenderElementProps,
-  RenderLeafProps
-} from "slate-react"
+  RenderLeafProps } from "slate-react"
 import { RenderElements } from "./element"
 import { RenderLeaves } from "./leaf"
 import { SlateToolbar } from "./toolbar"
@@ -39,7 +38,8 @@ const Slate = () => {
           placeholder="Enter your story..."
           renderElement={ renderElement }
           renderLeaf={ renderLeaf }
-          onKeyDown={ event => slateKeyDown(event, editor) } />
+          onKeyDown={ event => slateKeyDown(event, editor) } 
+          />
     </SlateComp>
   )
 }

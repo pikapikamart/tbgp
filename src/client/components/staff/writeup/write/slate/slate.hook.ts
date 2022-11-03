@@ -5,16 +5,26 @@ import { setWriteupSlate } from "@/store/slices/writeup.slice"
 import { 
   useMemo,
   useEffect,
-  useState } from "react"
+  useState, 
+  useRef} from "react"
+import { Editor } from "slate"
 import { createEditor } from "slate"
 import { withHistory } from "slate-history"
 import { withReact } from "slate-react"
 import { initialSlateValue } from "./data"
-import { withInlines } from "./utils"
+import { 
+  withImages, 
+  withInlines} from "./utils"
 
 
 export const useSlate = () =>{
-  const editor = useMemo(() => withInlines(withHistory(withReact(createEditor()))), [])
+  const editorRef = useRef<Editor>()
+
+  if ( !editorRef.current ) {
+    editorRef.current = withImages(withInlines(withHistory(withReact(createEditor()))))
+  }
+  const editor = editorRef.current
+  
   const dispatch = useAppDispatch()
   const [ isSlateInvalid, setIsSlateInvalid ] = useState(false)
   const writeup = useSelectWriteup()

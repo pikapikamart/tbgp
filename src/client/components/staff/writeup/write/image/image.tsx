@@ -1,7 +1,10 @@
 import { ColoredMediumButton } from "@/styled/collections/button"
 import { FormBottomControls } from "@/styled/shared/form"
 import { SrOnly } from "@/styled/shared/helpers"
-import { useCallback, useEffect, useState } from "react"
+import { 
+  useCallback, 
+  useEffect, 
+  useState } from "react"
 import { useImageAddition } from "./image.hook"
 import { 
   ImageContainer, 
@@ -13,7 +16,8 @@ import {
   ImageRadioList,
   ImageRadioItem,
   CaptionHeading,
-  CaptionInput} from "./image.styled"
+  CaptionInput,
+  CaptionLabel} from "./image.styled"
 
 
 export type ImageSize = "small" | "medium" | "large"
@@ -28,16 +32,19 @@ const sizes: readonly ImageSize[] = ["small", "medium", "large"]
 const Image = ({ extractData, exit }: ImageProps) => {
   const {
     image,
+    registerControl,
+    registerTrapContainer,
     handleInputOnChange,
-    handleSizeChange
+    handleSizeChange,
+    handleAddCaption
   } = useImageAddition()
 
   const renderRadioItems = useCallback(() =>{
     const radios = sizes.map(size => (
       <ImageRadioItem key={ size }>
-        <label
+        <CaptionLabel
           htmlFor={ size }>{ size[0].toUpperCase() + size.slice(1) }
-        </label>
+        </CaptionLabel>
         <input
           type="radio"
           id={ size }
@@ -51,7 +58,7 @@ const Image = ({ extractData, exit }: ImageProps) => {
   }, [])
 
   return (
-    <ImageModalWrapper>
+    <ImageModalWrapper onKeyDown={ registerTrapContainer }>
       <ImageContainer>
         <SrOnly
           as="input"
@@ -59,7 +66,8 @@ const Image = ({ extractData, exit }: ImageProps) => {
           id="image"
           name="image"
           accept="image/*"
-          onChange={ handleInputOnChange } />
+          onChange={ handleInputOnChange }
+          ref={ registerControl } />
         <ImageLabel 
           isDone={ image.url!=="" }
           htmlFor="image">
@@ -82,7 +90,7 @@ const Image = ({ extractData, exit }: ImageProps) => {
         </CaptionHeading>
         <CaptionInput
           type="text"
-          onBlur={ e => e } />
+          onBlur={ handleAddCaption } />
       </div>
       <FormBottomControls>
         <ColoredMediumButton
@@ -91,6 +99,7 @@ const Image = ({ extractData, exit }: ImageProps) => {
         </ColoredMediumButton>
         <ColoredMediumButton
           colored="borderGray"
+          ref={ registerControl }
           onClick={ exit }>Close
         </ColoredMediumButton>
       </FormBottomControls>
