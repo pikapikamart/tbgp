@@ -16,7 +16,7 @@ import {
   SaveWriteupPhaseSchema,
   ReSubmitWriteupScheam,
   SingleWriteupSchema} from "../schemas/writeup.schema";
-import { createArticleService } from "../services/article.service";
+import { createArticleService, findArticleService } from "../services/article.service";
 import { updateStaffService } from "../services/staff.service";
 import { findStoryRequestService } from "../services/story.request.service";
 import { 
@@ -401,15 +401,6 @@ export const publishWriteupHandler = async( writeupId: WriteupIdSchema, { staff 
     return trpcError("FORBIDDEN", "Only writeup handler can publish the writeup")
   }
 
-  await updateWriteupService(
-    updateQuery(writeup.writeupId, writeup.currentPhase),
-    {
-      isPublished: true,
-      "content.$.isSubmitted": true,
-      [`content.${ phaseIndex-1 }.isAccepted`]: true
-    }
-  )
-
   const processTitle = ( title: string ) => (
     title
       .split(" ")
@@ -417,9 +408,19 @@ export const publishWriteupHandler = async( writeupId: WriteupIdSchema, { staff 
       .join("-")
   )
 
+  const foundArticle = await findArticleService(
+    { linkPath: processTitle(currentContent.title) },
+    "_id",
+    { lean: true }
+  )
+
+  if ( foundArticle ) {
+    return trpcError("CONFLICT", "Article with the same title is already published")
+  }
+
   const storyRequest = storyRequestValidator(await findStoryRequestService({ _id: writeup.request }))
 
-  await createArticleService(
+  const createdArticle = await createArticleService(
     {
       category: writeup.category,
       linkPath: processTitle(currentContent.title),
@@ -427,7 +428,20 @@ export const publishWriteupHandler = async( writeupId: WriteupIdSchema, { staff 
       title: currentContent.title,
       caption: currentContent.caption,
       banner: writeup.banner,
-      content: currentContent.data
+      content: currentContent.data,
+      writeup: writeup._id
     }
   )
+
+  await updateWriteupService(
+    updateQuery(writeup.writeupId, writeup.currentPhase),
+    {
+      isPublished: true,
+      "content.$.isSubmitted": true,
+      [`content.${ phaseIndex-1 }.isAccepted`]: true,
+      article: createdArticle._id
+    }
+  )
+
+  return trpcSuccess(true, "Article has been successfully published")
 }

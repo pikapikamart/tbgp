@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import { StaffDocument } from "./staff.model"
+import { WriteupDocument } from "./writeup.model"
 
 
 export type Article = {
@@ -13,6 +14,7 @@ export type Article = {
     caption: string
   },
   content: any[],
+  writeup: WriteupDocument["_id"]
 }
 
 export type ArticleDocument = Article & mongoose.Document<mongoose.Types.ObjectId> & {
@@ -51,7 +53,11 @@ const articleSchema: mongoose.Schema<ArticleDocument> = new mongoose.Schema({
       required: true
     }
   },
-  content: []
+  content: [],
+  writeup: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Writeup"
+  }
 }, { timestamps: true })
 
 const ArticleModel: mongoose.Model<ArticleDocument> = mongoose.models.Article || mongoose.model<ArticleDocument>("Article", articleSchema)

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ArticleDocument } from "./article.model";
 import { StaffDocument } from "./staff.model";
 import { StoryRequestDocument } from "./story.request.model";
 
@@ -48,6 +49,7 @@ export type Writeup = {
     WriteupContent<"graphics"> | null,
     WriteupContent<"finalization"> | null
   ],
+  article?: ArticleDocument["_id"]
 }
 
 export type WriteupDocument = Writeup & mongoose.Document<mongoose.Types.ObjectId> & {
@@ -116,6 +118,10 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
       default: false
     }
   }],
+  article: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Article"
+  }
 },{ timestamps: true }
 )
 
