@@ -37,7 +37,7 @@ export const useWriteupHeader = () =>{
   useEffect(() =>{
     if ( isValidData ) {
       const fields = getFieldsRef().reduce((accu, curr) =>{
-        accu[curr.name] = curr.value
+        accu[curr.name] = curr.value.trim()
 
         return accu
       }, {} as HeaderFields)
