@@ -35,7 +35,7 @@ const Version = () =>{
   const writeup = useSelectWriteup()
   const staff = useSelectStaff()
   const currentContent = writeup.content[0]
-  console.log(currentContent.notes)
+  
   return (
     <VersionWrapper>
       <VersionClose onClick={ modalContext.removeModal }>
@@ -87,12 +87,12 @@ const Version = () =>{
           <TopicsListItem column={ true }>
             <TopicsListItemHeading>Members joined:</TopicsListItemHeading>
             <RequestMembers>
-              { writeup.request.members.map(member => (
+              { writeup.request.members.map((member, index) => (
                 <li key={ member.bastionId }>
                   <Link
                     href={ `/storybuilder/${ member.username }` }
                     passHref>
-                    <RequestMemberLink>{ member.firstname + " " + member.lastname }</RequestMemberLink>
+                    <RequestMemberLink>{ member.firstname + " " + member.lastname }{ index!==(writeup.request.members??[]).length-1? "," : "" }</RequestMemberLink>
                   </Link>
                 </li>
               )) }
@@ -102,12 +102,12 @@ const Version = () =>{
             <TopicsListItem column={ true }>
               <TopicsListItemHeading>Members submitted:</TopicsListItemHeading>
               <RequestMembers>
-                { currentContent.submissions.map(member => (
+                { currentContent.submissions.map((member, index) => (
                   <li key={ member.bastionId }>
                     <Link
                       href={ `/storybuilder/${ member.username }` }
                       passHref>
-                      <RequestMemberLink>{ member.firstname + " " + member.lastname }</RequestMemberLink>
+                      <RequestMemberLink>{ member.firstname + " " + member.lastname }{ index!==(writeup.request.members??[]).length-1? "," : "" }</RequestMemberLink>
                     </Link>
                   </li>
                 )) }

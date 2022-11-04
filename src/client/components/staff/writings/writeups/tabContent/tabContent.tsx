@@ -7,10 +7,10 @@ type TabContentProps = {
 }
 
 const TabContent = ({ writeups }: TabContentProps) =>{
-
+  
   return (
     <InitialWriteupsList>
-      { writeups.map(writeup => (
+      { writeups?.map(writeup => writeup && (
         <InitialWriteup
           key={ writeup.writeupId }
           writeup={ writeup } />

@@ -32,7 +32,7 @@ const Header = ({}: HeaderProps) =>{
     handleFormSubmit
   } = useWriteupHeader()
   
-  if ( !isWriteupReadonly(writeup, staff.bastionId) && writeup.content[0].phase==="graphics" ) {
+  if ( !isWriteupReadonly(writeup, staff.bastionId) ) {
     return (
       <HeaderWrapper 
         as="form"
@@ -73,7 +73,7 @@ const Header = ({}: HeaderProps) =>{
       <HeaderTitle as="h1">{ writeup.content[0].title }</HeaderTitle>
       <HeaderCaption as="p">{ writeup.content[0].caption }</HeaderCaption>
       { isWriteupGraphicsAvailable(writeup) && writeup.banner.url!=="" && (
-        <CoverContainer>
+        <CoverContainer hasImage={ true }>
           <CoverImage
             src={ writeup.banner.url }
             alt={ writeup.banner.caption } />

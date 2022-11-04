@@ -22,7 +22,7 @@ const Pull = () =>{
     return <SoloControl />
   }
 
-  if ( isEditorStaffState(staff) ) {
+  if ( writeup.currentPhase!=="writeup" && isEditorStaffState(staff) ) {
     return <TaskControl />
   }
 

@@ -18,8 +18,12 @@ const Cover = () => {
     handleAddModal
   } = useCover()
 
+  if ( writeup.content[0].phase!=="graphics" ) {
+    return <></>
+  }
+
   return (
-    <CoverContainer>
+    <CoverContainer hasImage={ cover.url!=="" }>
       { cover.url!=="" && (
         <CoverImageContainer>
           <CoverImage

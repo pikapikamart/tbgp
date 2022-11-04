@@ -2,9 +2,13 @@ import styled, { css } from "styled-components"
 import { fluid, rem } from "@/styled/functions"
 
 
-export const CoverContainer = styled.div`
+type CoverContainerProps = {
+  hasImage: boolean
+}
+
+export const CoverContainer = styled.div<CoverContainerProps>`
   max-width: max-content;
-  margin: 0 auto;
+  margin: 0 ${ ({ hasImage }) => hasImage? "auto" : "auto 0 0" };
   position: relative;
 `
 
