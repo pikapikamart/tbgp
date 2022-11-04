@@ -244,8 +244,8 @@ export const cancelWriteupSubmissionHandler = async( writeupId: WriteupIdSchema,
 export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext) =>{
   const { writeup, currentContent } = await findWriteupHelper(writeupId)
 
-  if ( writeup.currentPhase==="finalization" && staff.position.role!=="seniorEditor" ) {
-    return trpcError("FORBIDDEN", "Only senior editor is allowed for the finalization")
+  if ( writeup.currentPhase==="finalization" && staff.position.role=="writer") {
+    return trpcError("FORBIDDEN", "Only section and senior editors are allowed for the finalization")
   }
 
   if ( currentContent.handledBy?.equals(staff._id) ) {
@@ -276,7 +276,7 @@ export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff 
 }
 
 export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff }: VerifiedStaffContext ) => {
-  const { writeup, phaseIndex, currentContent } = await findWriteupHelper(writeupBody.writeupId)
+  const { writeup, currentContent } = await findWriteupHelper(writeupBody.writeupId)
   const graphicsUpdate = writeup.currentPhase==="graphics"? { banner: writeupBody.banner } : {}
 
   if ( currentContent?.requestedResubmit ) {

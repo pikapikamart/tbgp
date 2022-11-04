@@ -14,6 +14,7 @@ export const useTask = () =>{
   const modalContext = useModalContext()
   const [ takeTaskModal, setTakeTaskModal ] = useState(false)
   const [ submitModal, setSubmitModal ] = useState(false)
+  const [ publishModal, setPublishModal ] = useState(false)
 
   const handleTakeTaskModal = () =>{
     setTakeTaskModal(true)
@@ -33,12 +34,22 @@ export const useTask = () =>{
     )
   }
 
+  const handlePublishModal = () =>{
+    setPublishModal(true)
+    modalContext.addModal(
+      <BaseModal exit={ () => setSubmitModal(false) }>
+      </BaseModal>
+    )
+  }
+
   return {
     staff,
     writeup,
     takeTaskModal,
     handleTakeTaskModal,
     submitModal,
-    handleSubmissionModal
+    handleSubmissionModal,
+    handlePublishModal,
+    publishModal
   }
 }

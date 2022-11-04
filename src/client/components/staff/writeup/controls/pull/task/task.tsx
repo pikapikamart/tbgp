@@ -15,7 +15,9 @@ const Task = () =>{
     takeTaskModal,
     handleTakeTaskModal,
     submitModal,
-    handleSubmissionModal
+    handleSubmissionModal,
+    handlePublishModal,
+    publishModal
   } = useTask()
   const { handleWriteupSave } = useSaveWriteup()
 
@@ -42,11 +44,19 @@ const Task = () =>{
           colored="borderGray"
           onClick={ handleWriteupSave }>Save
         </ColoredMediumButton>
-        <ColoredMediumButton
-          colored="blue"
-          onClick={ handleSubmissionModal }
-          aria-expanded={ submitModal }>Submit
-        </ColoredMediumButton>
+        { writeup.content[0].phase==="finalization"? 
+          <ColoredMediumButton
+            colored="blue"
+            onClick={ handlePublishModal }
+            aria-expanded={ publishModal }>Published
+          </ColoredMediumButton>  
+          :
+          <ColoredMediumButton
+            colored="blue"
+            onClick={ handleSubmissionModal }
+            aria-expanded={ submitModal }>Submit
+          </ColoredMediumButton>  
+      }
       </ControlsUpdates>
     )
   } 

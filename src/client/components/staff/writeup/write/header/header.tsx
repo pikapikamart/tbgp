@@ -5,6 +5,7 @@ import {
 import { SrOnly } from "@/styled/shared/helpers"
 import { 
   isWriteupEditable, 
+  isWriteupGraphicsAvailable, 
   isWriteupHandler, 
   isWriteupMember, 
   isWriteupPhaseEditable,
@@ -71,11 +72,11 @@ const Header = ({}: HeaderProps) =>{
     <HeaderWrapper>
       <HeaderTitle as="h1">{ writeup.content[0].title }</HeaderTitle>
       <HeaderCaption as="p">{ writeup.content[0].caption }</HeaderCaption>
-      { writeup.currentPhase==="graphics" && writeup.banner.url!=="" && (
+      { isWriteupGraphicsAvailable(writeup) && writeup.banner.url!=="" && (
         <CoverContainer>
           <CoverImage
             src={ writeup.banner.url }
-            al={ writeup.banner.caption } />
+            alt={ writeup.banner.caption } />
         </CoverContainer>
       ) }
     </HeaderWrapper>

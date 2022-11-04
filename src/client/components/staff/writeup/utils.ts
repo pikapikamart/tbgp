@@ -36,3 +36,7 @@ export const isWriteupReadonly = ( writeup: WriteupState, bastionId: string ) =>
 export const isWriteupResubmit = ( writeup: WriteupState ) => {
   return writeup.content[0].requestedResubmit || writeup.content[0].reSubmit
 }
+
+export const isWriteupGraphicsAvailable = ( writeup: WriteupState ) => {
+  return writeup.content[0].phase==="graphics" || writeup.content[0].phase==="finalization"
+}
