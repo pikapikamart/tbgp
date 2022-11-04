@@ -36,12 +36,12 @@ const Content = () =>{
         <RowContentContainer>
           <SubHeading>Assigned members: </SubHeading>
           <RequestMembers>
-            { storyRequest.assignedMembers.map(member => (
+            { storyRequest.assignedMembers.map((member, index) => (
               <li key={ member.bastionId }>
                 <Link
                   href={ `/storybuilder/${ member.username }` }
                   passHref>
-                  <RequestMemberLink>{ member.firstname + " " + member.lastname }</RequestMemberLink>
+                  <RequestMemberLink>{ member.firstname + " " + member.lastname }{ index!==(storyRequest.assignedMembers??[]).length-1? "," : "" }</RequestMemberLink>
                 </Link>
               </li>
             )) }
@@ -51,12 +51,12 @@ const Content = () =>{
       <RowContentContainer>
         <SubHeading>Members joined: </SubHeading>
         <RequestMembers>
-          { storyRequest.members.map(member => (
+          { storyRequest.members.map((member, index) => (
             <li key={ member.bastionId }>
               <Link
                 href={ `/storybuilder/${ member.username }` }
                 passHref>
-                <RequestMemberLink>{ member.firstname + " " + member.lastname }</RequestMemberLink>
+                <RequestMemberLink>{ member.firstname + " " + member.lastname }{ index!==(storyRequest.assignedMembers??[]).length-1? "," : "" }</RequestMemberLink>
               </Link>
             </li>
           )) }

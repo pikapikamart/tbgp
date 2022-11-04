@@ -1,3 +1,4 @@
+import { BaseModal } from "@/components/shared/modal"
 import { ColumCenterCenter } from "@/styled/shared/helpers"
 import { 
   ModalHeading, 
@@ -5,35 +6,50 @@ import {
 import { VerificationDescription } from "../../../verifyStaff/verifyStaff.styled"
 import { RoundChoice } from "../../writeup.styled"
 import { usePublishWriteup } from "./publish.hook"
+import { WriteupPublishSuccessModal } from "./success"
 
 
-const Publish = ( exit: () => void ) =>{
+type PublishProps = {
+  exit: () => void
+}
+
+const Publish = ( { exit }: PublishProps ) =>{
   const {
     registerControl,
     registerTrapContainer,
     removeModal,
-    handlePublishWriteup
+    handlePublishWriteup,
+    isSuccess
   } = usePublishWriteup(exit)
 
   return (
-    <ModalWrapper
-      size="small"
-      onKeyDown={ registerTrapContainer }>
-      <ModalHeading size="medium">Publish writeup?</ModalHeading>
-      <VerificationDescription>When published, this writeup will be unavaible for all writers and editors to access. You can only access the published article.</VerificationDescription>
-      <ColumCenterCenter>
-        <RoundChoice
-          colored="blue"
-          ref={ registerControl }
-          onClick={ handlePublishWriteup }>Published to article
-        </RoundChoice>
-        <RoundChoice
-          colored="borderGray"
-          ref={ registerControl }
-          onClick={ removeModal }>Close
-        </RoundChoice>
-      </ColumCenterCenter>
-    </ModalWrapper>
+    <>
+      { isSuccess && (
+        <BaseModal 
+          isChild={ true }
+          exit={ () => {} }>
+            <WriteupPublishSuccessModal />
+        </BaseModal>
+      ) }
+      <ModalWrapper
+        size="small"
+        onKeyDown={ registerTrapContainer }>
+        <ModalHeading size="medium">Publish writeup?</ModalHeading>
+        <VerificationDescription>When published, this writeup will now be unavaible for all writers and editors to access. After publishing, it will now be visible in the main site.</VerificationDescription>
+        <ColumCenterCenter>
+          <RoundChoice
+            colored="blue"
+            ref={ registerControl }
+            onClick={ handlePublishWriteup }>Publish writeup
+          </RoundChoice>
+          <RoundChoice
+            colored="borderGray"
+            ref={ registerControl }
+            onClick={ removeModal }>Close
+          </RoundChoice>
+        </ColumCenterCenter>
+      </ModalWrapper>
+    </>
   )
 }
 

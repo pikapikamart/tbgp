@@ -50,7 +50,8 @@ export const ImageElement = styled.img`
 `
 
 export const ImageElementContainer = styled.div<ImageElementContainerProps>`
-  margin: ${ fluid(24, 4, 40) } 0;
+  margin: ${ fluid(24, 4, 40) } auto;
+  max-width: max-content;
 
   ${ ({ highlight }) => {
     switch(highlight) {

@@ -1,6 +1,9 @@
-import { useSelectStaff } from "@/lib/hooks/store.hooks"
+import { 
+  useAppDispatch, 
+  useSelectStaff } from "@/lib/hooks/store.hooks"
 import { trpc } from "@/lib/trpc"
-import { useRouter } from "next/router"
+import { useModalContext } from "@/store/context/modal/modal"
+import { deleteStoryRequest } from "@/store/slices/staff.slice"
 import { 
   useEffect, 
   useState } from "react"
@@ -30,11 +33,13 @@ export const useStoryRequest = ( storyRequestId: string ) =>{
 }
 
 export const useDeleteStoryRequest = ( storyRequestId: string ) =>{
-  const router = useRouter()
   const [ isDeleting, setIsDeleting ] = useState(false)
+  const dispatch = useAppDispatch()
+  const modalContext = useModalContext()
   const mutation = trpc.useMutation(["storyRequest.delete"], {
     onSuccess: () =>{
-      router.reload()
+      dispatch(deleteStoryRequest(storyRequestId))
+      modalContext.removeModal()
     }
   })
 

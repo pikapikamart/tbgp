@@ -19,7 +19,7 @@ const AssignMembers = ({ handleAssignMembers, exit, defaultValue }: AssignMember
   const { options } = useFetchWriters()
 
   return (
-    <AssignMembersWrapper>
+    <AssignMembersWrapper onSubmit={ e => e.preventDefault() } >
       <Select
         isMulti
         defaultValue={ defaultValue?? [] }

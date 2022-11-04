@@ -105,12 +105,13 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
     populatedStaff,
     {
       path: "writeups.task",
-      select: "-_id writeupId category content.title content.caption content.phase content.isSubmitted content.isAccepted content.reSubmit content.requestedResubmit content.handledBy ",
+      select: "-_id writeupId category content.title content.caption content.phase content.isSubmitted content.isAccepted content.reSubmit content.requestedResubmit content.handledBy",
       transform: ( doc: Writeup ) =>{
 
         return {
           writeupId: doc.writeupId,
           category: doc.category,
+          // @ts-ignore
           content: doc.content.slice().reverse().find(phase => phase?.handledBy?.equals(staff._id))
         }
       }

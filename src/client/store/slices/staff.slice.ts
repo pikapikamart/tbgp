@@ -7,9 +7,12 @@ import {
   addCreatedStoryRequestReducer,
   addStoryRequestApplicationReducer,
   addWriteupTaskReducer,
+  deleteStoryRequestReducer,
+  publishWriteupReducer,
   resubmitTaskReducer,
   sendStaffVerificationReducer, 
   setStaffReducer, 
+  startStoryRequestReducer, 
   updateStaffReducer,
   updateTaskReducer,
   updateWriteupReducer} from "../reducers/staff.reducer";
@@ -81,10 +84,13 @@ export const staffSlice = createSlice({
     updateStaff: updateStaffReducer,
     addCreatedStoryRequest: addCreatedStoryRequestReducer,
     addStoryRequestApplication: addStoryRequestApplicationReducer,
+    startStoryRequest: startStoryRequestReducer,
+    deleteStoryRequest: deleteStoryRequestReducer,
     updateWriteup: updateWriteupReducer,
     addWriteupTask: addWriteupTaskReducer,
     updateTask: updateTaskReducer,
-    resubmitTask: resubmitTaskReducer
+    resubmitTask: resubmitTaskReducer,
+    publishWriteup: publishWriteupReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -102,10 +108,13 @@ export const {
   updateStaff,
   addCreatedStoryRequest,
   addStoryRequestApplication,
+  startStoryRequest,
+  deleteStoryRequest,
   updateWriteup,
   addWriteupTask,
   updateTask,
-  resubmitTask
+  resubmitTask,
+  publishWriteup
 } = staffSlice.actions
 export const selectStaff = ( state: RootState ) => state.staff
 

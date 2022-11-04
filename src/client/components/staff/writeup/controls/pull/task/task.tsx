@@ -48,7 +48,7 @@ const Task = () =>{
           <ColoredMediumButton
             colored="blue"
             onClick={ handlePublishModal }
-            aria-expanded={ publishModal }>Published
+            aria-expanded={ publishModal }>Publish
           </ColoredMediumButton>  
           :
           <ColoredMediumButton

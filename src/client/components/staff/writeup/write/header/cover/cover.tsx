@@ -3,6 +3,7 @@ import { isWriteupHandler } from "../../../utils"
 import { useCover } from "./cover.hook"
 import { 
   CoverButton, 
+  CoverCaption, 
   CoverContainer, 
   CoverImage, 
   CoverImageContainer} from "./cover.styled"
@@ -24,6 +25,7 @@ const Cover = () => {
           <CoverImage
             src={ cover.url }
             alt={ cover.caption } />
+          { cover.caption!=="" && <CoverCaption>{ cover.caption }</CoverCaption> }
         </CoverImageContainer>
       ) }
       <CoverButton

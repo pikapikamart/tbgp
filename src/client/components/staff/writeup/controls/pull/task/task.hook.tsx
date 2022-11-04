@@ -1,5 +1,6 @@
 import { WriteupSoloSubmitModal } from "@/components/collections/modals/writeup/solo/submit"
 import { TakeTaskModal } from "@/components/collections/modals/writeup/task"
+import { PublishWriteupModal } from "@/components/collections/modals/writeup/task/publish"
 import { BaseModal } from "@/components/shared/modal"
 import { 
   useSelectStaff, 
@@ -38,6 +39,7 @@ export const useTask = () =>{
     setPublishModal(true)
     modalContext.addModal(
       <BaseModal exit={ () => setSubmitModal(false) }>
+        <PublishWriteupModal exit={ () => setPublishModal(false) } />
       </BaseModal>
     )
   }

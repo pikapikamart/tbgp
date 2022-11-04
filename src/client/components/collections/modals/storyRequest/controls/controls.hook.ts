@@ -1,6 +1,8 @@
 import { useAppDispatch } from "@/lib/hooks/store.hooks"
 import { trpc } from "@/lib/trpc"
-import { addStoryRequestApplication } from "@/store/slices/staff.slice"
+import { 
+  addStoryRequestApplication, 
+  startStoryRequest } from "@/store/slices/staff.slice"
 import { useRouter } from "next/router"
 import { 
   useStoryDispatch, 
@@ -27,12 +29,14 @@ export const useApplyStoryRequest = () =>{
   }
 }
 
-export const useStartStoryRequest = ( storyRequestId: string ) =>{
+export const useStartStoryRequest = () =>{
   const router = useRouter()
   const { storyRequest } = useTrackedStoryRequest()
+  const dispatch = useAppDispatch()
   const mutation = trpc.useMutation(["storyRequest.start"], {
     onSuccess: () =>{
-      router.reload()
+      dispatch(startStoryRequest(storyRequest?.storyRequestId?? ""))
+      router.replace("/storybuilder/activities?tab=writeup")
     }
   })
 

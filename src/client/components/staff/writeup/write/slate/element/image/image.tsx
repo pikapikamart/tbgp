@@ -2,6 +2,7 @@ import {
   RenderElementProps, 
   useFocused, 
   useSelected } from "slate-react"
+import { CoverCaption } from "../../../header/cover/cover.styled"
 import { 
   ImageElementContainer,
   ImageElement } from "../../slate.styled"
@@ -23,6 +24,7 @@ const Image = ({ attributes, element, children }: RenderElementProps) =>{
         <ImageElement
           src={ element.url }
           alt={ element.caption } />
+          { element.caption!=="" && <CoverCaption>{ element.caption }</CoverCaption> }
       </div>
       { children }
     </ImageElementContainer>

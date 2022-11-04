@@ -11,7 +11,7 @@ import {
   isWriteupPhaseEditable,
   isWriteupReadonly} from "../../utils"
 import { WriteHeaderCover } from "./cover"
-import { CoverContainer, CoverImage } from "./cover/cover.styled"
+import { CoverCaption, CoverContainer, CoverImage } from "./cover/cover.styled"
 import { useWriteupHeader } from "./header.hook"
 import { 
   HeaderCaption,
@@ -32,7 +32,7 @@ const Header = ({}: HeaderProps) =>{
     handleFormSubmit
   } = useWriteupHeader()
   
-  if ( !isWriteupReadonly(writeup, staff.bastionId) ) {
+  if ( !isWriteupReadonly(writeup, staff.bastionId) && writeup.content[0].phase==="graphics" ) {
     return (
       <HeaderWrapper 
         as="form"
@@ -77,6 +77,7 @@ const Header = ({}: HeaderProps) =>{
           <CoverImage
             src={ writeup.banner.url }
             alt={ writeup.banner.caption } />
+          { writeup.banner.caption!=="" && <CoverCaption>{ writeup.banner.caption }</CoverCaption> }
         </CoverContainer>
       ) }
     </HeaderWrapper>

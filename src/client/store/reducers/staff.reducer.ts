@@ -1,11 +1,10 @@
-import { readonlyPhases, versionIndex } from "@/components/collections/modals/writeup/version/utils"
+import { 
+  readonlyPhases, 
+  versionIndex } from "@/components/collections/modals/writeup/version/utils"
 import { WriteupPhases } from "@/src/server/models/writeup.model"
 import { UpdateStaffSchema } from "@/src/server/schemas/staff.schema"
 import { PayloadAction } from "@reduxjs/toolkit"
-import { AppThunk } from ".."
 import { 
-  setStaff, 
-  InitialStaffState, 
   isFullStaffState, 
   StaffState,
   isEditorStaffState,
@@ -45,6 +44,18 @@ export const addCreatedStoryRequestReducer = ( state: WritableStaffState, action
   } 
 }
 
+export const startStoryRequestReducer = ( state: WritableStaffState, action: PayloadAction<string> ) => {
+  if ( isEditorStaffState(state) ) {
+    state.storyRequests.created = state.storyRequests.created.filter(request => request.storyRequestId!==action.payload)
+  }
+}
+
+export const deleteStoryRequestReducer = ( state: WritableStaffState, action: PayloadAction<string> ) => {
+  if ( isEditorStaffState(state) ) {
+    state.storyRequests.created = state.storyRequests.created.filter(request => request.storyRequestId!==action.payload)
+  }
+}
+
 type UpdateWriteupPayload = {
   writeupId: string,
   members: StaffProfile[]
@@ -73,7 +84,6 @@ export const updateTaskReducer = ( state: WritableStaffState, action: PayloadAct
 export const addWriteupTaskReducer = ( state: WritableStaffState, action: PayloadAction<WriteupState> ) => {
   if ( isEditorStaffState(state) ) {
 
-    // check if task is already present
     const foundTaskIndex = state.writeups.task.findIndex(task => task.writeupId===action.payload.writeupId)
     if ( foundTaskIndex!==-1 ) {
       const currentTask = state.writeups.task[foundTaskIndex]
@@ -106,5 +116,11 @@ export const resubmitTaskReducer = ( state: WritableStaffState, action: PayloadA
   if ( isEditorStaffState(state) ) {
     const index = state.writeups.task.findIndex(writeup => writeup.writeupId===action.payload)
     state.writeups.task[index].content.requestedResubmit = true
+  }
+}
+
+export const publishWriteupReducer = ( state: WritableStaffState, action: PayloadAction<string> ) => {
+  if ( isEditorStaffState(state) ) {
+    state.writeups.task = state.writeups.task.filter(task => task.writeupId!==action.payload)
   }
 }

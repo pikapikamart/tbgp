@@ -1,8 +1,10 @@
 import styled, { css } from "styled-components"
-import { rem } from "@/styled/functions"
+import { fluid, rem } from "@/styled/functions"
 
 
 export const CoverContainer = styled.div`
+  max-width: max-content;
+  margin: 0 auto;
   position: relative;
 `
 
@@ -54,4 +56,10 @@ export const CoverButton = styled.button<CoverButtonProps>`
         `
     }
   } }
+`
+
+export const CoverCaption = styled.p`
+  color: ${ ({ theme }) => theme.colors.dark3 };
+  font-size: ${ fluid(12, 1.3, 14) };
+  margin-top: ${ rem(8) };
 `

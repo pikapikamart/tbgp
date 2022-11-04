@@ -25,7 +25,7 @@ const Controls = ({ registerControl, handleDeleteStoryRequest }: ControlsProps) 
     isAssignedMember,
     isMember } = useTrackedStoryRequest()
   const { handleApplyStoryRequest } = useApplyStoryRequest()
-  const { handleStartStoryRequest } = useStartStoryRequest(staff.bastionId)
+  const { handleStartStoryRequest } = useStartStoryRequest()
   const modalContext = useModalContext()
   
   if ( hasRequested || isMember ) {

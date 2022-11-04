@@ -77,7 +77,10 @@ const baseResubmitUpdateBody = ( nextContent: WriteupContent<WriteupPhases>, cur
 export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
   const aggregatedWriteups = await findMultipleWriteupAggregator([
     {
-      $match: { currentPhase: phase }
+      $match: { 
+        currentPhase: phase,
+        isPublished: false
+      }
     },
     {
       $sort: { createdAt: 1 }
