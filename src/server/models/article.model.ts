@@ -37,6 +37,10 @@ const articleSchema: mongoose.Schema<ArticleDocument> = new mongoose.Schema({
     type: String,
     required: true
   },
+  caption: {
+    type: String,
+    required: true
+  },
   banner: {
     url: {
       type: String,

@@ -2,6 +2,7 @@ import {
   cancelWriteupSubmissionHandler,
   getMultipleWriteupHandler,
   getWriteupHandler,
+  publishWriteupHandler,
   requestReSubmitHandler,
   saveWriteupHandler,
   saveWriteupPhaseHandler,
@@ -65,4 +66,8 @@ export const writeupRouter = createRouter()
   .mutation("re-submit", {
     input: reSubmitWriteupSchema,
     resolve: ({ input, ctx }) => requestReSubmitHandler(input, ctx)
+  })
+  .mutation("publish", {
+    input: writeupIdSchema,
+    resolve: ({ input, ctx }) => publishWriteupHandler(input, ctx)
   })

@@ -16,7 +16,9 @@ import {
   SaveWriteupPhaseSchema,
   ReSubmitWriteupScheam,
   SingleWriteupSchema} from "../schemas/writeup.schema";
+import { createArticleService } from "../services/article.service";
 import { updateStaffService } from "../services/staff.service";
+import { findStoryRequestService } from "../services/story.request.service";
 import { 
   findMultipleWriteupAggregator, 
   findWriteupPopulatorService, 
@@ -27,6 +29,7 @@ import { trpcSuccess } from "../utils/success.util";
 import { 
   findWriteupHelper,
   populateWriteupHelper, 
+  storyRequestValidator, 
   writeupPhaseIndex, 
   writeupValidator} from "./controller.utils";
 
@@ -385,4 +388,46 @@ export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam
   )
 
   return trpcSuccess(true, "Requested re-submission successfully")
+}
+
+export const publishWriteupHandler = async( writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext ) => {
+  const { writeup, phaseIndex, currentContent } = await findWriteupHelper(writeupId)
+
+  if ( writeup.currentPhase!=="finalization" ) {
+    return trpcError("CONFLICT", "Writeup can only be published when it currently at finalization phase")
+  } 
+
+  if ( !currentContent.handledBy?.equals(staff._id) ) {
+    return trpcError("FORBIDDEN", "Only writeup handler can publish the writeup")
+  }
+
+  await updateWriteupService(
+    updateQuery(writeup.writeupId, writeup.currentPhase),
+    {
+      isPublished: true,
+      "content.$.isSubmitted": true,
+      [`content.${ phaseIndex-1 }.isAccepted`]: true
+    }
+  )
+
+  const processTitle = ( title: string ) => (
+    title
+      .split(" ")
+      .map(word => word.toLowerCase())
+      .join("-")
+  )
+
+  const storyRequest = storyRequestValidator(await findStoryRequestService({ _id: writeup.request }))
+
+  await createArticleService(
+    {
+      category: writeup.category,
+      linkPath: processTitle(currentContent.title),
+      authors: storyRequest.members,
+      title: currentContent.title,
+      caption: currentContent.caption,
+      banner: writeup.banner,
+      content: currentContent.data
+    }
+  )
 }
