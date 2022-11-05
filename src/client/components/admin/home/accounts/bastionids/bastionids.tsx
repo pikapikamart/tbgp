@@ -2,8 +2,8 @@ import { useAppSelector } from "@/lib/hooks/store.hooks";
 import { selectAdminBastionIds } from "@/store/slices/admin.slice";
 import { 
   BastionIdsWrapper,
-  BastionIdListOption,
-  BastionIdListButton } from "./bastionids.styled";
+  BastionIdListOption } from "./bastionids.styled";
+import { BastionIdButton } from "./button";
 
 
 const BastionIds = () => {
@@ -13,7 +13,7 @@ const BastionIds = () => {
     const sampleList = bastionIds.map(id => {
       return (
         <BastionIdListOption key={ id }>
-          <BastionIdListButton>{ id }</BastionIdListButton>
+          <BastionIdButton id={ id } /> 
         </BastionIdListOption>
       )
     })

@@ -28,7 +28,7 @@ if (!cached) {
 }
 
 async function connectDatabase() {
-
+  
   if (cached.conn) {
     // return cached.conn;
     return;
@@ -47,10 +47,14 @@ async function connectDatabase() {
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
     
     // cached.promise = mongoose.connect(MONGODB_URI_PROD, opts).then((mongoose) => mongoose);
-  
   }
-  cached.conn = await cached.promise; 
-
+  try {
+    cached.conn = await cached.promise
+  } catch (e) {
+    cached.promise = null
+    throw e
+  }
+  console.log(3)
   return cached.conn ;
 }
 
