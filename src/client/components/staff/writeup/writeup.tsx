@@ -1,4 +1,5 @@
 import { ModalFocusBack } from "@/components/shared/modal/modal.styled"
+import { useSetupWriteup } from "@/lib/hooks/store.hooks"
 import { ControlsSection } from "./controls"
 import { WriteSection } from "./write"
 import { useWriteup } from "./writeup.hook"
@@ -9,6 +10,11 @@ import {
 
 const Writeup = () =>{
   const { focusBackElement } = useWriteup()
+  const writeup = useSetupWriteup()
+
+  if ( !writeup.writeupId ) {
+    return <></>
+  }
 
   return (
     <MainWrapper>

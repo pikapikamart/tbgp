@@ -3,8 +3,13 @@ import {
   Category, 
   CreatedDate } from "@/components/shared/storyRequest/initial/initial.styled"
 import { convertDateToString } from "@/components/shared/storyRequest/initial/utils"
-import { isWriteupReadonly, isWriteupResubmit } from "@/components/staff/writeup/utils"
-import { useSelectStaff, useSelectWriteup } from "@/lib/hooks/store.hooks"
+import { 
+  isWriteupHandler,
+  isWriteupReadonly, 
+  isWriteupResubmit } from "@/components/staff/writeup/utils"
+import { 
+  useSelectStaff, 
+  useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { WriteupPhases } from "@/src/server/models/writeup.model"
 import { useModalContext } from "@/store/context/modal/modal"
 import { SrOnly } from "@/styled/shared/helpers"
@@ -117,7 +122,7 @@ const Version = () =>{
           <CreatedDate>{ convertDateToString(writeup.request.createdAt) }</CreatedDate>
         </VersionStoryRequestContainer>
         { currentContent.notes.length>0 && <WriteupVersionNotes /> }
-        { !isWriteupReadonly(writeup, staff.bastionId) && !isWriteupResubmit(writeup) && (
+        { !isWriteupReadonly(writeup, staff.bastionId) && !isWriteupResubmit(writeup) && isWriteupHandler(writeup, staff.bastionId) && (
           <ResubmitWriteup />
         ) }
       </VersionContentContainer>

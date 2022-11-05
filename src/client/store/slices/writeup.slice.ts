@@ -99,7 +99,7 @@ export const {
   resubmitWriteup,
   addWriteupBanner
 } = writeupSlice.actions;
-export const selectWriteup = ( state: RootState ) => state.writeup;
+export const selectWriteup = ( state: RootState ) => state.writeup
 
 
 export default writeupSlice.reducer;

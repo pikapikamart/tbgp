@@ -19,6 +19,12 @@ export const setStaffReducer = ( state: WritableStaffState, action: PayloadActio
   
   if ( isFullStaffState(action.payload) ) {
     action.payload.storyRequests.created = action.payload.storyRequests.created.filter(request => !request.started)
+    action.payload.writeups.collaborated = action.payload.writeups.collaborated.filter(request => request)
+    action.payload.writeups.solo = action.payload.writeups.solo.filter(request => request)
+  }
+
+  if ( isEditorStaffState(action.payload) ) {
+    action.payload.writeups.task = action.payload.writeups.task.filter(request => request)
   }
 
   state = Object.assign(state, action.payload)
@@ -114,7 +120,7 @@ export const addWriteupTaskReducer = ( state: WritableStaffState, action: Payloa
 
 export const resubmitTaskReducer = ( state: WritableStaffState, action: PayloadAction<string> ) => {
   if ( isEditorStaffState(state) ) {
-    const index = state.writeups.task.findIndex(writeup => writeup.writeupId===action.payload)
+    const index = state.writeups.task.findIndex(writeup => writeup && writeup.writeupId===action.payload)
     state.writeups.task[index].content.requestedResubmit = true
   }
 }

@@ -7,10 +7,12 @@ import { WriteupNote } from "@/src/server/models/writeup.model"
 import { useModalContext } from "@/store/context/modal/modal"
 import { resubmitTask } from "@/store/slices/staff.slice"
 import { resubmitWriteup } from "@/store/slices/writeup.slice"
+import { useRouter } from "next/router"
 import { 
   useCallback, 
   useState,
   useEffect } from "react"
+import { readonlyPhases, versionIndex } from "../utils"
 
 
 export const useResubmit = () => {
@@ -19,6 +21,7 @@ export const useResubmit = () => {
   const modalContext = useModalContext()
   const writeup = useSelectWriteup()
   const dispatch = useAppDispatch()
+  const router = useRouter()
   const [ notes, setNotes ] = useState<WriteupNote[]>([
     {
       title: "",
@@ -30,6 +33,7 @@ export const useResubmit = () => {
       modalContext.removeModal()
       dispatch(resubmitTask(writeup.writeupId))
       dispatch(resubmitWriteup())
+      router.replace(`/storybuilder/writeup/${ writeup.writeupId }/${ readonlyPhases[versionIndex(writeup.currentPhase)-1] }`)
     }
   })
 

@@ -17,9 +17,9 @@ export const useTakeTask = ( exit: () => void ) =>{
   const dispatch = useAppDispatch()
   const mutation = trpc.useMutation(["writeup.take-task"], {
     onSuccess: () =>{
+      removeModal()
       dispatch(takeWriteupTask(staff))
       dispatch(addWriteupTask(writeup))
-      removeModal()
     }
   })
 

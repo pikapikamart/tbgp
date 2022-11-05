@@ -52,9 +52,15 @@ export const useSelectStaff = () =>{
   return staff
 }
 
-export const useSelectWriteup = () => {
-  const router = useRouter()
+const useWriteup = () =>{
   const writeup = useAppSelector(selectWriteup)
+
+  return writeup
+}
+
+export const useSetupWriteup = () =>{
+  const router = useRouter()
+  const writeup = useWriteup()
   const dispatch = useAppDispatch()
   const query = trpc.useQuery(["writeup.get", {
     writeupId: router.query["writeup"] as string,
@@ -67,6 +73,7 @@ export const useSelectWriteup = () => {
     }
   })
 
+
   useEffect(() =>{
     if ( !writeup.writeupId ) {
       query.refetch()
@@ -75,7 +82,14 @@ export const useSelectWriteup = () => {
 
   useEffect(() =>{
     query.refetch()
+
   }, [ router.query["phase"] ])
+
+  return writeup
+}
+
+export const useSelectWriteup = () => {
+  const writeup = useAppSelector(selectWriteup)
 
   return writeup
 }

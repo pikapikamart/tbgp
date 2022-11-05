@@ -188,22 +188,38 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
     return trpcError("FORBIDDEN", "Already submitted your work")
   }
 
-  if ( currentContent.reSubmit ) {
-    const nextContent = writeup.content[1]
+  // if ( currentContent.reSubmit ) {
+  //   const nextContent = writeup.content[1]
 
-    if ( !nextContent ) {
-      return trpcError("INTERNAL_SERVER_ERROR", "Server error")
-    }
+  //   if ( !nextContent ) {
+  //     return trpcError("INTERNAL_SERVER_ERROR", "Server error")
+  //   }
 
-    await updateWriteupService(
-      updateQuery(writeup.writeupId, "writeup"),
-      baseResubmitUpdateBody(nextContent, currentContent, 0)
-    )
+  //   await updateWriteupService(
+  //     updateQuery(writeup.writeupId, "writeup"),
+  //     baseResubmitUpdateBody(nextContent, currentContent, 0)
+  //   )
 
-    return trpcSuccess(true, "Successfully submitted")
-  } 
+  //   return trpcSuccess(true, "Successfully submitted")
+  // } 
 
   if ( writeup.request.members.length-1===currentContent.submissions?.length ) {
+
+    if ( currentContent.reSubmit ) {
+      const nextContent = writeup.content[1]
+  
+      if ( !nextContent ) {
+        return trpcError("INTERNAL_SERVER_ERROR", "Server error")
+      }
+  
+      await updateWriteupService(
+        updateQuery(writeup.writeupId, "writeup"),
+        baseResubmitUpdateBody(nextContent, currentContent, 0)
+      )
+  
+      return trpcSuccess(true, "Successfully submitted")
+    } 
+
     await updateWriteupService(
       updateQuery(writeup.writeupId, "writeup"),
       Object.assign(baseSubmitUpdateBody(0), { "content.1": Object.assign( writeup.content[0], { 
