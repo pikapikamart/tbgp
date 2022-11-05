@@ -18,7 +18,7 @@ const Cover = () => {
     handleAddModal
   } = useCover()
 
-  if ( writeup.content[0].phase!=="graphics" ) {
+  if ( writeup.content[0].phase!=="graphics" && writeup.content[0].phase!=="finalization"  ) {
     return <></>
   }
 

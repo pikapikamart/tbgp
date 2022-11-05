@@ -20,6 +20,7 @@ declare module "styled-components" {
       whiteBlue2: string,
       darkBlue: string,
       green: string,
+      greenBlue: string,
       blue: string,
       red: string,
       skyBlue: string,

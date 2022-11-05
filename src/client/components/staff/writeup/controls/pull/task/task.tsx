@@ -1,10 +1,9 @@
 import { ColoredMediumButton } from "@/styled/collections/button"
 import { 
   isWriteupEditable, 
-  isWriteupHandler, 
-  isWriteupResubmit} from "../../../utils"
+  isWriteupHandler } from "../../../utils"
 import { ControlsUpdates } from "../../controls.styled"
-import { useSaveWriteup } from "../pull.hook"
+import { SaveWriteupControl } from "../save"
 import { useTask } from "./task.hook"
 
 
@@ -19,9 +18,8 @@ const Task = () =>{
     handlePublishModal,
     publishModal
   } = useTask()
-  const { handleWriteupSave } = useSaveWriteup()
 
-  if ( !isWriteupEditable(writeup) || isWriteupResubmit(writeup) ) {
+  if ( !isWriteupEditable(writeup) || writeup.content[0].requestedResubmit ) {
     return <></>
   }
 
@@ -40,10 +38,7 @@ const Task = () =>{
   if ( isWriteupHandler(writeup, staff.bastionId) ) {
     return (
       <ControlsUpdates>
-        <ColoredMediumButton
-          colored="borderGray"
-          onClick={ handleWriteupSave }>Save
-        </ColoredMediumButton>
+        <SaveWriteupControl />
         { writeup.content[0].phase==="finalization"? 
           <ColoredMediumButton
             colored="blue"

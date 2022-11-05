@@ -32,6 +32,8 @@ export const useSlate = () =>{
   const initialValue = useMemo(() =>{
     if ( writeup.content[0].data.length ) {
       editor.children = writeup.content[0].data
+
+      return writeup.content[0].data
     }
 
     return initialSlateValue

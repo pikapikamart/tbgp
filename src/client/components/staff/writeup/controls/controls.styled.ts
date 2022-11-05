@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import {
   rem,
   breakpoint
@@ -25,6 +25,7 @@ export const ControlsSelections = styled(RowCenterCenter)`
   height: ${ rem(60) };
   overflow: hidden;
   padding: 0 ${ rem(32) };
+  position: relative;
   transition: 
     max-height .3s ease,
     padding-bottom .3s ease, 
@@ -78,5 +79,36 @@ export const TopPull = styled.button`
       padding-bottom: ${ rem(4) };
       visibility: visible;
     }
+  }
+`
+
+const SaveControlToastAnim = keyframes`
+  0%, 100% {
+    transform: translateY(-100%);
+  }
+
+  25%, 70% {
+    transform: translateY(0);
+  }
+`
+
+export const SaveControlToast = styled.p`
+  animation: ${ SaveControlToastAnim } 1s ease-out forwards;
+  align-items: center;
+  display: flex;
+  font-weight: 600;
+  height: 100%;
+  inset: 0 auto auto 0;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+
+  ${ ({ theme: { colors } }) => `
+    background-color: ${ colors.greenBlue };
+    color: ${ colors.white1 };
+  ` }
+
+  svg {
+    margin-right: ${ rem(6) };
   }
 `

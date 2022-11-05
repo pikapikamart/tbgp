@@ -4,16 +4,16 @@ import {
   isWriteupEditable, 
   isWriteupPartSubmitted } from "../../../utils"
 import { ControlsUpdates } from "../../controls.styled"
-import { useSaveWriteup } from "../pull.hook"
 import { useCollaborative } from "./collaborative.hook"
+import { 
+  useSelectStaff, 
+  useSelectWriteup } from "@/lib/hooks/store.hooks"
+import { SaveWriteupControl } from "../save"
 
 
 const Collaborative = () => {
-  const {
-    writeup,
-    staff,
-    handleWriteupSave
-  } = useSaveWriteup()
+  const staff = useSelectStaff()
+  const writeup = useSelectWriteup()
   const {
     handleSubmissionModal,
     handleCancelSubmissionModal,
@@ -39,10 +39,7 @@ const Collaborative = () => {
 
   return (
     <ControlsUpdates>
-      <ColoredMediumButton
-        colored="borderGray"
-        onClick={ handleWriteupSave }>Save
-      </ColoredMediumButton>
+      <SaveWriteupControl />
       <ColoredMediumButton
         colored="blue"
         onClick={ handleSubmissionModal }

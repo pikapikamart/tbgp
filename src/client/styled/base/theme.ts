@@ -18,6 +18,7 @@ const theme: DefaultTheme = {
     grey4: "#DBDBDB",
     darkBlue: "#13113F",
     green: "#42C529",
+    greenBlue: "#43C296",
     blue: "#3B35B8",
     red: "#FF0000",
     skyBlue: "#119ECB",

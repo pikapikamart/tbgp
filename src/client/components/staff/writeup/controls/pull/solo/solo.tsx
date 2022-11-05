@@ -1,7 +1,8 @@
+import { useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { ColoredMediumButton } from "@/styled/collections/button"
 import { isWriteupEditable } from "../../../utils"
 import { ControlsUpdates } from "../../controls.styled"
-import { useSaveWriteup } from "../pull.hook"
+import { SaveWriteupControl } from "../save"
 import { useSolo } from "./solo.hook"
 
 
@@ -10,10 +11,7 @@ const Solo = () => {
     submitModal,
     handleSubmissionModal
   } = useSolo()
-  const {
-    writeup,
-    handleWriteupSave
-  } = useSaveWriteup()
+  const writeup = useSelectWriteup()
 
   if ( !isWriteupEditable(writeup) ) {
     return <></>
@@ -21,10 +19,7 @@ const Solo = () => {
 
   return (
     <ControlsUpdates>
-      <ColoredMediumButton
-        colored="borderGray"
-        onClick={ handleWriteupSave }>Save
-      </ColoredMediumButton>
+      <SaveWriteupControl />
       <ColoredMediumButton
         colored="blue"
         onClick={ handleSubmissionModal }
