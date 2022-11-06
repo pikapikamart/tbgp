@@ -1,8 +1,5 @@
 import styled from "styled-components"
-import { 
-  rem,
-  fluid,
-  breakpoint } from "@/styled/functions"
+import { fluid } from "@/styled/functions"
 import { InputError } from "@/components/collections/inputs/regular/input.styled"
 
 
@@ -12,8 +9,9 @@ export const HeaderWrapper = styled.div`
   margin-bottom: ${ fluid(24, 4, 40) }; 
 `
 
-const Input = styled.input`
+const Input = styled.textarea`
   color: ${ ({ theme }) => theme.colors.dark2 };
+  resize: none;
   width: 100%;
 
   &:focus-visible {
@@ -31,11 +29,18 @@ const Input = styled.input`
 
 export const HeaderTitle = styled(Input)`
   font-family: "Friz Quadrata Std Bold Italic";
-  font-size: ${ fluid(24, 4, 40) };
+  font-size: ${ fluid(22, 4, 40) };
   font-weight: 700;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 `
 
 export const HeaderCaption = styled(Input)`
-  font-size: ${ fluid(16, 2, 18) };
+  font-size: ${ fluid(16, 3, 18) };
   line-height: 1.4;
 `

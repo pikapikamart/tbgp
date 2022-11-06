@@ -6,8 +6,17 @@ import {
 
 
 export const ToolbarWrapper = styled.ul`
+  display: flex;
   font-family: 'Source Serif Pro', serif;
+  margin-bottom: ${ fluid(16, 3, 32) };
   z-index: 50;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 
   ${ ({ theme: { colors } }) => `
     box-shadow: 0 8px 12px 16px rgba(255, 255, 255, .8);
@@ -17,8 +26,7 @@ export const ToolbarWrapper = styled.ul`
   ` }
 
   ${ breakpoint("tablet", `
-      display: flex;
-      margin-bottom: ${ rem(32) };
+      
       padding: ${ rem(8) };
       position: sticky;
       top: 0;
@@ -35,7 +43,7 @@ export const ToolbarItem = styled.li`
   position: relative;
   
   &:not(:last-of-type) {
-    margin-right: ${ rem(8) };
+    margin-right: ${ fluid(4, 1, 8) };
   }
 `
 
@@ -49,7 +57,7 @@ export const MarkButton = styled.button<MarkButtonProps>`
   border-radius: 50%;
   color: ${ ({ theme }) => theme.colors.dark3 };
   display: flex;
-  font-size: ${ rem(22) };
+  font-size: ${ fluid(20, 2, 22) };
   height: ${ rem(36) };
   place-content: center;
   width: ${ rem(36) };
@@ -107,7 +115,7 @@ export const MarkButton = styled.button<MarkButtonProps>`
 `
 
 export const HeadingMarkTrigger = styled(MarkButton)`
-  background: url("/icons/icon-dropdown-down-small.svg") no-repeat right center;  
+  background: url("/icons/icon-dropdown-down-small.svg") no-repeat calc(100% - 4px) center;  
 
   &[aria-expanded="true"] {
     background-color: rgba(0, 0, 0, .1);
@@ -115,32 +123,38 @@ export const HeadingMarkTrigger = styled(MarkButton)`
 `
 
 export const HeadingListWrapper = styled.ul`
+  border-radius: ${ rem(4) };
+  background-color: white;
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .2);
+  display: flex;
+  padding: ${ rem(4) } ${ rem(8) };
+  position: absolute;
+  top: 100%;
+  z-index: 10;
 
-  ${ breakpoint("tablet", `
-    border-radius: ${ rem(4) };
-    background-color: white;
-    box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .2);
-    display: flex;
-    padding: ${ rem(4) } ${ rem(8) };
-    position: absolute;
-    top: 100%;
-
-    ${ MarkButton } {
-      
-      &:not(:last-of-type) {
-        margin-right: ${ rem(4) };
-      }
+  ${ MarkButton } {
+    
+    &:not(:last-of-type) {
+      margin-right: ${ rem(4) };
     }
-  `) }
+  }
 `
 
 export const PasteLink = styled.input`
   background-color: white;
   border-radius: ${ rem(4) };
   border: 1px solid ${ ({ theme }) => theme.colors.blue };
-  height: ${ rem(44) };
+  font-size: ${ fluid(14, 1.3, 16) };
+  font-family: "libre franklin";
+  height: ${ fluid(36, 4, 44) };
   padding: ${ rem(4) } ${ rem(8) };
   position: absolute;
+  inset: 100% -${ rem(24) } auto auto;
   top: 100%;
   width: ${ rem(256) };
+  z-index: 10;
+
+  ${ breakpoint("tablet", `
+    inset: 100% auto auto 0;
+  `) }
 `

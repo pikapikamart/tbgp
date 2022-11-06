@@ -29,7 +29,8 @@ const Header = ({}: HeaderProps) =>{
     staff,
     addFieldRef,
     submitFormRef,
-    handleFormSubmit
+    handleFormSubmit,
+    handleTextareaResize
   } = useWriteupHeader()
   
   if ( !isWriteupReadonly(writeup, staff.bastionId) ) {
@@ -43,8 +44,14 @@ const Header = ({}: HeaderProps) =>{
             name="title"
             defaultValue={ writeup.content[0].title }
             placeholder="Story title"
+            rows={ 1 }
+            autoComplete="off"
+            onInput={ handleTextareaResize }
             aria-required="true"
-            ref={ addFieldRef } />
+            ref={ el => {
+              el? el.setAttribute("style", `height: ${ el.scrollHeight }px; overflow-y: hidden;`) : null
+              addFieldRef(el)
+            } } />
               <InputError id="error-title">Title should not be empty</InputError>
         </div>
         <div>
@@ -53,8 +60,14 @@ const Header = ({}: HeaderProps) =>{
             name="caption"
             defaultValue={ writeup.content[0].caption }
             placeholder="Enter story caption"
+            rows={ 1 }
+            autoComplete="off"
+            onInput={ handleTextareaResize }
             aria-required="true"
-            ref={ addFieldRef } />
+            ref={ el => {
+              el? el.setAttribute("style", `height: ${ el.scrollHeight }px; overflow-y: hidden;`) : null
+              addFieldRef(el)
+            } } />
               <InputError id="error-caption">Caption should not be empty</InputError>
         </div>
         <WriteHeaderCover />

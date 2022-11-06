@@ -32,9 +32,9 @@ const Image = () =>{
     insertImage(editor, image, caption)
   }
 
-  const handleAddImage = ( event: React.MouseEvent<HTMLButtonElement, MouseEvent> ) =>{
+  const handleAddImage = () =>{
     
-    if ( writeup.currentPhase!=="graphics" && isWriteupHandler(writeup, staff.bastionId) ) {
+    if ( !(writeup.content[0].phase==="graphics" && isWriteupHandler(writeup, staff.bastionId)) ) {
       return
     }
 
@@ -49,13 +49,13 @@ const Image = () =>{
       </BaseModal>
     )
   }
-
+  
   return (
     <ToolbarItem>
       <MarkButton
         onClick={ handleAddImage }
         aria-expanded={ isExpanded }
-        aria-disabled={ writeup.currentPhase!=="graphics" && isWriteupHandler(writeup, staff.bastionId) }>
+        aria-disabled={ !(writeup.content[0].phase==="graphics" && isWriteupHandler(writeup, staff.bastionId)) }>
         <ImageIcon />
         <SrOnly>add an image</SrOnly>
       </MarkButton>

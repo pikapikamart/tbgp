@@ -1,10 +1,7 @@
 import { ColoredMediumButton } from "@/styled/collections/button"
 import { FormBottomControls } from "@/styled/shared/form"
 import { SrOnly } from "@/styled/shared/helpers"
-import { 
-  useCallback, 
-  useEffect, 
-  useState } from "react"
+import { useCallback } from "react"
 import { useImageAddition } from "./image.hook"
 import { 
   ImageContainer, 
@@ -32,6 +29,7 @@ const sizes: readonly ImageSize[] = ["small", "medium", "large"]
 const Image = ({ extractData, exit }: ImageProps) => {
   const {
     image,
+    imageSize,
     registerControl,
     registerTrapContainer,
     handleInputOnChange,
@@ -73,9 +71,12 @@ const Image = ({ extractData, exit }: ImageProps) => {
           htmlFor="image">
           <SrOnly>Add image</SrOnly>
         </ImageLabel>
-        { image.url!=="" && <StyledImage 
-          src={ image.url }
-          alt={ image.caption } /> }
+        { image.url!=="" && (
+          <StyledImage 
+            src={ image.url }
+            alt={ image.caption }
+            imageSize={ imageSize } />
+        ) }
       </ImageContainer>
       <ImageSizeContainer>
         <ImageSizeLegend>Image size</ImageSizeLegend>

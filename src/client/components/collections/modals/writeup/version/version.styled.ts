@@ -1,17 +1,22 @@
 import styled, { css } from "styled-components";
 import { 
   rem,
+  fluid,
   breakpoint } from "@/styled/functions";
 import { DefaultText } from "@/styled/collections/text";
 
 
 export const VersionWrapper = styled.div`
   background-color: ${ ({ theme }) => theme.colors.white1 };
-  max-width: ${ rem(560) };
+  max-width: 100%;
   min-height: 100vh;
   margin-left: auto;
   position: relative;
   width: 100vw;
+
+  ${ breakpoint("tablet", `
+    max-width: ${ rem(560) };
+  `) }
 `
 
 export const VersionContentContainer = styled.div`
@@ -31,12 +36,9 @@ export const VersionClose = styled.button`
 `
 
 export const VersionsList = styled.ul`
-
-  ${ breakpoint("tablet", `
-    display: flex;
-    margin: 0 auto ${ rem(32) };
-    max-width: max-content;
-  `) }
+  display: flex;
+  margin: 0 auto ${ rem(32) };
+  max-width: max-content;
 `
 
 type VersionsListItemProps = {
@@ -66,7 +68,7 @@ export const VersionStoryRequestContainer = styled.div`
   border-bottom: 1px solid ${ ({ theme }) => theme.colors.grey3 };
   display: grid;
   gap: ${ rem(16) } 0;
-  padding: 0 ${ rem(32) } ${ rem(24) };
+  padding: 0 ${ fluid(16, 3, 32) } ${ rem(24) };
 `
 
 export const TopicsListItemHeading = styled.p`

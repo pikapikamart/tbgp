@@ -1,10 +1,13 @@
 import styled, { css } from "styled-components";
 import { RowStartCenter } from "@/styled/shared/helpers";
-import { rem } from "@/styled/functions";
+import { 
+  rem,
+  breakpoint } from "@/styled/functions";
 
 
 type BaseModalWrapperProps = {
-  styleReset?: boolean
+  styleReset?: boolean,
+  paddingStyle?: string
 }
 
 export const ModalDocument = styled.div`
@@ -20,14 +23,18 @@ export const BaseModalWrapper = styled(RowStartCenter)<BaseModalWrapperProps>`
   position: fixed;
   z-index: 10000;
 
-  ${ ({ styleReset }) => {
+  ${ ({ styleReset, paddingStyle }) => {
     switch(styleReset) {
       case true: 
         return css`
           display: block;
 
           ${ ModalDocument } {
+            padding: ${ paddingStyle };
+
+            ${ breakpoint("tablet", `
             padding: 0;
+          `) }
           }
         `
     }

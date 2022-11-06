@@ -7,10 +7,10 @@ import Link from "next/link";
 
 type LogoProps = {
   href: string,
-  src: string
+  src: string,
 }
 
-const Logo = ( { href, src }: LogoProps ) =>{
+const Logo = ( { href, src}: LogoProps ) =>{
 
   return(
     <div>

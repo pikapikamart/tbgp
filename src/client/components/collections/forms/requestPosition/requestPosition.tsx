@@ -27,7 +27,7 @@ const RequestPosition = () =>{
       <FormBottomControls>
         <ColoredMediumButton
           colored="darkBlue"
-          type="submit">Register
+          type="submit">Request
         </ColoredMediumButton>
         <ColoredMediumButton
           colored="grey"

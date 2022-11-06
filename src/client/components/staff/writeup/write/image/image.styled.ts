@@ -3,17 +3,21 @@ import {
   rem,
   fluid,
   breakpoint } from "@/styled/functions"
-import { InputError } from "@/components/collections/inputs/regular/input.styled"
+import { ImageSize } from "./image"
 
 
 export const ImageModalWrapper = styled.div`
   background-color: ${ ({ theme }) => theme.colors.white1 };
   border-radius: ${ rem(4) };
-  max-width: ${ rem(960) };
+  max-width: 100%;
   position: relative;
-  padding: ${ fluid(48, 8, 64) } ${ rem(32) } ${ fluid(40, 7, 56) };
+  padding: ${ fluid(48, 8, 64) } ${ fluid(16, 3, 32) } ${ fluid(40, 7, 56) };
   width: 100vw;
   z-index: 50;
+
+  ${ breakpoint("desktop", `
+    max-width: ${ rem(960) };
+  `) }
 `
 
 type ImageLabelProps = {
@@ -64,8 +68,29 @@ export const ImageContainer = styled.div`
   }
 `
 
-export const Image = styled.img`
+type ImageProps = {
+  imageSize: ImageSize
+}
+
+export const Image = styled.img<ImageProps>`
   margin: 0 auto;
+
+  ${ ({ imageSize }) => {
+    switch(imageSize) {
+      case "small":
+        return css`
+          max-width: ${ fluid(260, 66, 704) };
+        `
+      case "medium":
+        return css`
+          max-width: ${ fluid(280, 68, 800) };
+        `
+      case "large":
+        return css`
+          max-width: ${ fluid(300, 70, 896) };
+          `
+    }
+  } }
 `
 
 export const ImageSizeContainer = styled.fieldset`
@@ -111,7 +136,7 @@ export const CaptionLabel = styled.label`
 
 export const CaptionInput = styled.input`
   border-radius: ${ rem(4) };
-  font-size: ${ rem(15) };
+  font-size: ${ fluid(14, 1.3, 15) };
   padding: ${ rem(8) } ${ rem(4) };
   width: 100%;
 

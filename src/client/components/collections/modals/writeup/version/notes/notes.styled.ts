@@ -1,11 +1,12 @@
 import styled from "styled-components"
 import { 
   rem,
+  fluid,
   breakpoint } from "@/styled/functions"
 
 
 export const NotesWrapper = styled.div`
-  padding: ${ rem(24) } ${ rem(32) } ${ rem(24) };
+  padding: ${ rem(24) } ${ fluid(16, 3, 32) } ${ rem(24) };
 `
 
 export const NotesHeading = styled.h3`

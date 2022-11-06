@@ -10,10 +10,11 @@ type ModalProps = {
   children: React.ReactNode,
   isChild?: boolean,
   styleReset?: boolean,
+  paddingStyle?: string,
   exit?: () => void
 }
 
-const Modal = ({ children, isChild, styleReset, exit }: ModalProps) => {
+const Modal = ({ children, isChild, styleReset, paddingStyle, exit }: ModalProps) => {
   const { modalRef } = useFocusModal()
   const modalContext = useModalContext()
 
@@ -31,6 +32,7 @@ const Modal = ({ children, isChild, styleReset, exit }: ModalProps) => {
       tabIndex={ -1 }
       ref={ modalRef }
       styleReset={ styleReset }
+      paddingStyle={ paddingStyle }
       aria-labelledby="modal-heading">
       <ModalDocument role="document">
         <ModalExit onClick={ handleExitModal } />

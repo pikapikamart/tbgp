@@ -32,21 +32,23 @@ const Cover = () => {
           { cover.caption!=="" && <CoverCaption>{ cover.caption }</CoverCaption> }
         </CoverImageContainer>
       ) }
-      <CoverButton
-        onClick={ handleAddModal }
-        aria-disabled={ writeup.currentPhase!=="graphics" && isWriteupHandler(writeup, staff.bastionId) }
-        aria-expanded={ isExpanded }>
-        <img
-          src="/icons/icon-addimage.svg"
-          alt="" 
-          aria-hidden="true"  />
-        <span>
-          { cover.url===""? "Story Cover" : "Change cover" }
-        </span>
-        { writeup.currentPhase!=="graphics" && (
-          <SrOnly>Only available in graphics phase</SrOnly>
-        ) }
-      </CoverButton>
+      { writeup.content[0].phase==="graphics" && isWriteupHandler(writeup, staff.bastionId) && (
+        <CoverButton
+          onClick={ handleAddModal }
+          aria-disabled={ writeup.currentPhase!=="graphics" && isWriteupHandler(writeup, staff.bastionId) }
+          aria-expanded={ isExpanded }>
+          <img
+            src="/icons/icon-addimage.svg"
+            alt="" 
+            aria-hidden="true"  />
+          <span>
+            { cover.url===""? "Story Cover" : "Change cover" }
+          </span>
+          { writeup.currentPhase!=="graphics" && (
+            <SrOnly>Only available in graphics phase</SrOnly>
+          ) }
+        </CoverButton>
+      ) }
     </CoverContainer>
   )
 }

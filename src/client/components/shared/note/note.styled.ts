@@ -14,6 +14,13 @@ export const NoteWrapper = styled.div<NoteWrapperProps>`
   border-radius: ${ rem(4) };
   padding: ${ fluid(12, 1.1, 16) };
 
+  > p {
+
+    &:last-of-type {
+      max-width: max-content;
+    }
+  }
+
   ${ breakpoint("tablet", `
     align-items: center;
     background: url("/icons/icon-information.svg") no-repeat ${ rem(16) } ${ rem(16) };

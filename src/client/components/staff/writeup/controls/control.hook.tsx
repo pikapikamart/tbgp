@@ -20,7 +20,8 @@ export const useWriteupControl = () =>{
     modalContext.addModal(
       <BaseModal
         exit={ handleRequestExpansion }
-        styleReset={ true }>
+        styleReset={ true }
+        paddingStyle={ `0 0 0 40px` }>
           <WriteupVersionModal />
       </BaseModal>
     )

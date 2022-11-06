@@ -29,7 +29,8 @@ export const CoverButton = styled.button<CoverButtonProps>`
   border-radius: ${ rem(32) };
   display: flex;
   font-weight: 500;
-  padding: ${ rem(12) } ${ rem(16) };
+  font-size: ${ fluid(14, 1.3, 16) };
+  padding: ${ fluid(10, 1.4, 12) } ${ fluid(12, 1.3, 16) };
 
   ${ ({ theme: { colors } }) => `
     border: 1px solid ${ colors.grey2 };

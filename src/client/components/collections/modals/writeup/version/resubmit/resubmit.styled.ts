@@ -11,7 +11,7 @@ export const ResubmitContainer = styled.div`
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  padding: ${ rem(24) } ${ rem(32) } ${ rem( 48) };
+  padding: ${ rem(24) } ${ fluid(16, 3, 32) } ${ rem( 48) };
 `
 
 export const ResubmitControls = styled.div`
@@ -81,15 +81,13 @@ export const AddNote = styled.button`
   border-radius: 50%;
   background-color: ${ ({ theme }) => theme.colors.blue };
   display: grid;
-  height: ${ rem(48) };
+  height: ${ fluid(40, 4, 48) };
   margin: 0 auto;
   place-content: center;
-  width: ${ rem(48) };
+  width: ${ fluid(40, 4, 48) };
 
   svg {
     fill: white;
-
-    
   }
 `
 

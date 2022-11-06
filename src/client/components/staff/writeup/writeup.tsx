@@ -18,13 +18,11 @@ const Writeup = () =>{
 
   return (
     <MainWrapper>
-      <MainContentContainer>
-        <ModalFocusBack
-          ref={ focusBackElement }
-          tabIndex={ -1 }>
-          <ControlsSection />
-          <WriteSection />
-        </ModalFocusBack>
+      <MainContentContainer
+        ref={ focusBackElement }
+        tabIndex={ -1 }>
+        <ControlsSection />
+        <WriteSection />
       </MainContentContainer>
     </MainWrapper>
   )

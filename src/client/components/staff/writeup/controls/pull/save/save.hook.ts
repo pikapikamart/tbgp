@@ -50,11 +50,10 @@ export const useSaveWriteup = () =>{
   }, [ writeup.isSlateValid, writeup.isHeadingValid ])
 
   useEffect(() =>{
-
     const handleKeydown = ( event: KeyboardEvent ) =>{
       if ( event.ctrlKey && event.key==="s" ) {
         event.preventDefault()
-        saveMutate()
+        handleWriteupSave()
       }
     }
 

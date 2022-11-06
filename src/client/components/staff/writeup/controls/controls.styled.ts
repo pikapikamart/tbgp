@@ -1,26 +1,30 @@
 import styled, { keyframes } from "styled-components"
 import {
   rem,
-  breakpoint
+  breakpoint,
+  fluid
 } from "@/styled/functions"
 import { RowCenterCenter } from "@/styled/shared/helpers"
 import { ColoredMediumButton } from "@/styled/collections/button"
 
 
 export const ControlsContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  bottom: 0;
+  z-index: 1000;
 
   ${ breakpoint("tablet", `
-    align-items: center;
-    display: flex;
     flex-direction: column-reverse;
-    position: sticky;
     top: 0;
-    z-index: 1000;
   `) }
 `
 
 export const ControlsSelections = styled(RowCenterCenter)`
-  border-radius: 0 0 ${ rem(8) } ${ rem(8) };
+  border-radius: ${ rem(8) } ${ rem(8) } 0 0;
+  border-bottom: none;
   max-height: 0;
   height: ${ rem(60) };
   overflow: hidden;
@@ -35,12 +39,20 @@ export const ControlsSelections = styled(RowCenterCenter)`
   ${ ({ theme: { colors } }) => `
     background-color: ${ colors.white1 };
     border: 1px solid ${ colors.grey4 };
-    border-top: none;
+  ` }
+
+  ${ ({ theme: { colors } }) => `
+  
+    ${ breakpoint("tablet", `
+      border-radius: 0 0 ${ rem(8) } ${ rem(8) };
+      border-bottom: 1px solid ${ colors.grey4 };
+      border-top: none;
+    `) }
   ` }
 `
 
 export const ControlsUpdates = styled.div`
-  margin-right: ${ rem(48) };
+  margin-right: ${ fluid(12, 4, 48) };
 
   ${ ColoredMediumButton } {
 
@@ -58,19 +70,40 @@ export const ControlsMenu = styled.button`
 `
 
 export const TopPull = styled.button`
+  border-radius: ${ rem(24) } ${ rem(24) } 0 0;
+  height: ${ rem(16) };
+  position: relative;
+  transform: translateY(1px);
+  width: ${ rem(32) };
+  z-index: 5;
 
   ${ ({ theme: { colors } }) => `
-    ${ breakpoint("tablet", `
-      background: url("/icons/icon-dropdown-down.svg") no-repeat center top;
-      background-color: ${ colors.white1 };
-      border-radius: 0 0 ${ rem(24) } ${ rem(24) };
-      border: 1px solid ${ colors.grey3 };
-      border-top: none;
-      height: ${ rem(16) };
-      transform: translateY(-1px);
-      width: ${ rem(32) };
-    `) }
+    background-color: ${ colors.white1 };
+    border: 1px solid ${ colors.grey3 };
   ` }
+
+  border-bottom: none;
+
+  &::before {
+    content: "";
+    background: url("/icons/icon-dropdown-down.svg") no-repeat center top;
+    height: 100%;
+    inset: 0 auto auto 0;
+    position: absolute;
+    transform: rotateX(-180deg);
+    width: 100%;
+  }
+
+  ${ breakpoint('tablet', `
+    border-top: none;
+    border-bottom: 1px;
+    border-radius: 0 0 ${ rem(24) } ${ rem(24) };
+    transform: translateY(-1px);
+
+    &::before {
+      transform: revert;
+    }
+  `) }
 
   &[aria-expanded="true"] {
 

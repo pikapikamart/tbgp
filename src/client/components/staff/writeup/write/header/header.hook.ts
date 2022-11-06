@@ -3,8 +3,8 @@ import {
   useAppDispatch,
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { setWriteupHeading } from "@/store/slices/writeup.slice"
-import { 
+import { resetSubmission, setWriteupHeading } from "@/store/slices/writeup.slice"
+import React, { 
   useEffect, 
   useRef } from "react"
 
@@ -24,9 +24,15 @@ export const useWriteupHeader = () =>{
     addFieldRef,
     handleFormSubmit,
     isValidData,
+    isInvalidData,
     resetFormValidation,
   } = useFormValidation()
   const submitFormRef = useRef<HTMLButtonElement | null>(null)
+
+  const handleTextareaResize = ( { currentTarget }: React.FormEvent<HTMLTextAreaElement> ) => {
+    currentTarget.style.height = "0"
+    currentTarget.style.height = currentTarget.scrollHeight + "px"
+  }
 
   useEffect(() =>{
     if ( writeup.shouldSave && submitFormRef.current ) {
@@ -36,6 +42,7 @@ export const useWriteupHeader = () =>{
 
   useEffect(() =>{
     if ( isValidData ) {
+      
       const fields = getFieldsRef().reduce((accu, curr) =>{
         accu[curr.name] = curr.value.trim()
 
@@ -47,11 +54,19 @@ export const useWriteupHeader = () =>{
     }
   }, [ isValidData ])
 
+  useEffect(() =>{
+    if ( isInvalidData ) {
+      resetFormValidation()
+      dispatch(resetSubmission())
+    }
+  }, [ isInvalidData ])
+
   return {
     writeup,
     staff,
     addFieldRef,
     submitFormRef,
-    handleFormSubmit
+    handleFormSubmit,
+    handleTextareaResize
   }
 }

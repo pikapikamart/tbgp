@@ -49,5 +49,5 @@ export const ColoredMediumButton = styled(ColoredBaseButton)`
 
 export const ColoredLongRoundButton = styled(BaseButton)<ColoredButtonProps>`
   border-radius: ${ rem(24) };
-  min-width: ${ fluid(140, 19, 256) };
+  min-width: ${ fluid(140, 45, 256) };
 `

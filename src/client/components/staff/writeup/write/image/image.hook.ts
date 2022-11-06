@@ -1,5 +1,7 @@
 import { useTrapFocus } from "@/lib/hooks"
-import { useEffect, useState } from "react"
+import { 
+  useEffect, 
+  useState } from "react"
 import { ImageSize } from "./image"
 
 
@@ -89,6 +91,7 @@ export const useImageAddition = () =>{
 
   return {
     image,
+    imageSize,
     registerControl,
     registerTrapContainer,
     handleInputOnChange,
