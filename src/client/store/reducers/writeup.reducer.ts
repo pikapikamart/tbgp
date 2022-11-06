@@ -8,6 +8,7 @@ import type { WritableDraft } from "immer/dist/internal"
 import { Descendant } from "slate"
 import { StaffState } from "../slices/staff.slice"
 import { WriteupState } from "../slices/writeup.slice"
+import io from "socket.io-client"
 
 
 export type DraftWriteupState = WritableDraft<WriteupState>
@@ -89,4 +90,15 @@ export type WriteupBanner = {
 
 export const addWriteupBannerReducer = ( state: DraftWriteupState, action: PayloadAction<WriteupBanner> ) => {
   state.banner = action.payload
+}
+
+export const startCollaboratingReducer = ( state: DraftWriteupState, action: PayloadAction<string> ) => {
+  let socket = state.socket
+
+  if ( !socket ) {
+    // writable draft check
+    socket = io(action.payload)
+  }
+
+  state.socket = socket
 }

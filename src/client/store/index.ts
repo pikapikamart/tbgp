@@ -14,6 +14,11 @@ export const store = () => configureStore({
     staff: staffReducer,
     writeup: writeupReducer
   },
+  middleware: ( getDefaultMiddleware ) => (
+    getDefaultMiddleware({
+      serializableCheck: false
+    })
+  ),
   devTools: true
 })
 

@@ -13,10 +13,12 @@ import {
   setWriteupHeadingReducer,
   setWriteupReducer, 
   setWriteupSlateReducer,
+  startCollaboratingReducer,
   submitWriteupReducer,
   takeWriteupTaskReducer} from "../reducers/writeup.reducer";
 import { WriteupPhases } from "@/src/server/models/writeup.model";
 import { ModifyType } from "types/utils";
+import { Socket } from "socket.io-client";
 
 
 export type WriteupState = ModifyType<PopulatedWriteup, {
@@ -25,6 +27,7 @@ export type WriteupState = ModifyType<PopulatedWriteup, {
   shouldSave: boolean,
   isHeadingValid: boolean,
   isSlateValid: boolean,
+  socket?: Socket
 }
 
 // bad redux
@@ -73,7 +76,8 @@ export const writeupSlice = createSlice({
     resetWriteup: resetWriteupReducer,
     takeWriteupTask: takeWriteupTaskReducer,
     resubmitWriteup: resubmitWriteupReducer,
-    addWriteupBanner: addWriteupBannerReducer
+    addWriteupBanner: addWriteupBannerReducer,
+    startCollaborating: startCollaboratingReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -97,7 +101,8 @@ export const {
   resetWriteup,
   takeWriteupTask,
   resubmitWriteup,
-  addWriteupBanner
+  addWriteupBanner,
+  startCollaborating
 } = writeupSlice.actions;
 export const selectWriteup = ( state: RootState ) => state.writeup
 
