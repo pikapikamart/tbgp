@@ -19,7 +19,7 @@ WriteupPage.requireAuth = true
 export const getServerSideProps = async() =>{
   const socketUri = process.env.SOCKET_URI as string
 
-  if ( socketUri ) {
+  if ( !socketUri ) {
     // do something 
   }
 

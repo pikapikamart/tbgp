@@ -19,6 +19,7 @@ import {
 import { WriteupPhases } from "@/src/server/models/writeup.model";
 import { ModifyType } from "types/utils";
 import { Socket } from "socket.io-client";
+import { Descendant } from "slate";
 
 
 export type WriteupState = ModifyType<PopulatedWriteup, {
@@ -27,7 +28,8 @@ export type WriteupState = ModifyType<PopulatedWriteup, {
   shouldSave: boolean,
   isHeadingValid: boolean,
   isSlateValid: boolean,
-  socket?: Socket
+  socket?: Socket,
+  slateEmitter?: ( opts: Descendant[] ) => void
 }
 
 // bad redux
@@ -77,7 +79,7 @@ export const writeupSlice = createSlice({
     takeWriteupTask: takeWriteupTaskReducer,
     resubmitWriteup: resubmitWriteupReducer,
     addWriteupBanner: addWriteupBannerReducer,
-    startCollaborating: startCollaboratingReducer
+    startCollaborating: startCollaboratingReducer,
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -102,7 +104,7 @@ export const {
   takeWriteupTask,
   resubmitWriteup,
   addWriteupBanner,
-  startCollaborating
+  startCollaborating,
 } = writeupSlice.actions;
 export const selectWriteup = ( state: RootState ) => state.writeup
 

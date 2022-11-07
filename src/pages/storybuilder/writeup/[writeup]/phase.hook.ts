@@ -11,7 +11,15 @@ export const Events = {
   connection: "connection",
   disconnect: "disconnect",
   clients: {
-      create_collab_room: "create_collab_room"
+      create_collab_room: "create_collab_room",
+      emit_title: "emit_title",
+      emit_caption: "emit_caption",
+      emit_slate: "emit_slate"
+  },
+  server: {
+    broadcast_title: "broadcast_title",
+    broadcast_caption: "broadcast_caption",
+    broadcast_slate: "broadcast_slate" 
   }
 }
 

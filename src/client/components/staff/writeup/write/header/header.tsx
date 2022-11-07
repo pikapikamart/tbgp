@@ -1,17 +1,13 @@
 import { InputError } from "@/components/collections/inputs/regular/input.styled"
-import { 
-  useSelectStaff, 
-  useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { SrOnly } from "@/styled/shared/helpers"
 import { 
-  isWriteupEditable, 
   isWriteupGraphicsAvailable, 
-  isWriteupHandler, 
-  isWriteupMember, 
-  isWriteupPhaseEditable,
   isWriteupReadonly} from "../../utils"
 import { WriteHeaderCover } from "./cover"
-import { CoverCaption, CoverContainer, CoverImage } from "./cover/cover.styled"
+import { 
+  CoverCaption, 
+  CoverContainer, 
+  CoverImage } from "./cover/cover.styled"
 import { useWriteupHeader } from "./header.hook"
 import { 
   HeaderCaption,
@@ -30,7 +26,11 @@ const Header = ({}: HeaderProps) =>{
     addFieldRef,
     submitFormRef,
     handleFormSubmit,
-    handleTextareaResize
+    handleTextareaResize,
+    titleRef,
+    captionRef,
+    handleEmitTitle,
+    handleEmitCaption
   } = useWriteupHeader()
   
   if ( !isWriteupReadonly(writeup, staff.bastionId) ) {
@@ -46,11 +46,13 @@ const Header = ({}: HeaderProps) =>{
             placeholder="Story title"
             rows={ 1 }
             autoComplete="off"
+            onChange={ handleEmitTitle }
             onInput={ handleTextareaResize }
             aria-required="true"
             ref={ el => {
               el? el.setAttribute("style", `height: ${ el.scrollHeight }px; overflow-y: hidden;`) : null
               addFieldRef(el)
+              titleRef.current = el
             } } />
               <InputError id="error-title">Title should not be empty</InputError>
         </div>
@@ -62,11 +64,13 @@ const Header = ({}: HeaderProps) =>{
             placeholder="Enter story caption"
             rows={ 1 }
             autoComplete="off"
+            onChange={ handleEmitCaption }
             onInput={ handleTextareaResize }
             aria-required="true"
             ref={ el => {
               el? el.setAttribute("style", `height: ${ el.scrollHeight }px; overflow-y: hidden;`) : null
               addFieldRef(el)
+              captionRef.current = el
             } } />
               <InputError id="error-caption">Caption should not be empty</InputError>
         </div>

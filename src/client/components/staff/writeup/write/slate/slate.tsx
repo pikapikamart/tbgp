@@ -18,7 +18,8 @@ const Slate = () => {
   const { 
     editor,
     initialValue,
-    writeup } = useSlate()
+    writeup,
+    handleSlateEmitter } = useSlate()
   const staff = useSelectStaff()
   
   const renderElement = useCallback((props: RenderElementProps) => {
@@ -33,7 +34,8 @@ const Slate = () => {
     <SlateWrapper>  
       <SlateComp 
         editor={ editor }
-        value={ initialValue }>
+        value={ initialValue }
+        onChange={ handleSlateEmitter }>
           <SlateToolbar />
           <Editable
             readOnly={ isWriteupReadonly(writeup, staff.bastionId) }
