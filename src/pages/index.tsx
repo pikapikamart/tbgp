@@ -1,4 +1,4 @@
-import { BuilderLayout } from "@/components/layout/builder";
+import { DefaultLayout } from "@/components/layout/default";
 import { NextPageWithLayout } from "./_app";
 
 
@@ -11,7 +11,7 @@ const Homepage: NextPageWithLayout = () =>{
   )
 }
 
-Homepage.getLayout = ( page ) => BuilderLayout(page)
+Homepage.getLayout = ( page ) => DefaultLayout(page)
 
 
 export default Homepage;
