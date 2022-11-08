@@ -1,13 +1,12 @@
 import { DefaultLayout } from "@/components/layout/default";
+import { Home } from "@/components/main/home";
 import { NextPageWithLayout } from "./_app";
 
 
 const Homepage: NextPageWithLayout = () =>{
 
   return (
-    <div>
-      Oh hey
-    </div>
+    <Home />
   )
 }
 
