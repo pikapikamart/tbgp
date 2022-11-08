@@ -1,12 +1,18 @@
-import { NavlinksList } from "./navlinks.styled"
+import { useNavlinks } from "./navlinks.hook"
+import { 
+  NavlinksList, 
+  NavlinksWrapper } from "./navlinks.styled"
 
 
 const Navlinks = () =>{
+  const { renderLinks } = useNavlinks()
 
   return (
-    <NavlinksList>
-      
-    </NavlinksList>
+    <NavlinksWrapper>
+      <NavlinksList>
+        { renderLinks() }
+      </NavlinksList>
+    </NavlinksWrapper>
   )
 }
 
