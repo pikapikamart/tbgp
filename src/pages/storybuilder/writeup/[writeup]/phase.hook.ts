@@ -31,7 +31,11 @@ export const useWriteupPhaseCollaboration = (socketUri: string) =>{
   useEffect(() =>{
     // only send a socket when there are atleast 2 members
     // in an available writeup
-    if ( writeup.writeupId && !writeup.socket && isWriteupPhaseEditable(writeup, staff.bastionId) && writeup.request.members.length > 1 ) {
+    if ( writeup.writeupId && 
+        !writeup.socket &&
+        writeup.content[0].phase==="writeup" && 
+        isWriteupPhaseEditable(writeup, staff.bastionId) && 
+        writeup.request.members.length > 1 ) {
       dispatch(startCollaborating(socketUri))
     }
   }, [ writeup ])

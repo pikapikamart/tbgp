@@ -53,7 +53,7 @@ export const useWriteupHeader = () =>{
 
   const handleEmitCaption = ( event: React.ChangeEvent<HTMLTextAreaElement> ) => {
     const { socket } = writeup
-    
+
     if ( socket ) {
       socket.emit(Events.clients.emit_caption, {
         writeup: writeup.writeupId,

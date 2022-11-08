@@ -14,15 +14,9 @@ type NoteProps = {
 
 const Note = ({ note, setNotes, index }: NoteProps) => {
 
-  const calcHeight = (value: string) => {
-    const numberOfLineBreaks = (value.match(/\n/g) || []).length;
-    const newHeight = 20 + numberOfLineBreaks * 20 + 12 + 2;
-    return newHeight;
-  }
-
-  const handleTextareaResize = ( event: React.KeyboardEvent<HTMLTextAreaElement> ) => {
-    const element = event.currentTarget
-    element.style.height = calcHeight(element.value) + "px"
+  const handleTextareaResize = ( { currentTarget }: React.KeyboardEvent<HTMLTextAreaElement> ) => {
+    currentTarget.style.height = "0"
+    currentTarget.style.height = currentTarget.scrollHeight + "px"
   }
 
   const handleTitleValue = ( event: React.FocusEvent<HTMLInputElement, Element> ) => {
@@ -70,7 +64,7 @@ const Note = ({ note, setNotes, index }: NoteProps) => {
         onBlur={ handleTitleValue } />
       <NoteMessageText
         placeholder="Note message"
-        onKeyUp={ handleTextareaResize }
+        onInput={ handleTextareaResize }
         onBlur={ handleMessageValue } />
       <RemoveNote onClick={ handleRemoveNote }>Remove</RemoveNote>
     </NoteContainer>

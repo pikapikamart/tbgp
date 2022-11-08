@@ -1,8 +1,7 @@
 import styled, { css } from "styled-components"
 import { 
-  rem,
-  fluid,
-  breakpoint } from "@/styled/functions"
+  fluid, 
+  rem } from "@/styled/functions"
 
 
 export const SlateWrapper = styled.div`
@@ -12,27 +11,31 @@ export const SlateWrapper = styled.div`
 export const HeadingTwo = styled.h2`
   font-family: "Friz Quadrata Std Bold Italic";
   font-size: ${ fluid(22, 3.2, 32) };
-  margin-top: ${ fluid(12, 1.3, 16) };
+  margin-top: ${ fluid(24, 2, 40) };
   margin-bottom: ${ fluid(16, 2, 22) };
 `
 
-export const HeadingThree = styled.h2`
+export const HeadingThree = styled.h3`
   font-family: "Friz Quadrata Std Bold Italic";
   font-size: ${ fluid(20, 2.9, 26) };
-  margin-top: ${ fluid(12, 1.3, 16) };
+  margin-top: ${ fluid(22, 3, 38) };
   margin-bottom: ${ fluid(14, 2, 18) };
 `
 
-export const HeadingFour = styled.h2`
+export const HeadingFour = styled.h4`
   font-family: "Friz Quadrata Std Bold Italic";
-  font-size: ${ fluid(17, 2.7, 22) };
-  margin-top: ${ fluid(12, 1.3, 16) };
+  font-size: ${ fluid(18, 2.7, 22) };
+  margin-top: ${ fluid(20, 3, 24) };
   margin-bottom: ${ fluid(12, 2, 14) };
+
+  + p {
+    margin-top: ${ fluid(8, 1.5, 16) };
+  }
 `
 
 export const Paragraph = styled.p`
   font-size: ${ fluid(14, 3, 18) };
-  line-height: 1.8;
+  line-height: 2;
   margin: ${ fluid(14, 2.5, 23) } 0;
 `
 

@@ -12,6 +12,7 @@ import {
 import { WriteupState } from "../slices/writeup.slice"
 import { 
   InitialStoryRequest, 
+  PopulatedInitialWriteup, 
   StaffProfile } from "../store.types"
 
 
@@ -127,6 +128,9 @@ export const resubmitTaskReducer = ( state: WritableStaffState, action: PayloadA
 
 export const publishWriteupReducer = ( state: WritableStaffState, action: PayloadAction<string> ) => {
   if ( isEditorStaffState(state) ) {
-    state.writeups.task = state.writeups.task.filter(task => task.writeupId!==action.payload)
+    const filter = ( writeup: PopulatedInitialWriteup ) => writeup.writeupId!==action.payload
+    state.writeups.task = state.writeups.task.filter(filter)
+    state.writeups.solo = state.writeups.solo.filter(filter)
+    state.writeups.collaborated = state.writeups.collaborated.filter(filter)
   }
 }

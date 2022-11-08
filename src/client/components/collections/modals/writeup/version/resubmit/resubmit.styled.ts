@@ -1,8 +1,7 @@
 import styled from "styled-components"
 import {
   rem,
-  fluid,
-  breakpoint
+  fluid
 } from "@/styled/functions"
 import { ColoredMediumButton } from "@/styled/collections/button"
 
@@ -57,6 +56,7 @@ export const NoteTitleInput = styled.input`
 `
 export const NoteMessageText = styled.textarea`
   font-size: ${ rem(14.5) };
+  margin-bottom: ${ rem(8) };
   padding: 0 ${ rem(24) };
   resize: none;
   width: 100%;
