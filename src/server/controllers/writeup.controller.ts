@@ -16,6 +16,7 @@ import {
   SaveWriteupPhaseSchema,
   ReSubmitWriteupScheam,
   SingleWriteupSchema} from "../schemas/writeup.schema";
+import { addArticleCategoryService, createArticleCategoryService, findArticleCategoryService } from "../services/article.category.service";
 import { createArticleService, findArticleService } from "../services/article.service";
 import { updateStaffService } from "../services/staff.service";
 import { findStoryRequestService } from "../services/story.request.service";
@@ -435,6 +436,18 @@ export const publishWriteupHandler = async( writeupId: WriteupIdSchema, { staff 
 
   if ( foundArticle ) {
     return trpcError("CONFLICT", "Article with the same title is already published")
+  }
+
+  const articleCategory = await findArticleCategoryService({})
+
+  if ( !articleCategory ) {
+    await createArticleCategoryService(writeup.category)
+  } else {
+    const foundCategory = articleCategory.categories.find(category => category===writeup.category)
+  
+    if ( !foundCategory ) {
+      await addArticleCategoryService(writeup.category)
+    }
   }
 
   const storyRequest = storyRequestValidator(await findStoryRequestService({ _id: writeup.request }))
