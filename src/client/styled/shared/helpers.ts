@@ -35,6 +35,11 @@ export const RowCenter = styled.div`
   ${ BaseRowCenter };
 `
 
+export const RowEnd = styled.div`
+  align-items: flex-end;
+  display: flex;
+`
+
 export const RowCenterCenter = styled.div`
   ${ BaseRowCenter };
   
