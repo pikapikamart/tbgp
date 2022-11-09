@@ -49,8 +49,7 @@ const articleSchema: mongoose.Schema<ArticleDocument> = new mongoose.Schema({
       required: true
     },
     caption: {
-      type: String,
-      required: true
+      type: String
     }
   },
   content: [],

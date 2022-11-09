@@ -5,7 +5,9 @@ import {
 import { 
   selectStaff, 
   setStaff } from "@/store/slices/staff.slice";
-import { selectWriteup, setWriteup } from "@/store/slices/writeup.slice";
+import { 
+  selectWriteup, 
+  setWriteup } from "@/store/slices/writeup.slice";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -73,7 +75,6 @@ export const useSetupWriteup = () =>{
     }
   })
 
-
   useEffect(() =>{
     if ( !writeup.writeupId ) {
       query.refetch()
@@ -82,10 +83,13 @@ export const useSetupWriteup = () =>{
 
   useEffect(() =>{
     query.refetch()
-
   }, [ router.query["phase"] ])
 
-  return writeup
+  return {
+    writeup,
+    isSuccess: query.isSuccess,
+    isFetching: query.isFetching
+  }
 }
 
 export const useSelectWriteup = () => {

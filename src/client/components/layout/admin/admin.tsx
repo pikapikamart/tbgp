@@ -3,13 +3,13 @@ import { LayoutHead } from "../head"
 import { DefaultHeader } from "../header";
 
 
-const DefaultLayout = ( page: React.ReactElement ) => {
+const DefaultLayout = ( page: React.ReactElement, isEmpty?: boolean ) => {
 
   return (
     <>
       <LayoutHead />
       <GlobalStyle />
-      <DefaultHeader type="admin" />
+      { isEmpty? <></> : <DefaultHeader type="admin" /> }
       { page }
     </>
   )
