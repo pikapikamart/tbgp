@@ -9,6 +9,8 @@ export const ToolbarWrapper = styled.ul`
   display: flex;
   font-family: 'Source Serif Pro', serif;
   margin-bottom: ${ fluid(16, 3, 32) };
+  position: sticky;
+  top: 0;
   z-index: 50;
 
   &::-webkit-scrollbar {
@@ -26,10 +28,7 @@ export const ToolbarWrapper = styled.ul`
   ` }
 
   ${ breakpoint("tablet", `
-      
       padding: ${ rem(8) };
-      position: sticky;
-      top: 0;
       width: 100%;
     `) }
 

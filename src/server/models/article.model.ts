@@ -13,8 +13,13 @@ export type Article = {
     url: string,
     caption: string
   },
+  thumbnail: {
+    small: string,
+    medium: string
+  },
   content: any[],
-  writeup: WriteupDocument["_id"]
+  writeup: WriteupDocument["_id"],
+  views: number
 }
 
 export type ArticleDocument = Article & mongoose.Document<mongoose.Types.ObjectId> & {
@@ -52,10 +57,18 @@ const articleSchema: mongoose.Schema<ArticleDocument> = new mongoose.Schema({
       type: String
     }
   },
+  thumbnail: {
+    small: String,
+    medium: String,
+  },
   content: [],
   writeup: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Writeup"
+  },
+  views: {
+    type: Number,
+    default: 0
   }
 }, { timestamps: true })
 

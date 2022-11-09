@@ -16,7 +16,10 @@ import {
   SaveWriteupPhaseSchema,
   ReSubmitWriteupScheam,
   SingleWriteupSchema} from "../schemas/writeup.schema";
-import { addArticleCategoryService, createArticleCategoryService, findArticleCategoryService } from "../services/article.category.service";
+import { 
+  addArticleCategoryService, 
+  createArticleCategoryService, 
+  findArticleCategoryService } from "../services/article.category.service";
 import { createArticleService, findArticleService } from "../services/article.service";
 import { updateStaffService } from "../services/staff.service";
 import { findStoryRequestService } from "../services/story.request.service";
@@ -33,6 +36,8 @@ import {
   storyRequestValidator, 
   writeupPhaseIndex, 
   writeupValidator} from "./controller.utils";
+import fs from "fs"
+import sharp from "sharp"
 
 
 // ----Helpers----
@@ -452,6 +457,15 @@ export const publishWriteupHandler = async( writeupId: WriteupIdSchema, { staff 
 
   const storyRequest = storyRequestValidator(await findStoryRequestService({ _id: writeup.request }))
 
+  const resizer = async( width: number, height: number ) => {
+    const uri = writeup.banner.url.split(';base64,').pop() as string
+    let imageBuffer = Buffer.from(uri, "base64")
+    const result = await sharp(imageBuffer)
+      .resize(width, height)
+      .toBuffer()
+    return `data:image/png;base64,${result.toString('base64')}`
+  } 
+
   const createdArticle = await createArticleService(
     {
       category: writeup.category,
@@ -460,8 +474,13 @@ export const publishWriteupHandler = async( writeupId: WriteupIdSchema, { staff 
       title: currentContent.title,
       caption: currentContent.caption,
       banner: writeup.banner,
+      thumbnail: {
+        small: await resizer(272, 200),
+        medium: await resizer(520, 320)
+      },
       content: currentContent.data,
-      writeup: writeup._id
+      writeup: writeup._id,
+      views: 0
     }
   )
 
