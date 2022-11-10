@@ -1,7 +1,9 @@
 import { PayloadAction } from "@reduxjs/toolkit"
 import type { WritableDraft } from "immer/dist/internal"
 import { AppThunk } from ".."
-import { AdminState, setAdmin } from "../slices/admin.slice"
+import { 
+  AdminState, 
+  setAdmin } from "../slices/admin.slice"
 
 
 export const setAdminReducer = ( state: WritableDraft<AdminState>, action: PayloadAction<AdminState> ) => {

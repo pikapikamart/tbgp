@@ -1,6 +1,7 @@
 import { 
   DocumentDefinition, 
   FilterQuery, 
+  PopulateOptions, 
   ProjectionType,
   QueryOptions} from "mongoose";
 import { 
@@ -18,4 +19,13 @@ export const findArticleService = async(
   options: QueryOptions = {}
 ) => (
   ArticleModel.findOne(query, projection, options)
+)
+
+export const populateArticleService = async(
+  query: FilterQuery<Article>,
+  projection: ProjectionType<Article> = "",
+  options: QueryOptions = {},
+  populate: PopulateOptions
+) => (
+  ArticleModel.find(query, projection, options).populate(populate)
 )

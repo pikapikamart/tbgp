@@ -38,7 +38,7 @@ const articleSchema: mongoose.Schema<ArticleDocument> = new mongoose.Schema({
   },
   authors: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "staff"
+    ref: "Staff"
   }],
   title: {
     type: String,

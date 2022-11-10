@@ -4,6 +4,7 @@ import {
 import adminReducer from "./slices/admin.slice";
 import staffReducer from "./slices/staff.slice"
 import writeupReducer from "./slices/writeup.slice"
+import articlesReducer from "./slices/articles.slice"
 import { Action } from "redux"
 import { createWrapper } from "next-redux-wrapper"
 
@@ -12,7 +13,8 @@ export const store = () => configureStore({
   reducer: {
     admin: adminReducer,
     staff: staffReducer,
-    writeup: writeupReducer
+    writeup: writeupReducer,
+    articles: articlesReducer
   },
   middleware: ( getDefaultMiddleware ) => (
     getDefaultMiddleware({
