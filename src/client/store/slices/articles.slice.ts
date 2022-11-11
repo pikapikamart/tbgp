@@ -4,7 +4,7 @@ import { RootState } from "..";
 import { Article } from "@/src/server/models/article.model";
 import { ModifyType } from "types/utils";
 import { StaffProfile } from "../store.types";
-import { setArticlesReducer } from "../reducers/articles.reducer";
+import { setArticlesReducer, setCategoryArticlesReducer } from "../reducers/articles.reducer";
 
 
 export type InitialArticle = Omit<ModifyType<Article, {
@@ -13,22 +13,37 @@ export type InitialArticle = Omit<ModifyType<Article, {
   createdAt: string,
 }, "content" | "writeup" | "banner">
 
-
-export type ArticlesState = {
+export type HomepageArticles = {
   topArticles: InitialArticle[],
   latestArticles: InitialArticle[]
 }
 
+export type CategorizedArticles = {
+  topArticles: InitialArticle[],
+  moreArticles: InitialArticle[]
+}
+
+export type ArticlesState = {
+  topArticles: InitialArticle[],
+  latestArticles: InitialArticle[],
+  categorizedArticles: CategorizedArticles
+}
+
 const initialState: ArticlesState = {
   topArticles: [],
-  latestArticles: []
+  latestArticles: [],
+  categorizedArticles: {
+    topArticles: [],
+    moreArticles: []
+  }
 }
 
 export const articleSlice = createSlice({
   name: "articles",
   initialState,
   reducers: {
-    setArticles: setArticlesReducer
+    setArticles: setArticlesReducer,
+    setCategorizedArticles: setCategoryArticlesReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -41,7 +56,8 @@ export const articleSlice = createSlice({
 })
 
 export const {
-  setArticles
+  setArticles,
+  setCategorizedArticles
 } = articleSlice.actions
 
 export const selectArticles =  ( state: RootState ) => state.articles

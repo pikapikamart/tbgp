@@ -1,4 +1,3 @@
-import { HeaderWrapper } from "@/styled/shared/header"
 import { 
   RowCenterBetween, 
   RowEnd} from "@/styled/shared/helpers"
@@ -9,13 +8,14 @@ import { HeaderDate } from "./date"
 import { useMainHeader } from "./main.hook"
 import { MainHeaderNavlinks } from "./navlinks"
 import { HeaderSearchbar } from "./searchbar"
+import { MainHeaderWrapper } from "./main.styled"
 
 
 const Main = () =>{
   const { showDesktopItems } = useMainHeader()
  
   return (
-    <HeaderWrapper as="header">
+    <MainHeaderWrapper as="header">
       <RowCenterBetween as="nav">
         <HeaderLogo
           href="/"
@@ -28,7 +28,7 @@ const Main = () =>{
           <HeaderDropdown />
         </RowEnd>
       </RowCenterBetween>
-    </HeaderWrapper>
+    </MainHeaderWrapper>
   )
 }
 
