@@ -35,7 +35,7 @@ export const InitArticleMainHeading = styled.h2<InitArticleMainHeadingProps>`
   }
 
   > span {
-    font-family:'Friz Quadrata Std Bold';
+    font-family:'Friz Quadrata Std';
     font-weight: 700;
     position: relative;
     z-index: 10;
@@ -108,6 +108,7 @@ export const InitArticleAuthorsContainer = styled.div`
   flex-wrap: wrap;
   font-size: ${ rem(13) };
   font-weight: 600;
+  gap: ${ rem(8) } 0;
 
   > span {
     margin-right: ${ rem(2) };
@@ -117,7 +118,7 @@ export const InitArticleAuthorsContainer = styled.div`
 export const InitArticleAuthorsList = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  margin:0 ${ rem(24) } ${ rem(8) } 0;
+  margin-right: ${ rem(24) };
 `
 
 export const InitArticleAuthorsListItem = styled.li`

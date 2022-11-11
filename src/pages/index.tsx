@@ -74,7 +74,13 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async() =>
       select: "-_id firstname lastname username"
     }
   )
- 
+  latestArticles.map(article => {
+    article.thumbnail = {
+      small: article.thumbnail.small,
+      medium: ""
+    }
+  })
+  
   store.dispatch(setArticles({
     topArticles: JSON.parse(JSON.stringify(topArticles)),
     latestArticles: JSON.parse(JSON.stringify(latestArticles))

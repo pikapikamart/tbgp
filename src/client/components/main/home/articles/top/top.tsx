@@ -1,7 +1,9 @@
 import { VerticalArticle } from "@/components/shared/article/vertical"
 import { useSelectArticles } from "@/lib/hooks/store.hooks"
 import { InitArticleMainHeading } from "@/styled/shared/article/initial"
-import { TopArticlesWrapper } from "./top.styled"
+import { 
+  TopArticlesList, 
+  TopArticlesWrapper } from "./top.styled"
 
 
 const Top = () =>{
@@ -14,7 +16,9 @@ const Top = () =>{
         article={ article }
         titleFormat={ index <= 1? "one" : index===2? "two": "three" }
         hideCaption={ index>2 }
-        hideImage={ index>2 } />
+        hideImage={ index>2 }
+        thumbnail="medium"
+        shouldReverse={ index<=2 } />
     ))
 
     return topArticles
@@ -25,7 +29,7 @@ const Top = () =>{
       <InitArticleMainHeading>
         <span>Top News</span>
       </InitArticleMainHeading>
-      <ul>{ renderTopArticles() }</ul>
+      <TopArticlesList>{ renderTopArticles() }</TopArticlesList>
     </TopArticlesWrapper>
   )
 }
