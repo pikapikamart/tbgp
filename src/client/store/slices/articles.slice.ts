@@ -8,7 +8,7 @@ import { setArticlesReducer } from "../reducers/articles.reducer";
 
 
 export type InitialArticle = Omit<ModifyType<Article, {
-  authors: StaffProfile
+  authors: StaffProfile[]
 }> & {
   createdAt: string,
 }, "content" | "writeup" | "banner">

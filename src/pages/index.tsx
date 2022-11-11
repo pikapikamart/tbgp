@@ -19,6 +19,7 @@ Homepage.getLayout = ( page ) => DefaultLayout(page)
 export const getServerSideProps = wrapper.getServerSideProps(store => async() =>{
   await connectDatabase()
   const maxRangeDate = new Date()
+  maxRangeDate.setDate(maxRangeDate.getDate()+1)
   const minRangeDate = new Date()
   minRangeDate.setDate(minRangeDate.getDate()-10)
 
@@ -41,7 +42,8 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async() =>
     },
     "-_id category linkPath authors title caption thumbnail createdAt views",
     {
-      sort: "views"
+      sort: "views",
+      limit: 7
     },
     {
       path: "authors",
@@ -49,6 +51,15 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async() =>
     }
   )
 
+  topArticles.map((article, index) => {
+    if ( index > 2 ) {
+      article.thumbnail = {
+        small: "",
+        medium: ""
+      }
+    }
+  })
+  
   const latestArticles = await populateArticleService(
     {},
     "-_id category linkPath authors title caption thumbnail.small createdAt",
@@ -63,10 +74,10 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async() =>
       select: "-_id firstname lastname username"
     }
   )
-
+ 
   store.dispatch(setArticles({
     topArticles: JSON.parse(JSON.stringify(topArticles)),
-      latestArticles: JSON.parse(JSON.stringify(latestArticles))
+    latestArticles: JSON.parse(JSON.stringify(latestArticles))
   }))
 
   return {

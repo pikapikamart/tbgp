@@ -13,7 +13,7 @@ export const DropdownWrapper = styled.div`
     visibility .3s ease;
   visibility: hidden;
   width: 100%;
-  z-index: 10;
+  z-index: 100;
 
   ${ ({ theme: { colors } }) => `
     background-color: ${ colors.white1 };

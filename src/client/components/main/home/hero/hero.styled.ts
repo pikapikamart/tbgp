@@ -8,6 +8,7 @@ import {
 export const HeroWrapper = styled.div`
   background: url("/stock/hero-mobile.png") no-repeat center center;
   background-size: cover;
+  margin-bottom: ${ fluid(56, 8.5, 80) };
   min-height: ${ fluid(336, 61, 592) };
   padding: ${ fluid(48, 9, 64) } ${ rem(24) };
 

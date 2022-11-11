@@ -46,10 +46,11 @@ export const NoteWrapper = styled.div<NoteWrapperProps>`
       case "blue": 
         return css`
           background-color: ${ colors.blue };
-            color: ${ colors.white1 };
+          color: ${ colors.white1 };
 
           ${ breakpoint("tablet", `
             background: url("/icons/icon-information-white.svg") no-repeat ${ rem(16) } ${ rem(16) };
+            background-color: ${ colors.blue };
             `) }
         `
     }

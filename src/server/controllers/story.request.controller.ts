@@ -333,12 +333,13 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
         },
         update: {
           $pull: {
-            "requests.story": storyRequest._id
+            "storyRequests.requested": storyRequest._id
           }
         }
       }
     }
-  )));
+  )))
+
   // // add the writeup to all members of the story
   await bulkUpdateStaffService(storyRequest.members.map(( storyRequestId: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
     {

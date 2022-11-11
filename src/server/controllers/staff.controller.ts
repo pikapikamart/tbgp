@@ -90,7 +90,7 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
       select: "-_id writeupId category isPublished content.title content.caption content.phase content.isSubmitted content.isAccepted content.reSubmit content.requestResubmit",
       transform: ( doc: Writeup ) =>{
         
-        if ( !doc.isPublished ) {
+        if ( doc && !doc.isPublished ) {
           return {
             writeupId: doc.writeupId,
             category: doc.category,
@@ -108,7 +108,7 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
       select: "-_id writeupId category isPublished content.title content.caption content.phase content.isSubmitted content.isAccepted content.reSubmit content.requestedResubmit content.handledBy",
       transform: ( doc: Writeup ) =>{
       
-        if ( !doc.isPublished ) {
+        if ( doc && !doc.isPublished ) {
           return {
             writeupId: doc.writeupId,
             category: doc.category,
