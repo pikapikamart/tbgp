@@ -87,7 +87,7 @@ export const TopArticlesList = styled.ul`
 
   ${ breakpoint('desktop', `
     align-items: flex-start;
-    grid-template-columns: 1fr ${ rem(520) } 1fr;
+    grid-template-columns: 1fr ${ fluid(400, 39, 520) } 1fr;
     gap: ${ rem(24) } ${ rem(48) };  
 
     ${ VerticalArticleWrapper } {

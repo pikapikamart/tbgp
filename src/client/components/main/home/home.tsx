@@ -1,3 +1,4 @@
+import { LatestArticlesSection } from "./articles/latest"
 import { TopArticlesSection } from "./articles/top"
 import { HomeHeroSection } from "./hero"
 
@@ -8,6 +9,7 @@ const Home = () =>{
     <main>
       <HomeHeroSection />
       <TopArticlesSection />
+      <LatestArticlesSection />
     </main>
   )
 }
