@@ -38,6 +38,12 @@ export const breakpoint = (size: BreakpointSize, css: string) =>{
   } 
 }
 
+export const customBreakpoint = ( size: number, css: string ) => {
+  return `@media (min-width: ${ rem(size) }) {
+    ${ css }
+  }`
+} 
+
 export const maxBreakpoint = ( size: number, css: string ) => {
   
   return `

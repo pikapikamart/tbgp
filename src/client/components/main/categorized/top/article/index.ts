@@ -1,0 +1,1 @@
+export { default as TopCategorizedArticle } from "./article"

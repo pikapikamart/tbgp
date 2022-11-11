@@ -28,7 +28,7 @@ const Latest = () => {
       <LatestContentContainer>
         <SectionHeaderContainer>
           <InitArticleMainHeading alignment="left">
-            <span>Latest Stories</span>
+            <span>Latest Articles</span>
           </InitArticleMainHeading>
           <Link 
             href="/articles"

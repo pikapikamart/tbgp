@@ -9,12 +9,13 @@ import { ParsedUrlQuery } from "querystring";
 import { NextPageWithLayout } from "../_app";
 import { populateArticleService } from "@/src/server/services/article.service"
 import { setCategorizedArticles } from "@/store/slices/articles.slice";
+import { Categorized } from "@/components/main/categorized";
 
 
 const CategoryPage: NextPageWithLayout = () =>{
 
   return (
-    <></>
+    <Categorized />
   )
 }
 
@@ -85,14 +86,6 @@ export const getStaticProps = wrapper.getStaticProps(store => async( context: Ge
       select: "-_id firstname lastname username"
     }
   )
-  topArticles.map((article, index)=> {
-    if ( index<=1 ) {
-      article.thumbnail = {
-        medium: article.thumbnail.medium,
-        small: ""
-      }
-    }
-  })
 
   const moreArticles = await populateArticleService(
     { category },

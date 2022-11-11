@@ -27,7 +27,7 @@ const Top = () =>{
   return (
     <TopArticlesWrapper>
       <InitArticleMainHeading>
-        <span>Top News</span>
+        <span>Top Articles</span>
       </InitArticleMainHeading>
       <TopArticlesList>{ renderTopArticles() }</TopArticlesList>
     </TopArticlesWrapper>
