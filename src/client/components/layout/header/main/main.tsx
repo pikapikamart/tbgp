@@ -12,10 +12,16 @@ import { MainHeaderWrapper } from "./main.styled"
 
 
 const Main = () =>{
-  const { showDesktopItems } = useMainHeader()
+  const { 
+    showDesktopItems,
+    showHeaderSticky,
+    hideHeaderSticky } = useMainHeader()
  
   return (
-    <MainHeaderWrapper as="header">
+    <MainHeaderWrapper 
+      as="header"
+      className={`${hideHeaderSticky? "scroll-in scroll-out" : 
+                              showHeaderSticky? "scroll-in" : ""}`}>
       <RowCenterBetween as="nav">
         <HeaderLogo
           href="/"
