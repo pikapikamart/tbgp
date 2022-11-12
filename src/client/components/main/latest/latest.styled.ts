@@ -5,7 +5,7 @@ import {
 import { InitArticleMainHeading } from "@/styled/shared/article/initial"
 
 
-export const LatestWrapper = styled.div`
+export const LatestWrapper = styled.main`
   margin: ${ fluid(56, 6, 64) } 0 ${ fluid(64, 8, 96) };
   padding: 0 ${ fluid(16, 5, 64) };
 

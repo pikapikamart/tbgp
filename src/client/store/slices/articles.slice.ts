@@ -4,7 +4,9 @@ import { RootState } from "..";
 import { Article } from "@/src/server/models/article.model";
 import { ModifyType } from "types/utils";
 import { StaffProfile } from "../store.types";
-import { setArticlesReducer, setCategoryArticlesReducer } from "../reducers/articles.reducer";
+import { 
+  setArticlesReducer, 
+  setCategoryArticlesReducer } from "../reducers/articles.reducer";
 
 
 export type InitialArticle = Omit<ModifyType<Article, {

@@ -1,5 +1,6 @@
 import { StaffProfile } from "@/store/store.types"
 import { InitArticleAuthorsContainer, InitArticleAuthorsList, InitArticleAuthorsListItem } from "@/styled/shared/article/initial"
+import Link from "next/link"
 
 
 type AuthorsProps = {
@@ -12,7 +13,13 @@ const Authors = ({ children, authors }: AuthorsProps) =>{
   const renderAuthors = () =>{
     const authorsArr = authors.map((author, index) => (
       <InitArticleAuthorsListItem key={ author.username }>
-        { author.firstname } { author.lastname } { index!==authors.length-1? ", " : "" }
+        <Link
+          href={ `/writer/${ author.username }` }
+          passHref>
+          <a>
+            { author.firstname } { author.lastname } { index!==authors.length-1? ", " : "" }
+          </a>
+        </Link>
       </InitArticleAuthorsListItem>
     ))
 
