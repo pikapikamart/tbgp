@@ -1,10 +1,12 @@
 import { 
   latestArticlesHandler, 
-  searchArticleHandler } from "../controllers/article.controller";
+  searchArticleHandler, 
+  visitAuthorHandler} from "../controllers/article.controller";
 import { createRouter } from "../router/createRouter";
 import { 
   baseArticlePaginateSchema, 
-  searchSchema } from "../schemas/article.schema";
+  searchSchema, 
+  visitAuthorSchema} from "../schemas/article.schema";
 
 
 export const articleRouter = createRouter()
@@ -15,4 +17,8 @@ export const articleRouter = createRouter()
   .query("latest", {
     input: baseArticlePaginateSchema,
     resolve: ({ input }) => latestArticlesHandler(input)
+  })
+  .query("author", {
+    input: visitAuthorSchema,
+    resolve: ({ input }) => visitAuthorHandler(input)
   })

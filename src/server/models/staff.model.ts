@@ -10,6 +10,7 @@ import {
   baseUserModel} from "./base.user.model";
 import { ModifyType } from "types/utils";
 import { PositionSchema } from "../schemas/staff.schema";
+import { ArticleDocument } from "./article.model";
 
 
 export type Role = "writer" | "sectionEditor" | "seniorEditor"
@@ -44,6 +45,7 @@ export type Staff = BaseUser & {
   bio: string,
   storyRequests: StoryRequests | null,
   writeups: Writeups | null,
+  articles: ArticleDocument["_id"][] | null
 }
 
 export type VerifiedStaff = ModifyType<Staff, {
@@ -137,6 +139,11 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
         ref: "Writeup"
       }]
     },
+    default: null
+  },
+  articles: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Article",
     default: null
   }
 })

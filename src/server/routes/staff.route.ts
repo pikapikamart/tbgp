@@ -40,7 +40,7 @@ export const staffRouter = createRouter()
   .middleware(({ ctx, next }) => isValidStaff(ctx, next))
   .query("get", {
     input: usernameSchema,
-    resolve: ({ input, ctx }) => getStaffHandler(input, ctx)
+    resolve: ({ input, ctx }) => getStaffHandler(input)
   })
   .query("get-profile", {
     resolve: ({ ctx }) => getProfileHandler(ctx)

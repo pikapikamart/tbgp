@@ -103,7 +103,8 @@ export const verifyPositionHandler = async (
         solo: [],
         collaborated: [],
         task: []
-      }
+      },
+      articles: []
     }
   } else {
     updateStaffBody["verification"] = false

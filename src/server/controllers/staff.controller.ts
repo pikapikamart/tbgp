@@ -50,7 +50,7 @@ export const validateStaffHandler = async( { email, password }: BaseUserSchema )
   return apiResult("Successfully validated", true)
 }
 
-export const getStaffHandler = async( username: UsernameSchema, { staff: staffCtx }: StaffContext ) => {
+export const getStaffHandler = async( username: UsernameSchema ) => {
   const staff = staffValidator(await findStaffService(
     { username },
     "-_id firstname lastname bastionId bio position"
@@ -190,7 +190,8 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
       position: null,
       bio: "",
       storyRequests: null,
-      writeups: null
+      writeups: null,
+      articles: null
     }
   )
   await updateAdminService({
