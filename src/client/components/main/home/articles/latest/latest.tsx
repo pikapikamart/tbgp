@@ -31,7 +31,7 @@ const Latest = () => {
             <span>Latest Articles</span>
           </InitArticleMainHeading>
           <Link 
-            href="/articles"
+            href="/latest"
             passHref>
             <SeeAll>See All</SeeAll>
           </Link>

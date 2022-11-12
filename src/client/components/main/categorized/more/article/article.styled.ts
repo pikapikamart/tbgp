@@ -41,7 +41,7 @@ export const ArticleTitle = styled.h3`
 export const ArticleWrapper = styled.li`
   display: grid;
   grid-template-columns: ${ rem(100) } 1fr;
-  gap: 0 ${ rem(10) };
+  gap: 0 ${ rem(12) };
   padding-bottom: ${ fluid(16, 4, 48) };
 
   ${ InitArticleCaption } {
