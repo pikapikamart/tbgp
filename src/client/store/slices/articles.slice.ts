@@ -5,9 +5,11 @@ import { Article } from "@/src/server/models/article.model";
 import { ModifyType } from "types/utils";
 import { StaffProfile } from "../store.types";
 import { 
+  resetViewingArticleReducer,
   setArticlesReducer, 
   setCategoryArticlesReducer, 
   setViewingArticleReducer} from "../reducers/articles.reducer";
+import { Descendant } from "slate";
 
 
 export type InitialArticle = Omit<ModifyType<Article, {
@@ -21,7 +23,7 @@ export type FullArticle = InitialArticle & {
     url: string,
     caption: string
   },
-  content: any[]
+  content: Descendant[]
 }
 
 export type HomepageArticles = {
@@ -56,7 +58,8 @@ export const articleSlice = createSlice({
   reducers: {
     setArticles: setArticlesReducer,
     setCategorizedArticles: setCategoryArticlesReducer,
-    setViewingArticle: setViewingArticleReducer
+    setViewingArticle: setViewingArticleReducer,
+    resetViewingArticle: resetViewingArticleReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -71,7 +74,8 @@ export const articleSlice = createSlice({
 export const {
   setArticles,
   setCategorizedArticles,
-  setViewingArticle
+  setViewingArticle,
+  resetViewingArticle
 } = articleSlice.actions
 
 export const selectArticles =  ( state: RootState ) => state.articles

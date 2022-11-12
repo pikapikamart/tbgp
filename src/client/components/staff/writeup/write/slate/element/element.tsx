@@ -9,7 +9,7 @@ import { LinkElement } from "./link";
 
 
 const RenderElement = ({ attributes, children, element }: RenderElementProps) =>{
-
+  
   switch(element.type) {
     case "heading-two":
       return (

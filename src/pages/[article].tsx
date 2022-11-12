@@ -1,3 +1,4 @@
+import { Article } from "@/components/main/article";
 import { wrapper } from "@/store/index";
 import { 
   FullArticle, 
@@ -14,9 +15,9 @@ import { NextPageWithLayout } from "./_app";
 
 
 const ArticlePage: NextPageWithLayout = () =>{
-
+  
   return (
-    <></>
+    <Article />
   )
 }
 

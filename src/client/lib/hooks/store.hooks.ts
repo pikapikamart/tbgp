@@ -2,7 +2,7 @@ import { WriteupPhases } from "@/src/server/models/writeup.model";
 import { 
   AppDispatch, 
   RootState } from "@/store/index";
-import { selectArticles } from "@/store/slices/articles.slice";
+import { FullArticle, selectArticles } from "@/store/slices/articles.slice";
 import { 
   selectStaff, 
   setStaff } from "@/store/slices/staff.slice";
@@ -103,4 +103,10 @@ export const useSelectArticles = () => {
   const articles = useAppSelector(selectArticles)
 
   return articles
+}
+
+export const useViewArticle = () =>{
+  const articles = useAppSelector(selectArticles)
+
+  return articles.viewing
 }

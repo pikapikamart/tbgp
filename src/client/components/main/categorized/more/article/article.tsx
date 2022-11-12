@@ -10,10 +10,11 @@ import {
 
 
 type ArticleProps = {
-  article: InitialArticle
+  article: InitialArticle,
+  children?: React.ReactNode
 }
 
-const Article = ({ article }: ArticleProps) =>{
+const Article = ({ article, children }: ArticleProps) =>{
 
   return (
     <ArticleWrapper>
@@ -21,6 +22,7 @@ const Article = ({ article }: ArticleProps) =>{
         src={ article.thumbnail.small }
         alt=""/>
       <ArticleTextContainer>
+        { children }
         <ArticleTitle>{ article.title }</ArticleTitle>
         <InitArticleCaption>{ article.caption }</InitArticleCaption>
         <ArticleAuthors authors={ article.authors }>

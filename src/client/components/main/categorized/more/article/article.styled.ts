@@ -61,7 +61,7 @@ export const ArticleWrapper = styled.li`
 
         &::before {
           content: "";
-          background-color: ${ colors.grey4 };
+          background-color: ${ colors.white4 };
           height: 1px;
           inset: auto 0 0 0;
           position: absolute;
@@ -70,7 +70,7 @@ export const ArticleWrapper = styled.li`
 
         &::after {
           content: "";
-          background-color: ${ colors.grey3 };
+          background-color: ${ colors.white4 };
           inset: 0 auto ${ rem(24) } calc(100% + ${ fluid(11, 2, 24) });
           position: absolute;
           width: 1px;

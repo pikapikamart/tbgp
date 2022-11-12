@@ -1,4 +1,6 @@
-import { InitArticleMainHeading } from "@/styled/shared/article/initial"
+import { 
+  InitArticleCategory, 
+  InitArticleMainHeading } from "@/styled/shared/article/initial"
 import { MoreArticle } from "../categorized/more/article"
 import { MoreArticlesList } from "../categorized/more/more.styled"
 import { useLatestArticles } from "./latest.hook"
@@ -12,7 +14,11 @@ const Articles = () =>{
     const latestArticles = articles.map(article => (
       <MoreArticle
         key={ article.title }
-        article={ article } />
+        article={ article } >
+          <InitArticleCategory>
+            <span>{ article.category }</span>
+          </InitArticleCategory>
+      </MoreArticle>
     ))
 
     return latestArticles
