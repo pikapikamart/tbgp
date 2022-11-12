@@ -174,9 +174,5 @@ export const ArticleWrapper = styled.li`
       grid-row: 1;
     }
   `) }
-
-  ${ customBreakpoint(1280, `
-    
-  `) }
 `
 

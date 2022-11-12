@@ -8,7 +8,7 @@ import { InitArticleMainHeading } from "@/styled/shared/article/initial";
 
 
 export const TopArticlesWrapper = styled.div`
-  margin-top: ${ fluid(56, 6, 64) };
+  margin: ${ fluid(56, 6, 64) } 0 ${ fluid(64, 8, 96) };
   padding: 0 ${ fluid(16, 5, 64) };
 
   ${ breakpoint("tablet", `
@@ -38,9 +38,4 @@ export const TopArticlesList = styled.ul`
     gap: ${ rem(32) };
     grid-template-columns: ${ fluid(540, 60, 785) } 1fr;
   `) }
-
-  // ${ breakpoint("desktop",`
-  //   gap: ${ rem(32) };
-  //   grid-template-columns: ${ fluid(540, 60, 785) } 1fr;
-  // `) }
 `
