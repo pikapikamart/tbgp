@@ -19,7 +19,7 @@ export const useSearchbar = () =>{
     if ( isValidData ) {
       resetFormValidation()
       const input = getFieldsRef()[0]
-      router.push("/search?query=" + input.value)
+      router.push("/search?query=" + input.value.trim())
     }
   }, [ isValidData ])
 
