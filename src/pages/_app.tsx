@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import { wrapper } from "@/store/index";
 import { DefaultLayout } from "@/components/layout/default";
 import { Authguard } from "@/components/layout/authguard";
+import { HelmetProvider } from "react-helmet-async";
 
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -26,21 +27,23 @@ const MyApp = ({ Component, ...rest }: AppPropsWithLayout) => {
   const { store, props } = wrapper.useWrappedStore(rest)
 
   return (
-    <Provider store={ store }>  
-      <ThemeProvider theme={ Theme }>
-        <SessionProvider session={ props.pageProps.session }>
-          { Component.requireAuth? 
-          (
-            <Authguard>
-              { getLayout(<Component {...props.pageProps} />) }
-            </Authguard>
-          ):
-          (
-            getLayout(<Component {...props.pageProps} />) 
-          ) }
-        </SessionProvider>
-      </ThemeProvider>
-    </Provider>
+    <HelmetProvider>
+      <Provider store={ store }>  
+        <ThemeProvider theme={ Theme }>
+          <SessionProvider session={ props.pageProps.session }>
+            { Component.requireAuth? 
+            (
+              <Authguard>
+                { getLayout(<Component {...props.pageProps} />) }
+              </Authguard>
+            ):
+            (
+              getLayout(<Component {...props.pageProps} />) 
+              ) }
+          </SessionProvider>
+        </ThemeProvider>
+      </Provider>
+    </HelmetProvider>
   )
 }
 

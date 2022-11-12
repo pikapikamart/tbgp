@@ -7,6 +7,7 @@ import {
   ArticleTextContainer, 
   ArticleTitle, 
   ArticleWrapper } from "./article.styled"
+import Link from "next/link"
 
 
 type ArticleProps = {
@@ -23,7 +24,13 @@ const Article = ({ article, children }: ArticleProps) =>{
         alt=""/>
       <ArticleTextContainer>
         { children }
-        <ArticleTitle>{ article.title }</ArticleTitle>
+        <ArticleTitle>
+          <Link 
+            href={ `/${ article.linkPath }` }
+            passHref>
+            <a>{ article.title }</a>
+          </Link>
+        </ArticleTitle>
         <InitArticleCaption>{ article.caption }</InitArticleCaption>
         <ArticleAuthors authors={ article.authors }>
           <ArticleDate date={ article.createdAt } />

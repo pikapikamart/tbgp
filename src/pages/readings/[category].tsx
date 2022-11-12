@@ -4,18 +4,25 @@ import { findArticleCategoryService } from "@/src/server/services/article.catego
 import { wrapper } from "@/store/index";
 import { 
   GetStaticPaths, 
-  GetStaticPropsContext } from "next";
+  GetStaticPropsContext, 
+  InferGetStaticPropsType} from "next";
 import { ParsedUrlQuery } from "querystring";
 import { NextPageWithLayout } from "../_app";
 import { populateArticleService } from "@/src/server/services/article.service"
 import { setCategorizedArticles } from "@/store/slices/articles.slice";
 import { Categorized } from "@/components/main/categorized";
+import { Helmet } from "react-helmet-async"
 
 
-const CategoryPage: NextPageWithLayout = () =>{
+const CategoryPage: NextPageWithLayout<InferGetStaticPropsType<typeof getStaticProps>> = ({ category }) =>{
 
   return (
-    <Categorized />
+    <>
+    <Helmet>
+      <title>{ `${ category }` } | TBGP</title>
+    </Helmet>
+      <Categorized />
+    </>
   )
 }
 
@@ -109,7 +116,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async( context: Ge
 
   return {
     props: {
-
+      category
     }
   }
 })

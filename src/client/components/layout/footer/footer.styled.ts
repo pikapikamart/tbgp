@@ -37,6 +37,7 @@ export const FooterHeader = styled.div`
 
   ${ breakpoint("desktop", `
     margin-right: ${ rem(112) };
+    text-align: left;
   `) }
 `
 
@@ -44,6 +45,10 @@ export const FooterLogoLink = styled.a`
   display: block;
   max-width: max-content;
   margin: 0 auto ${ fluid(10, 1.2, 16) };
+
+  ${ breakpoint("desktop", `
+  margin: 0 auto ${ fluid(10, 1.2, 16) } 0;
+  `) }
 `
 
 export const FooterNavlinksList = styled.ul`

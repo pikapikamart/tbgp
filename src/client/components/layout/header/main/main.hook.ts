@@ -53,7 +53,7 @@ export const useMainHeader = () =>{
       window.removeEventListener("scroll", handleHeightResize)
     }
   }, [])
-  console.log(showHeaderSticky, hideHeaderSticky)
+
   return {
     showDesktopItems,
     showHeaderSticky,
