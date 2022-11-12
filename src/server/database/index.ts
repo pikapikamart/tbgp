@@ -54,7 +54,7 @@ async function connectDatabase() {
     cached.promise = null
     throw e
   }
-  console.log(3)
+  
   return cached.conn ;
 }
 

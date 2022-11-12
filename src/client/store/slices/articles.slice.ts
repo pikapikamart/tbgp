@@ -6,7 +6,8 @@ import { ModifyType } from "types/utils";
 import { StaffProfile } from "../store.types";
 import { 
   setArticlesReducer, 
-  setCategoryArticlesReducer } from "../reducers/articles.reducer";
+  setCategoryArticlesReducer, 
+  setViewingArticleReducer} from "../reducers/articles.reducer";
 
 
 export type InitialArticle = Omit<ModifyType<Article, {
@@ -14,6 +15,14 @@ export type InitialArticle = Omit<ModifyType<Article, {
 }> & {
   createdAt: string,
 }, "content" | "writeup" | "banner">
+
+export type FullArticle = InitialArticle & {
+  banner: {
+    url: string,
+    caption: string
+  },
+  content: any[]
+}
 
 export type HomepageArticles = {
   topArticles: InitialArticle[],
@@ -28,7 +37,8 @@ export type CategorizedArticles = {
 export type ArticlesState = {
   topArticles: InitialArticle[],
   latestArticles: InitialArticle[],
-  categorizedArticles: CategorizedArticles
+  categorizedArticles: CategorizedArticles,
+  viewing?: FullArticle
 }
 
 const initialState: ArticlesState = {
@@ -45,7 +55,8 @@ export const articleSlice = createSlice({
   initialState,
   reducers: {
     setArticles: setArticlesReducer,
-    setCategorizedArticles: setCategoryArticlesReducer
+    setCategorizedArticles: setCategoryArticlesReducer,
+    setViewingArticle: setViewingArticleReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -59,7 +70,8 @@ export const articleSlice = createSlice({
 
 export const {
   setArticles,
-  setCategorizedArticles
+  setCategorizedArticles,
+  setViewingArticle
 } = articleSlice.actions
 
 export const selectArticles =  ( state: RootState ) => state.articles

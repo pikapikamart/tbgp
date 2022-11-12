@@ -21,6 +21,14 @@ export const findArticleService = async(
   ArticleModel.findOne(query, projection, options)
 )
 
+export const findAllArticleLinksService = async() => (
+  ArticleModel.find(
+    {},
+    "-_id linkPath",
+    { lean: true }
+  )
+)
+
 export const populateArticleService = async(
   query: FilterQuery<Article>,
   projection: ProjectionType<Article> = "",

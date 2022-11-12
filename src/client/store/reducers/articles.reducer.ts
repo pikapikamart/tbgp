@@ -1,6 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit"
 import type { WritableDraft } from "immer/dist/internal"
-import { ArticlesState, CategorizedArticles, HomepageArticles } from "../slices/articles.slice"
+import { ArticlesState, CategorizedArticles, FullArticle, HomepageArticles } from "../slices/articles.slice"
 
 
 export const setArticlesReducer = ( state: WritableDraft<ArticlesState>, action: PayloadAction<HomepageArticles> ) => {
@@ -10,4 +10,8 @@ export const setArticlesReducer = ( state: WritableDraft<ArticlesState>, action:
 
 export const setCategoryArticlesReducer = ( state: WritableDraft<ArticlesState>, action: PayloadAction<CategorizedArticles> ) => {
   state.categorizedArticles = action.payload
+}
+
+export const setViewingArticleReducer = ( state: WritableDraft<ArticlesState>, action: PayloadAction<FullArticle> ) => {
+  state.viewing = action.payload
 }
