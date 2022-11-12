@@ -21,5 +21,6 @@ export const MoreArticlesList = styled.ul`
 
   ${ breakpoint("tablet", `
     grid-template-columns: repeat(2, 1fr);
+    overflow: hidden;
   `) }
 `

@@ -52,10 +52,20 @@ export const ArticleWrapper = styled.li`
     border-bottom: 1px solid ${ colors.grey3 };
 
     ${ breakpoint("tablet", `
+      border-bottom: none;
       grid-template-columns: 1fr ${ fluid(100, 23, 224) };
 
       &:nth-of-type(odd) {
         position: relative;
+
+        &::before {
+          content: "";
+          background-color: ${ colors.grey4 };
+          height: 1px;
+          inset: auto 0 0 0;
+          position: absolute;
+          width: 1000vw;
+        }
 
         &::after {
           content: "";
