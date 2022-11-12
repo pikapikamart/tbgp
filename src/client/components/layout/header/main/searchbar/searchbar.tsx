@@ -1,4 +1,4 @@
-import { useExpansion } from "@/lib/hooks"
+import { useSearchbar } from "./searchbar.hook"
 import { 
   Find, 
   Input, 
@@ -8,19 +8,28 @@ import {
 
 
 const Searchbar = () =>{
-  const { isExpanded, handleExpansion } = useExpansion()
+  const {
+    isExpanded,
+    handleExpansion,
+    handleFormSubmit,
+    addFieldRef
+  } = useSearchbar()
 
   return (
     <SearchbarWrapper>
       <SearchbarTrigger
         onClick={ handleExpansion }
         aria-expanded={ isExpanded } />
-      <StyledSearchbar as="form">
+      <StyledSearchbar 
+        as="form"
+        onSubmit={ handleFormSubmit }>
         <Input
           id="article"
           type="text"
           placeholder="Search..."
-          name="article" />
+          name="article"
+          ref={ addFieldRef }
+          aria-required="true" />
         <Find type="submit" >Find</Find>
       </StyledSearchbar>
     </SearchbarWrapper>

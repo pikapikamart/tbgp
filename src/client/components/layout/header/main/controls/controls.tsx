@@ -1,18 +1,16 @@
-import { useExpansion } from "@/lib/hooks"
 import { SrOnly } from "@/styled/shared/helpers"
 import { Hamburger } from "./controls.styled"
 import OpenHamburgerSvg from "@/public/icons/hamburger-open.svg"
 import CloseHamburgerSvg from "@/public/icons/hamburger-close.svg"
+import { useHeaderControls } from "./control.hook"
 
 
 const Controls = () =>{
-  const { isExpanded, handleExpansion } = useExpansion()
-
-  const handleDropdown = () =>{
-    handleExpansion()
-
-    isExpanded? document.body.classList.remove("no-scroll") : document.body.classList.add("no-scroll")
-  }
+  const {
+    isExpanded,
+    handleDropdown,
+    handleExpansion
+  } = useHeaderControls()
 
   return (
     <>

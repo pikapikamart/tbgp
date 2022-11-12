@@ -2,7 +2,7 @@ import {
   breakpoint, 
   rem } from "@/styled/functions"
 import { RowCenter } from "@/styled/shared/helpers"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 
 
 export const SearchbarWrapper = styled.div`
@@ -53,6 +53,15 @@ export const SearchbarTrigger = styled.button`
   `) }
 `
 
+const inputAnim = keyframes`
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-5%);
+  }
+`
+
 export const Input = styled.input`
   border-radius: ${ rem(4) };
   height: ${ rem(40) };
@@ -65,12 +74,18 @@ export const Input = styled.input`
     border: 1px solid ${ colors.grey3 };
     color: ${ colors.dark3 };
   ` }
+  
+  &[aria-invalid="true"] {
+    animation: ${ inputAnim } .3s ease forwards;
+    border-color: red;
+  }
 
   ${ breakpoint("desktop", `
     &:focus-visible {
       outline: none;
     }
   `) }
+
 `
 
 export const Find = styled.button`
