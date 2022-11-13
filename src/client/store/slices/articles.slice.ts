@@ -7,7 +7,7 @@ import { StaffProfile } from "../store.types";
 import { 
   resetViewingArticleReducer,
   setArticlesReducer, 
-  setCategoryArticlesReducer, 
+  setCategoryArticlesReducer,
   setViewingArticleReducer} from "../reducers/articles.reducer";
 import { Descendant } from "slate";
 
@@ -16,6 +16,7 @@ export type InitialArticle = Omit<ModifyType<Article, {
   authors: StaffProfile[]
 }> & {
   createdAt: string,
+  _id: any,
 }, "content" | "writeup" | "banner">
 
 export type FullArticle = InitialArticle & {
@@ -59,7 +60,7 @@ export const articleSlice = createSlice({
     setArticles: setArticlesReducer,
     setCategorizedArticles: setCategoryArticlesReducer,
     setViewingArticle: setViewingArticleReducer,
-    resetViewingArticle: resetViewingArticleReducer
+    resetViewingArticle: resetViewingArticleReducer,
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -75,7 +76,7 @@ export const {
   setArticles,
   setCategorizedArticles,
   setViewingArticle,
-  resetViewingArticle
+  resetViewingArticle,
 } = articleSlice.actions
 
 export const selectArticles =  ( state: RootState ) => state.articles

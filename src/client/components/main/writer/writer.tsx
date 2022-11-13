@@ -1,8 +1,11 @@
 import { ArticleAuthors } from "@/components/shared/article/authors"
 import { ArticleDate } from "@/components/shared/article/date"
-import { InitArticleCaption, InitArticleMainHeading } from "@/styled/shared/article/initial"
+import { Author } from "@/src/server/controllers/article.controller"
+import { 
+  InitArticleCaption, 
+  InitArticleMainHeading } from "@/styled/shared/article/initial"
 import Link from "next/link"
-import { Author, useWriter } from "./writer.hook"
+import { useWriter } from "./writer.hook"
 import { 
   Article,
   ArticleImage,
@@ -19,24 +22,21 @@ import {
 const Writer = () =>{
   const {
     isError,
-    authorProfile
+    author,
+    authorArticles,
+    ref
   } = useWriter()
 
   if ( isError ) {
     return <>Writer not found</>
   }
 
-  if ( !authorProfile ) {
+  if ( !author ) {
     return <>Loading</>
   }
 
-  const {
-    author,
-    ownedArticles
-  } = authorProfile
-
   const renderOwnedArticles = () =>{
-    const articles = ownedArticles.map(article => (
+    const articles = authorArticles.map(article => (
       <Article key={ article.title }>
         <ArticleTextContainer>
           <ArticleTitle>
@@ -77,6 +77,9 @@ const Writer = () =>{
         <ArticleList>
           { renderOwnedArticles() }
         </ArticleList>
+        <div
+          ref={ ref }
+          data-usage="paginate" />
       </ArticlesContainer>
     </WriterWrapper>
   )

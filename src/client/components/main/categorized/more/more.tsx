@@ -1,18 +1,20 @@
-import { useSelectArticles } from "@/lib/hooks/store.hooks"
 import { InitArticleMainHeading } from "@/styled/shared/article/initial"
-import { useRouter } from "next/router"
 import { MoreArticle } from "./article"
+import { useMoreCategorized } from "./more.hook"
 import { 
   MoreArticlesList, 
   MoreArticlesWrapper } from "./more.styled"
 
 
 const More = () =>{
-  const articles = useSelectArticles()
-  const router = useRouter()
+  const {
+    articles,
+    category,
+    ref
+  } = useMoreCategorized()
 
   const renderMoreArticles = () =>{
-    const moreArticles = articles.categorizedArticles.moreArticles.map(article => (
+    const moreArticles = articles.map(article => (
       <MoreArticle
         key={ article.title } 
         article={ article } />
@@ -24,11 +26,14 @@ const More = () =>{
   return (
     <MoreArticlesWrapper>
       <InitArticleMainHeading alignment="left">
-        <span>More from { router.query["category"] }</span>
+        <span>More from { category }</span>
       </InitArticleMainHeading>
       <MoreArticlesList>
         { renderMoreArticles() }
       </MoreArticlesList>
+      <div
+        ref={ ref }
+        data-usage="paginate" />
     </MoreArticlesWrapper>
   )
 }

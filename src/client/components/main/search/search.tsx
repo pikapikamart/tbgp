@@ -10,7 +10,8 @@ import {
 const Search = () =>{
   const { 
     query,
-    articles } = useSearch()
+    articles,
+    ref } = useSearch()
 
   const renderSearchArticles = () =>{
     const searchArticles = articles.map(article => (
@@ -34,6 +35,9 @@ const Search = () =>{
         <ArticleList>
           { renderSearchArticles() }
         </ArticleList>
+        <div
+          ref={ ref }
+          data-usage="paginate" />
       </SearchWrapper>
     </main>
   )

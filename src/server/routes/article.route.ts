@@ -1,5 +1,7 @@
 import { 
   latestArticlesHandler, 
+  moreCategoryArticlesHandler, 
+  paginateAuthorArticleHandler, 
   searchArticleHandler, 
   viewArticleHandler, 
   visitAuthorHandler} from "../controllers/article.controller";
@@ -8,7 +10,9 @@ import {
   viewArticleSchema,
   baseArticlePaginateSchema, 
   searchSchema, 
-  visitAuthorSchema} from "../schemas/article.schema";
+  visitAuthorSchema,
+  moreCategoryArticlesSchema,
+  paginateAuthorSchema} from "../schemas/article.schema";
 
 
 export const articleRouter = createRouter()
@@ -20,9 +24,17 @@ export const articleRouter = createRouter()
     input: baseArticlePaginateSchema,
     resolve: ({ input }) => latestArticlesHandler(input)
   })
+  .query("category", {
+    input: moreCategoryArticlesSchema,
+    resolve: ({ input }) => moreCategoryArticlesHandler(input)
+  })
   .query("author", {
     input: visitAuthorSchema,
     resolve: ({ input }) => visitAuthorHandler(input)
+  })
+  .query("paginate-author", {
+    input: paginateAuthorSchema,
+    resolve: ({ input }) => paginateAuthorArticleHandler(input)
   })
   .mutation("view", {
     input: viewArticleSchema,

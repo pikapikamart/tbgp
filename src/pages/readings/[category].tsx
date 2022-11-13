@@ -64,7 +64,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async( context: Ge
   const maxRangeDate = new Date()
   maxRangeDate.setDate(maxRangeDate.getDate()+1)
   const minRangeDate = new Date()
-  minRangeDate.setDate(minRangeDate.getDate()-10)
+  minRangeDate.setDate(minRangeDate.getDate()-14)
 
   const processDate = ( date: Date ) => {
     return date.toLocaleDateString("en-ZA", {
@@ -96,12 +96,12 @@ export const getStaticProps = wrapper.getStaticProps(store => async( context: Ge
 
   const moreArticles = await populateArticleService(
     { category },
-    "-_id linkPath authors title caption thumbnail.small createdAt views",
+    "linkPath authors title caption thumbnail.small createdAt views",
     {
       sort: {
         createdAt: -1
       },
-      limit: 6
+      limit: 8
     },
     {
       path: "authors",

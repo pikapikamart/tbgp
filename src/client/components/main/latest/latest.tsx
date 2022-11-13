@@ -8,7 +8,9 @@ import { LatestWrapper } from "./latest.styled"
 
 
 const Articles = () =>{
-  const { articles } = useLatestArticles()
+  const { 
+    articles,
+    ref } = useLatestArticles()
 
   const renderLatestArticles = () =>{
     const latestArticles = articles.map(article => (
@@ -26,12 +28,15 @@ const Articles = () =>{
 
   return (
     <LatestWrapper>
-      <InitArticleMainHeading >
+      <InitArticleMainHeading as="h1" >
         <span>Latest Articles</span>
       </InitArticleMainHeading>
       <MoreArticlesList>
         { renderLatestArticles() }
       </MoreArticlesList>
+      <div
+        ref={ ref } 
+        data-usage="pagination" />
     </LatestWrapper>
   )
 }
