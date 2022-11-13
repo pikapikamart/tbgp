@@ -113,15 +113,14 @@ export const visitAuthorHandler = async( info: VisitAuthorSchema ) =>{
 }
 
 export const paginateAuthorArticleHandler = async( user: PaginateAuthorArticleSchema ) =>{
-  const query = Object.assign({}, user.paginate?.lastId? 
+  const query = Object.assign({ authors: user.id, }, user.paginate?.lastId? 
     {
-      authors: user.id,
       _id: {
         $lt: new mongoose.Types.ObjectId(user.paginate.lastId)
       }
     } : undefined
   )
-  
+ 
   const articles = await populateArticleService(
     query,
     "category linkPath authors title caption thumbnail.small createdAt views",
@@ -129,11 +128,11 @@ export const paginateAuthorArticleHandler = async( user: PaginateAuthorArticleSc
       sort: {
         createdAt: -1
       },
-      limit: 2
+      limit: 8
     },
     basePopulatePath
   )
-
+    
   return trpcSuccess(true, articles as unknown as InitialArticle[])
 }
 

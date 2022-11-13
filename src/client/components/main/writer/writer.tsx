@@ -1,18 +1,10 @@
-import { ArticleAuthors } from "@/components/shared/article/authors"
-import { ArticleDate } from "@/components/shared/article/date"
 import { Author } from "@/src/server/controllers/article.controller"
+import { InitArticleMainHeading } from "@/styled/shared/article/initial"
+import { AuthorArticle } from "./article"
+import { useWriter, useWriterArticles } from "./writer.hook"
 import { 
-  InitArticleCaption, 
-  InitArticleMainHeading } from "@/styled/shared/article/initial"
-import Link from "next/link"
-import { useWriter } from "./writer.hook"
-import { 
-  Article,
-  ArticleImage,
   ArticleList,
   ArticlesContainer,
-  ArticleTextContainer,
-  ArticleTitle,
   AuthorBio,
   AuthorName,
   WriterHeader, 
@@ -22,10 +14,12 @@ import {
 const Writer = () =>{
   const {
     isError,
-    author,
-    authorArticles,
-    ref
+    author
   } = useWriter()
+  const {
+    ref,
+    authorArticles
+  } = useWriterArticles(author?._id)
 
   if ( isError ) {
     return <>Writer not found</>
@@ -37,24 +31,9 @@ const Writer = () =>{
 
   const renderOwnedArticles = () =>{
     const articles = authorArticles.map(article => (
-      <Article key={ article.title }>
-        <ArticleTextContainer>
-          <ArticleTitle>
-            <Link
-              href={`/${ article.linkPath }`}
-              passHref>
-              <a>{ article.title }</a>
-            </Link>
-          </ArticleTitle>
-          <InitArticleCaption>{ article.caption }</InitArticleCaption>
-          <ArticleAuthors authors={ article.authors }>
-            <ArticleDate date={ article.createdAt } />
-          </ArticleAuthors>
-        </ArticleTextContainer>
-        <ArticleImage
-          src={ article.thumbnail.small }
-          alt="" />
-      </Article>
+      <AuthorArticle 
+        key={ article.linkPath }
+        article={ article } />
     ))
 
     return articles

@@ -9,6 +9,7 @@ import { RowCenter } from "@/styled/shared/helpers"
 
 
 export const HeaderWrapper = styled.div`
+  margin-bottom: ${ rem(32) };
 
   ${ NoteWrapper } {
     margin-bottom: ${ rem(32) };
