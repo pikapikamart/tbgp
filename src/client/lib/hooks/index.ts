@@ -57,7 +57,7 @@ export const useTrapFocus = (): [ RegisterControl, RegisterTrapContainer ] =>{
 
 export type FormFields = HTMLInputElement | HTMLTextAreaElement
 export type AddFieldRef = ( element: FormFields | null ) => void
-type HandleFormSubmit = ( event: React.FormEvent ) => void 
+export type HandleFormSubmit = ( event: React.FormEvent ) => void 
 
 export const useFormValidation = () => {
   const [ isValidData, setIsValidData ] = useState(false)
@@ -140,11 +140,7 @@ type UserInformation = BaseUserSchema & {
   [ key: string ]: string
 }
 
-export const useUserLogin = ( 
-  userType: string, 
-  callbackUrl: string, 
-  path: "admin.validate" | "staff.validate" 
-) => {
+export const useUserLogin = ( userType: string, callbackUrl: string, path: "admin.validate" | "staff.validate" ) => {
   const {
     addFieldRef,
     ariaLive,
@@ -154,6 +150,10 @@ export const useUserLogin = (
     resetFormValidation
   } = useFormValidation()
   const [ userData, setUserData ] = useState<UserInformation>({
+    email: "",
+    password: ""
+  })
+  const [ userError, setUserError ] = useState({
     email: "",
     password: ""
   })
@@ -167,11 +167,33 @@ export const useUserLogin = (
         callbackUrl
       })
     },
-    onError: () => {
+    onError: (error) => {
+      const [ email, password ] = getFieldsRef()
+      if ( error.data?.code==="NOT_FOUND" ) {
+        addErrors(email)
+        setUserError(prev => ({
+          ...prev,
+          email: error.message
+        }))
+      } else {
+        addErrors(password)
+        setUserError(prev => ({
+          ...prev,
+          password: error.message
+        }))
+      }
       resetFormValidation()
     }
   })
 
+  const handleLogin: HandleFormSubmit = ( event ) => {
+    setUserError({
+      email: "",
+      password: ""
+    })
+    handleFormSubmit(event)
+  }
+ 
   useEffect(() =>{
     if ( isValidData ) {
       const user = getFieldsRef().reduce((accu, cur) =>{
@@ -193,8 +215,10 @@ export const useUserLogin = (
   return {
     addFieldRef,
     ariaLive,
-    handleFormSubmit,
-    data: query.data
+    handleFormSubmit: handleLogin,
+    data: query.data,
+    userError,
+    isLoading: query.isLoading
   }
 }
 
