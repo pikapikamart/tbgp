@@ -13,7 +13,7 @@ const Signup = () =>{
 
   return (
     <ModalProvider>
-      <SigninMainWrapper>
+      <SigninMainWrapper key="staff-signup-page">
         <SigninContentContainer>
           <SrOnly as="h1">Signup</SrOnly>
           <div>

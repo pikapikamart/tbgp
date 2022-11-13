@@ -1,4 +1,9 @@
-import { createContext, useContext, useRef, useState } from "react"
+import { 
+  createContext, 
+  useContext, 
+  useRef, 
+  useState } from "react"
+import { AnimatePresence } from "framer-motion"
 
 
 type Modal = React.ReactElement
@@ -41,8 +46,10 @@ const ModalProvider = ({ children }: ModalProviderProps) => {
           removeModal
         }
       }>
-      { children }
-      { modal && modal }
+        <AnimatePresence>
+          { children }
+          { modal && modal }
+        </AnimatePresence>
     </ModalContext.Provider>
   )
 }

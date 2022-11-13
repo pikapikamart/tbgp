@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { rem } from "../functions"
+import { motion } from "framer-motion"
 
 
 export const SrOnly = styled.span`
@@ -23,7 +24,7 @@ const BaseRowCenter = css`
   display: flex;
 `
 
-export const RowCenterBetween = styled.div`
+export const RowCenterBetween = styled(motion.div)`
   ${ BaseRowCenter };
 
   flex-wrap: wrap;
@@ -40,7 +41,7 @@ export const RowEnd = styled.div`
   display: flex;
 `
 
-export const RowCenterCenter = styled.div`
+export const RowCenterCenter = styled(motion.div)`
   ${ BaseRowCenter };
   
   justify-content: center;

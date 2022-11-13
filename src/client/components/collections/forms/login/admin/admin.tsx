@@ -20,7 +20,7 @@ const Admin = () =>{
 
   return (
     <AnimatePresence>
-      { isLoading && <LoadingSpinner key="loading-spinner-form" /> }
+      { isLoading && <LoadingSpinner key="admin-login-form-spinner" /> }
       <SigninForm
         key="admin-login-form" 
         onSubmit={ handleFormSubmit }>

@@ -6,8 +6,8 @@ import {
 
 
 type BaseModalWrapperProps = {
-  styleReset?: boolean,
-  paddingStyle?: string
+  stylereset?: boolean,
+  paddingstyle?: string
 }
 
 export const ModalDocument = styled.div`
@@ -23,14 +23,14 @@ export const BaseModalWrapper = styled(RowStartCenter)<BaseModalWrapperProps>`
   position: fixed;
   z-index: 10000;
 
-  ${ ({ styleReset, paddingStyle }) => {
-    switch(styleReset) {
+  ${ ({ stylereset, paddingstyle }) => {
+    switch(stylereset) {
       case true: 
         return css`
           display: block;
 
           ${ ModalDocument } {
-            padding: ${ paddingStyle };
+            padding: ${ paddingstyle };
 
             ${ breakpoint("tablet", `
             padding: 0;

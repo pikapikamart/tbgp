@@ -1,15 +1,16 @@
 import { useFormValidation } from "@/lib/hooks"
 import { trpc } from "@/lib/trpc"
+import { addErrors, removeErrors } from "@/lib/utils"
 import { StaffSchema } from "@/src/server/schemas/staff.schema"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/router"
 import { 
   useEffect, 
   useState } from "react"
 
 
 type StaffBody = StaffSchema & {
-  [ key: string ]: string
+  [ key: string ]: string,
+  passwordConfirm: string
 }
 
 export const useSetupStaffProfile = ( bastionId: string ) =>{
@@ -20,6 +21,7 @@ export const useSetupStaffProfile = ( bastionId: string ) =>{
     resetFormValidation,
     isValidData,
   } = useFormValidation()
+  const [ passwordError, setPasswordError ] = useState(false)
   const [ emailError, setEmailError ] = useState("")
   const mutation = trpc.useMutation(["staff.register"], {
     onSuccess: ( data ) => {
@@ -30,8 +32,10 @@ export const useSetupStaffProfile = ( bastionId: string ) =>{
         callbackUrl: "/storybuilder"
       })
     },
-    onError: ( data ) =>{
-      setEmailError(data.message)
+    onError: ( error ) =>{
+      const [, , email] = getFieldsRef()
+      addErrors(email)
+      setEmailError(error.message)
       resetFormValidation()
     }
   })
@@ -44,8 +48,19 @@ export const useSetupStaffProfile = ( bastionId: string ) =>{
         return accu
       }, {} as StaffBody)
       staffData.bastionId = bastionId
+      const { password, passwordConfirm } = staffData
 
-      mutation.mutate(staffData)
+      if ( password!==passwordConfirm ) {
+        const [ , , , , passwordConfirmInput] = getFieldsRef()
+        addErrors(passwordConfirmInput)
+        setPasswordError(true)
+        resetFormValidation()
+      } else {
+        setPasswordError(false)
+        const { passwordConfirm, ...rest } = staffData
+        mutation.mutate(rest)
+      }
+      
     }
   }, [ isValidData ])
 
@@ -53,6 +68,8 @@ export const useSetupStaffProfile = ( bastionId: string ) =>{
   return {
     addFieldRef,
     handleFormSubmit,
+    passwordError,
+    isLoading: mutation.isLoading,
     emailError
   }
 }

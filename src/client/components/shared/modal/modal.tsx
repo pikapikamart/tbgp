@@ -28,11 +28,15 @@ const Modal = ({ children, isChild, styleReset, paddingStyle, exit }: ModalProps
 
   return (
     <BaseModalWrapper
+      key="base-modal-wrapper"
       role="dialog"
       tabIndex={ -1 }
       ref={ modalRef }
-      styleReset={ styleReset }
-      paddingStyle={ paddingStyle }
+      stylereset={ styleReset }
+      paddingstyle={ paddingStyle }
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       aria-labelledby="modal-heading">
       <ModalDocument role="document">
         <ModalExit onClick={ handleExitModal } />

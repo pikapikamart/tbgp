@@ -1,4 +1,4 @@
-import { useFormValidation } from "@/lib/hooks"
+import { HandleFormSubmit, useFormValidation } from "@/lib/hooks"
 import { trpc } from "@/lib/trpc"
 import { useModalContext } from "@/store/context/modal/modal"
 import { 
@@ -20,6 +20,7 @@ export const useSignupValidation = () => {
   } = useFormValidation()
   const [ bastionId, setBastionId ] = useState("")
   const [ shouldFetch, setShouldFetch ] = useState(false)
+  const [ idError, setIdError ] = useState("")
   const query = trpc.useQuery(["staff.validate-bastionId", bastionId], {
     refetchOnWindowFocus: false,
     enabled: false,
@@ -31,12 +32,18 @@ export const useSignupValidation = () => {
       )
       resetFormValidation()
     },
-    onError: () => {
+    onError: ( error ) => {
       addErrors(getFieldsRef()[0])
+      setIdError(error.message)
       resetFormValidation()
     }
   })
   const modalContext = useModalContext()
+
+  const handleSignup: HandleFormSubmit = ( event ) => {
+    setIdError("")
+    handleFormSubmit(event)
+  }
 
   useEffect(() =>{
     if ( isValidData ) {
@@ -54,9 +61,10 @@ export const useSignupValidation = () => {
 
   return {
     addFieldRef,
-    handleFormSubmit,
+    handleFormSubmit: handleSignup,
     bastionId,
     ariaLive,
+    idError,
     isLoading: query.isLoading
   }
 }

@@ -18,6 +18,7 @@ const Staff = () =>{
     addFieldRef,
     handleFormSubmit,
     ariaLive,
+    idError,
     isLoading
   } = useSignupValidation()
   const router = useRouter()
@@ -39,7 +40,8 @@ const Staff = () =>{
             <SigninInputField
               name="bastionId"
               type="password"
-              addFieldRef={ addFieldRef } />
+              addFieldRef={ addFieldRef }
+              error={ idError!==""? idError : undefined } />
           </div>
           <SigninControlsContainer>
             <ColoredBaseButton
