@@ -482,7 +482,8 @@ export const publishWriteupHandler = async( writeupId: WriteupIdSchema, { staff 
       },
       content: currentContent.data,
       writeup: writeup._id,
-      views: 0
+      views: 0,
+      viewsId: []
     }
   )
 

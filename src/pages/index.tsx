@@ -42,7 +42,9 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async() =>
     },
     "-_id category linkPath authors title caption thumbnail createdAt views",
     {
-      sort: "views",
+      sort: {
+        views: -1
+      },
       limit: 7
     },
     {

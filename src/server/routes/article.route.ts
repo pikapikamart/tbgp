@@ -1,9 +1,11 @@
 import { 
   latestArticlesHandler, 
   searchArticleHandler, 
+  viewArticleHandler, 
   visitAuthorHandler} from "../controllers/article.controller";
 import { createRouter } from "../router/createRouter";
 import { 
+  viewArticleSchema,
   baseArticlePaginateSchema, 
   searchSchema, 
   visitAuthorSchema} from "../schemas/article.schema";
@@ -21,4 +23,8 @@ export const articleRouter = createRouter()
   .query("author", {
     input: visitAuthorSchema,
     resolve: ({ input }) => visitAuthorHandler(input)
+  })
+  .mutation("view", {
+    input: viewArticleSchema,
+    resolve: ({ input }) => viewArticleHandler(input)
   })

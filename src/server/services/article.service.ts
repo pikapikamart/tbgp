@@ -3,7 +3,8 @@ import {
   FilterQuery, 
   PopulateOptions, 
   ProjectionType,
-  QueryOptions} from "mongoose";
+  QueryOptions,
+  UpdateQuery} from "mongoose";
 import { 
   Article, 
   ArticleModel } from "../models/article.model";
@@ -36,4 +37,11 @@ export const populateArticleService = async(
   populate: PopulateOptions
 ) => (
   ArticleModel.find(query, projection, options).populate(populate)
+)
+
+export const updateArticleService = async(
+  query: FilterQuery<Article>,
+  update: UpdateQuery<Article>
+) => (
+  ArticleModel.findOneAndUpdate(query, update)
 )

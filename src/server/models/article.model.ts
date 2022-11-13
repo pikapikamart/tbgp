@@ -19,7 +19,8 @@ export type Article = {
   },
   content: any[],
   writeup: WriteupDocument["_id"],
-  views: number
+  views: number,
+  viewsId: string[]
 }
 
 export type ArticleDocument = Article & mongoose.Document<mongoose.Types.ObjectId> & {
@@ -69,7 +70,8 @@ const articleSchema: mongoose.Schema<ArticleDocument> = new mongoose.Schema({
   views: {
     type: Number,
     default: 0
-  }
+  },
+  viewsId: [String]
 }, { timestamps: true })
 
 const ArticleModel: mongoose.Model<ArticleDocument> = mongoose.models.Article || mongoose.model<ArticleDocument>("Article", articleSchema)

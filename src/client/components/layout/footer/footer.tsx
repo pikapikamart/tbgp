@@ -70,7 +70,9 @@ const Footer = () =>{
             Find us here
             <ul>
               <li>
-                <a href="#">
+                <a
+                  target="_blank" 
+                  href="https://www.facebook.com/PRMSUTBGP">
                   <SrOnly>facebook</SrOnly>
                   <img
                     src="/icons/icon-facebook-square.svg"

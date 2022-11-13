@@ -56,7 +56,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async(context: Get
   const { article } = context.params as ArticleParams
   const foundArticle = await populateArticleService(
     { linkPath: article },
-    "-_id category authors title caption banner content views createdAt",
+    "-_id category authors title linkPath caption banner content views createdAt",
     {},
     {
       path: "authors",

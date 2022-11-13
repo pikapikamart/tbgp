@@ -23,6 +23,8 @@ import {
   RenderElementProps, 
   RenderLeafProps, 
   withReact } from "slate-react"
+import FingerPrintjs from "@fingerprintjs/fingerprintjs"
+import { trpc } from "@/lib/trpc"
 
 
 export const useArticle = () =>{
@@ -30,7 +32,8 @@ export const useArticle = () =>{
   const article = useViewArticle()
   const clipboard = useRef<HTMLInputElement | null>(null)
   const url = useRef("")
-
+  const mutation = trpc.useMutation(["article.view"])
+  
   const handleCopyLink = () =>{
 
     if ( !clipboard.current ) {
@@ -59,6 +62,24 @@ export const useArticle = () =>{
       url.current = window.location.href
     }
   }, [])
+
+  useEffect(() =>{
+    if ( article?.linkPath ) {
+      const fpPromise = FingerPrintjs.load()
+  
+      const sendView = async() => {
+        const fp = await fpPromise
+        const result = await fp.get()
+  
+        mutation.mutate({
+          linkPath: article?.linkPath?? "link",
+          fingerprint: result.visitorId
+        })
+      }
+  
+      sendView()
+    }
+  }, [ article?.linkPath ])
 
   return {
     article,
