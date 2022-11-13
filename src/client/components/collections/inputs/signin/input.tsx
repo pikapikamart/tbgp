@@ -6,11 +6,9 @@ import {
 import { SigninInputWrapper } from "./input.styled"
 
 
-const Input = ({
-  name,
-  addFieldRef,
-  type
-}: Pick<InputProps, "name" | "addFieldRef" | "type">) =>{
+type PickedInputProps = Pick<InputProps, "name" | "addFieldRef" | "type" | "error">
+
+const Input = ({ name, addFieldRef, type, error }: PickedInputProps) =>{
 
   return (
     <InputBlock>
@@ -25,7 +23,7 @@ const Input = ({
         ref={ addFieldRef }
         placeholder={ name }
         aria-required="true" />
-      <InputError>Please enter a valid { name } value
+      <InputError>{ error?? `Please enter a valid ${ name } value` }
       </InputError> 
     </InputBlock>
   )

@@ -6,6 +6,7 @@ import {
   useState } from "react"
 import { BaseModal } from "@/components/shared/modal"
 import { SetupStaffProfileModal } from "@/components/collections/modals/staff/setupProfile"
+import { addErrors } from "@/lib/utils"
 
 
 export const useSignupValidation = () => {
@@ -31,6 +32,7 @@ export const useSignupValidation = () => {
       resetFormValidation()
     },
     onError: () => {
+      addErrors(getFieldsRef()[0])
       resetFormValidation()
     }
   })
@@ -54,6 +56,7 @@ export const useSignupValidation = () => {
     addFieldRef,
     handleFormSubmit,
     bastionId,
-    ariaLive
+    ariaLive,
+    isLoading: query.isLoading
   }
 }
