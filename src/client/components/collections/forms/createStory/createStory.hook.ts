@@ -36,16 +36,28 @@ export const useCreateStoryRequest = () =>{
     addFieldRef,
     getFieldsRef,
     handleFormSubmit,
-    isValidData
+    isValidData,
+    resetFormValidation
   } = useFormValidation()
   const [ registerControl, registerTrapContainer ] = useTrapFocus()
   const [ assignedMembers, setAssignedMembers ] = useState<MultiValue<SelectOption>>([])
+  const [ errorMessage, setErrorMessage ] = useState({
+    message: "",
+    code: ""
+  })
   const dispatch = useAppDispatch()
   const mutation = trpc.useMutation("storyRequest.create", {
     onSuccess: ({ data }) =>{
       router.replace("/storybuilder?tab=created")
       dispatch(addCreatedStoryRequest(JSON.parse(JSON.stringify(data))))
       modalContext.removeModal()
+    },
+    onError: ( error ) => {
+      setErrorMessage({
+        message: error.message,
+        code: error.data?.code?? ""
+      })
+      resetFormValidation()
     } 
   })
 
@@ -76,6 +88,8 @@ export const useCreateStoryRequest = () =>{
     registerControl,
     registerTrapContainer,
     assignedMembers,
-    handleSetAssignedMembers
+    handleSetAssignedMembers,
+    isError: mutation.isError,
+    errorMessage
   }
 }

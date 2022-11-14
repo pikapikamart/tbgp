@@ -11,7 +11,7 @@ const Home = () =>{
 
   return (
     <ModalProvider>
-      <MainWrapper>
+      <MainWrapper key="staff-home-page">
         <MainContentContainer>
           <SrOnly as="h1">See all story requests</SrOnly>
           <StaffBoardSection />

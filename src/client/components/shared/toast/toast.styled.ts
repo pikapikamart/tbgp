@@ -28,6 +28,7 @@ export const ToastWrapper = styled.div<ToastWrapperProps>`
   max-width: ${ rem(288) };
   padding: ${ rem(16) } ${ rem(24) };
   position: fixed;
+  text-align: left;
   z-index: 100;
 
   ${ ({ theme: { colors }, colored }) => {

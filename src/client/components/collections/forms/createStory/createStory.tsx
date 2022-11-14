@@ -19,6 +19,7 @@ import { storyCategories } from "./data"
 import { useCreateStoryRequest } from "./createStory.hook"
 import { AssignMembersModal } from "@/components/collections/modals/storyRequest/create/assign"
 import { AssignMembersForm } from "./assignMembers"
+import { ToastError } from "@/components/shared/toast/error"
 
 
 const CreateStory = () =>{
@@ -31,11 +32,16 @@ const CreateStory = () =>{
     registerControl,
     registerTrapContainer,
     assignedMembers,
-    handleSetAssignedMembers
+    handleSetAssignedMembers,
+    isError,
+    errorMessage
   } = useCreateStoryRequest()
 
   return (
     <>
+    { isError && <ToastError
+      code={ errorMessage.code }
+      message={ errorMessage.message } /> }
       { isExpanded && (
         <BaseModal 
           exit={ handleExpansion }

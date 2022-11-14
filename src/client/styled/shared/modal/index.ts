@@ -3,11 +3,12 @@ import {
   rem,
   fluid, 
   maxBreakpoint} from "@/styled/functions"
+import { motion } from "framer-motion"
 
 
 type Size = "small" | "medium" | "large"
 
-const BaseModalWrapper = styled.div`
+const BaseModalWrapper = styled(motion.div)`
   border-radius: ${ rem(8) };
   padding: ${ fluid(48, 8, 64) } ${ rem(32) } ${ fluid(40, 7, 56) };
   position: relative;

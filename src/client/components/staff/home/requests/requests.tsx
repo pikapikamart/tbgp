@@ -14,6 +14,7 @@ import {
   RequestsWrapper, 
   StoryRequestsContentContainer } from "./requests.styled"
 import { CreateStoryRequestModal } from "@/components/collections/modals/storyRequest/create"
+import { simpleFadeVariant } from "@/src/client/motion"
 
 
 const Requests = () =>{
@@ -24,7 +25,9 @@ const Requests = () =>{
   const handleSetModal = () =>{
     handleExpansion()
     modalContext.addModal(
-      <BaseModal exit={ handleExpansion }>
+      <BaseModal 
+        exit={ handleExpansion }
+        variants={ simpleFadeVariant }>
         <CreateStoryRequestModal />
       </BaseModal>
     )

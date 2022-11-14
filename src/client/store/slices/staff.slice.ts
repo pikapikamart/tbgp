@@ -72,7 +72,8 @@ const initialState: InitialStaffState = {
   verification: false,
   position: null,
   storyRequests: null,
-  writeups: null
+  writeups: null,
+  articles: null
 }
 
 export const staffSlice = createSlice({

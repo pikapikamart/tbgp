@@ -149,8 +149,12 @@ export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestI
 // ----Verified Editor ----
 
 export const createStoryRequestHandler = async( request: StoryRequestSchema, { staff }: VerifiedStaffContext ) =>{
-
-  const foundStoryRequest = await findStoryRequestService({ title: request.title });
+  console.log(request)
+  const foundStoryRequest = await findStoryRequestService({ 
+    title: request.title,
+    started: false,
+    category: storyCategories[request.category]
+   })
 
   if ( foundStoryRequest ) {
     return trpcError("CONFLICT", "Request already created")

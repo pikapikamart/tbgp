@@ -11,7 +11,7 @@ import { ResubmitNote } from "./note"
 import { SrOnly } from "@/styled/shared/helpers"
 import CrossSvg from "@/public/icons/icon-add-large.svg";
 import { useResubmit } from "./resubmit.hook"
-import { ResubmitErrorToast } from "@/components/collections/toast/resubmit/error";
+import { ToastError } from "@/components/shared/toast/error";
 
 
 const Resubmit = () => {
@@ -27,7 +27,9 @@ const Resubmit = () => {
   
   return (
     <ResubmitContainer>
-      { isError && <ResubmitErrorToast /> }
+      { isError && <ToastError 
+        code="Error"
+        message="Make sure to fill up all notes field or remove it" /> }
       <ResubmitTrigger
         colored="red"
         onClick={ handleExpansion }

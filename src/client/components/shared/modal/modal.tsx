@@ -1,4 +1,6 @@
+import { simpleFadeVariant } from "@/src/client/motion"
 import { useModalContext } from "@/store/context/modal/modal"
+import { Variants } from "framer-motion"
 import { useFocusModal } from "./modal.hooks"
 import { 
   BaseModalWrapper, 
@@ -11,10 +13,11 @@ type ModalProps = {
   isChild?: boolean,
   styleReset?: boolean,
   paddingStyle?: string,
-  exit?: () => void
+  exit?: () => void,
+  variants?: Variants
 }
 
-const Modal = ({ children, isChild, styleReset, paddingStyle, exit }: ModalProps) => {
+const Modal = ({ children, isChild, styleReset, paddingStyle, exit, variants }: ModalProps) => {
   const { modalRef } = useFocusModal()
   const modalContext = useModalContext()
 
@@ -34,9 +37,10 @@ const Modal = ({ children, isChild, styleReset, paddingStyle, exit }: ModalProps
       ref={ modalRef }
       stylereset={ styleReset }
       paddingstyle={ paddingStyle }
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      variants={ variants?? simpleFadeVariant }
+      initial="initial"
+      animate="animate"
+      exit="exit"
       aria-labelledby="modal-heading">
       <ModalDocument role="document">
         <ModalExit onClick={ handleExitModal } />

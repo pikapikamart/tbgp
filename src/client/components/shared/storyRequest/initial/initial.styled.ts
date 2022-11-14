@@ -3,9 +3,10 @@ import {
   rem,
   fluid } from "@/styled/functions"
 import { RowCenter } from "@/styled/shared/helpers"
+import { motion } from "framer-motion"
 
 
-export const StoryRequestWrapper = styled.div`
+export const StoryRequestWrapper = styled(motion.div)`
   border-radius: ${ rem(4) };
   line-height: 1.5;
   padding-bottom: ${ rem(32) };
