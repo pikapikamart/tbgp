@@ -1,5 +1,13 @@
 
 
+export const baseStaggerVariant = {
+  animate: {
+    transition: {
+      staggerChildren: .2
+    }
+  }
+}
+
 export const simpleFadeVariant = {
   initial: {
     opacity:0
@@ -28,4 +36,23 @@ export const swipeupVariant = {
     }
   },
   exit: {}
+}
+
+export const storyRequestRequestsVariant = {
+  initial: {
+    opacity: 0,
+    x: "-4%"
+  },
+  animate: {
+    opacity: 1,
+    x: "0%",
+    transition: {
+      duration: .4
+    }
+  },
+  exit: {
+    opacity: 0,
+    x: "-4%",
+    duration: .4
+  }
 }

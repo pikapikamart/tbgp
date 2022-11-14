@@ -8,7 +8,8 @@ import {
   isFullStaffState, 
   StaffState,
   isEditorStaffState,
-  WritableStaffState} from "../slices/staff.slice"
+  WritableStaffState,
+  CreatedInitialStoryRequest} from "../slices/staff.slice"
 import { WriteupState } from "../slices/writeup.slice"
 import { 
   InitialStoryRequest, 
@@ -45,10 +46,27 @@ export const addStoryRequestApplicationReducer = ( state: WritableStaffState, ac
   }
 }
 
-export const addCreatedStoryRequestReducer = ( state: WritableStaffState, action: PayloadAction<InitialStoryRequest> ) =>{
+export const addCreatedStoryRequestReducer = ( state: WritableStaffState, action: PayloadAction<CreatedInitialStoryRequest> ) =>{
   if ( isFullStaffState(state) ) {
     state.storyRequests.created.push(action.payload) 
   } 
+}
+
+type UpdateStoryRequestProps = {
+  storyRequestId: string,
+  username: string
+}
+
+export const updateStoryRequestReducer = ( state: WritableStaffState, action: PayloadAction<UpdateStoryRequestProps> ) => {
+  if ( isFullStaffState(state) ) {
+    const { storyRequestId, username } = action.payload
+    const index = state.storyRequests.created.findIndex(request => request.storyRequestId===storyRequestId)
+
+    if ( index!==-1 ) {
+      const filteredRequests = state.storyRequests.created[index].requests.filter(request => request.username!==username)
+      state.storyRequests.created[index].requests = filteredRequests
+    }
+  }
 }
 
 export const startStoryRequestReducer = ( state: WritableStaffState, action: PayloadAction<string> ) => {

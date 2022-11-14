@@ -149,7 +149,6 @@ export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestI
 // ----Verified Editor ----
 
 export const createStoryRequestHandler = async( request: StoryRequestSchema, { staff }: VerifiedStaffContext ) =>{
-  console.log(request)
   const foundStoryRequest = await findStoryRequestService({ 
     title: request.title,
     started: false,

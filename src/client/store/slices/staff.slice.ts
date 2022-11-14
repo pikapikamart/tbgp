@@ -14,6 +14,7 @@ import {
   setStaffReducer, 
   startStoryRequestReducer, 
   updateStaffReducer,
+  updateStoryRequestReducer,
   updateTaskReducer,
   updateWriteupReducer} from "../reducers/staff.reducer";
 import { RootState } from "..";
@@ -27,13 +28,18 @@ import { WritableDraft } from "immer/dist/internal";
 
 
 export type InitialStaffState = Omit<Staff, "password">
+export type CreatedInitialStoryRequest = InitialStoryRequest & {
+  requests: {
+    username: string
+  }[]
+}
 
 export type FullStaffState = ModifyType<InitialStaffState, {
   position: Position,
   storyRequests: {
     requested: string[],
     joined: string[],
-    created: InitialStoryRequest[]
+    created: CreatedInitialStoryRequest[]
   },
   writeups: {
     solo: PopulatedInitialWriteup[],
@@ -85,6 +91,7 @@ export const staffSlice = createSlice({
     updateStaff: updateStaffReducer,
     addCreatedStoryRequest: addCreatedStoryRequestReducer,
     addStoryRequestApplication: addStoryRequestApplicationReducer,
+    updateStoryRequest: updateStoryRequestReducer,
     startStoryRequest: startStoryRequestReducer,
     deleteStoryRequest: deleteStoryRequestReducer,
     updateWriteup: updateWriteupReducer,
@@ -109,6 +116,7 @@ export const {
   updateStaff,
   addCreatedStoryRequest,
   addStoryRequestApplication,
+  updateStoryRequest,
   startStoryRequest,
   deleteStoryRequest,
   updateWriteup,

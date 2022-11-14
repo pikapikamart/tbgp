@@ -1,4 +1,6 @@
+import { useAppDispatch } from "@/lib/hooks/store.hooks"
 import { trpc } from "@/lib/trpc"
+import { updateStoryRequest } from "@/store/slices/staff.slice"
 import { 
   useEffect, 
   useState } from "react"
@@ -10,6 +12,7 @@ import {
 export const useAcceptOrRejectRequest = () =>{
   const { storyRequest } = useTrackedStoryRequest()
   const dispatch = useStoryDispatch()
+  const appDispatch = useAppDispatch()
   const [ filteredRequests, setFilteredRequests ] = useState(storyRequest?.requests?? [])
   const [ hasRejected, setHasRejected ] = useState(false)
   const [ hasAccepted, setHasAccepted ] = useState(true)
@@ -21,6 +24,10 @@ export const useAcceptOrRejectRequest = () =>{
         type: "ACCEPT_REJECT",
         payload: data
       })
+      appDispatch(updateStoryRequest({
+        storyRequestId: storyRequest?.storyRequestId?? "",
+        username: data.staff.username
+      }))
     }
   })
 

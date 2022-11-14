@@ -58,11 +58,18 @@ const reducer = ( draft: Store, action: Action ) =>{
    
     case "ACCEPT_REJECT": {
       const { choice, staff } = action.payload
-      if ( choice && staff && draft.storyRequest ) {
-        draft.storyRequest.members.push(staff)
+
+      if ( !draft.storyRequest ) {
+        return
       }
 
-      return
+      if ( choice && staff ) {
+        draft.storyRequest.members.push(staff)
+
+        return
+      }
+
+      draft.storyRequest.requests = draft.storyRequest.requests.filter(request => request.username!==staff?.username)
     }
   }
 }

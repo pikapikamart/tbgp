@@ -6,6 +6,7 @@ import {
 } from "@/styled/functions"
 import { DefaultText } from "@/styled/collections/text"
 import { SmallButton } from "@/styled/collections/button"
+import { motion } from "framer-motion"
 
 
 export const VerificationsListWrapper = styled.ul`
@@ -14,10 +15,10 @@ export const VerificationsListWrapper = styled.ul`
 `
 
 type VerificationItemProps = {
-  customed?: boolean
+  customed?: "true"
 }
 
-export const VerificationItem = styled.li<VerificationItemProps>`
+export const VerificationItem = styled(motion.li)<VerificationItemProps>`
   border-radius: ${ rem(4) };
   border: 1px solid ${({ theme }) => theme.colors.grey3};
   padding: ${ rem(12) };
@@ -35,7 +36,7 @@ export const VerificationItem = styled.li<VerificationItemProps>`
 
   ${ ({ customed }) => {
     switch(customed) {
-      case true:
+      case "true":
         return css `
 
           > p {

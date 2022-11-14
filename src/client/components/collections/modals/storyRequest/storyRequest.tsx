@@ -20,6 +20,7 @@ import {
   RequestHeaderContent,
 } from "./storyRequest.styled"
 import { useTrackedStoryRequest } from "./storyRequest.tracked"
+import { AnimatePresence } from "framer-motion"
 
 
 type StoryRequestProps = {
@@ -69,8 +70,10 @@ const StoryRequest = ({ storyRequestId }: StoryRequestProps) =>{
               isRouting={ false }>
               <StoryRequestContent />
               <StoryRequestRequests />
-            </TabInterface> 
-            <StoryRequestNote/>
+            </TabInterface>
+            <AnimatePresence>
+              <StoryRequestNote key="story-request-note"/>
+            </AnimatePresence> 
             <StoryRequestControls
               registerControl={ registerControl }
               handleDeleteStoryRequest={ handleDeleteStoryRequest } />

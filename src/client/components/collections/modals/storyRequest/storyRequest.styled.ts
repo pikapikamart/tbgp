@@ -5,6 +5,7 @@ import {
 } from "@/styled/functions"
 import { ModalWrapper } from "@/styled/shared/modal"
 import { VerificationItem } from "@/components/admin/home/verifications/list/list.styled"
+import { motion } from "framer-motion"
 
 
 export const StoryRequestWrapper = styled(ModalWrapper)`
@@ -89,6 +90,6 @@ export const RequestMemberLink = styled.a`
   text-decoration: underline;
 `
 
-export const RequestNoteWrapper = styled.div`
+export const RequestNoteWrapper = styled(motion.div)`
   margin-top: ${ rem(16) };
 `
