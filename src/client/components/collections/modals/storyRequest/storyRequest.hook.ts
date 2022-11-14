@@ -3,7 +3,13 @@ import {
   useSelectStaff } from "@/lib/hooks/store.hooks"
 import { trpc } from "@/lib/trpc"
 import { useModalContext } from "@/store/context/modal/modal"
-import { deleteStoryRequest } from "@/store/slices/staff.slice"
+import { 
+  deleteStoryRequest, 
+  isEditorStaffState, 
+  isFullStaffState, 
+  updateJoinedStoryRequests, 
+  updatePendingRequest } from "@/store/slices/staff.slice"
+import { StaffProfile } from "@/store/store.types"
 import { 
   useEffect, 
   useState } from "react"
@@ -12,7 +18,9 @@ import { useStoryDispatch } from "./storyRequest.tracked"
 
 export const useStoryRequest = ( storyRequestId: string ) =>{
   const dispatch = useStoryDispatch()
+  const appDispatch = useAppDispatch()
   const staff = useSelectStaff()
+  const modalContext = useModalContext()
   const query = trpc.useQuery(["storyRequest.get", { storyRequestId }], {
     refetchOnWindowFocus: false,
     enabled: false,
@@ -24,6 +32,28 @@ export const useStoryRequest = ( storyRequestId: string ) =>{
           staff
         }
       })
+
+      if ( isFullStaffState(staff) && 
+        data.members.find(member => member.bastionId===staff.bastionId) &&
+        !staff.storyRequests.joined.includes(data.storyRequestId)  ) {
+          appDispatch(updateJoinedStoryRequests(data.storyRequestId))
+      }
+
+      if ( isEditorStaffState(staff)) {
+        const foundStoryRequest = staff.storyRequests.created.find(request => request.storyRequestId===data.storyRequestId)
+        
+        if ( !foundStoryRequest ) {
+          return
+        }
+
+        appDispatch(updatePendingRequest({
+          storyRequestId: data.storyRequestId,
+          requests: data.requests as unknown as StaffProfile[]
+        }))
+      }
+    },
+    onError: () =>{
+      modalContext.removeModal()
     }
   })
 

@@ -12,7 +12,6 @@ import {
   CreatedInitialStoryRequest} from "../slices/staff.slice"
 import { WriteupState } from "../slices/writeup.slice"
 import { 
-  InitialStoryRequest, 
   PopulatedInitialWriteup, 
   StaffProfile } from "../store.types"
 
@@ -54,18 +53,47 @@ export const addCreatedStoryRequestReducer = ( state: WritableStaffState, action
 
 type UpdateStoryRequestProps = {
   storyRequestId: string,
-  username: string
+  username: string,
+  accept?: boolean
 }
 
 export const updateStoryRequestReducer = ( state: WritableStaffState, action: PayloadAction<UpdateStoryRequestProps> ) => {
   if ( isFullStaffState(state) ) {
-    const { storyRequestId, username } = action.payload
+    const { storyRequestId, username, accept } = action.payload
     const index = state.storyRequests.created.findIndex(request => request.storyRequestId===storyRequestId)
 
     if ( index!==-1 ) {
       const filteredRequests = state.storyRequests.created[index].requests.filter(request => request.username!==username)
       state.storyRequests.created[index].requests = filteredRequests
+
+      if ( !accept ) {
+        return
+      }
+
+      state.storyRequests.created[index].members = state.storyRequests.created[index].members+1
     }
+  }
+}
+
+type UpdatePendingProps = {
+  storyRequestId: string,
+  requests: StaffProfile[]
+}
+
+export const updatePendingRequestReducer = ( state: WritableStaffState, action: PayloadAction<UpdatePendingProps> ) =>{
+  if ( isFullStaffState(state) ) {
+    const { storyRequestId, requests } = action.payload
+    const index = state.storyRequests.created.findIndex(request => request.storyRequestId===storyRequestId)
+
+    if ( index!==-1 ) {
+      state.storyRequests.created[index].requests = requests
+    }
+  }
+}
+
+export const updateJoinedStoryRequestsReducer = ( state: WritableStaffState, action: PayloadAction<string> ) => {
+  if ( isFullStaffState(state) ) {
+    state.storyRequests.joined.push(action.payload)
   }
 }
 

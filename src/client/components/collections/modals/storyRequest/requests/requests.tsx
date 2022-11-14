@@ -7,7 +7,9 @@ import { ContentContainer } from "../storyRequest.styled"
 import { 
   AnimatePresence,
   motion } from "framer-motion"
-import { baseStaggerVariant, storyRequestRequestsVariant } from "@/src/client/motion"
+import { 
+  baseStaggerVariant, 
+  storyRequestRequestsVariant } from "@/src/client/motion"
 
 
 const Requests = () =>{

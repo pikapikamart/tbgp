@@ -31,6 +31,7 @@ import {
   getCurrentAvailableStoryRequest, 
   getOwnedAvailableStoryRequest, 
   staffValidator } from "./controller.utils";
+import { FullStoryRequest } from "@/store/store.types";
 
 
 // --------Queries--------
@@ -46,7 +47,7 @@ export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdS
     }
   )
 
-  return trpcSuccess(true, storyRequest)
+  return trpcSuccess(true, storyRequest as unknown as FullStoryRequest)
 }
 
 export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema, { staff }: StaffContext ) => {
