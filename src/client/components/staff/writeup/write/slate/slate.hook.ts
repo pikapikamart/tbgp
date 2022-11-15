@@ -47,7 +47,7 @@ export const useSlate = () =>{
 
   const handleSlateEmitter = () => {
     const socket = writeup.socket
-    
+
     if ( socket && editor.operations.length && !remote.current ) {
       const operations = editor.operations
         .filter(operation => 
@@ -58,7 +58,7 @@ export const useSlate = () =>{
       if ( !operations.length ) {
         return
       }
-      
+
       if ( !receivingEnd.current ) {
         socket.emit(Events.clients.emit_slate, {
           writeup: writeup.writeupId,
@@ -78,15 +78,19 @@ export const useSlate = () =>{
 
         if ( editor && editorData.editorId!==id.current ) {
           remote.current = true
+          try {
+            Editor.withoutNormalizing(editor, () => {
+              (JSON.parse(JSON.stringify(editorData.slate)) as BaseOperation[]).forEach(operation => {
+                editor.apply(operation)
+              })
+            })
 
-          editorData.slate.forEach((operation, index) => {
-            // fix error
-            editor.apply(operation)
-          })
+          } catch(error) {
+
+          }
 
           remote.current = false
           receivingEnd.current = true
-          editor.operations = editorData.slate
         }
       })
     }

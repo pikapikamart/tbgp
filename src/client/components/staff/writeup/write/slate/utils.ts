@@ -20,7 +20,7 @@ export const isMarkActive = ( editor: Editor, format: string ) => {
 
 export const toggleMark = ( editor: Editor, format: string ) => {
   const isActive = isMarkActive(editor, format)
-
+  
   isActive? Editor.removeMark(editor, format) : Editor.addMark(editor, format, true)
 }
 

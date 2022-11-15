@@ -39,6 +39,7 @@ export const HeaderWrapper = styled(RowCenter)`
   justify-content: space-between;
   padding: 0 ${ rem(24) };
   position: relative;
+  z-index: 100;
 
   &.scroll-in {
     animation: ${scrollIn} 1s ease forwards;

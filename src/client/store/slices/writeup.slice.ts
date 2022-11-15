@@ -14,6 +14,7 @@ import {
   setWriteupReducer, 
   setWriteupSlateReducer,
   startCollaboratingReducer,
+  stopCollaboratingReducer,
   submitWriteupReducer,
   takeWriteupTaskReducer} from "../reducers/writeup.reducer";
 import { WriteupPhases } from "@/src/server/models/writeup.model";
@@ -80,6 +81,7 @@ export const writeupSlice = createSlice({
     resubmitWriteup: resubmitWriteupReducer,
     addWriteupBanner: addWriteupBannerReducer,
     startCollaborating: startCollaboratingReducer,
+    stopCollaborating: stopCollaboratingReducer
   },
   extraReducers: {
     [HYDRATE]: ( state, action ) => {
@@ -105,6 +107,7 @@ export const {
   resubmitWriteup,
   addWriteupBanner,
   startCollaborating,
+  stopCollaborating
 } = writeupSlice.actions;
 export const selectWriteup = ( state: RootState ) => state.writeup
 

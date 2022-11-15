@@ -3,8 +3,10 @@ import {
   useAppDispatch, 
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { startCollaborating } from "@/store/slices/writeup.slice"
-import { useEffect } from "react"
+import { startCollaborating, stopCollaborating } from "@/store/slices/writeup.slice"
+import { useRouter } from "next/router"
+import { useEffect, useRef } from "react"
+import { Socket } from "socket.io-client"
 
 
 export const Events = {
@@ -26,7 +28,9 @@ export const Events = {
 export const useWriteupPhaseCollaboration = (socketUri: string) =>{
   const writeup = useSelectWriteup()
   const staff = useSelectStaff()
+  const router = useRouter()
   const dispatch = useAppDispatch()
+  const socketRef = useRef<Socket | null>(null)
 
   useEffect(() =>{
     // only send a socket when there are atleast 2 members
@@ -42,6 +46,11 @@ export const useWriteupPhaseCollaboration = (socketUri: string) =>{
 
   useEffect(() =>{
     if ( writeup.socket ) {
+
+      if ( !socketRef.current ) {
+        socketRef.current = writeup.socket
+      }
+
       const socket = writeup.socket
 
       socket.emit(Events.clients.create_collab_room, {
@@ -51,4 +60,19 @@ export const useWriteupPhaseCollaboration = (socketUri: string) =>{
       })
     }
   }, [ writeup.socket ])
-}
+
+  useEffect(() =>{
+    if ( router.query["phase"] !=="writeup" && writeup.socket ) {
+      socketRef.current?.close()
+    }
+
+  }, [ router.query["phase"] ])
+
+  useEffect(() =>{
+
+    return () => {
+      dispatch(stopCollaborating())
+      socketRef.current?.close()
+    }
+  }, [])
+} 

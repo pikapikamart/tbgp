@@ -2,7 +2,7 @@ import { WriteupPhases } from "@/src/server/models/writeup.model";
 import { 
   AppDispatch, 
   RootState } from "@/store/index";
-import { FullArticle, selectArticles } from "@/store/slices/articles.slice";
+import { selectArticles } from "@/store/slices/articles.slice";
 import { 
   selectStaff, 
   setStaff } from "@/store/slices/staff.slice";

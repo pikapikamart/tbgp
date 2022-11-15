@@ -10,7 +10,6 @@ import React, {
   useEffect, 
   useRef } from "react"
 import { Events } from "@/pages/storybuilder/writeup/[writeup]/phase.hook"
-import { Descendant } from "slate"
 
 
 export type HeaderFields = {
@@ -41,7 +40,7 @@ export const useWriteupHeader = () =>{
   }
 
   const handleEmitTitle = ( event: React.ChangeEvent<HTMLTextAreaElement> ) => {
-    const { socket } = writeup!
+    const { socket } = writeup
 
     if ( socket ) {
       socket.emit(Events.clients.emit_title, {
@@ -69,12 +68,16 @@ export const useWriteupHeader = () =>{
       socket.on(Events.server.broadcast_title, ( title: string ) => {
         if ( titleRef.current ) {
           titleRef.current.value = title
+          titleRef.current.style.height = "0"
+          titleRef.current.style.height = titleRef.current.scrollHeight + "px"
         }
       })
 
       socket.on(Events.server.broadcast_caption, ( caption: string ) => {
         if ( captionRef.current ) {
           captionRef.current.value = caption
+          captionRef.current.style.height = "0"
+          captionRef.current.style.height = captionRef.current.scrollHeight + "px"
         }
       })
     }

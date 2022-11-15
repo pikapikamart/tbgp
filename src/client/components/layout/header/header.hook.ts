@@ -29,6 +29,7 @@ export const useHeaderAnimation = () => {
   const [ showHeaderSticky, setShowHeaderSticky ] = useState(false);
   const [ hideHeaderSticky, setHideHeaderSticky ] = useState(false);
   const [ windowHeight, setWindowHeight ] = useState(0);
+  const router = useRouter()
 
   useEffect(() =>{
     if ( hideHeaderSticky ) {
@@ -42,7 +43,7 @@ export const useHeaderAnimation = () => {
   }, [ hideHeaderSticky ]);
 
   useEffect(() =>{
-    if ( !hideHeaderSticky && windowHeight > 600 ) {
+    if ( !router.pathname.includes("writeup") &&  !hideHeaderSticky && windowHeight > 600 ) {
       setShowHeaderSticky(true);
     }
 
