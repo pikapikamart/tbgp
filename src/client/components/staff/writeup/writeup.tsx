@@ -1,10 +1,15 @@
-import { useSetupWriteup } from "@/lib/hooks/store.hooks"
+import { useSelectStaff, useSetupWriteup } from "@/lib/hooks/store.hooks"
+import { ChatsSection } from "./chats"
 import { ControlsSection } from "./controls"
+import { 
+  isWriteupCollaborative, 
+  isWriteupMember } from "./utils"
 import { WriteSection } from "./write"
 import { useWriteup } from "./writeup.hook"
 import { 
   MainContentContainer, 
   MainWrapper } from "./writeup.styled"
+import { AnimatePresence } from "framer-motion"
 
 
 const Writeup = () =>{
@@ -14,6 +19,7 @@ const Writeup = () =>{
     isSuccess,
     isFetching
   } = useSetupWriteup()
+  const staff = useSelectStaff()
 
   if ( !writeup.writeupId || !isSuccess || isFetching ) {
     return <></>
@@ -26,6 +32,12 @@ const Writeup = () =>{
         tabIndex={ -1 }>
         <ControlsSection />
         <WriteSection />
+        <AnimatePresence>
+          { writeup.currentPhase==="writeup" && 
+            isWriteupCollaborative(writeup) && 
+            isWriteupMember(writeup, staff.bastionId) && <ChatsSection key="collaborative-chatbox" /> }
+
+        </AnimatePresence>
       </MainContentContainer>
     </MainWrapper>
   )

@@ -430,7 +430,7 @@ export const publishWriteupHandler = async( writeupId: WriteupIdSchema, { staff 
 
   const processTitle = ( title: string ) => (
     title
-      .split(" ")
+      .split(/[,.' -]+/)
       .map(word => word.toLowerCase())
       .join("-")
   )

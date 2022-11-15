@@ -10,10 +10,12 @@ import { ColoredMediumButton } from "@/styled/collections/button"
 
 export const ControlsContainer = styled.div`
   align-items: center;
+  bottom: 0;
   display: flex;
   flex-direction: column;
+  max-width: max-content;
+  margin: 0 auto;
   position: sticky;
-  bottom: 0;
   z-index: 1000;
 
   ${ breakpoint("tablet", `
