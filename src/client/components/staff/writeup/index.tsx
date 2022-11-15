@@ -6,7 +6,7 @@ export const StaffWriteup = () =>{
 
   return (
     <ModalProvider>
-      <Writeup />
+      <Writeup key="writeup-page" />
     </ModalProvider>
   )
 }

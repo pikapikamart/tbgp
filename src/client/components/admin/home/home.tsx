@@ -11,7 +11,7 @@ const Home = () => {
   
   return (
     <ModalProvider>
-      <MainWrapper>
+      <MainWrapper key="admin-homepage">
         <MainContentContainer>
           <SrOnly as="h1">Homepage. Manage everything in here</SrOnly>
           <AdminAccountsSection />

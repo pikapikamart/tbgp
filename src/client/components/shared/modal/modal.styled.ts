@@ -6,7 +6,7 @@ import {
 
 
 type BaseModalWrapperProps = {
-  stylereset?: boolean,
+  $styleReset?: "true",
   paddingstyle?: string
 }
 
@@ -19,13 +19,13 @@ export const BaseModalWrapper = styled(RowStartCenter)<BaseModalWrapperProps>`
   background-color: rgba(0, 0, 0, .8);
   inset: 0;
   outline: none;
-  overflow-y: scroll;
+  overflow: hidden scroll;
   position: fixed;
   z-index: 10000;
 
-  ${ ({ stylereset, paddingstyle }) => {
-    switch(stylereset) {
-      case true: 
+  ${ ({ $styleReset, paddingstyle }) => {
+    switch($styleReset) {
+      case "true": 
         return css`
           display: block;
 

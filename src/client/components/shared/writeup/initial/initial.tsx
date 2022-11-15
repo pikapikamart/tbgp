@@ -1,3 +1,4 @@
+import { delayFadeSwipe, fadeSwipeRightVariant } from "@/src/client/motion"
 import { isPopulatedInitialWriteup } from "@/store/slices/staff.slice"
 import { 
   InitialWriteup, 
@@ -14,9 +15,10 @@ import {
 
 type InitialProps = {
   writeup: InitialWriteup | PopulatedInitialWriteup,
+  index: number
 }
 
-const Initial = ({ writeup }: InitialProps) =>{
+const Initial = ({ writeup, index }: InitialProps) =>{
 
   const returnStatus = () =>{
 
@@ -46,7 +48,10 @@ const Initial = ({ writeup }: InitialProps) =>{
   }
 
   return (
-    <InitialWriteupWrapper>
+    <InitialWriteupWrapper
+      initial="initial"
+      animate="animate"
+      variants={ delayFadeSwipe(index * .1) }>
       <WriteupTitle>
         <Link 
           href={ `/storybuilder/writeup/${ writeup.writeupId }/${ writeup.content.phase }` }>

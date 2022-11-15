@@ -109,7 +109,7 @@ export const verifyPositionHandler = async (
   } else {
     updateStaffBody["verification"] = false
   }
-
+ 
   await updateStaffService(
     { bastionId: verification.bastionId },
     updateStaffBody 

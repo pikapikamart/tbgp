@@ -9,7 +9,7 @@ import {
   motion } from "framer-motion"
 import { 
   baseStaggerVariant, 
-  storyRequestRequestsVariant } from "@/src/client/motion"
+  fadeSwipeRightVariant } from "@/src/client/motion"
 
 
 const Requests = () =>{
@@ -29,7 +29,7 @@ const Requests = () =>{
           <VerificationItem 
             customed="true"
             key={ request.bastionId }
-            variants={ storyRequestRequestsVariant }>
+            variants={ fadeSwipeRightVariant }>
             <VerificationRequester>{ request.firstname + " " + request.lastname }</VerificationRequester>
             <VerificationOption
               bgColor="blue"

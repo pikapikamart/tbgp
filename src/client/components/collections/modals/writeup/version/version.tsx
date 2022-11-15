@@ -10,6 +10,7 @@ import {
 import { 
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
+import { versionModalVariant } from "@/src/client/motion"
 import { WriteupPhases } from "@/src/server/models/writeup.model"
 import { useModalContext } from "@/store/context/modal/modal"
 import { SrOnly } from "@/styled/shared/helpers"
@@ -42,7 +43,11 @@ const Version = () =>{
   const currentContent = writeup.content[0]
   
   return (
-    <VersionWrapper>
+    <VersionWrapper
+      initial="initial"
+      animate="animate"
+      exit="initial"
+      variants={ versionModalVariant }>
       <VersionClose onClick={ modalContext.removeModal }>
         <SrOnly>Close modal</SrOnly>
       </VersionClose>

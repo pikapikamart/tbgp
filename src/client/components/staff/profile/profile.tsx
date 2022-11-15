@@ -32,7 +32,7 @@ const Profile = () =>{
 
   return (
     <ModalProvider>
-      <MainWrapper>
+      <MainWrapper key="staff-profilepage">
         <MainContentContainer>
           <ProfileHeaderSection profile={ query.data.data } />
           <TabInterface

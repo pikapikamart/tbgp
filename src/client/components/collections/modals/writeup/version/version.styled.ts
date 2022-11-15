@@ -4,9 +4,10 @@ import {
   fluid,
   breakpoint } from "@/styled/functions";
 import { DefaultText } from "@/styled/collections/text";
+import { motion } from "framer-motion"
 
 
-export const VersionWrapper = styled.div`
+export const VersionWrapper = styled(motion.div)`
   background-color: ${ ({ theme }) => theme.colors.white1 };
   max-width: 100%;
   min-height: 100vh;
@@ -32,6 +33,7 @@ export const VersionClose = styled.button`
   height: ${ rem(40) };
   inset: ${ rem(64) } auto auto -${ rem(40) };
   position: absolute;
+  transform: translateX(1px);
   width: ${ rem(40) };
 `
 

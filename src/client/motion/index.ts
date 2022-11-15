@@ -26,19 +26,7 @@ export const simpleFadeVariant = {
   }
 }
 
-export const swipeupVariant = {
-  initial: {
-  },
-  animate: {
-    // y: ["4%", "-0%"],
-    transition: {
-      duration: .3
-    }
-  },
-  exit: {}
-}
-
-export const storyRequestRequestsVariant = {
+export const fadeSwipeRightVariant = {
   initial: {
     opacity: 0,
     x: "-4%"
@@ -54,5 +42,33 @@ export const storyRequestRequestsVariant = {
     opacity: 0,
     x: "-4%",
     duration: .4
+  }
+}
+
+export const delayFadeSwipe = ( delay: number ) => ({
+  ...fadeSwipeRightVariant,
+  animate: {
+    ...fadeSwipeRightVariant.animate,
+    transition: {
+      ...fadeSwipeRightVariant.animate.transition,
+      delay
+    }
+  }
+})
+
+export const versionModalVariant = {
+  initial: {
+    x: "100%",
+    transition: { 
+      type: 'spring', 
+      duration: .75 
+    }
+  },
+  animate: {
+    x: "3%",
+    transition: { 
+      type: 'spring', 
+      duration: .75 
+    }
   }
 }

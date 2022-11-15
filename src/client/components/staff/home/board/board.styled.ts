@@ -31,6 +31,8 @@ export const BoardWrapper = styled(RowCenterBetween)`
     margin-bottom: 0;
     max-width: ${ rem(240) };
     padding-bottom: ${ rem(64) };
+    position: sticky;
+    top: ${ rem(12) };
   `) }
 `
 

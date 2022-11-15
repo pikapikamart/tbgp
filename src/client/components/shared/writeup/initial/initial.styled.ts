@@ -4,9 +4,10 @@ import {
   fluid } from "@/styled/functions"
 import { RowCenter } from "@/styled/shared/helpers"
 import { Category } from "../../storyRequest/initial/initial.styled"
+import { motion } from "framer-motion"
 
 
-export const InitialWriteupWrapper = styled.li`
+export const InitialWriteupWrapper = styled(motion.li)`
   border-radius: ${ rem(4) };
   border: 1px solid ${ ({ theme }) => theme.colors.grey3 };
   padding: ${ fluid(12, 2.5, 18) } ${ fluid(16, 3.5, 24) };

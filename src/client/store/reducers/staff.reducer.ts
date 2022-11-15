@@ -94,6 +94,7 @@ export const updatePendingRequestReducer = ( state: WritableStaffState, action: 
 export const updateJoinedStoryRequestsReducer = ( state: WritableStaffState, action: PayloadAction<string> ) => {
   if ( isFullStaffState(state) ) {
     state.storyRequests.joined.push(action.payload)
+    state.storyRequests.requested = state.storyRequests.requested.filter(request => request!==action.payload)
   }
 }
 

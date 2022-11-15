@@ -92,7 +92,7 @@ const CreateStory = () =>{
           <InputWrapper
             as="textarea"
             name="instruction"
-            rows={ 6 }
+            rows={ 10 }
             id="instruction"
             ref={ addFieldRef }
             aria-required="true">

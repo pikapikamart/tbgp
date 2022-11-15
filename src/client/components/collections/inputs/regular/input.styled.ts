@@ -27,6 +27,7 @@ export const InputError = styled.span`
 export const InputWrapper = styled.input`
   border-radius: ${ rem(4) };
   font-size: ${ fluid(14, 2, 16) };
+  line-height: 1.4;
   padding: ${ rem(12) } 0 ${ rem(12) } ${ rem(10) };
   width: 100%;
 

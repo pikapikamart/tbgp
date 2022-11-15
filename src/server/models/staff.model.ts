@@ -142,10 +142,12 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
     default: null
   },
   articles: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Article",
+    type: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Article", 
+    }],
     default: null
-  }
+  } 
 })
 
 staffSchema.pre("save", preHashModel);

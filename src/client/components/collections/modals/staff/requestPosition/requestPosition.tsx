@@ -1,19 +1,18 @@
 import { RequestPositionForm } from "@/components/collections/forms/requestPosition"
-import { 
-  ModalHeading, 
-  ModalWrapper } from "@/styled/shared/modal"
+import { ModalHeading } from "@/styled/shared/modal"
+import { RequestPositionWrapper } from "./requestPosition.styled"
 
 
 const RequestPosition = () => {
 
   return (
-    <ModalWrapper
+    <RequestPositionWrapper
       size="small"
       padding="large">
         <ModalHeading size="medium">Verify your account now
         </ModalHeading>
         <RequestPositionForm />
-    </ModalWrapper>
+    </RequestPositionWrapper>
   )
 }
 
