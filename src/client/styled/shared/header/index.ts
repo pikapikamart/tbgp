@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { 
   rem,
   fluid,
@@ -9,6 +9,29 @@ import {
 import { DropdownWrapper } from "./dropdown";
 
 
+const scrollIn = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`
+
+const scrollOut = keyframes`
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+`
+
+
 export const HeaderWrapper = styled(RowCenter)`
   background-color: ${({ theme }) => theme.colors.white1};
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, .2);
@@ -16,6 +39,19 @@ export const HeaderWrapper = styled(RowCenter)`
   justify-content: space-between;
   padding: 0 ${ rem(24) };
   position: relative;
+
+  &.scroll-in {
+    animation: ${scrollIn} 1s ease forwards;
+    box-shadow: 0 0 ${rem(16)} 0 rgba(0, 0, 0, .2);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+  }
+  
+  &.scroll-out {
+    animation: ${scrollOut} .45s ease forwards;
+  }
 
   ${ breakpoint("desktop", `
     padding: 0 ${ rem(48) };

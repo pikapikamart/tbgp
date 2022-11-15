@@ -9,13 +9,15 @@ import { useMainHeader } from "./main.hook"
 import { MainHeaderNavlinks } from "./navlinks"
 import { HeaderSearchbar } from "./searchbar"
 import { MainHeaderWrapper } from "./main.styled"
+import { useHeaderAnimation } from "../header.hook"
 
 
 const Main = () =>{
-  const { 
-    showDesktopItems,
+  const { showDesktopItems } = useMainHeader()
+  const {
     showHeaderSticky,
-    hideHeaderSticky } = useMainHeader()
+    hideHeaderSticky
+  } = useHeaderAnimation()
  
   return (
     <MainHeaderWrapper 

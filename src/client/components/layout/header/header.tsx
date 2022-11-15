@@ -7,7 +7,9 @@ import {
   HeaderMenuIcon } from "@/styled/shared/header";
 import { HeaderProfile } from "@/components/layout/header/profile";
 import { HeaderDropdown } from "@/components/layout/header/dropdown";
-import { useHeader } from "./header.hook";
+import { 
+  useHeader, 
+  useHeaderAnimation } from "./header.hook";
 
 
 type HeaderProps = {
@@ -16,9 +18,16 @@ type HeaderProps = {
 
 const Header = ( { type }: HeaderProps ) =>{
   const { isExpanded, handleExpansion } = useHeader()
+  const {
+    hideHeaderSticky,
+    showHeaderSticky
+  } = useHeaderAnimation()
 
   return (
-    <HeaderWrapper as="header">
+    <HeaderWrapper 
+      as="header"
+      className={`${hideHeaderSticky? "scroll-in scroll-out" : 
+                              showHeaderSticky? "scroll-in" : ""}`}>
       <RowCenterBetween as="nav">
         <HeaderLogo 
           href={ type==="admin"? "/admin" : "/storybuilder" } 
