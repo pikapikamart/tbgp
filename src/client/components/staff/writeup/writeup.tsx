@@ -36,7 +36,6 @@ const Writeup = () =>{
           { writeup.currentPhase==="writeup" && 
             isWriteupCollaborative(writeup) && 
             isWriteupMember(writeup, staff.bastionId) && <ChatsSection key="collaborative-chatbox" /> }
-
         </AnimatePresence>
       </MainContentContainer>
     </MainWrapper>

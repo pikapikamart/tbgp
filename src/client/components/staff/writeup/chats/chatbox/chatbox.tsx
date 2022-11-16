@@ -1,9 +1,50 @@
+import { useSelectStaff } from "@/lib/hooks/store.hooks"
 import { simpleFadeVariant } from "@/src/client/motion"
-import {} from "../"
-import { ChatboxWrapper } from "./chatbox.styled"
+import { 
+  ChatboxWrapper, 
+  ChatMessage, 
+  ChatOwner, 
+  ChatsContainer, 
+  SingleChat } from "./chatbox.styled"
 
 
-const Chatbox = () =>{
+export type Chat = {
+  member: {
+    firstname: string,
+    lastname: string,
+    username: string
+  },
+  message: string
+}
+
+export type ChatboxProps = {
+  chats: Chat[],
+  children: React.ReactNode
+}
+
+const Chatbox = ({ chats, children }: ChatboxProps) =>{
+  const staff = useSelectStaff()
+
+  const renderCurrentChats = () =>{
+    const currentChats = chats.map((chat, index) => (
+      <SingleChat 
+        key={ chat.message + index }
+        $owned={ chat.member.username===staff.username }
+        $start={ index!==chats.length-1 && 
+          chats[index+1].member.username===staff.username }
+        $middle={ index!==chats.length-1 && 
+            index!==0 && 
+            chats[index-1].member.username===chat.member.username &&
+            chats[index+1].member.username===chat.member.username }
+        $end={ index!==0 && 
+          chats[index-1].member.username===staff.username }>
+          <ChatOwner>{`${ chat.member.firstname } ${ chat.member.lastname }`}</ChatOwner>
+          <ChatMessage>{ chat.message }</ChatMessage>
+      </SingleChat>
+    ))
+
+    return currentChats
+  }
 
   return (
     <ChatboxWrapper
@@ -11,7 +52,10 @@ const Chatbox = () =>{
       animate="animate"
       exit="exit"
       variants={ simpleFadeVariant }>
-
+        <ChatsContainer>
+          { renderCurrentChats() }
+        </ChatsContainer>
+        { children }
     </ChatboxWrapper>
   )
 }
