@@ -6,7 +6,7 @@ import {
 import { 
   MarkButton, 
   ToolbarItem } from "../toolbar.styled"
-import ImageIcon from "@/public/icons/icon-addImage.svg"
+import ImageIcon from "@/public/icons/icon-addimage.svg"
 import { 
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"

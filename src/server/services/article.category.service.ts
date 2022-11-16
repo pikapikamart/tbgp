@@ -1,3 +1,4 @@
+import "../models"
 import { FilterQuery } from "mongoose";
 import { 
   ArticleCategory, 
