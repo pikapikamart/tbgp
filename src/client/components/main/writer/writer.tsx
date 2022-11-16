@@ -1,7 +1,7 @@
 import { Author } from "@/src/server/controllers/article.controller"
 import { InitArticleMainHeading } from "@/styled/shared/article/initial"
 import { AuthorArticle } from "./article"
-import { useWriter, useWriterArticles } from "./writer.hook"
+import { useWriterArticles } from "./writer.hook"
 import { 
   ArticleList,
   ArticlesContainer,
@@ -11,23 +11,12 @@ import {
   WriterWrapper } from "./writer.styled"
 
 
-const Writer = () =>{
-  const {
-    isError,
-    author
-  } = useWriter()
-  const {
-    ref,
-    authorArticles
-  } = useWriterArticles(author?._id)
+type WriterProps = {
+  author: Author
+}
 
-  if ( isError ) {
-    return <>Writer not found</>
-  }
-
-  if ( !author ) {
-    return <>Loading</>
-  }
+const Writer = ({ author }: WriterProps) =>{
+  const { ref, authorArticles } = useWriterArticles(author?._id)
 
   const renderOwnedArticles = () =>{
     const articles = authorArticles.map(article => (
@@ -39,19 +28,17 @@ const Writer = () =>{
     return articles
   }
 
-  const authorName = ( author: Author ) => `${ author.firstname } ${ author.lastname }`
-
   return (
     <WriterWrapper>
       <WriterHeader>
-        <AuthorName>{ authorName(author) }</AuthorName>
+        <AuthorName>{ `${ author.firstname } ${ author.lastname }` }</AuthorName>
         <AuthorBio>
-          { author.bio!==""? author.bio : `Hi! My name is ${ authorName(author) }. I have yet to fill out my bio, but one thing's for sure, I love writing for The Bastion Group of Publications!` }
+          { author.bio!==""? author.bio : `Hi! My name is ${ `${ author.firstname } ${ author.lastname }` }. I have yet to fill out my bio, but one thing's for sure, I love writing for The Bastion Group of Publications!` }
         </AuthorBio>
       </WriterHeader>
       <ArticlesContainer>
         <InitArticleMainHeading alignment="left">
-          <span>Articles from { authorName(author) }</span>
+          <span>Articles from { `${ author.firstname } ${ author.lastname }` }</span>
         </InitArticleMainHeading>
         <ArticleList>
           { renderOwnedArticles() }

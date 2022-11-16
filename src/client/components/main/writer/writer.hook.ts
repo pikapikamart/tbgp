@@ -1,5 +1,4 @@
 import { trpc } from "@/lib/trpc"
-import { useRouter } from "next/router"
 import { InitialArticle } from "@/store/slices/articles.slice"
 import { 
   useEffect, 
@@ -17,22 +16,6 @@ export type VisitWriter = {
 type Paginate = {
   id: string,
   paginate?: BaseArticlePaginateSchema
-}
-
-export const useWriter = () =>{
-  const router = useRouter()
-  const [ author, setAuthor ] = useState<Author | null>(null)
-  const authorQuery = trpc.useQuery(["article.author", { username: router.query["username"] as string}], {
-    refetchOnWindowFocus: false,
-    onSuccess: ({ data }) =>{
-      setAuthor(data)
-    }
-  })
-
-  return {
-    isError: authorQuery.isError,
-    author
-  }
 }
 
 export const useWriterArticles = ( id?: string ) => {
