@@ -1,7 +1,7 @@
 import { 
   useAppDispatch, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { Events } from "@/pages/storybuilder/writeup/[writeup]/phase.hook"
+import { Events } from "@/components/staff/writeup/phase.hook"
 import { resetSubmission, setWriteupSlate } from "@/store/slices/writeup.slice"
 import { 
   useMemo,

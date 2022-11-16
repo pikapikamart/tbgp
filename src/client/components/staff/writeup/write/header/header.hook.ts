@@ -9,7 +9,7 @@ import {
 import React, { 
   useEffect, 
   useRef } from "react"
-import { Events } from "@/pages/storybuilder/writeup/[writeup]/phase.hook"
+import { Events } from "@/components/staff/writeup/phase.hook"
 
 
 export type HeaderFields = {

@@ -23,7 +23,6 @@ export const useVerifyPosition = ( accepted: boolean, verification: Verification
 
     mutation.mutate({
       bastionId: verification.bastionId,
-      position: verification.position,
       accepted
     })
   }

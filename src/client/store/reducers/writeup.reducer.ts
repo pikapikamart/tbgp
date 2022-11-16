@@ -97,6 +97,7 @@ export const startCollaboratingReducer = ( state: DraftWriteupState, action: Pay
 
   if ( !socket ) {
     // writable draft check
+    // @ts-ignore
     socket = io(action.payload)
   }
 

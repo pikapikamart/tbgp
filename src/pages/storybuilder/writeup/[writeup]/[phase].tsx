@@ -2,7 +2,7 @@ import { BuilderLayout } from "@/components/layout/builder"
 import { StaffWriteup } from "@/components/staff/writeup"
 import { NextPageWithLayout } from "@/pages/_app"
 import { InferGetServerSidePropsType } from "next"
-import { useWriteupPhaseCollaboration } from "./phase.hook"
+import { useWriteupPhaseCollaboration } from "../../../../client/components/staff/writeup/phase.hook"
 
 
 const WriteupPage: NextPageWithLayout<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ socketUri }) =>{

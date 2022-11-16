@@ -38,16 +38,18 @@ const RenderElement = ({ attributes, children, element }: RenderElementProps) =>
     case "image": 
       return (
         <ImageElement
-          children={ children }
           attributes={ attributes }
-          element={ element } />
+          element={ element } >
+            { children }
+        </ImageElement>
       )
     case "link":
       return (
         <LinkElement
           attributes={ attributes }
-          children={ children }
-          element={ element } />
+          element={ element } >
+            { children }
+        </LinkElement>
       )
   }
   

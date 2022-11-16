@@ -96,7 +96,7 @@ export const {
 } = createContainer(useValue)
 
 
-export default ({ storyRequestId }: { storyRequestId: string  }) => {
+const StoryRequestTracked = ({ storyRequestId }: { storyRequestId: string  }) =>{
 
   return (
     <Provider>
@@ -104,3 +104,6 @@ export default ({ storyRequestId }: { storyRequestId: string  }) => {
     </Provider>
   )
 }
+
+
+export default StoryRequestTracked

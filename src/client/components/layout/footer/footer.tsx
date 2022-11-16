@@ -72,7 +72,8 @@ const Footer = () =>{
               <li>
                 <a
                   target="_blank" 
-                  href="https://www.facebook.com/PRMSUTBGP">
+                  href="https://www.facebook.com/PRMSUTBGP"
+                  rel="noreferrer">
                   <SrOnly>facebook</SrOnly>
                   <img
                     src="/icons/icon-facebook-square.svg"

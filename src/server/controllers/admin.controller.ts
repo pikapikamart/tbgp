@@ -76,10 +76,7 @@ export const createBastionIdHandler = async( { admin }: AdminContext ) =>{
   return trpcSuccess(true, createdBastionId);
 }
 
-export const verifyPositionHandler = async ( 
-  verification: VerifyStaffSchema,
-  { admin }: AdminContext 
-) => {
+export const verifyPositionHandler = async ( verification: VerifyStaffSchema, { admin }: AdminContext ) => {
   const foundRequest = admin.verifications.find(request => request.bastionId===verification.bastionId)
  
   if( !foundRequest ){

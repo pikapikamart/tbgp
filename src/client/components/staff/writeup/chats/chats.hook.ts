@@ -2,7 +2,7 @@ import { useExpansion } from "@/lib/hooks"
 import { 
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { Events } from "@/pages/storybuilder/writeup/[writeup]/phase.hook"
+import { Events } from "@/components/staff/writeup/phase.hook"
 import React, { 
   useEffect, 
   useRef, 
