@@ -4,12 +4,13 @@ import { motion } from "framer-motion"
 
 
 export const ChatMessage = styled.div`
-  border-radius: ${ rem(24) };
+  background-color: #E5E4FF;
+  border-radius: ${ rem(32) };
   font-size: ${ rem(14) };
   line-height: 1.4;
   max-width: max-content;
   padding: ${ rem(8) } ${ rem(12) };
-  pre-wrap: wrap;
+  white-space: pre-wrap;
 `
 
 export const ChatOwner = styled.p`
@@ -29,13 +30,52 @@ type SingleChatProps = {
 
 export const SingleChat = styled.div<SingleChatProps>`
   margin-bottom: ${ rem(12) };
-  max-width: ${ rem(240) };
+  max-width: ${ rem(272) };
 
-  ${ ({ $owned, $start, theme: { colors } }) => {
-    if ( $owned ) {
+  ${ ({ $start, $middle, $end }) => {
+    if ( $start ) {
+      return css`
+        margin-bottom: ${ rem(4) };
+
+        ${ ChatMessage } {
+          border-bottom-left-radius: ${ rem(2) };
+        }
+      `
+    }
+
+    if ( $middle ) {
+      return css`
+        margin-bottom: ${ rem(4) };
+
+        ${ ChatOwner } {
+          display: none;
+        }
+
+        ${ ChatMessage } {
+          border-radius: ${ rem(2) } ${ rem(32) } ${ rem(32) } ${ rem(2) };
+        }
+      `
+    }
+    
+    if ( $end ) {
+      return css`
+
+        ${ ChatOwner } {
+          display: none;
+        }
+
+        ${ ChatMessage } {
+          border-top-left-radius: ${ rem(2) };
+        }
+      `
+    }
+  } }
+
+  ${ ({ $owned, $start, $middle, $end, theme: { colors } }) => {
+  
+    if ( $owned) {
       return css`
         margin-left: auto;
-        ${ $start? css`margin-bottom: ${ rem(4) }` : css`` };
 
         ${ ChatOwner } {
           display: none;
@@ -45,42 +85,27 @@ export const SingleChat = styled.div<SingleChatProps>`
           background-color: ${ colors.blue };
           color: ${ colors.white1 };
           margin-left: auto;
+
+          ${ $start && css`
+            border-radius: ${ rem(32) } ${ rem(32) } ${ rem(2) } ${ rem(32) };
+          ` }
+
+          ${ $middle && css`
+            border-radius: ${ rem(32) } ${ rem(2) } ${ rem(2) } ${ rem(32) };
+          ` }
+
+          ${ $end && css`
+            border-radius: ${ rem(32) } ${ rem(2) } ${ rem(32) } ${ rem(32) };
+          ` }
         }
       `
     }
   } }
 
-  ${ ({ $owned, $start, $end }) => {
-    if ( $start ) {
-      return css`
 
-        ${ ChatMessage } {
-          border-bottom-right-radius: ${ $owned? css`${ rem(2) }` : css`0` };
-        }
-      `
-    }
-
-    if ( $end ) {
-      return css`
-
-        ${ ChatMessage } {
-          border-top-right-radius: ${ $owned? css`${ rem(2) }` : css`0` };
-        }
-      `
-    }
-  } }
-
-  ${ ({ $owned, $middle }) => {
-    console.log($middle)
-    if ( $middle ) {
-      return css`
-        
-        ${ ChatMessage } {
-          border-radius: ${ $owned? css` ${ rem(24) } ${ rem(2) } ${ rem(2) } ${ rem(24) } ` : css`${ rem(2) } ${ rem(24) } ${ rem(24) } ${ rem(2) }` };
-        }
-      `
-    }
-  } }
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 `
 
 export const ChatsContainer = styled.div`
@@ -106,7 +131,7 @@ export const ChatboxSend = styled.button`
 export const ChatboxCompose = styled.textarea`
   align-items: center;
   align-self: end;
-  border-radius: ${ rem(24) };
+  border-radius: ${ rem(32) };
   display: flex;
   flex-basis: ${ rem(252) };
   font-size: ${ rem(14) };

@@ -1,7 +1,8 @@
 import { SrOnly } from "@/styled/shared/helpers"
 import { 
   ChatsTrigger,
-  ChatsWrapper } from "./chats.styled"
+  ChatsWrapper, 
+  UnseenChats} from "./chats.styled"
 import { AnimatePresence } from "framer-motion"
 import { Chatbox } from "./chatbox"
 import { useChats } from "./chats.hook"
@@ -18,11 +19,14 @@ const Chats = () =>{
     handleTextareaResize,
     currentChats,
     chatRef,
+    chatsContainer,
     handleSendChat,
+    viewedChatsLength,
     handleChatKeydown } = useChats()
 
   return (
     <ChatsWrapper>
+      { currentChats.length-viewedChatsLength!==0 && !isExpanded && <UnseenChats>{ currentChats.length - viewedChatsLength }</UnseenChats> }
       <ChatsTrigger
         whileTap={{ scale: .9 }}
         onClick={ handleExpansion }
@@ -33,6 +37,7 @@ const Chats = () =>{
         { isExpanded && (
         <Chatbox 
           key="chatbox"
+          chatsContainer={ chatsContainer }
           chats={ currentChats }>
             <ChatboxComposeContainer>
               <ChatboxCompose

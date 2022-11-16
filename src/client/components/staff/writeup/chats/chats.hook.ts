@@ -10,6 +10,10 @@ import React, {
 import { Chat } from "./chatbox/chatbox"
 
 
+type ChatWithWriteup = Chat & {
+  writeup: string
+}
+
 export const useChats = () =>{
   const { isExpanded,handleExpansion } = useExpansion()
   const staff = useSelectStaff()
@@ -17,6 +21,7 @@ export const useChats = () =>{
   const [ currentChats, setCurrentChats ] = useState<Chat[]>([])
   const [ viewedChatsLength, setViewedChatsLength ] = useState(0)
   const chatRef = useRef<HTMLTextAreaElement | null>(null)
+  const chatsContainer = useRef<HTMLDivElement | null>(null)
 
   const handleTextareaResize = ( { currentTarget }: React.FormEvent<HTMLTextAreaElement> ) => {
     currentTarget.style.height = "0"
@@ -25,17 +30,19 @@ export const useChats = () =>{
 
   const handleSendChat = () =>{
     if ( writeup.socket && chatRef.current && chatRef.current.value ) {
-      const chat: Chat = {
+      const chat: ChatWithWriteup = {
         member: {
           firstname: staff.firstname,
           lastname: staff.lastname,
           username: staff.username
         },
-        message: chatRef.current.value
+        message: chatRef.current.value,
+        writeup: writeup.writeupId
       }
       setCurrentChats(prev => prev.concat([chat]))
       writeup.socket.emit(Events.clients.send_chat, chat)
       chatRef.current.value = ""
+      chatRef.current.focus()
     }
   }
 
@@ -44,12 +51,23 @@ export const useChats = () =>{
 
     if ( key==="Enter" && !event.shiftKey ) {
       handleSendChat()
+      event.preventDefault()
+      event.currentTarget.setAttribute("style", "height:40px")
     }
   }
 
   useEffect(() =>{
-    const socket = writeup.socket
+    if ( chatsContainer.current ) {
+      chatsContainer.current.scrollTo({
+        top: 1000,
+        behavior: "smooth"
+      })
+    }
+  }, [ currentChats ])
 
+  useEffect(() =>{
+    const socket = writeup.socket
+ 
     if ( socket ) {
       socket.on(Events.server.broadcast_previous_chats, ( chats: Chat[] ) => {
         setCurrentChats(chats)
@@ -59,7 +77,13 @@ export const useChats = () =>{
         setCurrentChats(prev => prev.concat([chat]))
       })
     }
-  }, [])
+  }, [ writeup.socket ])
+
+  useEffect(() =>{
+    if ( !isExpanded ) {
+      setViewedChatsLength(currentChats.length)
+    }
+  }, [ isExpanded ])
 
   return {
     isExpanded,
@@ -67,6 +91,8 @@ export const useChats = () =>{
     handleTextareaResize,
     currentChats,
     chatRef,
+    chatsContainer,
+    viewedChatsLength,
     handleSendChat,
     handleChatKeydown
   }

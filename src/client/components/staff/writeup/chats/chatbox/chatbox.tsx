@@ -19,10 +19,11 @@ export type Chat = {
 
 export type ChatboxProps = {
   chats: Chat[],
+  chatsContainer: React.MutableRefObject<HTMLDivElement | null>,
   children: React.ReactNode
 }
 
-const Chatbox = ({ chats, children }: ChatboxProps) =>{
+const Chatbox = ({ chats, chatsContainer, children }: ChatboxProps) =>{
   const staff = useSelectStaff()
 
   const renderCurrentChats = () =>{
@@ -31,13 +32,15 @@ const Chatbox = ({ chats, children }: ChatboxProps) =>{
         key={ chat.message + index }
         $owned={ chat.member.username===staff.username }
         $start={ index!==chats.length-1 && 
-          chats[index+1].member.username===staff.username }
+          chats[index-1]?.member.username!==chat.member.username &&
+          chats[index+1].member.username===chat.member.username }
         $middle={ index!==chats.length-1 && 
             index!==0 && 
             chats[index-1].member.username===chat.member.username &&
             chats[index+1].member.username===chat.member.username }
         $end={ index!==0 && 
-          chats[index-1].member.username===staff.username }>
+          chats[index+1]?.member.username!==chat.member.username &&
+          chats[index-1].member.username===chat.member.username  }>
           <ChatOwner>{`${ chat.member.firstname } ${ chat.member.lastname }`}</ChatOwner>
           <ChatMessage>{ chat.message }</ChatMessage>
       </SingleChat>
@@ -52,7 +55,7 @@ const Chatbox = ({ chats, children }: ChatboxProps) =>{
       animate="animate"
       exit="exit"
       variants={ simpleFadeVariant }>
-        <ChatsContainer>
+        <ChatsContainer ref={ chatsContainer }>
           { renderCurrentChats() }
         </ChatsContainer>
         { children }

@@ -3,7 +3,9 @@ import {
   useAppDispatch, 
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { startCollaborating, stopCollaborating } from "@/store/slices/writeup.slice"
+import { 
+  startCollaborating, 
+  stopCollaborating } from "@/store/slices/writeup.slice"
 import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
 import { Socket } from "socket.io-client"
@@ -36,8 +38,6 @@ export const useWriteupPhaseCollaboration = (socketUri: string) =>{
   const socketRef = useRef<Socket | null>(null)
 
   useEffect(() =>{
-    // only send a socket when there are atleast 2 members
-    // in an available writeup
     if ( writeup.writeupId && 
         !writeup.socket &&
         writeup.content[0].phase==="writeup" && 
