@@ -65,7 +65,7 @@ export const versionModalVariant = {
     }
   },
   animate: {
-    x: "3%",
+    x: "0%",
     transition: { 
       type: 'spring', 
       duration: .75 

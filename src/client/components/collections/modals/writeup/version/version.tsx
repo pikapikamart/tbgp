@@ -24,6 +24,7 @@ import {
   capitalizePhase,
   readonlyPhases, 
   versionIndex } from "./utils"
+import { useWriteupVersion } from "./version.hook"
 import { 
   TopicsListItem,
   TopicsListItemHeading,
@@ -40,10 +41,12 @@ const Version = () =>{
   const modalContext = useModalContext()
   const writeup = useSelectWriteup()
   const staff = useSelectStaff()
+  const { modalRef } = useWriteupVersion()
   const currentContent = writeup.content[0]
   
   return (
     <VersionWrapper
+      ref={ modalRef }
       initial="initial"
       animate="animate"
       exit="initial"

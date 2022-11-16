@@ -20,7 +20,6 @@ import {
 import { WriteupPhases } from "@/src/server/models/writeup.model";
 import { ModifyType } from "types/utils";
 import { Socket } from "socket.io-client";
-import { Descendant } from "slate";
 
 
 export type WriteupState = ModifyType<PopulatedWriteup, {
@@ -29,8 +28,7 @@ export type WriteupState = ModifyType<PopulatedWriteup, {
   shouldSave: boolean,
   isHeadingValid: boolean,
   isSlateValid: boolean,
-  socket?: Socket,
-  slateEmitter?: ( opts: Descendant[] ) => void
+  socket?: Socket
 }
 
 // bad redux

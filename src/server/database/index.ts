@@ -30,23 +30,18 @@ if (!cached) {
 async function connectDatabase() {
   
   if (cached.conn) {
-    // return cached.conn;
-    return;
+    return cached.conn;
   }   
 
   if (!cached.promise) {
     const opts = { bufferCommands: false };
 
-    // if ( deployment === "development" ){
-    //   cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
-    // } else if ( deployment === "production" ) {
-    //   cached.promise = mongoose.connect(MONGODB_URI_PROD, opts).then((mongoose) => mongoose);
-    // }
+    if ( deployment === "development" ){
+      cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
+    } else if ( deployment === "production" ) {
+      cached.promise = mongoose.connect(MONGODB_URI_PROD, opts).then((mongoose) => mongoose);
+    }
     
-    // for no internet
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
-    
-    // cached.promise = mongoose.connect(MONGODB_URI_PROD, opts).then((mongoose) => mongoose);
   }
   try {
     cached.conn = await cached.promise

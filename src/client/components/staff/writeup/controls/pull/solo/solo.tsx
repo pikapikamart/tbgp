@@ -1,7 +1,7 @@
 import { useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { ColoredMediumButton } from "@/styled/collections/button"
 import { isWriteupEditable } from "../../../utils"
 import { ControlsUpdates } from "../../controls.styled"
+import { SubmitWriteupOption } from "../options/submit"
 import { SaveWriteupControl } from "../save"
 import { useSolo } from "./solo.hook"
 
@@ -20,11 +20,9 @@ const Solo = () => {
   return (
     <ControlsUpdates>
       <SaveWriteupControl />
-      <ColoredMediumButton
-        colored="blue"
+      <SubmitWriteupOption
         onClick={ handleSubmissionModal }
-        aria-expanded={ submitModal }>Submit
-      </ColoredMediumButton>
+        isExpanded={ submitModal } />
     </ControlsUpdates>
   )
 }

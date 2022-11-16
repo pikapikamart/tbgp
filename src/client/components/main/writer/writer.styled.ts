@@ -31,9 +31,7 @@ export const AuthorBio = styled.p`
 
 export const ArticlesContainer = styled.div``
 
-export const ArticleList = styled.ul`
-
-`
+export const ArticleList = styled.ul``
 
 export const Article = styled.li`
   border-bottom: 1px solid ${ ({ theme }) => theme.colors.grey4 };
@@ -62,6 +60,7 @@ export const ArticleTextContainer = styled.div`
   align-content: start;
   display: grid;
   gap: ${ rem(10) } 0;
+  padding-top: ${ rem(8) };
 `
 
 export const ArticleTitle = styled.h3`

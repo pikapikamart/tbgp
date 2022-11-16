@@ -9,6 +9,7 @@ import {
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { SaveWriteupControl } from "../save"
+import { SubmitWriteupOption } from "../options/submit"
 
 
 const Collaborative = () => {
@@ -40,11 +41,9 @@ const Collaborative = () => {
   return (
     <ControlsUpdates>
       <SaveWriteupControl />
-      <ColoredMediumButton
-        colored="blue"
+      <SubmitWriteupOption
         onClick={ handleSubmissionModal }
-        aria-expanded={ submitModal }>Submit
-      </ColoredMediumButton>
+        isExpanded={ submitModal } />
     </ControlsUpdates>
   )
 }

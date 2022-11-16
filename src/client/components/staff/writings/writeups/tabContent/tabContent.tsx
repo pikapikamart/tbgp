@@ -10,9 +10,10 @@ const TabContent = ({ writeups }: TabContentProps) =>{
   
   return (
     <InitialWriteupsList>
-      { writeups?.map(writeup => writeup && (
+      { writeups?.map((writeup, index) => writeup && (
         <InitialWriteup
           key={ writeup.writeupId }
+          index={ index }
           writeup={ writeup } />
       )) }
     </InitialWriteupsList>

@@ -2,7 +2,7 @@ import {
   useAppDispatch, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { Events } from "@/pages/storybuilder/writeup/[writeup]/phase.hook"
-import { setWriteupSlate } from "@/store/slices/writeup.slice"
+import { resetSubmission, setWriteupSlate } from "@/store/slices/writeup.slice"
 import { 
   useMemo,
   useEffect,
@@ -100,11 +100,22 @@ export const useSlate = () =>{
     if ( writeup.shouldSave ) {
       if ( editor.children.length===1 && editor.children[0].children[0].text==="" ) {
         setIsSlateInvalid(true)
+        dispatch(resetSubmission())
       } else {
         dispatch(setWriteupSlate(editor.children))
       }
     }
   }, [ writeup.shouldSave ])
+
+  useEffect(() =>{
+    if ( isSlateInvalid ) {
+      const timeout = setTimeout(() => {
+        setIsSlateInvalid(false)
+      }, 4000)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [ isSlateInvalid ])
 
   return {
     editor,

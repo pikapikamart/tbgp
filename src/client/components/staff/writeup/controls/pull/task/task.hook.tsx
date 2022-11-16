@@ -6,8 +6,13 @@ import {
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { useModalContext } from "@/store/context/modal/modal"
+import { WriteupState } from "@/store/slices/writeup.slice"
 import { useState } from "react"
 
+
+export const notValidGraphicsBanner = ( writeup: WriteupState ) => {
+  return writeup.currentPhase==="graphics" && writeup.banner.url===""
+}
 
 export const useTask = () =>{
   const staff = useSelectStaff()
@@ -27,6 +32,10 @@ export const useTask = () =>{
   }
 
   const handleSubmissionModal = () => {
+    if ( notValidGraphicsBanner(writeup) ) {
+      return
+    }
+
     setSubmitModal(true)
     modalContext.addModal(
       <BaseModal exit={ () => setSubmitModal(false) }>

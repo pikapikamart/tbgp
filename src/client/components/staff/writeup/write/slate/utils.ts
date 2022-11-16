@@ -195,13 +195,34 @@ export const slateKeyDown = (event: React.KeyboardEvent<HTMLDivElement>, editor:
       return
     }
   }
-  
-  if ( isKeyHotkey("Enter", nativeEvent) ) {
-    Transforms.insertNodes(editor, {
-      type: "paragraph",
-      children: [{ text: "" }]
-    })
+
+  const markRunner = (slateFunc: ( editor: Editor, format: string ) => void, format: string) =>{
+    slateFunc(editor, format)
     event.preventDefault()
-    return
+  }
+
+  const blockRunner = ( slateFunc: ( editor: Editor, format: CustomElementType ) => void, format: CustomElementType ) => {
+    slateFunc(editor, format)
+    event.preventDefault()
+  }
+
+  if ( nativeEvent.ctrlKey ) {
+   
+    switch(nativeEvent.key) {
+      case "b":
+        return markRunner(toggleMark, "bold")
+      case "i":
+        return markRunner(toggleMark, "italic")
+      case "u":
+        return markRunner(toggleMark, "underline")
+      case "2":
+        return blockRunner(toggleBlock, "heading-two")
+      case "3":
+        return  blockRunner(toggleBlock, "heading-three")
+      case "4":
+        return  blockRunner(toggleBlock, "heading-four")
+      case "p":
+        return blockRunner(toggleBlock, "paragraph")
+    }
   }
 }

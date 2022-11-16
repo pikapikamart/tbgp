@@ -1,6 +1,9 @@
 import { useSelectStaff } from "@/lib/hooks/store.hooks"
 import { simpleFadeVariant } from "@/src/client/motion"
+import { EmptyFunction } from "@/store/context/modal/modal"
+import { SrOnly } from "@/styled/shared/helpers"
 import { 
+  ChatboxMobileExit,
   ChatboxWrapper, 
   ChatMessage, 
   ChatOwner, 
@@ -20,10 +23,11 @@ export type Chat = {
 export type ChatboxProps = {
   chats: Chat[],
   chatsContainer: React.MutableRefObject<HTMLDivElement | null>,
+  handleExpansion: EmptyFunction,
   children: React.ReactNode
 }
 
-const Chatbox = ({ chats, chatsContainer, children }: ChatboxProps) =>{
+const Chatbox = ({ chats, chatsContainer, children, handleExpansion }: ChatboxProps) =>{
   const staff = useSelectStaff()
 
   const renderCurrentChats = () =>{
@@ -55,6 +59,10 @@ const Chatbox = ({ chats, chatsContainer, children }: ChatboxProps) =>{
       animate="animate"
       exit="exit"
       variants={ simpleFadeVariant }>
+        <ChatboxMobileExit 
+          onClick={ handleExpansion }>
+          <SrOnly>Close chatbox</SrOnly>
+        </ChatboxMobileExit>
         <ChatsContainer ref={ chatsContainer }>
           { renderCurrentChats() }
         </ChatsContainer>

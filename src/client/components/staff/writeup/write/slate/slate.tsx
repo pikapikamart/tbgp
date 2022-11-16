@@ -12,13 +12,15 @@ import { useSlate } from "./slate.hook"
 import { useSelectStaff } from "@/lib/hooks/store.hooks"
 import { isWriteupReadonly } from "../../utils"
 import { SlateWrapper } from "./slate.styled"
+import { ToastError } from "@/components/shared/toast/error"
 
 
 const Slate = () => {
   const { 
     editor,
-    initialValue,
     writeup,
+    initialValue,
+    isSlateInvalid,
     handleSlateEmitter } = useSlate()
   const staff = useSelectStaff()
   
@@ -31,7 +33,10 @@ const Slate = () => {
   }, [])
   
   return (
-    <SlateWrapper>  
+    <SlateWrapper>
+      { isSlateInvalid && <ToastError 
+        code="NO CONTENT"
+        message="Make sure to add content before saving it or submitting"/> }
       <SlateComp 
         editor={ editor }
         value={ initialValue }

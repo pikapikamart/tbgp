@@ -3,6 +3,7 @@ import {
   isWriteupEditable, 
   isWriteupHandler } from "../../../utils"
 import { ControlsUpdates } from "../../controls.styled"
+import { SubmitWriteupOption } from "../options/submit"
 import { SaveWriteupControl } from "../save"
 import { useTask } from "./task.hook"
 
@@ -46,11 +47,9 @@ const Task = () =>{
             aria-expanded={ publishModal }>Publish
           </ColoredMediumButton>  
           :
-          <ColoredMediumButton
-            colored="blue"
+          <SubmitWriteupOption
             onClick={ handleSubmissionModal }
-            aria-expanded={ submitModal }>Submit
-          </ColoredMediumButton>  
+            isExpanded={ submitModal } />
       }
       </ControlsUpdates>
     )

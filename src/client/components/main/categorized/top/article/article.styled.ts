@@ -23,6 +23,7 @@ export const ArticleContentContainer = styled.div`
   align-content: start;
   display: grid;
   gap: ${ rem(10) };
+  padding-top: ${ rem(8) };
 `
 
 export const ArticleWrapper = styled.li`

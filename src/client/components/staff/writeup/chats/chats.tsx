@@ -38,6 +38,7 @@ const Chats = () =>{
         <Chatbox 
           key="chatbox"
           chatsContainer={ chatsContainer }
+          handleExpansion={ handleExpansion }
           chats={ currentChats }>
             <ChatboxComposeContainer>
               <ChatboxCompose

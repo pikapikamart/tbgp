@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components"
-import { rem } from "@/styled/functions"
+import { breakpoint, rem } from "@/styled/functions"
 import { motion } from "framer-motion"
 
 
@@ -109,6 +109,7 @@ export const SingleChat = styled.div<SingleChatProps>`
 `
 
 export const ChatsContainer = styled.div`
+  margin-bottom: ${ rem(12) };
   max-height: 100%;
   overflow: hidden scroll;
 
@@ -118,6 +119,10 @@ export const ChatsContainer = styled.div`
 
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;
+  
+  ${ breakpoint("tablet", `
+    margin-bottom: 0;
+  `) }
 `
 
 export const ChatboxSend = styled.button`
@@ -161,23 +166,64 @@ export const ChatboxCompose = styled.textarea`
 
 export const ChatboxComposeContainer = styled.div`
   align-items: center;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr ${ rem(32) };
   justify-content: space-between;
+`
+
+export const ChatboxMobileExit = styled.button`
+  border-radius: 0 0 ${ rem(24) } ${ rem(24) };
+  margin: 0 auto;
+  position: relative;
+  width: 50%;
+
+  &::before,
+  &::after {
+    content: "";
+    background-color: rgba(0, 0, 0, .35);
+    border-radius: ${ rem(8) };
+    height: 2px;
+    inset: 40% auto auto 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    width: ${ rem(32) };
+  }
+
+  &::after {
+    top: 60%;
+  }
+
+  ${ ({ theme: { colors } }) => `
+    background-color: ${ colors.white1 };
+    border: 1px solid ${ colors.white4 };
+    border-top: none;
+  ` }
+
+  ${ breakpoint("tablet", `
+    display: none;
+  `) }
 `
 
 export const ChatboxWrapper = styled(motion.div)`
   border-radius: ${ rem(8) } ${ rem(8) } 0 0;
   box-shadow: 2px 2px 12px 0 rgba(0, 0, 0, .10);
   display: grid;
-  gap: ${ rem(12) } 0;
-  grid-template-rows: 1fr ${ rem(38) };
+  grid-template-rows: ${ rem(24) } 1fr ${ rem(38) };
   height: 100vh;
-  inset: auto ${ rem(64) } 0 auto;
-  max-width: ${ rem(320) };
+  inset: auto 0 0 auto;
   max-height: ${ rem(432) };
-  padding: ${ rem(16) };
+  padding:  0 ${ rem(16) } ${ rem(16) };
   position: absolute;
-  width: 100vw;
+  width: 100%;
+
+  ${ breakpoint("tablet", `
+    inset: auto ${ rem(64) } 0 auto;
+    gap: ${ rem(12) } 0;
+    grid-template-rows: 1fr ${ rem(38) };
+    max-width: ${ rem(320) };
+    padding: ${ rem(16) };
+    width: 100vw;
+  `) }
 
   ${ ({ theme: { colors } }) => `
     background-color: ${ colors.white1 };

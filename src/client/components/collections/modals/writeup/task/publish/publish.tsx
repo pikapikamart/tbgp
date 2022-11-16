@@ -1,4 +1,5 @@
 import { BaseModal } from "@/components/shared/modal"
+import { ToastError } from "@/components/shared/toast/error"
 import { ColumCenterCenter } from "@/styled/shared/helpers"
 import { 
   ModalHeading, 
@@ -19,7 +20,9 @@ const Publish = ( { exit }: PublishProps ) =>{
     registerTrapContainer,
     removeModal,
     handlePublishWriteup,
-    isSuccess
+    isSuccess,
+    isError,
+    errorMessage
   } = usePublishWriteup(exit)
 
   return (
@@ -31,6 +34,9 @@ const Publish = ( { exit }: PublishProps ) =>{
             <WriteupPublishSuccessModal />
         </BaseModal>
       ) }
+      { isError && <ToastError
+        code={ errorMessage.code }
+        message={ errorMessage.message } /> }
       <ModalWrapper
         size="small"
         onKeyDown={ registerTrapContainer }>

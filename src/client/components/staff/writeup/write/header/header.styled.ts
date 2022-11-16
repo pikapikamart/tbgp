@@ -41,6 +41,6 @@ export const HeaderTitle = styled(Input)`
 `
 
 export const HeaderCaption = styled(Input)`
-  font-size: ${ fluid(16, 3, 18) };
+  font-size: ${ fluid(15, 2.2, 17) };
   line-height: 1.4;
 `

@@ -123,6 +123,7 @@ export const updateWriteupReducer = ( state: WritableStaffState, action: Payload
     } else {
       const index = state.writeups.solo.findIndex(writeup => writeup.writeupId===action.payload.writeupId)
       state.writeups.solo[index].content.isSubmitted = true
+      state.writeups.solo[index].content.reSubmit = false
     }
   }
 }

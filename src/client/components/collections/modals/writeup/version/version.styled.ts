@@ -15,6 +15,15 @@ export const VersionWrapper = styled(motion.div)`
   position: relative;
   width: 100vw;
 
+  &::after {
+    content: "";
+    background-color: ${ ({ theme }) =>theme.colors.white1 };
+    height: 100%;
+    inset: 0 -${ rem(16) } auto auto;
+    position: absolute;
+    width: ${ rem(32) };
+  }
+
   ${ breakpoint("tablet", `
     max-width: ${ rem(560) };
   `) }
