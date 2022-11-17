@@ -5,11 +5,11 @@ import { motion } from "framer-motion"
 
 export const ChatMessage = styled.div`
   background-color: #E5E4FF;
-  border-radius: ${ rem(32) };
+  border-radius: ${ rem(64) };
   font-size: ${ rem(14) };
   line-height: 1.4;
   max-width: max-content;
-  padding: ${ rem(8) } ${ rem(12) };
+  padding: ${ rem(8) } ${ rem(16) };
   white-space: pre-wrap;
 `
 

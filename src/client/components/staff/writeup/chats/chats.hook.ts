@@ -43,6 +43,7 @@ export const useChats = () =>{
       setCurrentChats(prev => prev.concat([chat]))
       writeup.socket.emit(Events.clients.send_chat, chat)
       chatRef.current.value = ""
+      chatRef.current.setAttribute("style", "height:40px")
       chatRef.current.focus()
     }
   }
@@ -53,7 +54,6 @@ export const useChats = () =>{
     if ( key==="Enter" && !event.shiftKey && !isMobileView ) {
       handleSendChat()
       event.preventDefault()
-      event.currentTarget.setAttribute("style", "height:40px")
     }
   }
 
