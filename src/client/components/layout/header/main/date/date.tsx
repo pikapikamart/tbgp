@@ -5,8 +5,8 @@ import {
 
 const getDate = () =>{
   const date = new Date()
-  const dateDay = date.toLocaleDateString(undefined, { weekday: "long" })
-  const dateFull = date.toLocaleDateString(undefined, {
+  const dateDay = date.toLocaleDateString("en-us", { weekday: "long" })
+  const dateFull = date.toLocaleDateString("en-us", {
     year: "numeric",
     month: "short",
     day: "numeric"

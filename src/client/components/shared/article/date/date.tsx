@@ -7,7 +7,7 @@ type DateProps = {
 
 const processDate = ( date: string ) => {
   const newDate = new Date(date)
-  const processedDate = newDate.toLocaleDateString(undefined, {
+  const processedDate = newDate.toLocaleDateString("en-us", {
     day: "2-digit",
     month: "long",
     year: "numeric"
