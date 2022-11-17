@@ -10,8 +10,6 @@ import { MainHeaderNavlinks } from "./navlinks"
 import { HeaderSearchbar } from "./searchbar"
 import { MainHeaderWrapper } from "./main.styled"
 import { useHeaderAnimation } from "../header.hook"
-import MainLogoSvg from "@/public/logos/bastion-logo-main.svg"
-import { HeaderLogoWrapper } from "@/styled/shared/header"
 
 
 const Main = () =>{
@@ -27,12 +25,9 @@ const Main = () =>{
       className={`${hideHeaderSticky? "scroll-in scroll-out" : 
                               showHeaderSticky? "scroll-in" : ""}`}>
       <RowCenterBetween as="nav">
-        {/* <HeaderLogo
+        <HeaderLogo
           href="/"
-          src="/logos/bastion-logo-main.svg" /> */}
-          <HeaderLogoWrapper as="div">
-            <MainLogoSvg />
-          </HeaderLogoWrapper>
+          src="/logos/bastion-logo-main.svg" />
         { showDesktopItems && <MainHeaderNavlinks /> }
         <RowEnd>
           { !showDesktopItems && <HeaderControls /> }
