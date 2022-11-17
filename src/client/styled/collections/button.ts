@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components"
 import { 
   rem,
-  fluid } from "@/styled/functions"
+  fluid,
+  breakpoint } from "@/styled/functions"
 
 
 type ColoredButtonProps = {

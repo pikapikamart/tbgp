@@ -30,3 +30,7 @@
     font-weight: normal;
     src: local('Friz Quadrata Std Bold Italic'), url('friz-quadrata-std-bold-italic-587033d6d4298.woff') format('woff');
     }
+
+    .friz-svg {
+        font-family: "Friz Quadrata Std Medium";
+    }

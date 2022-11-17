@@ -16,6 +16,15 @@ type HeaderProps = {
   type: "admin" | "staff"
 }
 
+const returnImage = ( type: "admin" | "staff" ) =>{
+  const build = process.env.NODE_ENV
+
+  if ( build==="development" ) {
+    return type==="admin"? "/logos/bastion-logo-main.svg" : "/logos/bastion-logo-builder.svg"
+  }
+  
+}
+
 const Header = ( { type }: HeaderProps ) =>{
   const { isExpanded, handleExpansion } = useHeader()
   const {

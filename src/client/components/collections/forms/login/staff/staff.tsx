@@ -3,6 +3,7 @@ import { useUserLogin } from "@/lib/hooks"
 import { ColoredBaseButton } from "@/styled/collections/button"
 import { SrOnly } from "@/styled/shared/helpers"
 import { 
+  SigninBlockControls,
   SigninControlsContainer, 
   SigninControlsDivider, 
   SigninForm } from "@/styled/shared/signin"
@@ -50,14 +51,24 @@ const Staff = () => {
           <SigninControlsDivider>
             <span>or</span>
           </SigninControlsDivider>
-          <Link
-            href="/storybuilder/signup"
-            passHref>
-            <ColoredBaseButton 
-              as="a"
-              colored="orange">Create bastion account
-            </ColoredBaseButton>
-          </Link>
+          <SigninBlockControls>
+            <Link
+              href="/storybuilder/signup"
+              passHref>
+              <ColoredBaseButton 
+                as="a"
+                colored="orange">Create bastion account
+              </ColoredBaseButton>
+            </Link>
+            <Link
+              href="/"
+              passHref>
+              <ColoredBaseButton 
+                as="a"
+                colored="grey">Back to homepage
+              </ColoredBaseButton>
+            </Link>
+          </SigninBlockControls>
         </SigninControlsContainer>
       </SigninForm>
     </AnimatePresence>

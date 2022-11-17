@@ -80,3 +80,15 @@ export const SigninControlsDivider = styled.div`
     z-index: 5;
   }
 `
+
+export const SigninBlockControls = styled.div`
+  width: 100%;
+
+  > a {
+    display: block;
+
+    &:first-of-type {
+      margin-bottom: ${ rem(8) };
+    }
+  }
+`
