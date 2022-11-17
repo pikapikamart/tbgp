@@ -165,6 +165,7 @@ export const ChatboxCompose = styled.textarea`
 `
 
 export const ChatboxComposeContainer = styled.div`
+  align-self: end;
   align-items: center;
   display: grid;
   grid-template-columns: 1fr ${ rem(32) };
@@ -213,7 +214,7 @@ export const ChatboxWrapper = styled(motion.div)`
   inset: auto 0 0 auto;
   max-height: ${ rem(432) };
   padding:  0 ${ rem(16) } ${ rem(16) };
-  position: absolute;
+  position: fixed;
   width: 100%;
 
   ${ breakpoint("tablet", `
@@ -222,6 +223,7 @@ export const ChatboxWrapper = styled(motion.div)`
     grid-template-rows: 1fr ${ rem(38) };
     max-width: ${ rem(320) };
     padding: ${ rem(16) };
+    position: absolute;
     width: 100vw;
   `) }
 

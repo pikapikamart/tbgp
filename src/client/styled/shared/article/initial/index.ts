@@ -35,7 +35,7 @@ export const InitArticleMainHeading = styled.h2<InitArticleMainHeadingProps>`
   }
 
   > span {
-    font-family:'Friz Quadrata Std';
+    font-family:'Friz Quadrata Std Bold';
     font-weight: 700;
     position: relative;
     z-index: 10;
@@ -121,9 +121,7 @@ export const InitArticleAuthorsList = styled.ul`
   margin-right: ${ rem(24) };
 `
 
-export const InitArticleAuthorsListItem = styled.li`
-
-`
+export const InitArticleAuthorsListItem = styled.li``
 
 export const InitArticleDate = styled.div`
   align-items: center;

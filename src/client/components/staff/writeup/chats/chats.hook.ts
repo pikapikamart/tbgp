@@ -20,6 +20,7 @@ export const useChats = () =>{
   const writeup = useSelectWriteup()
   const [ currentChats, setCurrentChats ] = useState<Chat[]>([])
   const [ viewedChatsLength, setViewedChatsLength ] = useState(0)
+  const [ isMobileView, setIsMobileView ] = useState(false)
   const chatRef = useRef<HTMLTextAreaElement | null>(null)
   const chatsContainer = useRef<HTMLDivElement | null>(null)
 
@@ -48,8 +49,8 @@ export const useChats = () =>{
 
   const handleChatKeydown = ( event: React.KeyboardEvent ) => {
     const key = event.key
-
-    if ( key==="Enter" && !event.shiftKey ) {
+   
+    if ( key==="Enter" && !event.shiftKey && !isMobileView ) {
       handleSendChat()
       event.preventDefault()
       event.currentTarget.setAttribute("style", "height:40px")
@@ -82,8 +83,31 @@ export const useChats = () =>{
   useEffect(() =>{
     if ( !isExpanded ) {
       setViewedChatsLength(currentChats.length)
+    } else {
+      chatRef.current?.setAttribute("style", "height:40px")
     }
   }, [ isExpanded ])
+
+  useEffect(() =>{
+    const handleResize = () => changeState()
+
+    const changeState = () =>{
+
+      if ( window.innerWidth >= 1000 ) {
+        setIsMobileView(false)
+      } else if ( window.innerWidth <= 999 ) {
+        setIsMobileView(true)
+      }
+    }
+
+    changeState()
+
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
 
   return {
     isExpanded,

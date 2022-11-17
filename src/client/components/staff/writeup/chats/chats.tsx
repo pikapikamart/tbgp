@@ -10,6 +10,7 @@ import {
   ChatboxCompose, 
   ChatboxComposeContainer, 
   ChatboxSend } from "./chatbox/chatbox.styled"
+import { memo } from "react"
 
 
 const Chats = () =>{
@@ -60,4 +61,4 @@ const Chats = () =>{
 }
 
 
-export default Chats
+export default memo(Chats)

@@ -24,6 +24,7 @@ export const ArticleTextContainer = styled.div`
   display: grid;
   gap: ${ rem(10) } 0;
   line-height: 1.4;
+  padding-top: ${ rem(8) };
 
   ${ breakpoint("tablet", `
     grid-column: 1;

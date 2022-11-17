@@ -18,7 +18,7 @@ export const WriterHeader = styled.div`
 `
 
 export const AuthorName = styled.h1`
-  font-family: "Friz Quadrata Std";
+  font-family: "Friz Quadrata Std Bold";
   font-weight: 700;
   font-size: ${ fluid(28, 5, 32) };
   margin-bottom: ${ rem(16) };

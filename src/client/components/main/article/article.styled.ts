@@ -1,12 +1,11 @@
 import styled, { keyframes } from "styled-components"
 import { 
   rem,
-  fluid,
-  breakpoint } from "@/styled/functions"
+  fluid } from "@/styled/functions"
 
 
 export const ArticleTitle = styled.h1`
-  font-family: "Friz Quadrata Std";
+  font-family: "Friz Quadrata Std Bold Italic";
   font-weight: 700;
   font-size: ${ fluid(24, 3, 40) };
   font-style: italic;

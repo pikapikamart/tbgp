@@ -10,7 +10,6 @@ export const ChatsWrapper = styled(motion.div)`
   justify-content: flex-end;
   inset: auto 0 0 auto;
   position: fixed;
-  width: 100%;
   z-index: 1000;
 
   ${ breakpoint("tablet", `
