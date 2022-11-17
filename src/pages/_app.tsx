@@ -11,7 +11,7 @@ import { wrapper } from "@/store/index";
 import { DefaultLayout } from "@/components/layout/default";
 import { Authguard } from "@/components/layout/authguard";
 import { HelmetProvider } from "react-helmet-async";
-import "../client/fonts/friz-quadrata-std-cufonfonts-webfont/style.css"
+import "../../public/fonts/style.css"
 
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {

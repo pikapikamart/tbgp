@@ -9,21 +9,21 @@ export const SlateWrapper = styled.div`
 `
 
 export const HeadingTwo = styled.h2`
-  font-family: "Friz Quadrata Std Bold Italic";
+  font-family: "Friz Quadrata Std Bold";
   font-size: ${ fluid(22, 3.4, 32) };
   margin-top: ${ fluid(24, 2, 40) };
   margin-bottom: ${ fluid(16, 2, 22) };
 `
 
 export const HeadingThree = styled.h3`
-  font-family: "Friz Quadrata Std Bold Italic";
+  font-family: "Friz Quadrata Std Bold";
   font-size: ${ fluid(20, 3.1, 26) };
   margin-top: ${ fluid(22, 3, 38) };
   margin-bottom: ${ fluid(14, 2, 18) };
 `
 
 export const HeadingFour = styled.h4`
-  font-family: "Friz Quadrata Std Bold Italic";
+  font-family: "Friz Quadrata Std Bold";
   font-size: ${ fluid(18, 2.9, 22) };
   margin-top: ${ fluid(20, 3, 32) };
   margin-bottom: ${ fluid(12, 2, 14) };
