@@ -10,6 +10,8 @@ import {
 import { FormRowFields } from "@/styled/shared/form"
 import { useUpdateSettings } from "./settings.hook"
 import { SettingsWrapper } from "./settings.styled"
+import { AnimatePresence } from "framer-motion"
+import { LoadingSpinner } from "@/components/shared/spinner"
 
 
 const Settings = () =>{
@@ -20,7 +22,11 @@ const Settings = () =>{
   } = useUpdateSettings( staff.username )
 
   if ( !staff.username ) {
-    return <>spinner</>
+    return (
+      <AnimatePresence>
+        <LoadingSpinner key="staff-settings-spinner" />
+      </AnimatePresence>
+    )
   }
 
   return (

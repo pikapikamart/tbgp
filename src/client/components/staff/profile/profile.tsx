@@ -7,6 +7,9 @@ import { ProfileHeaderSection } from "./header"
 import { 
   MainContentContainer, 
   MainWrapper } from "./profile.styled"
+import { AnimatePresence } from "framer-motion"
+import { LoadingSpinner } from "@/components/shared/spinner"
+import { FourOhFour } from "@/components/shared/404"
 
 
 const profileParams = [
@@ -21,27 +24,30 @@ const Profile = () =>{
   const query = trpc.useQuery(["staff.get", router.query["profile"] as string], {
     refetchOnWindowFocus: false
   })
-
-  if ( query.isLoading ) {
-    return <>Spinner</>
-  }
-
-  if ( query.isError || !query.data ) {
-    return <>Staff not found</>
+  
+  if ( query.isError ) {
+    return (
+      <FourOhFour>Try checking the username of the writer for a better result!</FourOhFour>
+    )
   }
 
   return (
     <ModalProvider>
-      <MainWrapper key="staff-profilepage">
-        <MainContentContainer>
-          <ProfileHeaderSection profile={ query.data.data } />
-          <TabInterface
-            paramsPaths={ profileParams } 
-            isRouting={ false }>
-              <ProfileArticlesTabContent writerId={ query.data.data._id as unknown as string } />
-          </TabInterface>
-        </MainContentContainer>
-      </MainWrapper>
+      <AnimatePresence exitBeforeEnter>
+        { (query.isLoading || !query.data) && <LoadingSpinner key="staff-profile-spinner" /> }
+        { query.data && (
+          <MainWrapper key="staff-profilepage">
+            <MainContentContainer>
+              <ProfileHeaderSection profile={ query.data.data } />
+              <TabInterface
+                paramsPaths={ profileParams } 
+                isRouting={ false }>
+                  <ProfileArticlesTabContent writerId={ query.data.data._id as unknown as string } />
+              </TabInterface>
+            </MainContentContainer>
+          </MainWrapper>
+        ) }
+      </AnimatePresence>
     </ModalProvider>
   )
 }
