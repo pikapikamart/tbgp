@@ -6,6 +6,14 @@
     <clipPath id="clip-path-2">
       <rect id="Rectangle_16" data-name="Rectangle 16" width="79" height="74" transform="translate(0.002 0.003)" fill="#fff" stroke="#707070" stroke-width="1"/>
     </clipPath>
+    <style type="text/css">
+        @font-face {
+          font-family: Friz Quadrata Std Medium;
+          font-style: normal;
+          font-weight: normal;
+          src: local('Friz Quadrata Std Medium'), url('../fonts/friz-quadrata-std-medium-5870338ec7ef8.woff') format('woff');
+        }
+    </style>
   </defs>
   <g id="bastion-logo-main-big" transform="translate(-48 -34)" clip-path="url(#clip-path)">
     <g id="Logo" transform="translate(46.997 30.993)">

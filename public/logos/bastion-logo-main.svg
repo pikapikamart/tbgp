@@ -6,6 +6,14 @@
     <clipPath id="clip-path-2">
       <rect id="Rectangle_1" data-name="Rectangle 1" width="54.408" height="50.214" fill="#fff" stroke="#707070" stroke-width="1"/>
     </clipPath>
+    <style type="text/css">
+        @font-face {
+          font-family: Friz Quadrata Std Medium;
+          font-style: normal;
+          font-weight: normal;
+          src: local('Friz Quadrata Std Medium'), url('../fonts/friz-quadrata-std-medium-5870338ec7ef8.woff') format('woff');
+        }
+    </style>
   </defs>
   <g id="HeaderLogo" transform="translate(-48 -38)" clip-path="url(#clip-path)">
     <g id="HeaderLogo-2" data-name="HeaderLogo" transform="translate(46 33)">

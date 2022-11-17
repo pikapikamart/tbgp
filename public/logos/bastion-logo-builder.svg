@@ -3,7 +3,14 @@
     <clipPath id="clip-path">
       <rect id="Rectangle_1" data-name="Rectangle 1" width="50" height="46" transform="translate(0 0.364)" fill="#fff" stroke="#707070" stroke-width="1"/>
     </clipPath>
-    
+    <style type="text/css">
+        @font-face {
+          font-family: Friz Quadrata Std Medium;
+          font-style: normal;
+          font-weight: normal;
+          src: local('Friz Quadrata Std Medium'), url('../fonts/friz-quadrata-std-medium-5870338ec7ef8.woff') format('woff');
+        }
+    </style>
   </defs>
   <g id="Logo" transform="translate(-67 -50)">
     <g id="Text" transform="translate(116.89 50)">
