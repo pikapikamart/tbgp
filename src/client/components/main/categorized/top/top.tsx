@@ -1,6 +1,5 @@
 import { useSelectArticles } from "@/lib/hooks/store.hooks"
 import { InitArticleMainHeading } from "@/styled/shared/article/initial"
-import { useRouter } from "next/router"
 import { TopCategorizedArticle } from "./article"
 import { 
   TopArticlesList, 
@@ -8,11 +7,10 @@ import {
 
 
 const Top = () =>{
-  const router = useRouter()
-  const articles = useSelectArticles()
+  const { categorizedArticles } = useSelectArticles()
 
   const renderTopArticles = () =>{
-    const topArticles = articles.categorizedArticles.topArticles.map(article => (
+    const topArticles = categorizedArticles.topArticles.map(article => (
       <TopCategorizedArticle
         key={ article.title }
         article={ article } />
@@ -24,7 +22,7 @@ const Top = () =>{
   return (
     <TopArticlesWrapper>
       <InitArticleMainHeading as='h1'>
-        <span>Top { router.query["category"] }</span>
+        <span>Top { categorizedArticles.category }</span>
       </InitArticleMainHeading>
       <TopArticlesList>
         { renderTopArticles() }

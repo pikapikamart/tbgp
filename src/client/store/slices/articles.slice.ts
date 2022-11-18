@@ -33,6 +33,7 @@ export type HomepageArticles = {
 }
 
 export type CategorizedArticles = {
+  category: string,
   topArticles: InitialArticle[],
   moreArticles: InitialArticle[]
 }
@@ -48,6 +49,7 @@ const initialState: ArticlesState = {
   topArticles: [],
   latestArticles: [],
   categorizedArticles: {
+    category: "",
     topArticles: [],
     moreArticles: []
   }

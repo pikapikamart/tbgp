@@ -16,7 +16,6 @@ export const MoreArticlesWrapper = styled.div`
 
 export const MoreArticlesList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(${ rem(240) }, 1fr));
   gap: ${ rem(32) } ${ fluid(24, 4, 48) };
 
   ${ breakpoint("tablet", `

@@ -11,7 +11,7 @@ export const useNavlinks = () =>{
       const categories = query.data.data.map(category => (
         <NavlinksListItem key={ category }>
           <Link
-            href={"/readings/" + category}
+            href={"/readings/" + category.toLowerCase()}
             passHref>
               <a>{ category } </a>
           </Link>

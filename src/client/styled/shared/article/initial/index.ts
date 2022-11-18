@@ -76,6 +76,7 @@ export const InitArticleMainHeading = styled.h2<InitArticleMainHeadingProps>`
 `
 
 export const InitArticleCategory = styled.p`
+  line-height: 1;
   position: relative;
 
   &::before {
@@ -108,20 +109,19 @@ export const InitArticleAuthorsContainer = styled.div`
   flex-wrap: wrap;
   font-size: ${ rem(13) };
   font-weight: 600;
-  gap: ${ rem(8) } 0;
+  gap: ${ rem(6) } 0;
 
   > span {
-    margin-right: ${ rem(2) };
+    margin-right: ${ rem(4) };
   }
 `
 
-export const InitArticleAuthorsList = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: ${ rem(24) };
-`
+export const InitArticleAuthor = styled.p`
 
-export const InitArticleAuthorsListItem = styled.li``
+  &:not(:first-of-type) {
+    margin-left: ${ rem(3) };
+  }
+`
 
 export const InitArticleDate = styled.div`
   align-items: center;
@@ -129,9 +129,10 @@ export const InitArticleDate = styled.div`
   display: flex;
   font-size: ${ rem(13) };
   font-weight: 400;
+  margin-left: ${ rem(8) };
 
   > img {
-    margin-right: ${ rem(8) };
+    margin-right: ${ rem(4) };
   }
 `
 

@@ -11,7 +11,7 @@ export const ArticleImage = styled.img`
 
   ${ breakpoint("tablet",`
     grid-column: 2;
-    height: ${ fluid(100, 21, 200) };
+    height: ${ fluid(100, 18, 200) };
   `) }
 
   ${ breakpoint("desktop", `
@@ -19,12 +19,16 @@ export const ArticleImage = styled.img`
   `) }
 `
 
-export const ArticleTextContainer = styled.div`
+type ArticleTextContainerProps = {
+  noPadding?: boolean
+}
+
+export const ArticleTextContainer = styled.div<ArticleTextContainerProps>`
   align-content: start;
   display: grid;
   gap: ${ rem(10) } 0;
   line-height: 1.4;
-  padding-top: ${ rem(8) };
+  padding-top: ${ ({ noPadding }) => noPadding? 0 : rem(8) };
 
   ${ breakpoint("tablet", `
     grid-column: 1;
@@ -55,7 +59,7 @@ export const ArticleWrapper = styled.li`
 
     ${ breakpoint("tablet", `
       border-bottom: none;
-      grid-template-columns: 1fr ${ fluid(100, 23, 224) };
+      grid-template-columns: 1fr ${ fluid(100, 18, 224) };
 
       &:nth-of-type(odd) {
         position: relative;

@@ -9,7 +9,7 @@ import { useInView } from "react-intersection-observer"
 
 
 export const useMoreCategorized = () =>{
-  const articles = useSelectArticles()
+  const { categorizedArticles } = useSelectArticles()
   const [ moreArticles, setMoreArticles ] = useState<InitialArticle[]>([]) 
   const router = useRouter()
   const { inView, ref } = useInView({
@@ -31,8 +31,8 @@ export const useMoreCategorized = () =>{
   })
 
   useEffect(() =>{
-    setMoreArticles(articles.categorizedArticles.moreArticles)
-  }, [ articles.categorizedArticles ])
+    setMoreArticles(categorizedArticles.moreArticles)
+  }, [ categorizedArticles ])
 
   useEffect(() =>{
     if ( paginate.lastId ) {
@@ -54,7 +54,7 @@ export const useMoreCategorized = () =>{
 
   return {
     articles: moreArticles,
-    category: router.query["category"] as string,
+    category: categorizedArticles.category,
     ref,
   }
 }

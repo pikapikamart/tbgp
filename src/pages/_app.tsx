@@ -52,14 +52,12 @@ const trpc = withTRPC<AppRouter>({
   config({ ctx }) {
     let url: string = ""
 
-    if ( typeof window !=="undefined" ) {
-      url = window.location.href.includes("localhost")? 'http://localhost:3000/api/trpc' : 'http://192.168.1.6:3000/api/trpc'
-    }
-
+    url = typeof window !=="undefined" &&  window.location.href.includes("localhost")? 'http://localhost:3000/api/trpc' : 'http://192.168.1.6:3000/api/trpc'
+  
     if ( process.env.NEXT_PUBLIC_VERCEL_URL ) {
       url = `https://tbgpublications.vercel.app/api/trpc`
     }
-    
+
     return {
       url,
       transformer: superJson,

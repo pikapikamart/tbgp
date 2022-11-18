@@ -2,7 +2,10 @@ import { getAllCategoriesHandler } from "../controllers/article.category.control
 import { createRouter } from "../router/createRouter";
 
 
-export const ArticleCategoryRouter = createRouter()
+export const articleCategoryRouter = createRouter()
   .query("get-all", {
     resolve: () => getAllCategoriesHandler()
+  })
+  .query("test", {
+    resolve: () =>{ }
   })

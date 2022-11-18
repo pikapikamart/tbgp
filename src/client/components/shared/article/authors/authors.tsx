@@ -1,5 +1,7 @@
 import { StaffProfile } from "@/store/store.types"
-import { InitArticleAuthorsContainer, InitArticleAuthorsList, InitArticleAuthorsListItem } from "@/styled/shared/article/initial"
+import { 
+  InitArticleAuthorsContainer,
+  InitArticleAuthor } from "@/styled/shared/article/initial"
 import Link from "next/link"
 
 
@@ -12,7 +14,7 @@ const Authors = ({ children, authors }: AuthorsProps) =>{
 
   const renderAuthors = () =>{
     const authorsArr = authors.map((author, index) => (
-      <InitArticleAuthorsListItem key={ author.username }>
+      <InitArticleAuthor key={ author.username }>
         <Link
           href={ `/writer/${ author.username }` }
           passHref>
@@ -20,7 +22,7 @@ const Authors = ({ children, authors }: AuthorsProps) =>{
             { author.firstname } { author.lastname } { index!==authors.length-1? ", " : "" }
           </a>
         </Link>
-      </InitArticleAuthorsListItem>
+      </InitArticleAuthor>
     ))
 
     return authorsArr
@@ -29,9 +31,7 @@ const Authors = ({ children, authors }: AuthorsProps) =>{
   return (
     <InitArticleAuthorsContainer>
       <span>By </span>
-      <InitArticleAuthorsList>
         { renderAuthors() }
-      </InitArticleAuthorsList>
       { children? children : <></> }
     </InitArticleAuthorsContainer> 
   )

@@ -11,6 +11,7 @@ export const ArticleTextContainer = styled.div`
   align-content: start;
   display: grid;
   gap: ${ rem(10) } 0;
+  padding-top: ${ rem(8) };
 `
 
 export const ArticleTitle = styled.h2`

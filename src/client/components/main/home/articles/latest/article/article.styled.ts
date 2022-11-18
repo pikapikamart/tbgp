@@ -44,7 +44,11 @@ export const ArticleWrapper = styled.li`
 export const ArticleLeftBlock = styled.div`
   align-content: start;
   display: grid;
-  gap: ${ rem(12) } 0;
+  gap: ${ rem(8) } 0;
+
+  ${ breakpoint("desktop", `
+    gap: ${ rem(12) } 0;
+  `) }
 `
 
 export const ArticleTitle = styled.h3`

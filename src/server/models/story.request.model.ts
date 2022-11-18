@@ -12,7 +12,7 @@ type CategoriesIndex = {
 export const storyCategories: CategoriesIndex = {
   news: "News",
   editorial: "Editorial",
-  opinions: "Opinion",
+  opinions: "Opinions",
   features: "Features",
   literary: "Literary",
   devComm: "DevComm",

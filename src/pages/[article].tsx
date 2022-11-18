@@ -3,14 +3,10 @@ import { wrapper } from "@/store/index";
 import { 
   FullArticle, 
   setViewingArticle } from "@/store/slices/articles.slice";
-import { 
-  GetStaticPaths, 
-  GetStaticPropsContext } from "next";
+import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { connectDatabase } from "../server/database";
-import { 
-  findAllArticleLinksService, 
-  populateArticleService } from "../server/services/article.service";
+import { populateArticleService } from "../server/services/article.service";
 import { NextPageWithLayout } from "./_app";
 
 
@@ -21,37 +17,11 @@ const ArticlePage: NextPageWithLayout = () =>{
   )
 }
 
-type Params = {
-  params: {
-    article: string
-  }
-}
-
-export const getStaticPaths: GetStaticPaths = async() =>{
-  await connectDatabase()
-  const articles = await findAllArticleLinksService()
-  const articlesParams = articles.reduce((accu, curr) => {
-    accu.push({
-      params: {
-        article: curr.linkPath
-      }
-    })
-
-    return accu
-  }, [] as Params[])
-
-  return {
-    paths: articlesParams,
-    fallback: true
-  }
-}
-
-
 type ArticleParams = ParsedUrlQuery & {
   article: string
 }
 
-export const getStaticProps = wrapper.getStaticProps(store => async(context: GetStaticPropsContext) => {
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(store => async(context) => {
   await connectDatabase()
   const { article } = context.params as ArticleParams
   const foundArticle = await populateArticleService(

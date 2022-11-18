@@ -22,7 +22,7 @@ const Article = ({ article, children }: ArticleProps) =>{
       <ArticleImage
         src={ article.thumbnail.small }
         alt=""/>
-      <ArticleTextContainer>
+      <ArticleTextContainer noPadding={ !!children }>
         { children }
         <ArticleTitle>
           <Link 
