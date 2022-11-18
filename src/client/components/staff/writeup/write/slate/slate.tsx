@@ -10,7 +10,7 @@ import { SlateToolbar } from "./toolbar"
 import { slateKeyDown } from "./utils"
 import { useSlate } from "./slate.hook"
 import { useSelectStaff } from "@/lib/hooks/store.hooks"
-import { isWriteupReadonly } from "../../utils"
+import { isCollaborativePartDone, isWriteupReadonly } from "../../utils"
 import { SlateWrapper } from "./slate.styled"
 import { ToastError } from "@/components/shared/toast/error"
 
@@ -43,7 +43,7 @@ const Slate = () => {
         onChange={ handleSlateEmitter }>
           <SlateToolbar />
           <Editable
-            readOnly={ isWriteupReadonly(writeup, staff.bastionId) }
+            readOnly={ isWriteupReadonly(writeup, staff.bastionId) || isCollaborativePartDone(writeup, staff.bastionId) }
             placeholder="Enter your story..."
             renderElement={ renderElement }
             renderLeaf={ renderLeaf }

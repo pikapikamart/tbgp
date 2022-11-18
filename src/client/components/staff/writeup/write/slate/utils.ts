@@ -194,6 +194,15 @@ export const slateKeyDown = (event: React.KeyboardEvent<HTMLDivElement>, editor:
       Transforms.move(editor, { unit: 'offset' })
       return
     }
+
+    if ( isKeyHotkey("Enter", nativeEvent) ) {
+      Transforms.insertNodes(editor, {
+        type: "paragraph",
+        children: [{ text: "" }]
+      })
+      event.preventDefault()
+      return
+    }
   }
 
   const markRunner = (slateFunc: ( editor: Editor, format: string ) => void, format: string) =>{

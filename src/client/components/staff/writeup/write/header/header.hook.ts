@@ -9,7 +9,7 @@ import {
 import React, { 
   useEffect, 
   useRef } from "react"
-import { Events } from "@/components/staff/writeup/phase.hook"
+import { SocketEvents } from "@/components/staff/writeup/phase.hook"
 
 
 export type HeaderFields = {
@@ -43,7 +43,7 @@ export const useWriteupHeader = () =>{
     const { socket } = writeup
 
     if ( socket ) {
-      socket.emit(Events.clients.emit_title, {
+      socket.emit(SocketEvents.clients.emit_title, {
         writeup: writeup.writeupId,
         title: event.currentTarget.value
       })
@@ -54,7 +54,7 @@ export const useWriteupHeader = () =>{
     const { socket } = writeup
 
     if ( socket ) {
-      socket.emit(Events.clients.emit_caption, {
+      socket.emit(SocketEvents.clients.emit_caption, {
         writeup: writeup.writeupId,
         caption: event.currentTarget.value
       })
@@ -65,7 +65,7 @@ export const useWriteupHeader = () =>{
     if ( writeup.socket ) {
       const socket  = writeup.socket
 
-      socket.on(Events.server.broadcast_title, ( title: string ) => {
+      socket.on(SocketEvents.server.broadcast_title, ( title: string ) => {
         if ( titleRef.current ) {
           titleRef.current.value = title
           titleRef.current.style.height = "0"
@@ -73,7 +73,7 @@ export const useWriteupHeader = () =>{
         }
       })
 
-      socket.on(Events.server.broadcast_caption, ( caption: string ) => {
+      socket.on(SocketEvents.server.broadcast_caption, ( caption: string ) => {
         if ( captionRef.current ) {
           captionRef.current.value = caption
           captionRef.current.style.height = "0"

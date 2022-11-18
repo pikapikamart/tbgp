@@ -2,7 +2,7 @@ import { useExpansion } from "@/lib/hooks"
 import { 
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { Events } from "@/components/staff/writeup/phase.hook"
+import { SocketEvents } from "@/components/staff/writeup/phase.hook"
 import React, { 
   useEffect, 
   useRef, 
@@ -41,7 +41,7 @@ export const useChats = () =>{
         writeup: writeup.writeupId
       }
       setCurrentChats(prev => prev.concat([chat]))
-      writeup.socket.emit(Events.clients.send_chat, chat)
+      writeup.socket.emit(SocketEvents.clients.send_chat, chat)
       chatRef.current.value = ""
       chatRef.current.setAttribute("style", "height:40px")
       chatRef.current.focus()
@@ -70,11 +70,11 @@ export const useChats = () =>{
     const socket = writeup.socket
  
     if ( socket ) {
-      socket.on(Events.server.broadcast_previous_chats, ( chats: Chat[] ) => {
+      socket.on(SocketEvents.server.broadcast_previous_chats, ( chats: Chat[] ) => {
         setCurrentChats(chats)
       })
 
-      socket.on(Events.server.broadcast_chat, ( chat: Chat ) => {
+      socket.on(SocketEvents.server.broadcast_chat, ( chat: Chat ) => {
         setCurrentChats(prev => prev.concat([chat]))
       })
     }

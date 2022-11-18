@@ -17,6 +17,10 @@ export const isWriteupPartSubmitted= ( writeup: WriteupState, bastionId: string 
   return writeup.content[0].submissions?.find(member => member.bastionId===bastionId)!==undefined
 }
 
+export const isCollaborativePartDone = ( writeup: WriteupState, bastionId: string ) => {
+  return writeup.currentPhase==="writeup" && isWriteupCollaborative(writeup) && isWriteupPartSubmitted(writeup, bastionId)
+}
+
 export const isWriteupEditable = ( writeup: WriteupState ) =>{
   return !writeup.content[0].isSubmitted
 }

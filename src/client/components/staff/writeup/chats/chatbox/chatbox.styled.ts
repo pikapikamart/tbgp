@@ -196,7 +196,7 @@ export const ChatboxMobileExit = styled.button`
 
   ${ ({ theme: { colors } }) => `
     background-color: ${ colors.white1 };
-    border: 1px solid ${ colors.white4 };
+    border: 1px solid ${ colors.grey3 };
     border-top: none;
   ` }
 

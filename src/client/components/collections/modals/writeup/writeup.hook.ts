@@ -1,3 +1,4 @@
+import { SocketEvents } from "@/components/staff/writeup/phase.hook"
 import { useTrapFocus } from "@/lib/hooks"
 import { 
   useAppDispatch, 
@@ -30,6 +31,7 @@ export const useSubmitWriteup = ( exit: () => void ) => {
           writeupId: writeup.writeupId,
           members: writeup.request.members
         }))
+        writeup.socket?.emit(SocketEvents.clients.emit_submit_writeup, writeup.writeupId)
       }
     }
   })
@@ -48,6 +50,13 @@ export const useSubmitWriteup = ( exit: () => void ) => {
 
   const handleSubmitWriteup = () =>{
     if ( writeup.currentPhase==="writeup" ) {
+      writeup.socket?.emit(SocketEvents.clients.emit_part_submission, {
+        writeup: writeup.writeupId,
+        firstname: staff.firstname,
+        lastname: staff.lastname,
+        username: staff.username,
+        bastionId: staff.bastionId
+      })
       return writeupPhaseMutation.mutate(writeup.writeupId)
     }
 

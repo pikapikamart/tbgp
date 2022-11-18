@@ -3,15 +3,17 @@ import {
   useAppDispatch, 
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
+import { updateWriteup } from "@/store/slices/staff.slice"
 import { 
   startCollaborating, 
-  stopCollaborating } from "@/store/slices/writeup.slice"
+  stopCollaborating, 
+  submitWriteup} from "@/store/slices/writeup.slice"
 import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
 import { Socket } from "socket.io-client"
 
 
-export const Events = {
+export const SocketEvents = {
   connection: "connection",
   disconnect: "disconnect",
   clients: {
@@ -19,14 +21,23 @@ export const Events = {
       emit_title: "emit_title",
       emit_caption: "emit_caption",
       emit_slate: "emit_slate",
-      send_chat: "send_chat"
+      emit_previous_slate: "emit_previous_slate",
+      send_chat: "send_chat",
+      emit_part_submission: "emit_part_submission",
+      emit_cancel_part_submission: "emit_cancel_part_submission",
+      emit_submit_writeup: "emit_submit_writeup"
   },
   server: {
     broadcast_title: "broadcast_title",
     broadcast_caption: "broadcast_caption",
     broadcast_slate: "broadcast_slate",
+    broadcast_request_previous_slate: "broadcast_request_previous_slate",
+    broadcast_previous_slate: "broadcast_previous_slate",
     broadcast_previous_chats: "broadcast_previous_chats", 
-    broadcast_chat: "broadcast_chat"
+    broadcast_chat: "broadcast_chat",
+    broadcast_part_submission: "broadcast_part_submission",
+    broadcast_cancel_part_submission: "broadcast_cancel_part_submission",
+    broadcast_submission: "broadcast_submission"
   }
 }
 
@@ -56,7 +67,15 @@ export const useWriteupPhaseCollaboration = (socketUri: string) =>{
 
       const socket = writeup.socket
 
-      socket.emit(Events.clients.create_collab_room, {
+      socket.on(SocketEvents.server.broadcast_submission, () => {
+        dispatch(submitWriteup())
+        dispatch(updateWriteup({
+          writeupId: writeup.writeupId,
+          members: writeup.request.members
+        }))
+      })
+
+      socket.emit(SocketEvents.clients.create_collab_room, {
         writeup: writeup.writeupId,
         firstname: staff.firstname,
         lastname: staff.lastname

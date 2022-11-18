@@ -1,8 +1,12 @@
 import { 
   useAppDispatch, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { Events } from "@/components/staff/writeup/phase.hook"
-import { resetSubmission, setWriteupSlate } from "@/store/slices/writeup.slice"
+import { SocketEvents } from "@/components/staff/writeup/phase.hook"
+import { 
+  addMemberSubmission,
+  removeMemberSubmission,
+  resetSubmission, 
+  setWriteupSlate } from "@/store/slices/writeup.slice"
 import { 
   useMemo,
   useEffect,
@@ -10,6 +14,7 @@ import {
   useRef} from "react"
 import { 
   BaseOperation, 
+  Descendant, 
   Editor } from "slate"
 import { createEditor } from "slate"
 import { withHistory } from "slate-history"
@@ -18,6 +23,7 @@ import { initialSlateValue } from "./data"
 import { 
   withImages, 
   withInlines} from "./utils"
+import { StaffState } from "@/store/slices/staff.slice"
 
 
 export const useSlate = () =>{
@@ -43,16 +49,14 @@ export const useSlate = () =>{
     }
 
     return initialSlateValue
-  }, [writeup.content])
+  }, [])
 
   const handleSlateEmitter = () => {
     const socket = writeup.socket
 
     if ( socket && editor.operations.length && !remote.current ) {
       const operations = editor.operations
-        .filter(operation => 
-          operation && 
-          operation.type !=="set_selection")
+        .filter(operation => operation && operation.type !=="set_selection")
         .map((operation: any) => ({ ...operation, data: { source: "one" } }))
 
       if ( !operations.length ) {
@@ -60,7 +64,7 @@ export const useSlate = () =>{
       }
 
       if ( !receivingEnd.current ) {
-        socket.emit(Events.clients.emit_slate, {
+        socket.emit(SocketEvents.clients.emit_slate, {
           writeup: writeup.writeupId,
           editorId: id.current,
           slate: operations
@@ -74,7 +78,19 @@ export const useSlate = () =>{
     if ( writeup.socket ) {
       const socket = writeup.socket
 
-      socket.on(Events.server.broadcast_slate, ( editorData: { slate: BaseOperation[], editorId: string } ) => {
+      socket.on(SocketEvents.server.broadcast_request_previous_slate, ( socketId: string ) =>{
+        socket.emit(SocketEvents.clients.emit_previous_slate, {
+          socketId,
+          slate: editor.children
+        })
+      })
+
+      socket.on(SocketEvents.server.broadcast_previous_slate, ( slate: Descendant[] ) =>{
+        editor.children = slate
+        editor.onChange()
+      })
+
+      socket.on(SocketEvents.server.broadcast_slate, ( editorData: { slate: BaseOperation[], editorId: string } ) => {
 
         if ( editor && editorData.editorId!==id.current ) {
           remote.current = true
@@ -92,6 +108,14 @@ export const useSlate = () =>{
           remote.current = false
           receivingEnd.current = true
         }
+      })
+
+      socket.on(SocketEvents.server.broadcast_part_submission, ( staff: StaffState ) =>{
+        dispatch(addMemberSubmission(staff))
+      })
+
+      socket.on(SocketEvents.server.broadcast_cancel_part_submission, ( bastionId: string ) =>{
+        dispatch(removeMemberSubmission(bastionId))
       })
     }
   }, [ writeup.socket ])

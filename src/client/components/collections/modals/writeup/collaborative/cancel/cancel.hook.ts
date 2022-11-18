@@ -1,3 +1,4 @@
+import { SocketEvents } from "@/components/staff/writeup/phase.hook"
 import { useTrapFocus } from "@/lib/hooks"
 import { 
   useAppDispatch, 
@@ -27,6 +28,10 @@ export const useCancelCollaborative = ( exit: () => void ) => {
   }
 
   const handleCancelSubmission = () =>{
+    writeup.socket?.emit(SocketEvents.clients.emit_cancel_part_submission, {
+      writeup: writeup.writeupId,
+      bastionId: staff.bastionId
+    })
     mutation.mutate(writeup.writeupId)
   }
 
