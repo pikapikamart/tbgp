@@ -1,7 +1,7 @@
 import { BuilderLayout } from "@/components/layout/builder"
 import { StaffWriteup } from "@/components/staff/writeup"
 import { NextPageWithLayout } from "@/pages/_app"
-import { InferGetServerSidePropsType } from "next"
+import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { useWriteupPhaseCollaboration } from "@/components/staff/writeup/phase.hook"
 
 
@@ -16,18 +16,23 @@ const WriteupPage: NextPageWithLayout<InferGetServerSidePropsType<typeof getServ
 WriteupPage.getLayout = ( page ) => BuilderLayout(page)
 WriteupPage.requireAuth = true
 
-export const getServerSideProps = async() =>{
-  const socketUri = process.env.SOCKET_URI as string
+export const getServerSideProps: GetServerSideProps = async( context ) =>{
+  const socketUriLocal = process.env.SOCKET_URI as string
+  const socketUriWifi = process.env.SOCKET_URI_WIFI as string
   const socketUriProd = process.env.SOCKET_URI_PROD as string
   const deployment = process.env.NODE_ENV
+  let socketUri: string = ""
 
-  if ( !socketUri || !socketUriProd ) {
-    // do something 
+  if ( deployment==="production" ) {
+    socketUri = socketUriProd
+  } else {
+    socketUri = context.req.headers.host?.includes("localhost")? socketUriLocal : socketUriWifi
   }
+
 
   return {
     props: {
-      socketUri: deployment==="production"? socketUriProd : socketUri
+      socketUri: deployment==="production"? socketUriProd : socketUriWifi
     }
   }
 }

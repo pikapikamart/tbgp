@@ -50,9 +50,15 @@ const MyApp = ({ Component, ...rest }: AppPropsWithLayout) => {
 
 const trpc = withTRPC<AppRouter>({
   config({ ctx }) {
-    const url = process.env.NEXT_PUBLIC_VERCEL_URL
-      ? `https://tbgpublications.vercel.app/api/trpc`
-      : 'http://localhost:3000/api/trpc';
+    let url: string = ""
+
+    if ( typeof window !=="undefined" ) {
+      url = window.location.href.includes("localhost")? 'http://localhost:3000/api/trpc' : 'http://192.168.1.6:3000/api/trpc'
+    }
+
+    if ( process.env.NEXT_PUBLIC_VERCEL_URL ) {
+      url = `https://tbgpublications.vercel.app/api/trpc`
+    }
     
     return {
       url,

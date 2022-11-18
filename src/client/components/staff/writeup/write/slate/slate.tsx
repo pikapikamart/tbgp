@@ -10,7 +10,9 @@ import { SlateToolbar } from "./toolbar"
 import { slateKeyDown } from "./utils"
 import { useSlate } from "./slate.hook"
 import { useSelectStaff } from "@/lib/hooks/store.hooks"
-import { isCollaborativePartDone, isWriteupReadonly } from "../../utils"
+import { 
+  isCollaborativePartDone, 
+  isWriteupReadonly } from "../../utils"
 import { SlateWrapper } from "./slate.styled"
 import { ToastError } from "@/components/shared/toast/error"
 

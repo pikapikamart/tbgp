@@ -64,6 +64,7 @@ export const useSlate = () =>{
       }
 
       if ( !receivingEnd.current ) {
+        
         socket.emit(SocketEvents.clients.emit_slate, {
           writeup: writeup.writeupId,
           editorId: id.current,
