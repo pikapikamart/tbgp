@@ -1,13 +1,13 @@
 import { useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { EmptyFunction } from "@/store/context/modal/modal"
 import { WriteupState } from "@/store/slices/writeup.slice"
-import { notValidGraphicsBanner } from "../../task/task.hook"
 import { SubmitWrapper } from "./submit.styled"
 
 
 type SubmitProps = {
   onClick: EmptyFunction,
-  isExpanded: boolean
+  isExpanded: boolean,
+  validation?: boolean
 }
 
 const isInvalid = ( writeup: WriteupState ) => {
@@ -16,7 +16,7 @@ const isInvalid = ( writeup: WriteupState ) => {
   return !content.title || !content.caption || content.data.length===1 && !content.data[0].children[0].text
 }
 
-const Submit = ({ onClick, isExpanded }: SubmitProps) =>{
+const Submit = ({ onClick, isExpanded, validation }: SubmitProps) =>{
   const writeup = useSelectWriteup()
   
   return (
@@ -24,7 +24,7 @@ const Submit = ({ onClick, isExpanded }: SubmitProps) =>{
       colored="blue"
       onClick={ isInvalid(writeup)? () => {} : onClick }
       aria-expanded={ isExpanded }
-      aria-invalid={ isInvalid(writeup) || notValidGraphicsBanner(writeup) }>Submit
+      aria-invalid={ isInvalid(writeup) || validation }>Submit
     </SubmitWrapper>
   )
 }

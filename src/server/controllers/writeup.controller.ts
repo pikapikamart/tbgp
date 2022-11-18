@@ -38,7 +38,6 @@ import {
   storyRequestValidator, 
   writeupPhaseIndex, 
   writeupValidator} from "./controller.utils";
-import fs from "fs"
 import sharp from "sharp"
 
 
@@ -195,21 +194,6 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
   if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(member => member.equals(staff._id)) ) {
     return trpcError("FORBIDDEN", "Already submitted your work")
   }
-
-  // if ( currentContent.reSubmit ) {
-  //   const nextContent = writeup.content[1]
-
-  //   if ( !nextContent ) {
-  //     return trpcError("INTERNAL_SERVER_ERROR", "Server error")
-  //   }
-
-  //   await updateWriteupService(
-  //     updateQuery(writeup.writeupId, "writeup"),
-  //     baseResubmitUpdateBody(nextContent, currentContent, 0)
-  //   )
-
-  //   return trpcSuccess(true, "Successfully submitted")
-  // } 
 
   if ( writeup.request.members.length-1===currentContent.submissions?.length ) {
 

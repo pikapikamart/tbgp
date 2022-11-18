@@ -7,7 +7,9 @@ import {
   useSelectWriteup } from "@/lib/hooks/store.hooks"
 import { useModalContext } from "@/store/context/modal/modal"
 import { WriteupState } from "@/store/slices/writeup.slice"
-import { useState } from "react"
+import { 
+  useEffect, 
+  useState } from "react"
 
 
 export const notValidGraphicsBanner = ( writeup: WriteupState ) => {
@@ -21,6 +23,7 @@ export const useTask = () =>{
   const [ takeTaskModal, setTakeTaskModal ] = useState(false)
   const [ submitModal, setSubmitModal ] = useState(false)
   const [ publishModal, setPublishModal ] = useState(false)
+  const [ savedImage, setSavedImage ] = useState(false)
 
   const handleTakeTaskModal = () =>{
     setTakeTaskModal(true)
@@ -32,7 +35,7 @@ export const useTask = () =>{
   }
 
   const handleSubmissionModal = () => {
-    if ( notValidGraphicsBanner(writeup) ) {
+    if ( writeup.currentPhase==="graphics" && !savedImage ) {
       return
     }
 
@@ -53,6 +56,12 @@ export const useTask = () =>{
     )
   }
 
+  useEffect(() =>{
+    if ( writeup.shouldSave && writeup.banner.url!=="" ) {
+      setSavedImage(true)
+    }
+  }, [ writeup.shouldSave ])
+
   return {
     staff,
     writeup,
@@ -61,6 +70,7 @@ export const useTask = () =>{
     submitModal,
     handleSubmissionModal,
     handlePublishModal,
-    publishModal
+    publishModal,
+    savedImage
   }
 }

@@ -5,7 +5,9 @@ import {
 import { ControlsUpdates } from "../../controls.styled"
 import { SubmitWriteupOption } from "../options/submit"
 import { SaveWriteupControl } from "../save"
-import { useTask } from "./task.hook"
+import { 
+  notValidGraphicsBanner, 
+  useTask } from "./task.hook"
 
 
 const Task = () =>{
@@ -17,7 +19,8 @@ const Task = () =>{
     submitModal,
     handleSubmissionModal,
     handlePublishModal,
-    publishModal
+    publishModal,
+    savedImage
   } = useTask()
 
   if ( !isWriteupEditable(writeup) || writeup.content[0].requestedResubmit ) {
@@ -49,7 +52,8 @@ const Task = () =>{
           :
           <SubmitWriteupOption
             onClick={ handleSubmissionModal }
-            isExpanded={ submitModal } />
+            isExpanded={ submitModal }
+            validation={ writeup.currentPhase==="graphics" && !savedImage } />
       }
       </ControlsUpdates>
     )
