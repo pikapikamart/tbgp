@@ -2,6 +2,7 @@ import styled, { keyframes } from "styled-components"
 import { 
   rem,
   fluid } from "@/styled/functions"
+import { InitArticleDate } from "@/styled/shared/article/initial"
 
 
 export const ArticleTitle = styled.h1`
@@ -98,4 +99,8 @@ export const ArticleWrapper = styled.main`
   margin: ${ fluid(64, 9, 80) } auto ${ fluid(96, 20, 192) };
   max-width: ${ rem(944) };
   padding: 0 ${ fluid(16, 3, 48) };
+
+  ${ InitArticleDate } {
+    margin-left: 0;
+  }
 `

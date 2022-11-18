@@ -39,7 +39,7 @@ const Article = () =>{
   if ( !article || !initialValue ) {
     return <></>
   }
-
+  console.log(url)
   return (
     <ArticleWrapper>
       <ArticleTitle>{ article.title }</ArticleTitle>
