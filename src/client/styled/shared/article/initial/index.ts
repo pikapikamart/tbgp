@@ -121,6 +121,10 @@ export const InitArticleAuthor = styled.p`
   &:not(:first-of-type) {
     margin-left: ${ rem(3) };
   }
+
+  &:last-of-type {
+    margin-right: ${ rem(8) };
+  }
 `
 
 export const InitArticleDate = styled.div`
@@ -129,7 +133,6 @@ export const InitArticleDate = styled.div`
   display: flex;
   font-size: ${ rem(13) };
   font-weight: 400;
-  margin-left: ${ rem(8) };
 
   > img {
     margin-right: ${ rem(4) };

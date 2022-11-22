@@ -1,5 +1,7 @@
 import { InitialArticle } from "@/store/slices/articles.slice"
-import { InitArticleCaption, InitArticleCategory } from "@/styled/shared/article/initial"
+import { 
+  InitArticleCaption, 
+  InitArticleCategory } from "@/styled/shared/article/initial"
 import Link from "next/link"
 import { ArticleAuthors } from "../authors"
 import { ArticleDate } from "../date"

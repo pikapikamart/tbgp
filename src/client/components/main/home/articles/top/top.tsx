@@ -1,27 +1,36 @@
-import { VerticalArticle } from "@/components/shared/article/vertical"
 import { useSelectArticles } from "@/lib/hooks/store.hooks"
 import { InitArticleMainHeading } from "@/styled/shared/article/initial"
+import { TopArticle } from "./article"
 import { 
-  TopArticlesList, 
+  MainContentContainer,
+  RemainingTopArticles,
+  TopArticlesWithImage, 
   TopArticlesWrapper } from "./top.styled"
 
 
 const Top = () =>{
-  const articles = useSelectArticles()
+  const { topArticles } = useSelectArticles()
 
-  const renderTopArticles = () =>{
-    const topArticles = articles.topArticles.map((article, index) => (
-      <VerticalArticle
+  const renderTopArticlesWithImage = () =>{
+    const topArticlesWithImage = topArticles.slice(0, 3).map((article, index) => (
+      <TopArticle
         key={ article.title + index }
         article={ article }
-        titleFormat={ index <= 1? "one" : index===2? "two": "three" }
-        hideCaption={ index>2 }
-        hideImage={ index>2 }
-        thumbnail="medium"
-        shouldReverse={ index<=2 } />
+        hideCaption={ false } />
     ))
 
-    return topArticles
+    return topArticlesWithImage
+  }
+
+  const renderRemainingTopArticles = () =>{
+    const remainingTopArticles = topArticles.slice(3).map((article, index) => (
+      <TopArticle
+        key={ article.title + index }
+        article={ article }
+        hideCaption={ true } />
+    ))
+
+    return remainingTopArticles
   }
 
   return (
@@ -29,7 +38,16 @@ const Top = () =>{
       <InitArticleMainHeading>
         <span>Top Articles</span>
       </InitArticleMainHeading>
-      <TopArticlesList>{ renderTopArticles() }</TopArticlesList>
+      <MainContentContainer>
+        <TopArticlesWithImage>
+          { renderTopArticlesWithImage() }
+        </TopArticlesWithImage>
+        { topArticles.length > 3 && (
+          <RemainingTopArticles>
+            { renderRemainingTopArticles() }
+          </RemainingTopArticles>
+        ) }
+      </MainContentContainer>
     </TopArticlesWrapper>
   )
 }

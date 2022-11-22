@@ -3,10 +3,11 @@ import {
   rem,  
   fluid, 
   breakpoint} from "@/styled/functions"
-import { VerticalArticleWrapper } from "@/components/shared/article/vertical/vertical.styled"
+import { InitArticleCaption } from "@/styled/shared/article/initial"
 import { 
-  InitArticleCaption,
-  InitArticleCategory } from "@/styled/shared/article/initial"
+  ArticleWrapper,
+  ArticleImage,
+  ArticleTitle } from "./article/article.styled"
 
 
 export const TopArticlesWrapper = styled.div`
@@ -15,31 +16,44 @@ export const TopArticlesWrapper = styled.div`
   padding: 0 ${ fluid(16, 2, 24) };
 `
 
-export const TopArticlesList = styled.ul`
+const BaseArticlesList = styled.div`
   display: grid;
   gap: ${ rem(32) };
   grid-template-columns: repeat(auto-fill, minmax(${ rem(240) }, 1fr));
+`
 
-  ${ VerticalArticleWrapper } {
-    
-    &:nth-of-type(3) {
-      grid-column: 1/-1;
-
-      > img {
-        margin: ${ rem(4) } auto 0;
-      }
-    }
-  }
+export const TopArticlesWithImage = styled(BaseArticlesList)`
+  margin-bottom: ${ fluid(48, 6, 64) };
 
   ${ breakpoint("tablet", `
-    grid-template-columns: repeat(10, 1fr);
-    gap: ${ rem(24) } ${ rem(32) };
+    grid-template-columns: ${ fluid(240, 30, 300) } 1fr;
+  `) }
 
-    ${ VerticalArticleWrapper } {
+  ${ breakpoint('desktop',`
+    gap: ${ rem(32) } ${ rem(48) };
+    grid-template-columns: max(${ fluid(220, 20, 248) }) ${ fluid(400, 39, 520) };
+  `) }
 
+  ${ ArticleWrapper } {
+    &:last-of-type {
+      grid-column: 1 / -1;
+
+      ${ ArticleImage } {
+        margin: ${ rem(4) } auto 0;
+
+        ${ breakpoint("tablet", `
+          margin: 0 auto;
+        `) }
+      }
+    }
+
+    ${ breakpoint("tablet", `
+        
         &:nth-of-type(3){
+          grid-column: 2/3;
+          grid-row: 1/3;
           position: relative;
-
+  
           &::before {
             content: "";
             background-color: #C9C9C9;
@@ -51,81 +65,87 @@ export const TopArticlesList = styled.ul`
       
         &:first-of-type,
         &:nth-of-type(2){
-          grid-column: 1/5;
-
-          > img {
+          grid-column: 1/2;
+  
+          ${ ArticleImage } {
             max-height: ${ rem(140) };
-            width: 100%;
           }
-
+  
+          ${ ArticleTitle } {
+            font-size: ${ fluid(15, 1.5, 16) };
+          }
+  
           ${ InitArticleCaption } {
             display: none;
           }
         }
 
-        &:nth-of-type(3) {
-          grid-row: 1/3;
-          grid-column: 5/-1
+        ${ ArticleImage } {
+          grid-row: 1;
+          width: 100%;
         }
+      `) }
 
-        &:nth-of-type(4),
-        &:nth-of-type(5) {
-          margin-top: ${ rem(32) };
-        } 
+    ${ breakpoint("desktop", `
+        &:nth-of-type(3){
         
-        &:nth-of-type(4),
-        &:nth-of-type(6) {
-          grid-column: 1/6;
-        } 
+          &::before,
+          &::after {
+            content: "";
+            background-color: #C9C9C9;
+            position: absolute;
+            width: 1px;
+          }
 
-        &:nth-of-type(5),
-        &:nth-of-type(7) {
-          grid-column: 6/-1;
-        } 
+          &::before {
+            inset: 0 auto 0 -${ rem(24) };
+          }
+
+          &::after {
+            inset: 0 -${ rem(24) } 0 auto;
+          }
+
+          ${ ArticleTitle } {
+            font-size: ${ rem(20) };
+          }
+        }
+    `) }
+  }
+`
+
+export const RemainingTopArticles = styled(BaseArticlesList)`
+
+  ${ breakpoint('tablet', `
+    grid-template-columns: repeat(2, 1fr);
+
+    ${ ArticleTitle } {
+      font-size: ${ rem(20) };  q
     }
   `) }
 
   ${ breakpoint('desktop', `
-    align-items: flex-start;
-    grid-template-columns: 1fr ${ fluid(400, 39, 520) } 1fr;
-    gap: ${ rem(24) } ${ rem(48) };  
+    display: block;
+    grid-column: 2 / 3;
 
-    ${ VerticalArticleWrapper } {
+    ${ ArticleWrapper } {
 
-      &:first-of-type {
-        grid-column: 1/2;
-        grid-row: 1/3;
-      }
-
-      &:nth-of-type(2) {
-        grid-column: 1/2;
-        grid-row:3/5;
-      }
-
-      &:nth-of-type(3) {
-        grid-column: 2/3;
-        grid-row: 1/5;
-      }
-
-      &:nth-child(n+4) {
-        grid-column: 3/4;
-        border-bottom: 1px solid #c9c9c9;
-        margin-top: 0;
-        padding-bottom: ${ rem(16) };
-
-        ${ InitArticleCategory } {
-          grid-row: 3;
-
-          &::before {
-            display: none;
-          }
-
-          span {
-            margin-left: 0;
-            padding: 0;
-          }
-        }
+      &:not(:last-of-type) {
+        margin-bottom: ${ rem(32) };
       }
     }
+
+    ${ ArticleTitle } {
+      font-size: ${ rem(16) };
+    }
+  `) }
+`
+
+export const MainContentContainer = styled.div`
+
+  ${ breakpoint("desktop", `
+    align-items: start;
+    display: grid;
+    gap: 0 ${ rem(48) };
+    grid-template-columns: auto max(${ fluid(220, 20, 248) });
   `) }
 `
