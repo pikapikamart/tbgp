@@ -90,7 +90,7 @@ export const useArticle = () =>{
   }
 }
 
-export const useArticleSlate = ( article?: FullArticle  ) =>{
+export const useArticleSlate = ( article: FullArticle | null  ) =>{
   const editorRef = useRef<Editor>()
   const dispatch = useAppDispatch()
 

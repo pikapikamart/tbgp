@@ -34,16 +34,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     }
   )
 
-  if ( !foundArticle[0] ) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false
-      }
-    }
-  }
-
-  store.dispatch(setViewingArticle(JSON.parse(JSON.stringify(foundArticle[0])) as never as FullArticle))
+  store.dispatch(setViewingArticle(JSON.parse(JSON.stringify(foundArticle[0]?? null)) as never as FullArticle))
 
   return {
     props: {}

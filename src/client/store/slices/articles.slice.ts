@@ -42,7 +42,7 @@ export type ArticlesState = {
   topArticles: InitialArticle[],
   latestArticles: InitialArticle[],
   categorizedArticles: CategorizedArticles,
-  viewing?: FullArticle
+  viewing: FullArticle | null
 }
 
 const initialState: ArticlesState = {
@@ -52,7 +52,8 @@ const initialState: ArticlesState = {
     category: "",
     topArticles: [],
     moreArticles: []
-  }
+  },
+  viewing: null
 }
 
 export const articleSlice = createSlice({

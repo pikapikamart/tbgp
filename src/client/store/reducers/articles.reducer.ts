@@ -16,8 +16,8 @@ export const setCategoryArticlesReducer = ( state: WritableDraft<ArticlesState>,
   state.categorizedArticles = action.payload
 }
 
-export const setViewingArticleReducer = ( state: WritableDraft<ArticlesState>, action: PayloadAction<FullArticle> ) => {
-  state.viewing = action.payload
+export const setViewingArticleReducer = ( state: WritableDraft<ArticlesState>, action: PayloadAction<FullArticle | null> ) => {
+  state.viewing = action?.payload
 }
 
 export const resetViewingArticleReducer = ( state: WritableDraft<ArticlesState> ) => {

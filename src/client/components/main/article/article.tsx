@@ -19,6 +19,7 @@ import { ArticleDate } from "@/components/shared/article/date"
 import { 
   Editable, 
   Slate } from "slate-react"
+import { FourOhFour } from "@/components/shared/404"
 
 
 const Article = () =>{
@@ -37,7 +38,11 @@ const Article = () =>{
   } = useArticleSlate(article)
 
   if ( !article || !initialValue ) {
-    return <></>
+    return (
+      <FourOhFour>
+        Try checking the articles name if it is correct
+      </FourOhFour>
+    )
   }
 
   return (
