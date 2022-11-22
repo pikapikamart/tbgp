@@ -13,20 +13,19 @@ import { FacebookShareButton } from "react-share"
 import { 
   useArticle, 
   useArticleSlate } from "./article.hook"
-import { SrOnly } from "@/styled/shared/helpers"
 import { ArticleAuthors } from "@/components/shared/article/authors"
 import { ArticleDate } from "@/components/shared/article/date"
 import { 
   Editable, 
   Slate } from "slate-react"
 import { FourOhFour } from "@/components/shared/404"
+import { CopyToClipboard } from "react-copy-to-clipboard"
 
 
 const Article = () =>{
   const {
     article,
     url,
-    clipboard,
     showToast,
     handleCopyLink,
   } = useArticle()
@@ -64,20 +63,14 @@ const Article = () =>{
                 alt="" />
           </FacebookShareButton>
         </ShareToFacebook>
-        <CopyLink onClick={ handleCopyLink }>
-          <SrOnly
-            as="input"
-            type="text"
-            tabIndex={ -1 }
-            defaultValue={ url } 
-            ref={ clipboard }
-            aria-hidden="true" />
-          <img
-            src="icons/icon-paste-link.svg"
-            alt="" />
-          copy link
-          { showToast && <CopyLinkToast>Copied!</CopyLinkToast> }
-        </CopyLink>
+        <CopyToClipboard text={ url } >
+            <CopyLink onClick={ handleCopyLink }>
+            <img
+              src="icons/icon-paste-link.svg"
+              alt="" />
+            { showToast && <CopyLinkToast>Copied!</CopyLinkToast> }
+            </CopyLink>
+        </CopyToClipboard>
       </ArticleControls>
       <AuthorsDateContainer>
         <ArticleAuthors authors={ article.authors } />

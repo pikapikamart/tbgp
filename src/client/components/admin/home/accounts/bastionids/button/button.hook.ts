@@ -1,21 +1,12 @@
 import { 
   useEffect, 
-  useRef, 
   useState } from "react"
 
 
 export const useCopyBastionId = () =>{
   const [ showCopied, setShowCopied ] = useState(false)
-  const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleCopy = () =>{
-    if ( !inputRef.current ) {
-      return
-    }
-
-    inputRef.current.select()
-    inputRef.current.setSelectionRange(0, 9000)
-    navigator.clipboard.writeText(inputRef.current.value)
     setShowCopied(true)
   }
 
@@ -31,7 +22,6 @@ export const useCopyBastionId = () =>{
 
   return {
     showCopied,
-    inputRef,
     handleCopy
   }
 }

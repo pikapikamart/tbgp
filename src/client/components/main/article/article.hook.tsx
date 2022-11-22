@@ -30,21 +30,11 @@ import { trpc } from "@/lib/trpc"
 export const useArticle = () =>{
   const [ showToast, setShowToast ] = useState(false)
   const article = useViewArticle()
-  const clipboard = useRef<HTMLInputElement | null>(null)
   const url = useRef("")
   const mutation = trpc.useMutation(["article.view"])
   
   const handleCopyLink = () =>{
-
-    if ( !clipboard.current ) {
-      return
-    }
-
     setShowToast(true)
-
-    clipboard.current?.select()
-    clipboard.current?.setSelectionRange(0, 9000)
-    navigator.clipboard.writeText(clipboard.current?.value)
   }
 
   useEffect(() =>{
@@ -85,7 +75,6 @@ export const useArticle = () =>{
     article,
     url: url.current,
     showToast,
-    clipboard,
     handleCopyLink,
   }
 }

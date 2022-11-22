@@ -64,11 +64,11 @@ export const CopyLink = styled.button`
 const CopyLinkToastAnim = keyframes`
   0%, 100% {
     opacity: 0;
-    transform: translateY(0);
+    transform: translateX(0);
   }
   30%, 70% {
     opacity: 1;
-    transform: translateY(-100%);
+    transform: translateX(50%);
   }
 `
 
@@ -78,10 +78,10 @@ export const CopyLinkToast = styled.p`
   display: grid;
   font-size: ${ rem(13) };
   height: ${ rem(32) };
+  padding: 0 ${ rem(4) };
   place-content: center;
   position: absolute;
-  text-transform: K;
-  width: 100%;
+  width: max-content;
 
   ${ ({ theme: { colors } }) => `
     background-color: ${ colors.darkBlue };

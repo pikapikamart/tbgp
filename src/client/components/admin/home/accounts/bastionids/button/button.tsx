@@ -1,8 +1,8 @@
-import { SrOnly } from "@/styled/shared/helpers"
 import { 
   BastionIdButtonCopied, 
   BastionIdListButton } from "../bastionids.styled"
 import { useCopyBastionId } from "./button.hook"
+import { CopyToClipboard } from "react-copy-to-clipboard"
 
 
 type ButtonProps = {
@@ -12,21 +12,15 @@ type ButtonProps = {
 const Button = ({ id }: ButtonProps) =>{
   const {
     showCopied,
-    inputRef,
     handleCopy
   } = useCopyBastionId()
 
   return (
     <>
       { showCopied && <BastionIdButtonCopied>Copied!</BastionIdButtonCopied> }
-      <SrOnly
-        as="input"
-        type="text"
-        tabIndex={ -1 }
-        aria-hidden="true"
-        ref={ inputRef }
-        defaultValue={ id } />
-      <BastionIdListButton onClick={ handleCopy }>{ id }</BastionIdListButton>
+      <CopyToClipboard text={ id }>
+        <BastionIdListButton onClick={ handleCopy }>{ id }</BastionIdListButton>
+      </CopyToClipboard>
     </>
   )
 }
