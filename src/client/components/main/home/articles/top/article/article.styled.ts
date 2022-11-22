@@ -1,4 +1,3 @@
-import { VerticalArticleWrapper } from "@/components/shared/article/vertical/vertical.styled"
 import { 
   breakpoint,
   fluid, 
@@ -20,4 +19,12 @@ export const ArticleTitle = styled.h3`
   line-height: 1.4;
 `
 
-export const ArticleWrapper = styled(VerticalArticleWrapper)``
+export const ArticleWrapper = styled.div`
+  align-content: flex-start;
+  display: grid;
+  gap: ${ rem(12) } 0;
+
+  ${ breakpoint("tablet", `
+    gap: ${ rem(10) } 0;
+  `) }
+`
