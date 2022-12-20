@@ -68,7 +68,6 @@ export const nextAuthOptions: NextAuthOptions = {
           name: token.name,
           email: token.email,
           userType: token.userType,
-          image: null
         }
       }
 

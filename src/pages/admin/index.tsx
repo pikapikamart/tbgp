@@ -4,9 +4,8 @@ import { findAdminService } from "@/src/server/services/admin.service";
 import { wrapper } from "@/store/index";
 import { thunkSetAdminReducer } from "@/store/reducers/admin.reducers";
 import { GetServerSidePropsContext } from "next";
-import { unstable_getServerSession } from "next-auth";
-import { nextAuthOptions } from "../api/auth/[...nextauth]";
 import { NextPageWithLayout } from "../_app";
+import { getToken } from "next-auth/jwt";
 
 
 const AdminHomepage: NextPageWithLayout = () => {
@@ -19,9 +18,9 @@ const AdminHomepage: NextPageWithLayout = () => {
 AdminHomepage.getLayout = ( page ) => AdminLayout(page)
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async( context: GetServerSidePropsContext ) =>{
-  const session = await unstable_getServerSession(context.req, context.res, nextAuthOptions)
+  const session = await getToken({ req: context.req })
 
-  if ( !session || session.user?.userType!=="admin" ) {
+  if ( !session || session.userType!=="admin" ) {
     return {
       redirect: {
         destination: "/admin/login",
@@ -31,7 +30,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async( con
   }
 
   const foundAdmin = await findAdminService(
-    { email: session.user.email },
+    { email: session.email },
     "-_id bastionIds verifications"
   )
 
@@ -45,7 +44,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async( con
   }
 
   store.dispatch(thunkSetAdminReducer(JSON.parse(JSON.stringify(foundAdmin))))
-
+  console.log(session)
   return {
     props: {}
   }

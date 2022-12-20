@@ -26,13 +26,14 @@ export const getServerSideProps: GetServerSideProps = async( context ) =>{
   if ( deployment==="production" ) {
     socketUri = socketUriProd
   } else {
-    socketUri = context.req.headers.host?.includes("localhost")? socketUriLocal : socketUriWifi
+    // socketUri = context.req.headers.host?.includes("localhost")? socketUriLocal : socketUriWifi
+    socketUri = socketUriLocal
   }
 
 
   return {
     props: {
-      socketUri: deployment==="production"? socketUriProd : socketUriWifi
+      socketUri: deployment==="production"? socketUriProd : socketUriLocal
     }
   }
 }
