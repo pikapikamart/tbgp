@@ -37,6 +37,9 @@ export const useSetupStaff = () =>{
     enabled: false,
     onSuccess: ( { data } ) =>{
       dispatch(setStaff(data))
+    },
+    onError: () =>{
+      router.replace("/storybuilder/login")
     }
   })
 
