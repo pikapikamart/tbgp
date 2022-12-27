@@ -13,4 +13,5 @@ const ActivitiesPage: NextPageWithLayout = () =>{
 ActivitiesPage.getLayout = ( page ) => BuilderLayout(page)
 ActivitiesPage.requireAuth = true
 
+
 export default ActivitiesPage
