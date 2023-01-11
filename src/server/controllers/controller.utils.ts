@@ -207,3 +207,9 @@ export const writeupPhaseIndex = ( searchPhase: string ) => {
 
   return foundIndex
 }
+
+export const sanitizeStaffName = (str: string) => {
+  const sanitizedWord = str.replace(/[^a-zA-Z0-9\s]/g, '')
+
+  return sanitizedWord[0].toUpperCase() + sanitizedWord.slice(1)
+}

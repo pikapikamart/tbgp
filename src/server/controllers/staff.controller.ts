@@ -25,6 +25,7 @@ import {
 import { 
   checkBastionIdExistence, 
   getCurrentAdmin, 
+  sanitizeStaffName, 
   staffValidator} from "./controller.utils";
 
 
@@ -184,6 +185,8 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
   await createStaffService(
     {
       ...staffBody,
+      firstname: sanitizeStaffName(staffBody.firstname),
+      lastname: sanitizeStaffName(staffBody.lastname),
       username: staffBody.email.split("@")[0],
       verification: false,
       position: null,
