@@ -7,7 +7,7 @@ type CategoryColors = {
 export const categoryColors: CategoryColors = {
   News: "darkBlue",
   Editorial: "red",
-  Opinion: "dark1",
+  Opinions: "dark1",
   Features: "green",
   Literary: "violet",
   DevComm: "orange",
