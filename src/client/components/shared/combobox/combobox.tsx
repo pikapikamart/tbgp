@@ -64,7 +64,10 @@ const ComboBox = ({
 
   return (
     <ComboBoxWrapper>
-      <ComboBoxLabel id="position">{ labelText }</ComboBoxLabel>
+      <ComboBoxLabel id="position">
+        { labelText }
+        <span>*</span>
+      </ComboBoxLabel>
       <ComboBoxInput
         type="hidden"
         ref={ addFieldRef }

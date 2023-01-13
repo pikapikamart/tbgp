@@ -11,6 +11,10 @@ export const InputLabel = styled.label`
   font-size: ${ fluid(14, 1.2, 15) };
   font-weight: 700;
   margin-bottom: ${ rem(2) };
+
+  >span {
+    color: red;
+  }
 `
 
 export const InputError = styled.span`

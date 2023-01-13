@@ -41,7 +41,10 @@ const Input = ({
 
   return (
     <InputBlock>
-      <InputLabel htmlFor={ name }>{ labelText }</InputLabel>
+      <InputLabel htmlFor={ name }>
+        { labelText }
+        <span>*</span>
+      </InputLabel>
       <InputWrapper
         type={ type?? "text" }
         id={ name }

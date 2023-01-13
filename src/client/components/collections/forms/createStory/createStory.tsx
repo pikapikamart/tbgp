@@ -88,7 +88,10 @@ const CreateStory = () =>{
           </InputBlock>
         </AssignMembersContainer>
         <InputBlock>
-          <InputLabel htmlFor="instruction">Instruction</InputLabel>
+          <InputLabel htmlFor="instruction">
+            Instruction
+            <span>*</span>
+          </InputLabel>
           <InputWrapper
             as="textarea"
             name="instruction"
