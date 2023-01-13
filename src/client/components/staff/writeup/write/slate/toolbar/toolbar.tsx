@@ -1,7 +1,7 @@
 import { 
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { isCollaborativePartDone, isWriteupReadonly } from "../../../utils"
+import { isCollaborativePartDone, isWriteupHandler, isWriteupReadonly } from "../../../utils"
 import { ToolbarMarkButton } from "./button"
 import { ToolbarBlockButton } from "./button/block"
 import { ToolbarHeadingList } from "./heading"
@@ -37,7 +37,7 @@ const ToolBar = () => {
         label="transform text to underline"
         decoration="underline" />
       <ToolbarLink />
-      <ToolbarImage />
+      { writeup.content[0].phase==="graphics" && isWriteupHandler(writeup, staff.bastionId) && <ToolbarImage /> }      
     </ToolbarWrapper>
   )
 }

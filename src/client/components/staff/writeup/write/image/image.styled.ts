@@ -120,6 +120,7 @@ export const CaptionHeading = styled(ImageSizeLegend)`
   margin-bottom: ${ rem(8) };
 
   > span {
+    color: red;
     font-size: ${ rem(13) };
     margin-left: ${ rem(4) };
   }

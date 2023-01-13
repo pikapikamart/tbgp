@@ -15,6 +15,7 @@ import {
   CaptionHeading,
   CaptionInput,
   CaptionLabel} from "./image.styled"
+import { ToastError } from "@/components/shared/toast/error"
 
 
 export type ImageSize = "small" | "medium" | "large"
@@ -34,7 +35,9 @@ const Image = ({ extractData, exit }: ImageProps) => {
     registerTrapContainer,
     handleInputOnChange,
     handleSizeChange,
-    handleAddCaption
+    handleAddCaption,
+    handleIsImageValid,
+    isError
   } = useImageAddition()
 
   const renderRadioItems = useCallback(() =>{
@@ -57,6 +60,9 @@ const Image = ({ extractData, exit }: ImageProps) => {
 
   return (
     <ImageModalWrapper onKeyDown={ registerTrapContainer }>
+      { isError && <ToastError
+        code="Image error"
+        message="Make sure to select an image and fill caption" /> }
       <ImageContainer>
         <SrOnly
           as="input"
@@ -86,8 +92,8 @@ const Image = ({ extractData, exit }: ImageProps) => {
       </ImageSizeContainer>
       <div>
         <CaptionHeading>
-          Add image caption
-          <span>(optional)</span>
+          Image caption
+          <span>*</span>
         </CaptionHeading>
         <CaptionInput
           type="text"
@@ -96,7 +102,7 @@ const Image = ({ extractData, exit }: ImageProps) => {
       <FormBottomControls>
         <ColoredMediumButton
           colored="blue"
-          onClick={ () => extractData(image.url, image.caption) }>Add image
+          onClick={ () => handleIsImageValid() && extractData(image.url, image.caption) }>Add image
         </ColoredMediumButton>
         <ColoredMediumButton
           colored="borderGray"

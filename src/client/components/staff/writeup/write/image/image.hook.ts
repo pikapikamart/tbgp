@@ -13,6 +13,7 @@ export const useImageAddition = () =>{
   const [ registerControl, registerTrapContainer ] = useTrapFocus()
   const [ imageSize, setImageSize ] = useState<ImageSize>("large")
   const [ imageFile, setImageFile ] = useState<File | null>(null)
+  const [ isError, setIsError ] = useState(false)
 
   const handleImageAddition = ( file: File ) =>{
     const reader = new FileReader();
@@ -20,7 +21,7 @@ export const useImageAddition = () =>{
     reader.onloadend = ( readerEvent ) =>{
       const img = document.createElement("img");
 
-      img.onload = ( imgEvent ) => {
+      img.onload = () => {
         const canvas = document.createElement("canvas");
         switch(imageSize) {
           case "large": {
@@ -83,11 +84,28 @@ export const useImageAddition = () =>{
     }))
   }
 
+  const handleIsImageValid = () =>{
+    const validity = image.url!=="" && image.caption!==""
+    setIsError(!validity)
+    
+    return validity
+  }
+
   useEffect(() =>{
     if ( imageFile ) {
       handleImageAddition(imageFile)
     }
   }, [ imageSize ])
+
+  useEffect(() =>{
+    if ( isError ) {
+      const timeout = setTimeout(() =>{
+        setIsError(false)
+      }, 4000)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [ isError ])
 
   return {
     image,
@@ -96,6 +114,8 @@ export const useImageAddition = () =>{
     registerTrapContainer,
     handleInputOnChange,
     handleSizeChange,
-    handleAddCaption
+    handleAddCaption,
+    handleIsImageValid,
+    isError
   }
 }
