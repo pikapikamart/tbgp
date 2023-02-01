@@ -32,6 +32,7 @@ import {
   getOwnedAvailableStoryRequest, 
   staffValidator } from "./controller.utils";
 import { FullStoryRequest } from "@/store/store.types";
+import dayjs from "dayjs"
 
 
 // --------Queries--------
@@ -168,7 +169,8 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
     },
     "_id"
   )
-
+  const deadlineDate = new Date(request.deadline)
+  deadlineDate.setUTCHours(0, 0, 0, 0)
   const newStoryRequest = await createStoryRequestService(
     {
       ...request,
@@ -179,7 +181,8 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
       started: false,
       members: [],
       requests: [],
-      writeupId: null
+      writeupId: null,
+      deadline: deadlineDate
     }
   )
   

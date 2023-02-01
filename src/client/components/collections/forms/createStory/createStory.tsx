@@ -39,7 +39,7 @@ const CreateStory = () =>{
     isError,
     errorMessage,
     deadline,
-    handleSetDeadline
+    handleSetDeadline,
   } = useCreateStoryRequest()
 
   return (
@@ -75,10 +75,17 @@ const CreateStory = () =>{
         <DatePicker
           PopperProps={{ placement: "bottom-end" }}
           label="Deadline *"
-          value={ deadline?? dayjs() }
+          value={ deadline.date }
           minDate={ dayjs() }
           onChange={ handleSetDeadline }
-          renderInput={ ( params ) => <TextField { ...params } sx={{ width: "100%" }} helperText="Test error"/> } />
+          renderInput={ ( params ) => (
+            <TextField 
+              { ...params } 
+              sx={{ width: "100%" }} 
+              error={ deadline.error } 
+              helperText={ deadline.error? "Please enter a proper deadline" : '' }
+              inputProps={{ ...params.inputProps, readOnly: true }}/>
+          ) } />
         <AssignMembersContainer>
           <InputBlock>
             <InputLabel id="assignmembers">Assign members (optional)</InputLabel>

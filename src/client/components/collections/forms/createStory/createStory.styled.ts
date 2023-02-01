@@ -9,6 +9,7 @@ export const CreateStoryWrapper = styled.form`
   text-align: left;
 
   // overwrites for the date-picker
+  // label
   .css-1sumxir-MuiFormLabel-root-MuiInputLabel-root {
     color: ${ ({ theme }) => theme.colors.dark2 };
     font-weight: 700;
@@ -18,8 +19,17 @@ export const CreateStoryWrapper = styled.form`
     transform: none;
   }
 
+  // legend
   .css-14lo706 {
     width: 0;
+  }
+
+  // helperText for the input
+  .MuiFormHelperText-root {
+    ${({ theme }) => `
+    color: ${ theme.colors.red };
+    font-size: ${ rem(13) };
+  `}
   }
 ` 
 

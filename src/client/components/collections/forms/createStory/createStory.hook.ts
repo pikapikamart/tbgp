@@ -15,7 +15,7 @@ import { StoryRequestSchema } from "@/src/server/schemas/story.request.schema"
 import { useModalContext } from "@/store/context/modal/modal"
 import { useAppDispatch } from "@/lib/hooks/store.hooks"
 import { addCreatedStoryRequest } from "@/store/slices/staff.slice"
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 
 export type SelectOption = {
@@ -29,6 +29,11 @@ type StoryRequestData = StoryRequestSchema & {
   [ key: string ]: string
 }
 
+type Deadline = {
+  date: null | string,
+  error: boolean
+}
+
 export const useCreateStoryRequest = () =>{
   const router = useRouter()
   const modalContext = useModalContext()
@@ -40,8 +45,11 @@ export const useCreateStoryRequest = () =>{
     isValidData,
     resetFormValidation
   } = useFormValidation()
-  const [ deadline, setDeadline ] = useState<string | null>(null)
   const [ registerControl, registerTrapContainer ] = useTrapFocus()
+  const [ deadline, setDeadline ] = useState<Deadline>({
+    date: `${ dayjs() }`,
+    error: false
+  })
   const [ assignedMembers, setAssignedMembers ] = useState<MultiValue<SelectOption>>([])
   const [ errorMessage, setErrorMessage ] = useState({
     message: "",
@@ -72,11 +80,14 @@ export const useCreateStoryRequest = () =>{
       return
     }
 
-    setDeadline(`${ date.toDate() }`)
+    setDeadline(() => ({
+      error: dayjs().isSame(date, "d")? false : dayjs().isAfter(date),
+      date: `${ date.toDate() }`
+    }))
   }
-
+  
   useEffect(() => {
-    if ( isValidData ) {
+    if ( isValidData && deadline.date ) {
       const storyRequest = getFieldsRef().reduce((accu, cur) =>{
         accu[cur.name] = cur.value.trim()
 
@@ -84,8 +95,9 @@ export const useCreateStoryRequest = () =>{
       }, {} as StoryRequestData)
 
       storyRequest.assignedMembers = assignedMembers.length? assignedMembers.map(member => member.value) : undefined
-    
+      storyRequest.deadline = `${ deadline.date }`
       mutation.mutate(storyRequest)
+      resetFormValidation()
     }
   }, [ isValidData ])
 
@@ -102,6 +114,6 @@ export const useCreateStoryRequest = () =>{
     isError: mutation.isError,
     errorMessage,
     deadline,
-    handleSetDeadline
+    handleSetDeadline,
   }
 }
