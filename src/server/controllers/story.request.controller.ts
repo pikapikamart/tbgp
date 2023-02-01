@@ -53,7 +53,7 @@ export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdS
 
 export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema, { staff }: StaffContext ) => {
   let matchQuery: any = {};
-  
+ 
   switch( tab ) {
     case "assigned":
       matchQuery.assignedMembers = {
@@ -83,7 +83,7 @@ export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema
       },
       {
         $sort: {
-          createdAt: 1
+          deadline: 1,
         }
       },
       {
@@ -107,7 +107,7 @@ export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema
       }
     ]
   )
-   
+
   return trpcSuccess(true, aggregatedStoryRequests);
 }
 
@@ -202,7 +202,8 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
     members: [],
     instruction: newStoryRequest.instruction,
     requests: [],
-    createdAt: newStoryRequest.createdAt
+    createdAt: newStoryRequest.createdAt,
+    deadline: newStoryRequest.deadline
   }
 
   return trpcSuccess(true, filtedCreatedStoryRequest);
