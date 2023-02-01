@@ -15,6 +15,7 @@ import { StoryRequestSchema } from "@/src/server/schemas/story.request.schema"
 import { useModalContext } from "@/store/context/modal/modal"
 import { useAppDispatch } from "@/lib/hooks/store.hooks"
 import { addCreatedStoryRequest } from "@/store/slices/staff.slice"
+import { Dayjs } from 'dayjs';
 
 
 export type SelectOption = {
@@ -39,6 +40,7 @@ export const useCreateStoryRequest = () =>{
     isValidData,
     resetFormValidation
   } = useFormValidation()
+  const [ deadline, setDeadline ] = useState<string | null>(null)
   const [ registerControl, registerTrapContainer ] = useTrapFocus()
   const [ assignedMembers, setAssignedMembers ] = useState<MultiValue<SelectOption>>([])
   const [ errorMessage, setErrorMessage ] = useState({
@@ -63,6 +65,14 @@ export const useCreateStoryRequest = () =>{
 
   const handleSetAssignedMembers: SetSelectedOptions = ( options: OnChangeValue<SelectOption, true>, actionMeta: ActionMeta<SelectOption> ) => {
     setAssignedMembers(options)
+  }
+
+  const handleSetDeadline = ( date: Dayjs | null ) => {
+    if ( !date ) {
+      return
+    }
+
+    setDeadline(`${ date.toDate() }`)
   }
 
   useEffect(() => {
@@ -90,6 +100,8 @@ export const useCreateStoryRequest = () =>{
     assignedMembers,
     handleSetAssignedMembers,
     isError: mutation.isError,
-    errorMessage
+    errorMessage,
+    deadline,
+    handleSetDeadline
   }
 }

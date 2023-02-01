@@ -20,6 +20,9 @@ import { useCreateStoryRequest } from "./createStory.hook"
 import { AssignMembersModal } from "@/components/collections/modals/storyRequest/create/assign"
 import { AssignMembersForm } from "./assignMembers"
 import { ToastError } from "@/components/shared/toast/error"
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import TextField from '@mui/material/TextField';
+import dayjs from "dayjs";
 
 
 const CreateStory = () =>{
@@ -34,7 +37,9 @@ const CreateStory = () =>{
     assignedMembers,
     handleSetAssignedMembers,
     isError,
-    errorMessage
+    errorMessage,
+    deadline,
+    handleSetDeadline
   } = useCreateStoryRequest()
 
   return (
@@ -67,6 +72,13 @@ const CreateStory = () =>{
           name="category"
           addFieldRef={ addFieldRef }
           listBoxOptions={ storyCategories } />
+        <DatePicker
+          PopperProps={{ placement: "bottom-end" }}
+          label="Deadline *"
+          value={ deadline?? dayjs() }
+          minDate={ dayjs() }
+          onChange={ handleSetDeadline }
+          renderInput={ ( params ) => <TextField { ...params } sx={{ width: "100%" }} helperText="Test error"/> } />
         <AssignMembersContainer>
           <InputBlock>
             <InputLabel id="assignmembers">Assign members (optional)</InputLabel>

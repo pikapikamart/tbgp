@@ -21,7 +21,7 @@ export const BaseModalWrapper = styled(RowStartCenter)<BaseModalWrapperProps>`
   outline: none;
   overflow: hidden scroll;
   position: fixed;
-  z-index: 10000;
+  z-index: 1200;
 
   ${ ({ $styleReset, paddingstyle }) => {
     switch($styleReset) {
