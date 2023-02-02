@@ -94,9 +94,15 @@ const Version = () =>{
             <Category colored={ categoryColors[writeup.request.category] }>{ writeup.request.category.toLowerCase() }</Category>
           </TopicsListItem>
           <TopicsListItem column={ true }>
-            <TopicsListItemHeading>Description:</TopicsListItemHeading>
+            <TopicsListItemHeading>Instruction:</TopicsListItemHeading>
             <TopicsListItemInformation>{ writeup.request.instruction }</TopicsListItemInformation>
           </TopicsListItem>
+          { writeup.request.deadline && (
+            <TopicsListItem column={ true }>
+              <TopicsListItemHeading>Deadline:</TopicsListItemHeading>
+              <TopicsListItemInformation>{ convertDateToString(writeup.request.deadline) }</TopicsListItemInformation>
+            </TopicsListItem>
+          ) }
           <TopicsListItem column={ true }>
             <TopicsListItemHeading>Members joined:</TopicsListItemHeading>
             <RequestMembers>

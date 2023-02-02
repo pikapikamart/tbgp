@@ -122,7 +122,8 @@ export type PopulatedWriteup = {
     title: string,
     category: string,
     instruction: string,
-    createdAt: string
+    createdAt: string,
+    deadline: string
   },
   writeupId: string,
   banner: {
@@ -153,7 +154,7 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
     },
     {
       path: "request",
-      select: "-_id members title category instruction content.$ createdAt",
+      select: "-_id members title category instruction content.$ createdAt deadline",
       populate: {
         path: "members",
         select: "-_id firstname lastname username bastionId"

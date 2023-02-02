@@ -32,7 +32,6 @@ import {
   getOwnedAvailableStoryRequest, 
   staffValidator } from "./controller.utils";
 import { FullStoryRequest } from "@/store/store.types";
-import dayjs from "dayjs"
 
 
 // --------Queries--------
@@ -73,12 +72,20 @@ export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema
       }
   }
 
+  const asiaManilaRequest = await fetch("http://worldtimeapi.org/api/timezone/Asia/Manila")
+  const asiaManilaDatetime = await asiaManilaRequest.json()
+  const deadline = new Date(asiaManilaDatetime.datetime)
+  deadline.setUTCHours(0, 0, 0, 0)
+
   const aggregatedStoryRequests = await findManyStoryRequestAggregator(
     [
       {
         $match: {
           started: false,
-          ...matchQuery
+          ...matchQuery,
+          deadline: {
+            $gte: deadline
+          }
         }
       },
       {

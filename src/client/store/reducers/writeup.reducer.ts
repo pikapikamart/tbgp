@@ -4,7 +4,7 @@ import {
 import { HeaderFields } from "@/components/staff/writeup/write/header/header.hook"
 import { PopulatedWriteup } from "@/src/server/controllers/writeup.controller"
 import { PayloadAction } from "@reduxjs/toolkit"
-import type { Draft, WritableDraft } from "immer/dist/internal"
+import type { WritableDraft } from "immer/dist/internal"
 import { Descendant } from "slate"
 import { StaffState } from "../slices/staff.slice"
 import { WriteupState } from "../slices/writeup.slice"

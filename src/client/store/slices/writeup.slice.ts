@@ -38,7 +38,8 @@ const initialState: WriteupState = {
     title: "",
     category: "",
     instruction: "",
-    createdAt: ""
+    createdAt: "",
+    deadline: ""
   },
   writeupId: "",
   banner: {
