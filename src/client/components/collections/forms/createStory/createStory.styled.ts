@@ -10,7 +10,7 @@ export const CreateStoryWrapper = styled.form`
 
   // overwrites for the date-picker
   // label
-  .css-1sumxir-MuiFormLabel-root-MuiInputLabel-root {
+  .MuiFormLabel-root {
     color: ${ ({ theme }) => theme.colors.dark2 };
     font-weight: 700;
     font-size: ${ fluid(14, 1.2, 15) };
