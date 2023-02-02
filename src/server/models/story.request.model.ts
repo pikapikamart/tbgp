@@ -20,7 +20,7 @@ export const storyCategories: CategoriesIndex = {
   education: "Education",
 }
 
-export type StoryRequest = ModifyType<StoryRequestSchema, {
+export type StoryRequest = ModifyType<Omit<StoryRequestSchema, "deadline">, {
   assignedMembers: StaffDocument["_id"][] | null
 }> & {
   storyRequestId: string,
@@ -28,7 +28,8 @@ export type StoryRequest = ModifyType<StoryRequestSchema, {
   started: boolean,
   members: StaffDocument["_id"][],
   requests: StaffDocument["_id"][],
-  writeupId: string | null
+  writeupId: string | null,
+  deadline: Date
 }
 
 export type StoryRequestDocument = StoryRequest & mongoose.Document<mongoose.Types.ObjectId> & {
@@ -78,7 +79,8 @@ export const storyRequestSchema: mongoose.Schema<StoryRequestDocument> = new mon
   writeupId: {
     type: String,
     default: null
-  }
+  },
+  deadline: Date
 },{ timestamps: true }
 )
 

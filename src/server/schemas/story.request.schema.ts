@@ -15,7 +15,10 @@ export const storyRequestSchema = z
     instruction: z
       .string({ required_error: "Instruction is required" })
       .min(1, "Instruction should not be empty"),
-    assignedMembers: z.array(bastionIdSchema).optional()
+    assignedMembers: z.array(bastionIdSchema).optional(),
+    deadline: z
+      .string({ required_error: "Deadline is required" })
+      .min(1, "Deadline should not be empty")
   })
 
 export const storyRequestIdSchema = z

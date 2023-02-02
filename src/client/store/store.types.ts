@@ -19,7 +19,8 @@ export type FullStoryRequest = ModifyType<StoryRequest, {
   members: StaffProfile[],
   assignedMembers: StaffProfile[] | null,
   requests: StaffProfile[],
-  createdAt: string
+  createdAt: string,
+  deadline: string
 }>
 
 export type StoryRequestsState = {

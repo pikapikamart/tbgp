@@ -79,6 +79,9 @@ export const getProfileHandler = async( { staff }: StaffContext ) =>{
       populate: {
         path: "requests members",
         select: "-_id username"
+      },
+      options: {
+        sort: "deadline"
       }
     }
   )

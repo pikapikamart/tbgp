@@ -32,6 +32,10 @@ const Content = () =>{
         <SubHeading>Instruction: </SubHeading>
         <DefaultText>{ storyRequest.instruction }</DefaultText>
       </RowContentContainer>
+      <RowContentContainer>
+        <SubHeading>Deadline: </SubHeading>
+        <DefaultText>{ convertDateToString(storyRequest.deadline) }</DefaultText>
+      </RowContentContainer>
       { storyRequest.assignedMembers && (
         <RowContentContainer>
           <SubHeading>Assigned members: </SubHeading>

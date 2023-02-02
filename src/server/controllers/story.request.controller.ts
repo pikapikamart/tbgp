@@ -52,7 +52,7 @@ export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdS
 
 export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema, { staff }: StaffContext ) => {
   let matchQuery: any = {};
-  
+ 
   switch( tab ) {
     case "assigned":
       matchQuery.assignedMembers = {
@@ -72,17 +72,25 @@ export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema
       }
   }
 
+  const asiaManilaRequest = await fetch("http://worldtimeapi.org/api/timezone/Asia/Manila")
+  const asiaManilaDatetime = await asiaManilaRequest.json()
+  const deadline = new Date(asiaManilaDatetime.datetime)
+  deadline.setUTCHours(0, 0, 0, 0)
+
   const aggregatedStoryRequests = await findManyStoryRequestAggregator(
     [
       {
         $match: {
           started: false,
-          ...matchQuery
+          ...matchQuery,
+          deadline: {
+            $gte: deadline
+          }
         }
       },
       {
         $sort: {
-          createdAt: 1
+          deadline: 1,
         }
       },
       {
@@ -106,7 +114,7 @@ export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema
       }
     ]
   )
-   
+
   return trpcSuccess(true, aggregatedStoryRequests);
 }
 
@@ -168,7 +176,8 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
     },
     "_id"
   )
-
+  const deadlineDate = new Date(request.deadline)
+  deadlineDate.setUTCHours(0, 0, 0, 0)
   const newStoryRequest = await createStoryRequestService(
     {
       ...request,
@@ -179,7 +188,8 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
       started: false,
       members: [],
       requests: [],
-      writeupId: null
+      writeupId: null,
+      deadline: deadlineDate
     }
   )
   
@@ -199,7 +209,8 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
     members: [],
     instruction: newStoryRequest.instruction,
     requests: [],
-    createdAt: newStoryRequest.createdAt
+    createdAt: newStoryRequest.createdAt,
+    deadline: newStoryRequest.deadline
   }
 
   return trpcSuccess(true, filtedCreatedStoryRequest);

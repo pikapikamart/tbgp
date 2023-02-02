@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { rem } from "@/styled/functions"
+import { fluid, rem } from "@/styled/functions"
 import { SmallButton } from "@/styled/collections/button"
 
 
@@ -7,6 +7,30 @@ export const CreateStoryWrapper = styled.form`
   display: grid;
   gap: ${ rem(16) } 0 ;
   text-align: left;
+
+  // overwrites for the date-picker
+  // label
+  .css-1sumxir-MuiFormLabel-root-MuiInputLabel-root {
+    color: ${ ({ theme }) => theme.colors.dark2 };
+    font-weight: 700;
+    font-size: ${ fluid(14, 1.2, 15) };
+    position: static;
+    transition: none;
+    transform: none;
+  }
+
+  // legend
+  .css-14lo706 {
+    width: 0;
+  }
+
+  // helperText for the input
+  .MuiFormHelperText-root {
+    ${({ theme }) => `
+    color: ${ theme.colors.red };
+    font-size: ${ rem(13) };
+  `}
+  }
 ` 
 
 export const AssignMembersContainer = styled.div`
