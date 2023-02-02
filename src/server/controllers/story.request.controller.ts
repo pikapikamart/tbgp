@@ -177,7 +177,7 @@ export const createStoryRequestHandler = async( request: StoryRequestSchema, { s
     "_id"
   )
   const deadlineDate = new Date(request.deadline)
-  deadlineDate.setUTCHours(0, 0, 0, 0)
+  // deadlineDate.setUTCHours(0, 0, 0, 0)
   const newStoryRequest = await createStoryRequestService(
     {
       ...request,
