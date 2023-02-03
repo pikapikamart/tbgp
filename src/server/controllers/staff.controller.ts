@@ -54,7 +54,7 @@ export const validateStaffHandler = async( { email, password }: BaseUserSchema )
 export const getStaffHandler = async( username: UsernameSchema ) => {
   const staff = staffValidator(await findStaffService(
     { username },
-    "firstname lastname bastionId bio position"
+    "firstname middlename lastname bastionId bio position"
   ))
 
   return trpcSuccess(true, staff)
@@ -186,7 +186,7 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
   }
 
   await createStaffService(
-    {
+    Object.assign({
       ...staffBody,
       firstname: sanitizeStaffName(staffBody.firstname),
       lastname: sanitizeStaffName(staffBody.lastname),
@@ -197,7 +197,7 @@ export const registerStaffHandler = async( staffBody: StaffSchema ) => {
       storyRequests: null,
       writeups: null,
       articles: null
-    }
+    }, staffBody.middlename? sanitizeStaffName(staffBody.middlename) : undefined)
   )
   await updateAdminService({
     $pull: {

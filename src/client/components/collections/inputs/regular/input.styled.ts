@@ -6,14 +6,18 @@ import {
 
 export const InputBlock = styled.div``
 
-export const InputLabel = styled.label`
+type InputLabelProps = {
+  optional?: boolean
+}
+
+export const InputLabel = styled.label<InputLabelProps>`
   color: ${ ({ theme }) => theme.colors.dark2 };
   font-size: ${ fluid(14, 1.2, 15) };
   font-weight: 700;
   margin-bottom: ${ rem(2) };
 
   >span {
-    color: red;
+    color: ${ ({ optional, theme }) => optional? theme.colors.dark3 : "red" };
   }
 `
 

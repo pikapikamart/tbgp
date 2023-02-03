@@ -38,6 +38,7 @@ export type Writeups = {
 export type Staff = BaseUser & {
   username: string,
   firstname: string,
+  middlename?: string,
   lastname: string,
   bastionId: BastionId,
   verification: boolean,
@@ -90,6 +91,7 @@ const staffSchema: mongoose.Schema<StaffDocument> = new mongoose.Schema({
     type: String,
     required: true
   },
+  middlename: String,
   lastname: {
     type: String,
     required: true

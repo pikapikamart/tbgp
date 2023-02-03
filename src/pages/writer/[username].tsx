@@ -43,7 +43,7 @@ export const getServerSideProps = async( context: GetServerSidePropsContext ) =>
   const { username } = context.params as UsernameParams
   const author = await findStaffService(
     { username },
-    "firstname lastname username bio"
+    "firstname middlename lastname username bio"
   ) as unknown as Author
 
   return {

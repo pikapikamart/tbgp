@@ -23,7 +23,7 @@ const Header = ({ profile }:HeaderProps) =>{
       <HeaderProfileNote profile={ profile }/>
       <HeaderContentContainer>
         <HeaderName>
-          <HeadingLarge>{ profile.firstname + " " + profile.lastname }</HeadingLarge>
+          <HeadingLarge>{ `${ profile.firstname } ${ profile.middlename?? "" } ${ profile.lastname }` }</HeadingLarge>
           { profile.position && <img src="/icons/icon-verified.svg" alt="" /> }
         </HeaderName>
         <HeaderBio>{ profile.bio? profile.bio : `Hi! My name is ${ profile.firstname } ${ profile.lastname }. I have yet to fill out my bio, but one thing's for sure, I love writing for The Bastion Group of Publications!` }</HeaderBio>

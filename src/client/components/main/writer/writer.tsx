@@ -31,7 +31,7 @@ const Writer = ({ author }: WriterProps) =>{
   return (
     <WriterWrapper>
       <WriterHeader>
-        <AuthorName>{ `${ author.firstname } ${ author.lastname }` }</AuthorName>
+        <AuthorName>{ `${ author.firstname } ${ author.middlename } ${ author.lastname }` }</AuthorName>
         <AuthorBio>
           { author.bio!==""? author.bio : `Hi! My name is ${ `${ author.firstname } ${ author.lastname }` }. I have yet to fill out my bio, but one thing's for sure, I love writing for The Bastion Group of Publications!` }
         </AuthorBio>

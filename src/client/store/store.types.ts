@@ -9,6 +9,7 @@ export type InitialStoryRequest = ModifyType<Omit<StoryRequest, "owner" | "reque
 
 export type StaffProfile = {
   firstname: string,
+  middlename?: string,
   lastname: string,
   username: string,
   bastionId: string
