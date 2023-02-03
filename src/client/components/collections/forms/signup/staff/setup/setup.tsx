@@ -16,7 +16,7 @@ const Setup = ({ bastionId }: SetupProfileProps) =>{
   const modalContext = useModalContext()
   const {
     addFieldRef,
-    handleFormSubmit,
+    handleSubmitSignupForm,
     passwordError,
     isLoading,
     emailError
@@ -28,7 +28,7 @@ const Setup = ({ bastionId }: SetupProfileProps) =>{
       <SetupWrapper
         key="staff-setup-wrapper"
         onKeyDown={ registerTrapContainer }
-        onSubmit={ handleFormSubmit }>
+        onSubmit={ handleSubmitSignupForm }>
           <FormRowFields>
             <InputField
               name="firstname"

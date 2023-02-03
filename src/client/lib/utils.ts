@@ -22,7 +22,7 @@ export const inputHasError = ( element: FormFields ) => {
   if ( element.name==="email" && !re.test(element.value) ) {
     return true
   }
-
+  
   if ( element.value ) {
     return false
   }
