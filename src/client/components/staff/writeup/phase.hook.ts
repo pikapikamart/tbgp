@@ -67,11 +67,11 @@ export const useWriteupPhaseCollaboration = (socketUri: string) =>{
 
       const socket = writeup.socket
 
-      socket.on(SocketEvents.server.broadcast_submission, () => {
-        dispatch(submitWriteup())
+      socket.on(SocketEvents.server.broadcast_submission, ( date: Date ) => {
+        dispatch(submitWriteup( date ))
         dispatch(updateWriteup({
           writeupId: writeup.writeupId,
-          members: writeup.request.members
+          members: writeup.request.members.map(({ member }) => member)
         }))
       })
 

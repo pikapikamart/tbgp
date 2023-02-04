@@ -60,6 +60,13 @@ const baseSubmitUpdateBody = ( phaseIndex: number ) => ({
   currentPhase: WRITEUP_PHASES[phaseIndex+1]
 })
 
+const getCurrentPhTime = async() =>{
+  const asiaManilaRequest = await fetch("http://worldtimeapi.org/api/timezone/Asia/Manila")
+  const asiaManilaDatetime = await asiaManilaRequest.json()
+
+  return new Date(asiaManilaDatetime.datetime)
+}
+
 export const isContentWriteupPhase = ( currentContent: WriteupContent<WriteupPhases> ): currentContent is WriteupContent<"writeup"> =>{
   return ( currentContent as WriteupContent<"writeup"> ).phase==="writeup"
 }
@@ -118,7 +125,11 @@ export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
 
 export type PopulatedWriteup = {
   request: {
-    members: StaffProfile[],
+    owner: StaffProfile,
+    members: {
+      member: StaffProfile,
+      date: Date
+    }[],
     title: string,
     category: string,
     instruction: string,
@@ -140,13 +151,18 @@ export type PopulatedWriteup = {
     isSubmitted: boolean,
     isAccepted: boolean,
     reSubmit: boolean,
-    handledBy?: StaffProfile,
-    submissions?: StaffProfile[],
     requestedResubmit: boolean,
+    handledBy?: StaffProfile,
+    handledDated?: Date,
+    submissions?: {
+      member: StaffProfile,
+      date: Date
+    }[],
+    submittedDate?: Date
   }]
 }
 
-export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: StaffContext ) => {
+export const getWriteupHandler = async( query: SingleWriteupSchema ) => {
   const writeup = writeupValidator(await findWriteupPopulatorService(
     {
       writeupId: query.writeupId,
@@ -154,9 +170,9 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
     },
     {
       path: "request",
-      select: "-_id members title category instruction content.$ createdAt deadline",
+      select: "-_id owner members title category instruction content.$ createdAt deadline",
       populate: {
-        path: "members",
+        path: "members.member owner",
         select: "-_id firstname lastname username bastionId"
       }
     },
@@ -164,10 +180,10 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
   ))
 
   await writeupPopulatorService(writeup, {
-    path: "content.handledBy content.submissions",
+    path: "content.handledBy content.submissions.member",
     select: "-_id firstname lastname username bastionId"
   })
-  
+
   return trpcSuccess(true, (writeup as never) as PopulatedWriteup)
 }
 
@@ -176,7 +192,7 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
 export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema, { staff }: VerifiedStaffContext) =>{
   const writeup = await populateWriteupHelper(writeupBody.writeupId, staff._id)
   
-  if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(member => member.equals(staff._id)) ) {
+  if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(({ member }) => member.equals(staff._id)) ) {
     return trpcError("FORBIDDEN", "Already submitted your work")
   }
 
@@ -192,7 +208,7 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
   const writeup = await populateWriteupHelper(writeupId, staff._id)
   const currentContent = writeup.content[0]
 
-  if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(member => member.equals(staff._id)) ) {
+  if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(({ member }) => member.equals(staff._id)) ) {
     return trpcError("FORBIDDEN", "Already submitted your work")
   }
 
@@ -215,7 +231,9 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
 
     await updateWriteupService(
       updateQuery(writeup.writeupId, "writeup"),
-      Object.assign(baseSubmitUpdateBody(0), { "content.1": Object.assign( writeup.content[0], { 
+      Object.assign(baseSubmitUpdateBody(0), {
+        submittedDate: await getCurrentPhTime()
+      } ,{ "content.1": Object.assign( writeup.content[0], { 
         phase: "revision",
         reSubmit: false,
         notes: [] 
@@ -227,18 +245,21 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
     updateQuery(writeup.writeupId, "writeup"),
     {
       $push: {
-        "content.$.submissions": staff._id
+        "content.$.submissions": {
+          member: staff._id,
+          date: await getCurrentPhTime()
+        }
       }
     }
   )
-  
-  return trpcSuccess(true, "Successfully submitted")
+ 
+  return trpcSuccess(true, await getCurrentPhTime())
 }
 
 export const cancelWriteupSubmissionHandler = async( writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext ) =>{
   const writeup = await populateWriteupHelper(writeupId, staff._id)
 
-  if ( !writeup.content[0].submissions?.find(member => member.equals(staff._id)) ) {
+  if ( !writeup.content[0].submissions?.find(({ member }) => member.equals(staff._id)) ) {
     return trpcError("CONFLICT", "You can only cancel when you made a submission.")
   }
 
@@ -246,7 +267,9 @@ export const cancelWriteupSubmissionHandler = async( writeupId: WriteupIdSchema,
     updateQuery(writeup.writeupId, "writeup"),
     {
       $pull: {
-        "content.$.submissions": staff._id
+        "content.$.submissions": {
+          member: staff._id
+        }
       }
     }
   )
@@ -259,8 +282,8 @@ export const cancelWriteupSubmissionHandler = async( writeupId: WriteupIdSchema,
 export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext) =>{
   const { writeup, currentContent } = await findWriteupHelper(writeupId)
 
-  if ( writeup.currentPhase==="finalization" && staff.position.role=="writer") {
-    return trpcError("FORBIDDEN", "Only section and senior editors are allowed for the finalization")
+  if ( writeup.currentPhase==="finalization" && staff.position.name!=="Editor in Chief") {
+    return trpcError("FORBIDDEN", "Only Editor in Chief can take the finalization phase")
   }
 
   if ( currentContent.handledBy?.equals(staff._id) ) {
@@ -345,7 +368,7 @@ export const submitWriteupHandler = async( writeupId: WriteupIdSchema, { staff }
     })
   )
 
-  return trpcSuccess(true, "Successfully submitted")
+  return trpcSuccess(true, await getCurrentPhTime())
 }
 
 export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam, { staff }: VerifiedStaffContext ) =>{;;;
@@ -457,7 +480,7 @@ export const publishWriteupHandler = async( writeupId: WriteupIdSchema, { staff 
     {
       category: writeup.category,
       linkPath: processTitle(currentContent.title),
-      authors: storyRequest.members,
+      authors: storyRequest.members.map(({ member }) => member),
       title: currentContent.title,
       caption: currentContent.caption,
       banner: writeup.banner,

@@ -42,7 +42,7 @@ export const getStoryRequestHandler = async( { storyRequestId }: StoryRequestIdS
     "-_id",
     { lean: true },
     {
-      path: "owner requests members assignedMembers",
+      path: "owner requests members.member assignedMembers",
       select: "-_id bastionId firstname lastname username"
     }
   )
@@ -131,7 +131,7 @@ export const applyStoryRequestHandler = async( { storyRequestId }: StoryRequestI
     return trpcError("FORBIDDEN", "Can't apply to story request when you are not assigned")
   }
 
-  if ( foundStoryRequest.members.find(member => member.equals(staff._id)) ) {
+  if ( foundStoryRequest.members.find(({ member }) => member.equals(staff._id)) ) {
     return trpcError("CONFLICT", "Can't apply when you are already a member")
   }
 
@@ -225,9 +225,13 @@ export const acceptRejectStoryRequestHandler = async( request: AcceptRejectStory
     return trpcError("CONFLICT", "Found staff is not a valid requester in the story request")
   }
 
-  if ( foundStoryRequest.members.find(member => member.equals(foundRequester._id)) ) {
+  if ( foundStoryRequest.members.find(({ member }) => member.equals(foundRequester._id)) ) {
     return trpcError("CONFLICT", "Found staff is already a member")
   }
+
+  const asiaManilaRequest = await fetch("http://worldtimeapi.org/api/timezone/Asia/Manila")
+  const asiaManilaDatetime = await asiaManilaRequest.json()
+  const asiaManilaDate = new Date(asiaManilaDatetime.datetime)
  
   await updateStoryRequest(
     { storyRequestId: request.storyRequestId }, 
@@ -238,7 +242,10 @@ export const acceptRejectStoryRequestHandler = async( request: AcceptRejectStory
         }
       }, request.choice? {
         $push: {
-          members: foundRequester._id
+          members: {
+            member: foundRequester._id,
+            date: asiaManilaDate
+          }
         }
       } : undefined
     )
@@ -267,7 +274,8 @@ export const acceptRejectStoryRequestHandler = async( request: AcceptRejectStory
         firstname: foundRequester.firstname,
         lastname: foundRequester.lastname,
         username: foundRequester.username
-      }
+      },
+      date: asiaManilaDate
     }
   )
 }
@@ -275,7 +283,9 @@ export const acceptRejectStoryRequestHandler = async( request: AcceptRejectStory
 export const deleteStoryRequestHandler = async( { storyRequestId }: StoryRequestIdSchema, { staff }: VerifiedStaffContext ) => {
   const foundStoryRequest = await getOwnedAvailableStoryRequest(storyRequestId, staff._id);
 
-  const membersAndRequesters = foundStoryRequest.members.concat(foundStoryRequest.requests);
+  const membersAndRequesters = foundStoryRequest.members
+    .map(staff => staff.member)
+    .concat(foundStoryRequest.requests)
 
   await bulkUpdateStaffService(membersAndRequesters.map(( storyRequestId ): AnyBulkWriteOperation<Staff> => (
     {
@@ -356,7 +366,9 @@ export const startStoryRequestHandler = async( { storyRequestId }: StoryRequestI
   )))
 
   // // add the writeup to all members of the story
-  await bulkUpdateStaffService(storyRequest.members.map(( storyRequestId: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
+  await bulkUpdateStaffService(storyRequest.members
+    .map(staff => staff.member)
+    .map(( storyRequestId: StaffDocument["_id"] ): AnyBulkWriteOperation<Staff> => (
     {
       updateOne: {
         filter: {

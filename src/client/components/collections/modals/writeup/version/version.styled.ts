@@ -90,7 +90,7 @@ export const TopicsListItemHeading = styled.p`
 
 export const TopicsListItemInformation = styled(DefaultText)`
   white-space: pre-wrap;
-  `
+`
 
 type TopicsListItemProps = {
   column?: boolean
@@ -110,7 +110,7 @@ export const TopicsListItem = styled.li<TopicsListItemProps>`
           flex-direction: column;
       
           ${ TopicsListItemHeading } {
-            margin: 0 0 ${ rem(4) } 0;
+            margin: 0 0 ${ rem(2) } 0;
           }
         `
     }

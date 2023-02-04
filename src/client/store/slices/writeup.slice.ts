@@ -34,6 +34,12 @@ export type WriteupState = ModifyType<PopulatedWriteup, {
 // bad redux
 const initialState: WriteupState = {
   request: {
+    owner: {
+      firstname: "",
+      lastname: "",
+      username: "",
+      bastionId: ""
+    },
     members: [],
     title: "",
     category: "",

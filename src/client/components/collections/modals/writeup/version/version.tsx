@@ -16,6 +16,7 @@ import { useModalContext } from "@/store/context/modal/modal"
 import { SrOnly } from "@/styled/shared/helpers"
 import Link from "next/link"
 import { 
+  RequestMemberDate,
   RequestMemberLink, 
   RequestMembers } from "../../storyRequest/storyRequest.styled"
 import { WriteupVersionNotes } from "./notes"
@@ -106,13 +107,14 @@ const Version = () =>{
           <TopicsListItem column={ true }>
             <TopicsListItemHeading>Members joined:</TopicsListItemHeading>
             <RequestMembers>
-              { writeup.request.members.map((member, index) => (
+              { writeup.request.members.map(({ member, date }, index) => (
                 <li key={ member.bastionId }>
                   <Link
                     href={ `/storybuilder/${ member.username }` }
                     passHref>
-                    <RequestMemberLink>{ member.firstname + " " + member.lastname }{ index!==(writeup.request.members??[]).length-1? "," : "" }</RequestMemberLink>
+                    <RequestMemberLink>{ member.firstname + " " + member.lastname }</RequestMemberLink>
                   </Link>
+                  <RequestMemberDate>- { `${ convertDateToString(`${ date }`, true) }, ${ new Date(date).toLocaleTimeString() }` }</RequestMemberDate>
                 </li>
               )) }
             </RequestMembers>
@@ -121,19 +123,33 @@ const Version = () =>{
             <TopicsListItem column={ true }>
               <TopicsListItemHeading>Members submitted:</TopicsListItemHeading>
               <RequestMembers>
-                { currentContent.submissions.map((member, index) => (
+                { currentContent.submissions.map(({ member, date }, index) => (
                   <li key={ member.bastionId }>
                     <Link
                       href={ `/storybuilder/${ member.username }` }
                       passHref>
-                      <RequestMemberLink>{ member.firstname + " " + member.lastname }{ index!==(writeup.request.members??[]).length-1? "," : "" }</RequestMemberLink>
+                      <RequestMemberLink>{ member.firstname + " " + member.lastname }</RequestMemberLink>
                     </Link>
+                    <RequestMemberDate>- { `${ convertDateToString(`${ date }`, true) }, ${ new Date(date).toLocaleTimeString() }` }</RequestMemberDate>
                   </li>
                 )) }
               </RequestMembers>
             </TopicsListItem>
           ) }
-          <CreatedDate>{ convertDateToString(writeup.request.createdAt) }</CreatedDate>
+          <TopicsListItem column={ true }>
+            <TopicsListItemHeading>Created at:</TopicsListItemHeading>
+            <TopicsListItemInformation>{ convertDateToString(writeup.request.createdAt) }</TopicsListItemInformation>
+          </TopicsListItem>
+          <TopicsListItem>
+            <TopicsListItemHeading>Requested by:</TopicsListItemHeading>
+            <TopicsListItemInformation>
+              <Link
+                href={ `/storybuilder/${ writeup.request.owner.username }` }
+                passHref>
+                  <RequestMemberLink>{ writeup.request.owner.firstname + " " + writeup.request.owner.lastname }</RequestMemberLink>
+              </Link>
+            </TopicsListItemInformation>
+          </TopicsListItem>
         </VersionStoryRequestContainer>
         { currentContent.notes.length>0 && <WriteupVersionNotes /> }
         { !isWriteupReadonly(writeup, staff.bastionId) && !isWriteupResubmit(writeup) && isWriteupHandler(writeup, staff.bastionId) && (

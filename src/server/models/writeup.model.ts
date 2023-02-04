@@ -22,14 +22,19 @@ type BaseWriteupContent<T> = {
   isSubmitted: boolean,
   isAccepted: boolean,
   reSubmit: boolean,
+  submittedDate?: Date,
   notes?: WriteupNote[]
 }
 
 export type WriteupContent<T extends WriteupPhases> = T extends "writeup"? 
-  BaseWriteupContent<T> & { submissions?: StaffDocument["_id"][] } :
+  BaseWriteupContent<T> & { submissions?: {
+    member: StaffDocument["_id"],
+    date: Date
+  }[] } :
   BaseWriteupContent<T> & {
+    requestedResubmit: boolean,
     handledBy?: StaffDocument["_id"],
-    requestedResubmit: boolean
+    handledDate?: Date
   }
 
 export type Writeup = {
@@ -97,14 +102,19 @@ export const writeupSchema: mongoose.Schema<WriteupDocument> = new mongoose.Sche
       type: mongoose.Schema.Types.ObjectId,
       ref: "Staff"
     },
+    handledDate: Date,
     submissions: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Staff"
+      member: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Staff"
+      },
+      date: Date
     }],
     isSubmitted: {
       type: Boolean,
       default: false
     },
+    submittedDate: Date,
     isAccepted: {
       type: Boolean,
       default: false

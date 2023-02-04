@@ -75,19 +75,24 @@ export const SubHeading = styled.h4`
 `
 
 export const RequestMembers = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
 
   > li {
     
     &:not(:last-of-type) {
-      margin-right: ${ rem(4) }
+      margin-bottom: ${ rem(2) }
     }
   }
 `
 
+export const RequestMemberDate = styled.span`
+  display: inline-block;
+  font-size: ${ fluid(12, 1.4, 13) };
+  margin-left: ${ rem(6) };
+`
+
 export const RequestMemberLink = styled.a`
   text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, .5);
 `
 
 export const RequestNoteWrapper = styled(motion.div)`

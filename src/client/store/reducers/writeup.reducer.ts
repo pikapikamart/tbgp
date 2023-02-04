@@ -38,26 +38,31 @@ export const resetSubmissionReducer = ( state: DraftWriteupState ) =>{
   state.shouldSave = false
 }
 
-export const addMemberSubmissionReducer = ( state: DraftWriteupState, action: PayloadAction<StaffState> ) => {
+export const addMemberSubmissionReducer = ( state: DraftWriteupState, action: PayloadAction<{ member: StaffState, date: Date }> ) => {
   if ( state.currentPhase==="writeup" && state.content[0].submissions ) {
+    const { member, date } = action.payload
     state.content[0].submissions.push({
-      username: action.payload.username,
-      firstname: action.payload.firstname,
-      lastname: action.payload.lastname,
-      bastionId: action.payload.bastionId
+      member: {
+        username: member.username,
+        firstname: member.firstname,
+        lastname: member.lastname,
+        bastionId: member.bastionId
+      },
+      date
     })
   }
 }
 
 export const removeMemberSubmissionReducer = ( state: DraftWriteupState, action: PayloadAction<string> ) => {
   if ( state.currentPhase==="writeup" && state.content[0].submissions ) {
-    state.content[0].submissions = state.content[0].submissions.filter(member => member.bastionId!==action.payload)
+    state.content[0].submissions = state.content[0].submissions.filter(({member }) => member.bastionId!==action.payload)
   }
 }
 
-export const submitWriteupReducer = ( state: DraftWriteupState ) => {
+export const submitWriteupReducer = ( state: DraftWriteupState, action: PayloadAction<Date> ) => {
   state.currentPhase = readonlyPhases[versionIndex(state.currentPhase)+1]
   state.content[0].isSubmitted = true
+  state.content[0].submittedDate = action.payload
 }
  
 export const resetWriteupReducer = ( state: DraftWriteupState ) => {

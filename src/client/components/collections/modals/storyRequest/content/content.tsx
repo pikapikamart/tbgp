@@ -3,11 +3,10 @@ import {
   SubHeading,
   RowContentContainer,
   RequestMembers,
-  RequestMemberLink
+  RequestMemberLink,
+  RequestMemberDate
 } from "../storyRequest.styled"
-import { 
-  Category,
-  CreatedDate } from "@/components/shared/storyRequest/initial/initial.styled"
+import { Category } from "@/components/shared/storyRequest/initial/initial.styled"
 import { categoryColors } from "@/components/shared/storyRequest/data"
 import { DefaultText } from "@/styled/collections/text"
 import Link from "next/link"
@@ -55,18 +54,23 @@ const Content = () =>{
       <RowContentContainer>
         <SubHeading>Members joined: </SubHeading>
         <RequestMembers>
-          { storyRequest.members.map((member, index) => (
+          { storyRequest.members.map(({ member, date }, index) => (
             <li key={ member.bastionId }>
               <Link
                 href={ `/storybuilder/${ member.username }` }
                 passHref>
-                <RequestMemberLink>{ member.firstname + " " + member.lastname }{ index!==(storyRequest.assignedMembers??[]).length-1? "," : "" }</RequestMemberLink>
+                <RequestMemberLink>{ member.firstname + " " + member.lastname }
+                </RequestMemberLink>
               </Link>
+              <RequestMemberDate>- { `${ convertDateToString(`${ date }`, true) }, ${ new Date(date).toLocaleTimeString() }` }</RequestMemberDate>
             </li>
           )) }
         </RequestMembers>
       </RowContentContainer>
-      <CreatedDate>{ convertDateToString(storyRequest.createdAt) }</CreatedDate>
+      <RowContentContainer>
+        <SubHeading>Created at: </SubHeading>
+        <DefaultText>{ convertDateToString(storyRequest.createdAt) }</DefaultText>
+      </RowContentContainer>
     </ContentContainer>
   )
 }

@@ -2,7 +2,7 @@ import { WriteupState } from "@/store/slices/writeup.slice"
 
 
 export const isWriteupMember = ( writeup: WriteupState, bastionId: string ) =>{
-  return writeup.request.members.find(member => member.bastionId===bastionId)!==undefined
+  return writeup.request.members.find(({ member }) => member.bastionId===bastionId)!==undefined
 }
 
 export const isWriteupPhaseEditable = ( writeup: WriteupState, bastionId: string ) => {
@@ -14,7 +14,7 @@ export const isWriteupCollaborative = ( writeup: WriteupState ) => {
 }
 
 export const isWriteupPartSubmitted= ( writeup: WriteupState, bastionId: string ) => {
-  return writeup.content[0].submissions?.find(member => member.bastionId===bastionId)!==undefined
+  return writeup.content[0].submissions?.find(({ member }) => member.bastionId===bastionId)!==undefined
 }
 
 export const isCollaborativePartDone = ( writeup: WriteupState, bastionId: string ) => {

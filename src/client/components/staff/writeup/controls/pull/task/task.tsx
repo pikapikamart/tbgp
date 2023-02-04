@@ -27,7 +27,7 @@ const Task = () =>{
     return <></>
   }
 
-  if ( writeup.content[0].handledBy===undefined ) {
+  if ( !writeup.content[0].handledBy && staff.position?.name==="Editor in Chief" ) {
     return (
       <ControlsUpdates>
         <ColoredMediumButton
