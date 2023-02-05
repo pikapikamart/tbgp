@@ -1,6 +1,6 @@
-import { useFormValidation } from "@/lib/hooks"
+import { HandleFormSubmit, useFormValidation } from "@/lib/hooks"
 import { trpc } from "@/lib/trpc"
-import { addErrors, removeErrors } from "@/lib/utils"
+import { addErrors } from "@/lib/utils"
 import { StaffSchema } from "@/src/server/schemas/staff.schema"
 import { signIn } from "next-auth/react"
 import { 
@@ -40,6 +40,11 @@ export const useSetupStaffProfile = ( bastionId: string ) =>{
     }
   })
 
+  const handleSubmitSignupForm: HandleFormSubmit = ( event ) => {
+    handleFormSubmit(event)
+    setEmailError("")
+  }
+
   useEffect(() =>{
     if ( isValidData ) {
       const staffData = getFieldsRef().reduce((accu, cur) =>{
@@ -67,7 +72,7 @@ export const useSetupStaffProfile = ( bastionId: string ) =>{
 
   return {
     addFieldRef,
-    handleFormSubmit,
+    handleSubmitSignupForm,
     passwordError,
     isLoading: mutation.isLoading,
     emailError

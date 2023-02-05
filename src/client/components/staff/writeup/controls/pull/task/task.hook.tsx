@@ -12,10 +12,6 @@ import {
   useState } from "react"
 
 
-export const notValidGraphicsBanner = ( writeup: WriteupState ) => {
-  return writeup.currentPhase==="graphics" && writeup.banner.url===""
-}
-
 export const useTask = () =>{
   const staff = useSelectStaff()
   const writeup = useSelectWriteup()

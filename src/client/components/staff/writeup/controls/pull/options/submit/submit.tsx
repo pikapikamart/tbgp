@@ -22,7 +22,7 @@ const Submit = ({ onClick, isExpanded, validation }: SubmitProps) =>{
   return (
     <SubmitWrapper
       colored="blue"
-      onClick={ isInvalid(writeup)? () => {} : onClick }
+      onClick={ isInvalid(writeup) || validation? () => {} : onClick }
       aria-expanded={ isExpanded }
       aria-invalid={ isInvalid(writeup) || validation }>Submit
     </SubmitWrapper>

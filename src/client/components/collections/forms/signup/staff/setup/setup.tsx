@@ -9,6 +9,10 @@ import { useSetupStaffProfile } from "./setup.hooks"
 import { SetupProfileProps } from "@/components/collections/modals/staff/setupProfile/setupProfile"
 import { AnimatePresence } from "framer-motion"
 import { LoadingSpinner } from "@/components/shared/spinner"
+import { 
+  InputBlock, 
+  InputLabel, 
+  InputWrapper } from "@/components/collections/inputs/regular/input.styled"
 
 
 const Setup = ({ bastionId }: SetupProfileProps) =>{
@@ -16,7 +20,7 @@ const Setup = ({ bastionId }: SetupProfileProps) =>{
   const modalContext = useModalContext()
   const {
     addFieldRef,
-    handleFormSubmit,
+    handleSubmitSignupForm,
     passwordError,
     isLoading,
     emailError
@@ -28,13 +32,28 @@ const Setup = ({ bastionId }: SetupProfileProps) =>{
       <SetupWrapper
         key="staff-setup-wrapper"
         onKeyDown={ registerTrapContainer }
-        onSubmit={ handleFormSubmit }>
+        onSubmit={ handleSubmitSignupForm }>
           <FormRowFields>
             <InputField
               name="firstname"
               labelText="Firstname"
               addFieldRef={ addFieldRef }
               registerControl={ registerControl }/>
+            <InputBlock>
+              <InputLabel 
+                htmlFor="middlename"
+                optional={ true }>
+                Middlename 
+                <span> (optional)</span>
+              </InputLabel>
+              <InputWrapper
+                id="middlename"
+                name="middlename"
+                ref={ addFieldRef }>
+              </InputWrapper>
+            </InputBlock>
+          </FormRowFields>
+          <FormRowFields>
             <InputField
               name="lastname"
               labelText="Lastname"

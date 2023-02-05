@@ -15,7 +15,7 @@ export const storyCategories: CategoriesIndex = {
   opinions: "Opinions",
   features: "Features",
   literary: "Literary",
-  devcomm: "DevComm",
+  devComm: "DevComm",
   sports: "Sports",
   education: "Education",
 }
@@ -26,7 +26,10 @@ export type StoryRequest = ModifyType<Omit<StoryRequestSchema, "deadline">, {
   storyRequestId: string,
   owner: StaffDocument["_id"],
   started: boolean,
-  members: StaffDocument["_id"][],
+  members: {
+    member: StaffDocument["_id"],
+    date: Date
+  }[],
   requests: StaffDocument["_id"][],
   writeupId: string | null,
   deadline: Date
@@ -49,8 +52,11 @@ export const storyRequestSchema: mongoose.Schema<StoryRequestDocument> = new mon
     required: true
   },
   members: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Staff"
+    member: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Staff"
+    },
+    date: Date
   }],
   requests: [{
     type: mongoose.Schema.Types.ObjectId,

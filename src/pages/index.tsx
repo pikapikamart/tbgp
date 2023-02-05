@@ -64,7 +64,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async() =>
   
   const latestArticles = await populateArticleService(
     {},
-    "-_id category linkPath authors title caption thumbnail.small createdAt",
+    "-_id category linkPath authors title caption thumbnail.medium createdAt",
     {
       sort: {
         createdAt: -1
@@ -78,7 +78,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async() =>
   )
   latestArticles.map(article => {
     article.thumbnail = {
-      small: article.thumbnail.small,
+      small: article.thumbnail.medium,
       medium: ""
     }
   })

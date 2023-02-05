@@ -21,23 +21,44 @@ export const useSubmitWriteup = ( exit: () => void ) => {
   const staff = useSelectStaff()
   const dispatch = useAppDispatch()
   const writeupPhaseMutation = trpc.useMutation(["writeup.submit-writeupPhase"], {
-    onSuccess: () => {
-      removeModal()
-      dispatch(addMemberSubmission(staff))
+    onSuccess: ( { data } ) => {
+      dispatch(addMemberSubmission({
+        member: staff,
+        date: data as Date
+      }))
+      const memberData = {
+        firstname: staff.firstname,
+        lastname: staff.lastname,
+        username: staff.username,
+        bastionId: staff.bastionId
+      }
 
       if ( writeup.content[0].submissions?.length===writeup.request.members.length-1 ) {
-        dispatch(submitWriteup())
+        // all members has submitted their part
+        dispatch(submitWriteup( data as Date ))
         dispatch(updateWriteup({
           writeupId: writeup.writeupId,
-          members: writeup.request.members
+          members: writeup.request.members.map(({ member }) => member)
         }))
-        writeup.socket?.emit(SocketEvents.clients.emit_submit_writeup, writeup.writeupId)
+        writeup.socket?.emit(SocketEvents.clients.emit_submit_writeup, {
+          writeup: writeup.writeupId,
+          date: data as Date,
+          ...memberData
+        })
       }
+     
+      writeup.socket?.emit(SocketEvents.clients.emit_part_submission, {
+        writeup: writeup.writeupId,
+        date: data as Date,
+        ...memberData
+      })
+
+      removeModal()
     }
   })
   const writeupMutation = trpc.useMutation(["writeup.submit"], {
-    onSuccess: () => {
-      dispatch(submitWriteup())
+    onSuccess: ({ data }) => {
+      dispatch(submitWriteup( data as Date ))
       dispatch(updateTask(writeup.writeupId))
       removeModal()
     }
@@ -50,13 +71,7 @@ export const useSubmitWriteup = ( exit: () => void ) => {
 
   const handleSubmitWriteup = () =>{
     if ( writeup.currentPhase==="writeup" ) {
-      writeup.socket?.emit(SocketEvents.clients.emit_part_submission, {
-        writeup: writeup.writeupId,
-        firstname: staff.firstname,
-        lastname: staff.lastname,
-        username: staff.username,
-        bastionId: staff.bastionId
-      })
+
       return writeupPhaseMutation.mutate(writeup.writeupId)
     }
 

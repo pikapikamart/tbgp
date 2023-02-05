@@ -35,7 +35,7 @@ const StoryRequest = ({ storyRequestId }: StoryRequestProps) =>{
     isDeleting, 
     handleDeleteStoryRequest,
     handleConfirmDeleteStoryRequest } = useDeleteStoryRequest(storyRequestId)
-    
+  
   return (
     <>
       { isDeleting && (

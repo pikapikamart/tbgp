@@ -155,7 +155,7 @@ export const populateWriteupHelper = async( writeupId: string, staffId: mongoose
     }
   ))
   
-  if ( isStoryRequest(writeup.request) && !writeup.request.members.find(member => member.equals(staffId)) ) {
+  if ( isStoryRequest(writeup.request) && !writeup.request.members.find(({ member }) => member.equals(staffId)) ) {
     return trpcError("FORBIDDEN", "Only members of writeup are allowed")  
   }
 

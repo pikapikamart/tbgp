@@ -14,6 +14,9 @@ const staffNameSchema = z
     firstname: z
       .string({ required_error:"Firstname is required" })
       .min(1, "Firstname should not be empty"),
+    middlename: z
+      .string()
+      .optional(),
     lastname: z
       .string({ required_error: "Lastname is required" })
       .min(1, "Lastname should not be empty"),

@@ -15,7 +15,8 @@ type SetStoryPayload = {
 
 type AcceptRejectPayload = {
   choice: boolean,
-  staff?: StaffProfile
+  staff?: StaffProfile,
+  date: Date
 }
 
 type Action = 
@@ -37,16 +38,12 @@ const reducer = ( draft: Store, action: Action ) =>{
     case "SET_STORYREQUEST":{
       const { staff, storyRequest } = action.payload
 
-      const find = ( member: StaffProfile ) => {
-        return member.bastionId===staff.bastionId
-      }
-
       draft.storyRequest = action.payload.storyRequest
-      draft.hasRequested = storyRequest.requests.find(find)!==undefined
+      draft.hasRequested = !!storyRequest.requests.find(request => request.bastionId===staff.bastionId)
       draft.isOwned = storyRequest.owner.bastionId===staff.bastionId
-      draft.isMember = storyRequest.members.find(find)!==undefined
+      draft.isMember = !!storyRequest.members.find(({ member }) => member.bastionId===staff.bastionId)
       draft.isAssigned = storyRequest.assignedMembers!==null
-      draft.isAssignedMember = storyRequest.assignedMembers?.find(find)!==undefined
+      draft.isAssignedMember = !!storyRequest.assignedMembers?.find(request => request.bastionId===staff.bastionId)
 
       return
     }
@@ -57,14 +54,17 @@ const reducer = ( draft: Store, action: Action ) =>{
       return
    
     case "ACCEPT_REJECT": {
-      const { choice, staff } = action.payload
+      const { choice, staff, date } = action.payload
 
       if ( !draft.storyRequest ) {
         return
       }
 
       if ( choice && staff ) {
-        draft.storyRequest.members.push(staff)
+        draft.storyRequest.members.push({
+          member: staff,
+          date
+        })
 
         return
       }

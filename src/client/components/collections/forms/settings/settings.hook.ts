@@ -32,7 +32,6 @@ export const useUpdateSettings = ( username: string ) =>{
     }
   })
   
-
   useEffect(() => {
     if ( isValidData ) {
       const userData = getFieldsRef().reduce((accu, cur) =>{

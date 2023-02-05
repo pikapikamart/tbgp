@@ -28,38 +28,52 @@ const Settings = () =>{
       </AnimatePresence>
     )
   }
-
+  
   return (
     <SettingsWrapper onSubmit={ handleFormSubmit }>
       <FormRowFields marginBottom={ 32 }>
-          <InputField
-            name="firstname"
-            labelText="Firstname"
-            defValue={ staff.firstname }
-            addFieldRef={ addFieldRef }/>
-          <InputField
-            name="lastname"
-            labelText="Lastname"
-            defValue={ staff.lastname }
-            addFieldRef={ addFieldRef }/>
-        </FormRowFields>
+        <InputField
+          name="firstname"
+          labelText="Firstname"
+          defValue={ staff.firstname }
+          addFieldRef={ addFieldRef }/>
         <InputBlock>
-          <InputLabel htmlFor="bio">Bio</InputLabel>
+          <InputLabel
+            htmlFor="middlename"
+            optional={ true }>Middlename
+            <span> (optional)</span>
+          </InputLabel>
           <InputWrapper
-            as="textarea"
-            rows={ 10 }
-            id="bio"
-            name="bio"
-            defaultValue={ staff.bio?? "" }
-            maxLength={ 400 }
+            id="middlename"
+            name="middlename"
+            defaultValue={ staff.middlename?? "" }
             ref={ addFieldRef } />
         </InputBlock>
-        <FormBottomControls>
-          <ColoredMediumButton
-            colored="darkBlue"
-            type="submit">Update profile
-          </ColoredMediumButton>
-        </FormBottomControls>
+      </FormRowFields>
+      <FormRowFields>
+        <InputField
+          name="lastname"
+          labelText="Lastname"
+          defValue={ staff.lastname }
+          addFieldRef={ addFieldRef }/>
+      </FormRowFields>
+      <InputBlock>
+        <InputLabel htmlFor="bio">Bio</InputLabel>
+        <InputWrapper
+          as="textarea"
+          rows={ 10 }
+          id="bio"
+          name="bio"
+          defaultValue={ staff.bio?? "" }
+          maxLength={ 400 }
+          ref={ addFieldRef } />
+      </InputBlock>
+      <FormBottomControls>
+        <ColoredMediumButton
+          colored="darkBlue"
+          type="submit">Update profile
+        </ColoredMediumButton>
+      </FormBottomControls>
     </SettingsWrapper>
   )
 }

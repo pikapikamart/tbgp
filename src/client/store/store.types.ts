@@ -9,6 +9,7 @@ export type InitialStoryRequest = ModifyType<Omit<StoryRequest, "owner" | "reque
 
 export type StaffProfile = {
   firstname: string,
+  middlename?: string,
   lastname: string,
   username: string,
   bastionId: string
@@ -16,7 +17,10 @@ export type StaffProfile = {
 
 export type FullStoryRequest = ModifyType<StoryRequest, {
   owner: StaffProfile,
-  members: StaffProfile[],
+  members: {
+    member: StaffProfile,
+    date: Date
+  }[],
   assignedMembers: StaffProfile[] | null,
   requests: StaffProfile[],
   createdAt: string,

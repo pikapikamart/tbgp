@@ -3,8 +3,9 @@ import {
   useAppDispatch, 
   useSelectStaff, 
   useSelectWriteup } from "@/lib/hooks/store.hooks"
-import { updateWriteup } from "@/store/slices/staff.slice"
+import { StaffState, updateWriteup } from "@/store/slices/staff.slice"
 import { 
+  addMemberSubmission,
   startCollaborating, 
   stopCollaborating, 
   submitWriteup} from "@/store/slices/writeup.slice"
@@ -67,12 +68,16 @@ export const useWriteupPhaseCollaboration = (socketUri: string) =>{
 
       const socket = writeup.socket
 
-      socket.on(SocketEvents.server.broadcast_submission, () => {
-        dispatch(submitWriteup())
+      socket.on(SocketEvents.server.broadcast_submission, ( { date, member }: { date: Date, member: StaffState } ) => {
+        dispatch(addMemberSubmission({
+          member,
+          date
+        }))
         dispatch(updateWriteup({
           writeupId: writeup.writeupId,
-          members: writeup.request.members
+          members: writeup.request.members.map(({ member }) => member)
         }))
+        dispatch(submitWriteup( date ))
       })
 
       socket.emit(SocketEvents.clients.create_collab_room, {

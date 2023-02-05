@@ -1,9 +1,7 @@
 import { 
   InitialWriteup, 
   StaffProfile } from "@/store/store.types";
-import { 
-  StaffContext, 
-  VerifiedStaffContext } from "../middlewares/router.middleware";
+import { VerifiedStaffContext } from "../middlewares/router.middleware";
 import { 
   WriteupContent,
   WriteupNote, 
@@ -39,6 +37,7 @@ import {
   writeupPhaseIndex, 
   writeupValidator} from "./controller.utils";
 import sharp from "sharp"
+import axios from "axios"
 
 
 // ----Helpers----
@@ -60,6 +59,12 @@ const baseSubmitUpdateBody = ( phaseIndex: number ) => ({
   currentPhase: WRITEUP_PHASES[phaseIndex+1]
 })
 
+export const getCurrentPhTime = async() =>{
+  const asiaManilaRequest = await axios.get("http://worldtimeapi.org/api/timezone/Asia/Manila")
+
+  return new Date(asiaManilaRequest.data.datetime)
+}
+
 export const isContentWriteupPhase = ( currentContent: WriteupContent<WriteupPhases> ): currentContent is WriteupContent<"writeup"> =>{
   return ( currentContent as WriteupContent<"writeup"> ).phase==="writeup"
 }
@@ -73,8 +78,12 @@ const baseResubmitUpdateBody = ( nextContent: WriteupContent<WriteupPhases>, cur
         phase: WRITEUP_PHASES[phaseIndex+1], 
         reSubmit: false,
         notes: [],  
+        submittedDate: undefined,
+        submissions: []
       },
-      !isContentWriteupPhase(nextContent)? { handledBy: nextContent.handledBy } : undefined
+      !isContentWriteupPhase(nextContent)? { 
+        handledBy: nextContent.handledBy,
+        handledDate: nextContent.handledDate } : undefined,
     )
   }
 )
@@ -118,7 +127,11 @@ export const getMultipleWriteupHandler = async(phase: ActivitiesTabSchema) =>{
 
 export type PopulatedWriteup = {
   request: {
-    members: StaffProfile[],
+    owner: StaffProfile,
+    members: {
+      member: StaffProfile,
+      date: Date
+    }[],
     title: string,
     category: string,
     instruction: string,
@@ -140,13 +153,18 @@ export type PopulatedWriteup = {
     isSubmitted: boolean,
     isAccepted: boolean,
     reSubmit: boolean,
-    handledBy?: StaffProfile,
-    submissions?: StaffProfile[],
     requestedResubmit: boolean,
+    handledBy?: StaffProfile,
+    handledDate?: Date,
+    submissions?: {
+      member: StaffProfile,
+      date: Date
+    }[],
+    submittedDate?: Date
   }]
 }
 
-export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: StaffContext ) => {
+export const getWriteupHandler = async( query: SingleWriteupSchema ) => {
   const writeup = writeupValidator(await findWriteupPopulatorService(
     {
       writeupId: query.writeupId,
@@ -154,9 +172,9 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
     },
     {
       path: "request",
-      select: "-_id members title category instruction content.$ createdAt deadline",
+      select: "-_id owner members title category instruction content.$ createdAt deadline",
       populate: {
-        path: "members",
+        path: "members.member owner",
         select: "-_id firstname lastname username bastionId"
       }
     },
@@ -164,10 +182,10 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
   ))
 
   await writeupPopulatorService(writeup, {
-    path: "content.handledBy content.submissions",
+    path: "content.handledBy content.submissions.member",
     select: "-_id firstname lastname username bastionId"
   })
-  
+
   return trpcSuccess(true, (writeup as never) as PopulatedWriteup)
 }
 
@@ -176,7 +194,7 @@ export const getWriteupHandler = async( query: SingleWriteupSchema, { staff }: S
 export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema, { staff }: VerifiedStaffContext) =>{
   const writeup = await populateWriteupHelper(writeupBody.writeupId, staff._id)
   
-  if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(member => member.equals(staff._id)) ) {
+  if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(({ member }) => member.equals(staff._id)) ) {
     return trpcError("FORBIDDEN", "Already submitted your work")
   }
 
@@ -191,10 +209,23 @@ export const saveWriteupPhaseHandler = async(writeupBody: SaveWriteupPhaseSchema
 export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext ) =>{
   const writeup = await populateWriteupHelper(writeupId, staff._id)
   const currentContent = writeup.content[0]
+  const currentTime = await getCurrentPhTime()
 
-  if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(member => member.equals(staff._id)) ) {
+  if ( writeup.request.members.length > 1 && writeup.content[0].submissions?.find(({ member }) => member.equals(staff._id)) ) {
     return trpcError("FORBIDDEN", "Already submitted your work")
   }
+
+  await updateWriteupService(
+    updateQuery(writeup.writeupId, "writeup"),
+    {
+      $push: {
+        "content.$.submissions": {
+          member: staff._id,
+          date: currentTime
+        }
+      }
+    }
+  )
 
   if ( writeup.request.members.length-1===currentContent.submissions?.length ) {
 
@@ -204,41 +235,39 @@ export const submitWriteupPhaseHandler = async( writeupId: WriteupIdSchema, { st
       if ( !nextContent ) {
         return trpcError("INTERNAL_SERVER_ERROR", "Server error")
       }
-  
+
       await updateWriteupService(
         updateQuery(writeup.writeupId, "writeup"),
-        baseResubmitUpdateBody(nextContent, currentContent, 0)
+        Object.assign({ "content.0.submittedDate": currentTime }, baseResubmitUpdateBody(nextContent, currentContent, 0))
       )
   
-      return trpcSuccess(true, "Successfully submitted")
+      return trpcSuccess(true, currentTime)
     } 
 
     await updateWriteupService(
       updateQuery(writeup.writeupId, "writeup"),
-      Object.assign(baseSubmitUpdateBody(0), { "content.1": Object.assign( writeup.content[0], { 
-        phase: "revision",
-        reSubmit: false,
-        notes: [] 
-      } ),})
+      Object.assign(
+        baseSubmitUpdateBody(0), 
+        { "content.0.submittedDate": currentTime },
+        { "content.1": Object.assign(writeup.content[0], { 
+            phase: "revision",
+            reSubmit: false,
+            notes: [],
+            submissions: [],
+            submittedDate: undefined
+          })
+        }
+      )
     )
   }
   
-  await updateWriteupService(
-    updateQuery(writeup.writeupId, "writeup"),
-    {
-      $push: {
-        "content.$.submissions": staff._id
-      }
-    }
-  )
-  
-  return trpcSuccess(true, "Successfully submitted")
+  return trpcSuccess(true, currentTime)
 }
 
 export const cancelWriteupSubmissionHandler = async( writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext ) =>{
   const writeup = await populateWriteupHelper(writeupId, staff._id)
 
-  if ( !writeup.content[0].submissions?.find(member => member.equals(staff._id)) ) {
+  if ( !writeup.content[0].submissions?.find(({ member }) => member.equals(staff._id)) ) {
     return trpcError("CONFLICT", "You can only cancel when you made a submission.")
   }
 
@@ -246,7 +275,9 @@ export const cancelWriteupSubmissionHandler = async( writeupId: WriteupIdSchema,
     updateQuery(writeup.writeupId, "writeup"),
     {
       $pull: {
-        "content.$.submissions": staff._id
+        "content.$.submissions": {
+          member: staff._id
+        }
       }
     }
   )
@@ -258,9 +289,10 @@ export const cancelWriteupSubmissionHandler = async( writeupId: WriteupIdSchema,
 
 export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext) =>{
   const { writeup, currentContent } = await findWriteupHelper(writeupId)
+  const currentTime = await getCurrentPhTime()
 
-  if ( writeup.currentPhase==="finalization" && staff.position.role=="writer") {
-    return trpcError("FORBIDDEN", "Only section and senior editors are allowed for the finalization")
+  if ( writeup.currentPhase==="finalization" && staff.position.name!=="Editor in Chief") {
+    return trpcError("FORBIDDEN", "Only Editor in Chief can take the finalization phase")
   }
 
   if ( currentContent.handledBy?.equals(staff._id) ) {
@@ -273,7 +305,10 @@ export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff 
 
   await updateWriteupService(
     updateQuery(writeup.writeupId, writeup.currentPhase),
-    { "content.$.handledBy" : staff._id, }
+    { 
+      "content.$.handledBy" : staff._id,
+      "content.$.handledDate": currentTime
+    }
   )
 
   if ( !staff.writeups.task.find(task => task.equals(writeup._id)) ) {
@@ -287,7 +322,7 @@ export const takeWriteupTaskHandler = async(writeupId: WriteupIdSchema, { staff 
     )
   }
 
-  return trpcSuccess(true, "Successfully taken task")
+  return trpcSuccess(true, currentTime)
 }
 
 export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff }: VerifiedStaffContext ) => {
@@ -312,6 +347,7 @@ export const saveWriteupHandler = async( writeupBody: SaveWriteupSchema, { staff
 
 export const submitWriteupHandler = async( writeupId: WriteupIdSchema, { staff }: VerifiedStaffContext ) => {
   const { writeup, currentContent, phaseIndex } = await findWriteupHelper(writeupId)
+  const currentTime = await getCurrentPhTime()
 
   if ( writeup.currentPhase==="finalization" ) {
     return trpcError("CONFLICT", "Can't submit into a higher phase")
@@ -327,25 +363,28 @@ export const submitWriteupHandler = async( writeupId: WriteupIdSchema, { staff }
     if ( !nextContent ) {
       return trpcError("INTERNAL_SERVER_ERROR", "Server error")
     }
-
+    
     await updateWriteupService(
       updateQuery(writeup.writeupId, writeup.currentPhase),
-      baseResubmitUpdateBody(nextContent, currentContent, phaseIndex)
+      Object.assign({ "content.$.submittedDate": currentTime }, baseResubmitUpdateBody(nextContent, currentContent, phaseIndex))
     )
 
-    return trpcSuccess(true, "Successfully submitted")
+    return trpcSuccess(true, currentTime)
   } 
 
   const { handledBy, ...restContent } = currentContent
   await updateWriteupService(
     updateQuery(writeup.writeupId, writeup.currentPhase),
-    Object.assign(baseSubmitUpdateBody(phaseIndex), {
-      [`content.${ phaseIndex+1 }`]: Object.assign( restContent, { phase: WRITEUP_PHASES[phaseIndex+1] } ),
-      [`content.${ phaseIndex-1 }.isAccepted`]: true,
-    })
+    Object.assign(
+      baseSubmitUpdateBody(phaseIndex), 
+      {
+        [`content.${ phaseIndex-1 }.isAccepted`]: true,
+        [`content.${ phaseIndex }.submittedDate`]: currentTime,
+        [`content.${ phaseIndex+1 }`]: Object.assign( restContent, { phase: WRITEUP_PHASES[phaseIndex+1] } ),
+      })
   )
 
-  return trpcSuccess(true, "Successfully submitted")
+  return trpcSuccess(true, currentTime)
 }
 
 export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam, { staff }: VerifiedStaffContext ) =>{;;;
@@ -385,6 +424,9 @@ export const requestReSubmitHandler = async( reSubmitBody: ReSubmitWriteupScheam
         "content.$.isSubmitted": false,
         "content.$.reSubmit": true,
         "content.$.notes": previousNotes.concat(reSubmitBody.notes),
+        $unset: {
+          "content.$.submittedDate": ""
+        },
         currentPhase: WRITEUP_PHASES[phaseIndex-1]
       },
       isContentWriteupPhase(previousContent)? { "content.$.submissions": [] } : undefined
@@ -457,7 +499,7 @@ export const publishWriteupHandler = async( writeupId: WriteupIdSchema, { staff 
     {
       category: writeup.category,
       linkPath: processTitle(currentContent.title),
-      authors: storyRequest.members,
+      authors: storyRequest.members.map(({ member }) => member),
       title: currentContent.title,
       caption: currentContent.caption,
       banner: writeup.banner,

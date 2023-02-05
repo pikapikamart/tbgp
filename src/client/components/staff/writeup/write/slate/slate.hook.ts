@@ -111,8 +111,8 @@ export const useSlate = () =>{
         }
       })
 
-      socket.on(SocketEvents.server.broadcast_part_submission, ( staff: StaffState ) =>{
-        dispatch(addMemberSubmission(staff))
+      socket.on(SocketEvents.server.broadcast_part_submission, ( submission: { member: StaffState, date: Date } ) =>{
+        dispatch(addMemberSubmission(submission))
       })
 
       socket.on(SocketEvents.server.broadcast_cancel_part_submission, ( bastionId: string ) =>{

@@ -19,6 +19,11 @@ export const useCancelCollaborative = ( exit: () => void ) => {
     onSuccess: () => {
       removeModal()
       dispatch(removeMemberSubmission(staff.bastionId))
+
+      writeup.socket?.emit(SocketEvents.clients.emit_cancel_part_submission, {
+        writeup: writeup.writeupId,
+        bastionId: staff.bastionId
+      })
     }
   })
 
@@ -27,13 +32,8 @@ export const useCancelCollaborative = ( exit: () => void ) => {
     exit()
   }
 
-  const handleCancelSubmission = () =>{
-    writeup.socket?.emit(SocketEvents.clients.emit_cancel_part_submission, {
-      writeup: writeup.writeupId,
-      bastionId: staff.bastionId
-    })
-    mutation.mutate(writeup.writeupId)
-  }
+  const handleCancelSubmission = () => mutation.mutate(writeup.writeupId)
+  
 
   return {
     registerControl,
