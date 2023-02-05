@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import {
   rem,
   fluid
@@ -60,14 +60,19 @@ export const ContentContainer = styled.div`
   }
 `
 
-export const RowContentContainer = styled.div`
+type RowContentContainerProps = {
+  column?: boolean
+}
+
+export const RowContentContainer = styled.div<RowContentContainerProps>`
+  align-item: center;
+  display: flex;
   line-height: 1.4;
   white-space: pre-wrap;
 
-  &:first-of-type {
-    align-item: center;
-    display: flex;
-  }
+  ${ ({ column }) => column && css`
+    display: block;
+  ` }
 `
 
 export const SubHeading = styled.h4`

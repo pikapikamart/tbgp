@@ -7,7 +7,9 @@ import { PayloadAction } from "@reduxjs/toolkit"
 import type { WritableDraft } from "immer/dist/internal"
 import { Descendant } from "slate"
 import { StaffState } from "../slices/staff.slice"
-import { WriteupState } from "../slices/writeup.slice"
+import { 
+  WriteupState, 
+  initialState } from "../slices/writeup.slice"
 import io from "socket.io-client"
 
 
@@ -19,6 +21,7 @@ export const setWriteupReducer = ( state: DraftWriteupState, action: PayloadActi
 
 export const setShouldSaveReducer = ( state: DraftWriteupState ) => {
   state.shouldSave = true
+  state.hasSaved = true
 }
 
 export const setWriteupHeadingReducer = ( state: DraftWriteupState, action: PayloadAction<HeaderFields> ) =>{
@@ -66,22 +69,14 @@ export const submitWriteupReducer = ( state: DraftWriteupState, action: PayloadA
 }
  
 export const resetWriteupReducer = ( state: DraftWriteupState ) => {
-  state.writeupId = ""
+  state = Object.assign(initialState)
+ 
+  return state
 }
 
-export const takeWriteupTaskReducer = ( state: DraftWriteupState, action: PayloadAction<StaffState> ) => {
-  const {
-    firstname,
-    lastname,
-    username,
-    bastionId
-  } = action.payload
-  state.content[0].handledBy = {
-    firstname,
-    lastname,
-    username,
-    bastionId
-  }
+export const takeWriteupTaskReducer = ( state: DraftWriteupState, action: PayloadAction<{ staff: StaffState, date: Date }> ) => {
+  state.content[0].handledBy = action.payload.staff
+  state.content[0].handledDate = action.payload.date
 }
 
 export const resubmitWriteupReducer = ( state: DraftWriteupState ) => {

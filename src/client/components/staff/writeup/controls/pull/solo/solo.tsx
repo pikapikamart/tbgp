@@ -22,7 +22,8 @@ const Solo = () => {
       <SaveWriteupControl />
       <SubmitWriteupOption
         onClick={ handleSubmissionModal }
-        isExpanded={ submitModal } />
+        isExpanded={ submitModal }
+        validation={ !writeup.hasSaved } />
     </ControlsUpdates>
   )
 }

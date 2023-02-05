@@ -1,7 +1,5 @@
 import { categoryColors } from "@/components/shared/storyRequest/data"
-import { 
-  Category, 
-  CreatedDate } from "@/components/shared/storyRequest/initial/initial.styled"
+import { Category } from "@/components/shared/storyRequest/initial/initial.styled"
 import { convertDateToString } from "@/components/shared/storyRequest/initial/utils"
 import { 
   isWriteupHandler,
@@ -36,6 +34,7 @@ import {
   VersionsListItem, 
   VersionStoryRequestContainer, 
   VersionWrapper } from "./version.styled"
+import { current } from "immer"
 
 
 const Version = () =>{
@@ -78,7 +77,7 @@ const Version = () =>{
             <TopicsListItemHeading>Stage:</TopicsListItemHeading>
             <TopicsListItemInformation>{ capitalizePhase(currentContent.phase as WriteupPhases) }</TopicsListItemInformation>
           </TopicsListItem>
-          { currentContent.handledBy!==undefined && (
+          { !!currentContent.handledBy && !!currentContent.handledDate && (
             <TopicsListItem>
               <TopicsListItemHeading>Handled by:</TopicsListItemHeading>
               <TopicsListItemInformation>
@@ -87,6 +86,7 @@ const Version = () =>{
                   passHref>
                   <RequestMemberLink>{ currentContent.handledBy.firstname } { currentContent.handledBy.lastname }</RequestMemberLink>
                 </Link>
+                <RequestMemberDate>- { `${ convertDateToString(`${ currentContent.handledDate }`, true) }, ${ new Date(currentContent.handledDate).toLocaleTimeString() }` }</RequestMemberDate>
               </TopicsListItemInformation>
           </TopicsListItem>
           ) }
@@ -99,31 +99,16 @@ const Version = () =>{
             <TopicsListItemInformation>{ writeup.request.instruction }</TopicsListItemInformation>
           </TopicsListItem>
           { writeup.request.deadline && (
-            <TopicsListItem column={ true }>
+            <TopicsListItem>
               <TopicsListItemHeading>Deadline:</TopicsListItemHeading>
               <TopicsListItemInformation>{ convertDateToString(writeup.request.deadline) }</TopicsListItemInformation>
             </TopicsListItem>
           ) }
-          <TopicsListItem column={ true }>
-            <TopicsListItemHeading>Members joined:</TopicsListItemHeading>
-            <RequestMembers>
-              { writeup.request.members.map(({ member, date }, index) => (
-                <li key={ member.bastionId }>
-                  <Link
-                    href={ `/storybuilder/${ member.username }` }
-                    passHref>
-                    <RequestMemberLink>{ member.firstname + " " + member.lastname }</RequestMemberLink>
-                  </Link>
-                  <RequestMemberDate>- { `${ convertDateToString(`${ date }`, true) }, ${ new Date(date).toLocaleTimeString() }` }</RequestMemberDate>
-                </li>
-              )) }
-            </RequestMembers>
-          </TopicsListItem>
-          { writeup.currentPhase==="writeup" && !!currentContent.submissions && currentContent.submissions.length>0 && (
+          { writeup.content[0].phase==="writeup" && (
             <TopicsListItem column={ true }>
-              <TopicsListItemHeading>Members submitted:</TopicsListItemHeading>
+              <TopicsListItemHeading>Members joined:</TopicsListItemHeading>
               <RequestMembers>
-                { currentContent.submissions.map(({ member, date }, index) => (
+                { writeup.request.members.map(({ member, date }) => (
                   <li key={ member.bastionId }>
                     <Link
                       href={ `/storybuilder/${ member.username }` }
@@ -136,7 +121,30 @@ const Version = () =>{
               </RequestMembers>
             </TopicsListItem>
           ) }
-          <TopicsListItem column={ true }>
+          { writeup.content[0].phase==="writeup" && writeup.request.members.length>1 && !!currentContent.submissions?.length && (
+            <TopicsListItem column={ true }>
+              <TopicsListItemHeading>Members submissions:</TopicsListItemHeading>
+              <RequestMembers>
+                { currentContent.submissions.map(({ member, date }) => (
+                  <li key={ member.bastionId }>
+                    <Link
+                      href={ `/storybuilder/${ member.username }` }
+                      passHref>
+                      <RequestMemberLink>{ member.firstname + " " + member.lastname }</RequestMemberLink>
+                    </Link>
+                    <RequestMemberDate>- { `${ convertDateToString(`${ date }`, true) }, ${ new Date(date).toLocaleTimeString() }` }</RequestMemberDate>
+                  </li>
+                )) }
+              </RequestMembers>
+            </TopicsListItem>
+          ) }
+          { currentContent.isSubmitted && currentContent.submittedDate && (
+            <TopicsListItem>
+              <TopicsListItemHeading>{ capitalizePhase(currentContent.phase as WriteupPhases) } submitted date:</TopicsListItemHeading>
+              <TopicsListItemInformation>{ `${ convertDateToString(`${ currentContent.submittedDate }`) },  ${ new Date(currentContent.submittedDate).toLocaleTimeString() }` }</TopicsListItemInformation>
+            </TopicsListItem>
+          ) }
+          <TopicsListItem>
             <TopicsListItemHeading>Created at:</TopicsListItemHeading>
             <TopicsListItemInformation>{ convertDateToString(writeup.request.createdAt) }</TopicsListItemInformation>
           </TopicsListItem>

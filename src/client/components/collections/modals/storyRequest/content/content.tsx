@@ -27,7 +27,7 @@ const Content = () =>{
         <SubHeading>Genre: </SubHeading>
         <Category colored={ categoryColors[storyRequest.category] } >{ storyRequest.category.toLowerCase() }</Category>
       </RowContentContainer>
-      <RowContentContainer>
+      <RowContentContainer column={ true }>
         <SubHeading>Instruction: </SubHeading>
         <DefaultText>{ storyRequest.instruction }</DefaultText>
       </RowContentContainer>
@@ -36,7 +36,7 @@ const Content = () =>{
         <DefaultText>{ convertDateToString(storyRequest.deadline) }</DefaultText>
       </RowContentContainer>
       { storyRequest.assignedMembers && (
-        <RowContentContainer>
+        <RowContentContainer column={ true }>
           <SubHeading>Assigned members: </SubHeading>
           <RequestMembers>
             { storyRequest.assignedMembers.map((member, index) => (
@@ -51,7 +51,7 @@ const Content = () =>{
           </RequestMembers>
         </RowContentContainer>
       ) }
-      <RowContentContainer>
+      <RowContentContainer column={ true }>
         <SubHeading>Members joined: </SubHeading>
         <RequestMembers>
           { storyRequest.members.map(({ member, date }, index) => (

@@ -32,6 +32,7 @@ import {
   getOwnedAvailableStoryRequest, 
   staffValidator } from "./controller.utils";
 import { FullStoryRequest } from "@/store/store.types";
+import { getCurrentPhTime } from "./writeup.controller";
 
 
 // --------Queries--------
@@ -72,9 +73,7 @@ export const getMultipleStoryRequestsHandler = async( tab: StoryRequestTabSchema
       }
   }
 
-  const asiaManilaRequest = await fetch("http://worldtimeapi.org/api/timezone/Asia/Manila")
-  const asiaManilaDatetime = await asiaManilaRequest.json()
-  const deadline = new Date(asiaManilaDatetime.datetime)
+  const deadline = await getCurrentPhTime()
   deadline.setUTCHours(0, 0, 0, 0)
 
   const aggregatedStoryRequests = await findManyStoryRequestAggregator(
@@ -229,9 +228,7 @@ export const acceptRejectStoryRequestHandler = async( request: AcceptRejectStory
     return trpcError("CONFLICT", "Found staff is already a member")
   }
 
-  const asiaManilaRequest = await fetch("http://worldtimeapi.org/api/timezone/Asia/Manila")
-  const asiaManilaDatetime = await asiaManilaRequest.json()
-  const asiaManilaDate = new Date(asiaManilaDatetime.datetime)
+  const asiaManilaDate = await getCurrentPhTime()
  
   await updateStoryRequest(
     { storyRequestId: request.storyRequestId }, 

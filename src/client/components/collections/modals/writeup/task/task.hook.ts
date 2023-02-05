@@ -16,10 +16,13 @@ export const useTakeTask = ( exit: () => void ) =>{
   const staff = useSelectStaff()
   const dispatch = useAppDispatch()
   const mutation = trpc.useMutation(["writeup.take-task"], {
-    onSuccess: () =>{
-      removeModal()
-      dispatch(takeWriteupTask(staff))
+    onSuccess: ({ data }) =>{
+      dispatch(takeWriteupTask({
+        staff,
+        date: data as Date
+      }))
       dispatch(addWriteupTask(writeup))
+      removeModal()
     }
   })
 

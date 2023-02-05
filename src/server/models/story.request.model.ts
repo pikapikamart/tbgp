@@ -15,7 +15,7 @@ export const storyCategories: CategoriesIndex = {
   opinions: "Opinions",
   features: "Features",
   literary: "Literary",
-  devcomm: "DevComm",
+  devComm: "DevComm",
   sports: "Sports",
   education: "Education",
 }

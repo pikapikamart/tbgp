@@ -22,11 +22,16 @@ export const useSubmitWriteup = ( exit: () => void ) => {
   const dispatch = useAppDispatch()
   const writeupPhaseMutation = trpc.useMutation(["writeup.submit-writeupPhase"], {
     onSuccess: ( { data } ) => {
-      removeModal()
       dispatch(addMemberSubmission({
         member: staff,
         date: data as Date
       }))
+      const memberData = {
+        firstname: staff.firstname,
+        lastname: staff.lastname,
+        username: staff.username,
+        bastionId: staff.bastionId
+      }
 
       if ( writeup.content[0].submissions?.length===writeup.request.members.length-1 ) {
         // all members has submitted their part
@@ -37,18 +42,18 @@ export const useSubmitWriteup = ( exit: () => void ) => {
         }))
         writeup.socket?.emit(SocketEvents.clients.emit_submit_writeup, {
           writeup: writeup.writeupId,
-          date: data as Date
+          date: data as Date,
+          ...memberData
         })
       }
      
       writeup.socket?.emit(SocketEvents.clients.emit_part_submission, {
         writeup: writeup.writeupId,
         date: data as Date,
-        firstname: staff.firstname,
-        lastname: staff.lastname,
-        username: staff.username,
-        bastionId: staff.bastionId
+        ...memberData
       })
+
+      removeModal()
     }
   })
   const writeupMutation = trpc.useMutation(["writeup.submit"], {

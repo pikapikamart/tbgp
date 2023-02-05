@@ -100,7 +100,7 @@ export const TopicsListItem = styled.li<TopicsListItemProps>`
   display: flex;
 
   ${ TopicsListItemHeading } {
-    margin: 0 ${ rem(8) } 0 0;
+    margin: 0 ${ rem(4) } 0 0;
   }
 
   ${ ({ column }) => {

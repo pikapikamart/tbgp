@@ -5,9 +5,7 @@ import {
 import { ControlsUpdates } from "../../controls.styled"
 import { SubmitWriteupOption } from "../options/submit"
 import { SaveWriteupControl } from "../save"
-import { 
-  notValidGraphicsBanner, 
-  useTask } from "./task.hook"
+import { useTask } from "./task.hook"
 
 
 const Task = () =>{
@@ -27,7 +25,9 @@ const Task = () =>{
     return <></>
   }
 
-  if ( !writeup.content[0].handledBy && staff.position?.name==="Editor in Chief" ) {
+  if ( 
+      (!writeup.content[0].handledBy && writeup.currentPhase!=="finalization") ||
+      ( !writeup.content[0].handledBy && writeup.currentPhase==="finalization" && staff.position?.name==="Editor in Chief" ) ) {
     return (
       <ControlsUpdates>
         <ColoredMediumButton
@@ -53,7 +53,7 @@ const Task = () =>{
           <SubmitWriteupOption
             onClick={ handleSubmissionModal }
             isExpanded={ submitModal }
-            validation={ writeup.currentPhase==="graphics" && !savedImage } />
+            validation={ (writeup.currentPhase==="graphics" && !savedImage) || !writeup.hasSaved } />
       }
       </ControlsUpdates>
     )

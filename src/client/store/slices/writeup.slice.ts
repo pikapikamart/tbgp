@@ -28,11 +28,12 @@ export type WriteupState = ModifyType<PopulatedWriteup, {
   shouldSave: boolean,
   isHeadingValid: boolean,
   isSlateValid: boolean,
+  hasSaved: boolean,
   socket?: Socket
 }
 
 // bad redux
-const initialState: WriteupState = {
+export const initialState: WriteupState = {
   request: {
     owner: {
       firstname: "",
@@ -67,6 +68,7 @@ const initialState: WriteupState = {
   shouldSave: false,
   isHeadingValid: false,
   isSlateValid: false,
+  hasSaved: false
 }
 
 export const writeupSlice = createSlice({

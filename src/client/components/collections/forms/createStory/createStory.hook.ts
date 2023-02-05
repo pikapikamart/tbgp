@@ -96,7 +96,6 @@ export const useCreateStoryRequest = () =>{
 
       storyRequest.assignedMembers = assignedMembers.length? assignedMembers.map(member => member.value) : undefined
       storyRequest.deadline = `${ deadline.date }`
-      
       mutation.mutate(storyRequest)
       resetFormValidation()
     }
