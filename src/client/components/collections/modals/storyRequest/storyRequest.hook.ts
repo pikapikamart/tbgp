@@ -34,7 +34,7 @@ export const useStoryRequest = ( storyRequestId: string ) =>{
       })
 
       if ( isFullStaffState(staff) && 
-        data.members.find(member => member.bastionId===staff.bastionId) &&
+        data.members.find(({ member }) => member.bastionId===staff.bastionId) &&
         !staff.storyRequests.joined.includes(data.storyRequestId)  ) {
           appDispatch(updateJoinedStoryRequests(data.storyRequestId))
       }
