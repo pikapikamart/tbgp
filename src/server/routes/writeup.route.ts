@@ -33,7 +33,7 @@ export const writeupRouter = createRouter()
   })
   .query("get", {
     input: singleWriteupSchema,
-    resolve: ({ input, ctx }) => getWriteupHandler(input, ctx)
+    resolve: ({ input }) => getWriteupHandler(input)
   })
   // authentication
   .middleware(({ ctx, next }) => isVerifiedStaff(ctx, next))
