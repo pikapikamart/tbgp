@@ -74,7 +74,7 @@ const CreateStory = () =>{
           listBoxOptions={ storyCategories } />
         <DatePicker
           PopperProps={{ placement: "bottom-end" }}
-          label="Deadline *"
+          label="Deadline"
           value={ deadline.date }
           minDate={ dayjs() }
           onChange={ handleSetDeadline }
