@@ -54,7 +54,7 @@ export const ControlsSelections = styled(RowCenterCenter)`
 `
 
 export const ControlsUpdates = styled.div`
-  margin-right: ${ fluid(12, 4, 48) };
+  margin-right: ${ fluid(12, 4, 32) };
 
   ${ ColoredMediumButton } {
 

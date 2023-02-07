@@ -1,4 +1,6 @@
-import { HandleFormSubmit, useFormValidation } from "@/lib/hooks"
+import { 
+  HandleFormSubmit, 
+  useFormValidation } from "@/lib/hooks"
 import { trpc } from "@/lib/trpc"
 import { addErrors } from "@/lib/utils"
 import { StaffSchema } from "@/src/server/schemas/staff.schema"
@@ -33,7 +35,7 @@ export const useSetupStaffProfile = ( bastionId: string ) =>{
       })
     },
     onError: ( error ) =>{
-      const [, , email] = getFieldsRef()
+      const [, , ,email] = getFieldsRef()
       addErrors(email)
       setEmailError(error.message)
       resetFormValidation()
@@ -56,7 +58,7 @@ export const useSetupStaffProfile = ( bastionId: string ) =>{
       const { password, passwordConfirm } = staffData
 
       if ( password!==passwordConfirm ) {
-        const [ , , , , passwordConfirmInput] = getFieldsRef()
+        const [ , , , , , passwordConfirmInput] = getFieldsRef()
         addErrors(passwordConfirmInput)
         setPasswordError(true)
         resetFormValidation()

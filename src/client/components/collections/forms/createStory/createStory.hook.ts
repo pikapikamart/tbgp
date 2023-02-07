@@ -89,7 +89,11 @@ export const useCreateStoryRequest = () =>{
   useEffect(() => {
     if ( isValidData && deadline.date ) {
       const storyRequest = getFieldsRef().reduce((accu, cur) =>{
-        accu[cur.name] = cur.value.trim()
+        if ( cur.name==="headline" ) {
+          accu["title"] = cur.value.trim()
+        } else {
+          accu[cur.name] = cur.value.trim()
+        }
 
         return accu
       }, {} as StoryRequestData)

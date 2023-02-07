@@ -63,8 +63,8 @@ const CreateStory = () =>{
         onSubmit={ handleFormSubmit }
         onKeyDown={ registerTrapContainer }>
         <InputField
-          labelText="Proposed title"
-          name="title"
+          labelText="Proposed headline"
+          name="headline"
           addFieldRef={ addFieldRef }
           registerControl={ registerControl } />
         <ComboBox
@@ -74,7 +74,7 @@ const CreateStory = () =>{
           listBoxOptions={ storyCategories } />
         <DatePicker
           PopperProps={{ placement: "bottom-end" }}
-          label="Deadline *"
+          label="Deadline"
           value={ deadline.date }
           minDate={ dayjs() }
           onChange={ handleSetDeadline }

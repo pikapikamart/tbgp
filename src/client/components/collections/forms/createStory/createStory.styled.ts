@@ -17,6 +17,11 @@ export const CreateStoryWrapper = styled.form`
     position: static;
     transition: none;
     transform: none;
+
+    &::after {
+      content: "*";
+      color: red;
+    }
   }
 
   // legend
