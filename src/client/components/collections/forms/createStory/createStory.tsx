@@ -63,8 +63,8 @@ const CreateStory = () =>{
         onSubmit={ handleFormSubmit }
         onKeyDown={ registerTrapContainer }>
         <InputField
-          labelText="Proposed title"
-          name="title"
+          labelText="Proposed headline"
+          name="headline"
           addFieldRef={ addFieldRef }
           registerControl={ registerControl } />
         <ComboBox

@@ -35,7 +35,7 @@ const Header = () =>{
           readOnly = { isWriteupReadonly(writeup, staff.bastionId) || isCollaborativePartDone(writeup, staff.bastionId) }
           name="title"
           defaultValue={ writeup.content[0].title }
-          placeholder="Story title"
+          placeholder="Story headline"
           rows={ 1 }
           autoComplete="off"
           onChange={ handleEmitTitle }
@@ -46,7 +46,7 @@ const Header = () =>{
             addFieldRef(el)
             titleRef.current = el
           } } />
-            <InputError id="error-title">Title should not be empty</InputError>
+            <InputError id="error-title">Headline should not be empty</InputError>
       </div>
       <div>
         <HeaderCaption 
@@ -54,7 +54,7 @@ const Header = () =>{
           readOnly = { isWriteupReadonly(writeup, staff.bastionId) || isCollaborativePartDone(writeup, staff.bastionId) }
           name="caption"
           defaultValue={ writeup.content[0].caption }
-          placeholder="Enter story caption"
+          placeholder="Enter story subheading"
           rows={ 1 }
           autoComplete="off"
           onChange={ handleEmitCaption }
@@ -65,7 +65,7 @@ const Header = () =>{
             addFieldRef(el)
             captionRef.current = el
           } } />
-            <InputError id="error-caption">Caption should not be empty</InputError>
+            <InputError id="error-caption">Subheading should not be empty</InputError>
       </div>
       <WriteHeaderCover />
       <SrOnly
