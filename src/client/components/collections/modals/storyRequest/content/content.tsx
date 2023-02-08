@@ -51,22 +51,24 @@ const Content = () =>{
           </RequestMembers>
         </RowContentContainer>
       ) }
-      <RowContentContainer column={ true }>
-        <SubHeading>Members joined: </SubHeading>
-        <RequestMembers>
-          { storyRequest.members.map(({ member, date }, index) => (
-            <li key={ member.bastionId }>
-              <Link
-                href={ `/storybuilder/${ member.username }` }
-                passHref>
-                <RequestMemberLink>{ member.firstname + " " + member.lastname }
-                </RequestMemberLink>
-              </Link>
-              <RequestMemberDate>- { `${ convertDateToString(`${ date }`, true) }, ${ new Date(date).toLocaleTimeString() }` }</RequestMemberDate>
-            </li>
-          )) }
-        </RequestMembers>
-      </RowContentContainer>
+      { !!storyRequest.members.length && (
+        <RowContentContainer column={ true }>
+          <SubHeading>Members joined: </SubHeading>
+          <RequestMembers>
+            { storyRequest.members.map(({ member, date }) => (
+              <li key={ member.bastionId }>
+                <Link
+                  href={ `/storybuilder/${ member.username }` }
+                  passHref>
+                  <RequestMemberLink>{ member.firstname + " " + member.lastname }
+                  </RequestMemberLink>
+                </Link>
+                <RequestMemberDate>- { `${ convertDateToString(`${ date }`, true) }, ${ new Date(date).toLocaleTimeString() }` }</RequestMemberDate>
+              </li>
+            )) }
+          </RequestMembers>
+        </RowContentContainer>
+      ) }
       <RowContentContainer>
         <SubHeading>Created at: </SubHeading>
         <DefaultText>{ convertDateToString(storyRequest.createdAt) }</DefaultText>
