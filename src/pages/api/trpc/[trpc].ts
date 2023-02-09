@@ -30,7 +30,7 @@ function withCors(handler: NextApiHandler) {
   };
 }
 
-export default withCors(trpcNext.createNextApiHandler({
+export default trpcNext.createNextApiHandler({
   router: appRouter,
   createContext
-}))
+})

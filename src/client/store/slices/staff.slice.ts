@@ -29,7 +29,9 @@ import {
 import { WritableDraft } from "immer/dist/internal";
 
 
-export type InitialStaffState = Omit<Staff, "password">
+export type InitialStaffState = Omit<Staff, "password"> & {
+  _id?: any
+}
 export type CreatedInitialStoryRequest = InitialStoryRequest & {
   requests: {
     username: string

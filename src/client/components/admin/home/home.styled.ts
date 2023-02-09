@@ -12,6 +12,7 @@ export const MainWrapper = styled.main`
 export const MainContentContainer = styled.div`
   
   ${ breakpoint("tablet", `
+    align-items: flex-start;
     display: flex;
     justify-content: center;
   `) }  

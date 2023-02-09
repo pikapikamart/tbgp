@@ -2,12 +2,16 @@ import { createRouter } from "src/server/router/createRouter";
 import { 
   createAdminHandler, 
   createBastionIdHandler, 
+  editStaffPositionHandler, 
   getProfileHandler, 
+  getStaffsProfileHandler, 
   validateAdminHandler, 
   verifyPositionHandler} from "../controllers/admin.controller";
 import { isValidAdmin } from "../middlewares/router.middleware";
 import { 
   adminSchema, 
+  editStaffPositionSchema, 
+  staffsPaginateSchema, 
   verifyStaffSchema} from "../schemas/admin.schema";
 import { baseUserSchema } from "../schemas/base.user.schema";
 
@@ -26,10 +30,18 @@ export const adminRouter = createRouter()
   .query("get-profile", {
     resolve: ({ ctx }) => getProfileHandler(ctx)
   })
+  .query("get-staffs-profile", {
+    input: staffsPaginateSchema,
+    resolve: ({ input }) => getStaffsProfileHandler(input)
+  })
   .mutation("create-bastionId", {
     resolve: ({ ctx }) => createBastionIdHandler(ctx)
   })
   .mutation("verify-position", {
     input: verifyStaffSchema,
     resolve: ({ input, ctx }) => verifyPositionHandler(input, ctx)
+  })
+  .mutation("edit-staff-position", {
+    input: editStaffPositionSchema,
+    resolve: ({ input }) => editStaffPositionHandler(input)
   })
