@@ -1,5 +1,6 @@
 import { 
   AdminSchema, 
+  EditStaffPositionSchema, 
   VerifyStaffSchema } from "../schemas/admin.schema"
 import { 
   createAdminService, 
@@ -7,7 +8,9 @@ import {
   updateAdminService } from "../services/admin.service";
 import { trpcError } from "../utils/error.util";
 import { customAlphabet } from "nanoid";
-import { updateStaffService } from "../services/staff.service";
+import { 
+  updateStaffService,
+  findManyStaffsService } from "../services/staff.service";
 import { Staff } from "../models/staff.model";
 import { 
   apiResult, 
@@ -36,6 +39,15 @@ export const getProfileHandler = async({ admin }: AdminContext) =>{
     bastionIds: admin.bastionIds,
     verifications: admin.verifications
   })
+}
+
+export const getStaffsProfileHandler = async() => {
+  const staffsProfile = await findManyStaffsService(
+    {},
+    "firstname lastname username bastionId position"
+  ) 
+
+  return trpcSuccess(true, staffsProfile)
 }
 
 // --------Mutations--------
@@ -119,4 +131,22 @@ export const verifyPositionHandler = async ( verification: VerifyStaffSchema, { 
   })
 
   return apiResult("Successfully verified a staff", true)
+}
+
+export const editStaffPositionHandler = async( input: EditStaffPositionSchema ) => {
+  const updatedStaff = await updateStaffService(
+    { bastionId: input.bastionID },
+    {
+      position: {
+        name: input.name,
+        role: input.role
+      }
+    }
+  )
+
+  if ( !updatedStaff ) {
+    return trpcError("NOT_FOUND", "No staff with this bastion id`")
+  }
+
+  return trpcSuccess(true, "Succesfully changed staff's position`")
 }
