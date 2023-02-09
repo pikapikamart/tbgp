@@ -25,6 +25,15 @@ export const editStaffPositionSchema = z
   })
   .merge(positionSchema)
 
+export const staffsPaginateSchema = z
+  .object({
+    paginate: z.object({
+      lastId: z.any({ required_error: "Last Id is required" })
+    }).optional()
+  })
+  .optional()
+
 export type AdminSchema = TypeOf<typeof adminSchema>;
 export type VerifyStaffSchema = TypeOf<typeof verifyStaffSchema>;
+export type StaffsPaginateSchema = TypeOf<typeof staffsPaginateSchema>
 export type EditStaffPositionSchema = TypeOf<typeof editStaffPositionSchema>

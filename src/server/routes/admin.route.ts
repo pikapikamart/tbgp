@@ -11,6 +11,7 @@ import { isValidAdmin } from "../middlewares/router.middleware";
 import { 
   adminSchema, 
   editStaffPositionSchema, 
+  staffsPaginateSchema, 
   verifyStaffSchema} from "../schemas/admin.schema";
 import { baseUserSchema } from "../schemas/base.user.schema";
 
@@ -30,7 +31,8 @@ export const adminRouter = createRouter()
     resolve: ({ ctx }) => getProfileHandler(ctx)
   })
   .query("get-staffs-profile", {
-    resolve: () => getStaffsProfileHandler()
+    input: staffsPaginateSchema,
+    resolve: ({ input }) => getStaffsProfileHandler(input)
   })
   .mutation("create-bastionId", {
     resolve: ({ ctx }) => createBastionIdHandler(ctx)

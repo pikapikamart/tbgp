@@ -6,11 +6,12 @@ import { rolesAndPositions } from "../../requestPosition/data"
 import { FormBottomControls } from "@/styled/shared/form"
 import { ColoredMediumButton } from "@/styled/collections/button"
 import { useModalContext } from "@/store/context/modal/modal"
+import { Role } from "@/src/server/models/staff.model"
 
 
 type ChangePositionFormProps = {
   bastionId: string,
-  successFunction: () => void
+  successFunction: ( position: { name: string, role: Role } ) => void
 }
 
 const ChangePositionForm = ({ bastionId, successFunction }: ChangePositionFormProps) =>{

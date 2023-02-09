@@ -1,6 +1,7 @@
 import { 
   AdminSchema, 
   EditStaffPositionSchema, 
+  StaffsPaginateSchema, 
   VerifyStaffSchema } from "../schemas/admin.schema"
 import { 
   createAdminService, 
@@ -18,7 +19,7 @@ import {
 import { AdminContext } from "../middlewares/router.middleware";
 import { BaseUserSchema } from "../schemas/base.user.schema";
 import { adminValidator } from "./controller.utils";
-import { UpdateQuery } from "mongoose";
+import mongoose, { UpdateQuery } from "mongoose";
 
 
 // --------Queries--------
@@ -41,12 +42,25 @@ export const getProfileHandler = async({ admin }: AdminContext) =>{
   })
 }
 
-export const getStaffsProfileHandler = async() => {
+export const getStaffsProfileHandler = async( input: StaffsPaginateSchema ) => {
+  const query = Object.assign(
+    {
+      position: {
+        $ne: null
+      }
+    }, 
+    input?.paginate?.lastId? {
+      _id: {
+        $gt: new mongoose.Types.ObjectId(input.paginate.lastId)
+      }
+    } : undefined
+  )
   const staffsProfile = await findManyStaffsService(
-    { position: {
-      $ne: null
-    } },
-    "firstname lastname username bastionId position"
+    query,
+    "firstname lastname username bastionId position",
+    {
+      limit: 2
+    }
   ) 
 
   return trpcSuccess(true, staffsProfile)
