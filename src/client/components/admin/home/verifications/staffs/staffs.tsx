@@ -18,11 +18,10 @@ export const sanitizePosition = ( position: string ) => {
   return lowercasedPosition.join(" ")
 }
 
-const staffsList = () => {
+const StaffsList = () => {
   const modalContext = useModalContext()
   const {
     staffs,
-    handleRefetchStaffs,
     handleUpdateStaffPosition,
     ref } = useEditStaffPosition()
 
@@ -73,4 +72,4 @@ const staffsList = () => {
 }
 
 
-export default staffsList;
+export default StaffsList;

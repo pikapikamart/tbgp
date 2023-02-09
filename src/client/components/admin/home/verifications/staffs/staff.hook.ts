@@ -23,10 +23,6 @@ export const useEditStaffPosition = () =>{
     ref,
     inView } = useInView({ threshold: 1 })
 
-  const handleRefetchStaffs = () => {
-    staffsQuery.refetch()
-  }
-
   const handleUpdateStaffPosition = ( index: number, position: { name: string, role: Role } ) =>{
     setStaffs(prev => {
       const newState = [ ...prev ]
@@ -52,7 +48,6 @@ export const useEditStaffPosition = () =>{
 
   return {
     staffs,
-    handleRefetchStaffs,
     ref,
     handleUpdateStaffPosition
   }
