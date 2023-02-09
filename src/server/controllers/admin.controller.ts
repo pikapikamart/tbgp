@@ -59,7 +59,7 @@ export const getStaffsProfileHandler = async( input: StaffsPaginateSchema ) => {
     query,
     "firstname lastname username bastionId position",
     {
-      limit: 2
+      limit: 8
     }
   ) 
 
