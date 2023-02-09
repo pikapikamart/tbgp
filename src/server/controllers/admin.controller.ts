@@ -43,7 +43,9 @@ export const getProfileHandler = async({ admin }: AdminContext) =>{
 
 export const getStaffsProfileHandler = async() => {
   const staffsProfile = await findManyStaffsService(
-    {},
+    { position: {
+      $ne: null
+    } },
     "firstname lastname username bastionId position"
   ) 
 
@@ -135,7 +137,7 @@ export const verifyPositionHandler = async ( verification: VerifyStaffSchema, { 
 
 export const editStaffPositionHandler = async( input: EditStaffPositionSchema ) => {
   const updatedStaff = await updateStaffService(
-    { bastionId: input.bastionID },
+    { bastionId: input.bastionId },
     {
       position: {
         name: input.name,

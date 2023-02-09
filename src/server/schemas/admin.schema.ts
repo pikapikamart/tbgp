@@ -21,7 +21,7 @@ export const verifyStaffSchema = z
 
 export const editStaffPositionSchema = z
   .object({
-    bastionID: bastionIdSchema
+    bastionId: bastionIdSchema
   })
   .merge(positionSchema)
 

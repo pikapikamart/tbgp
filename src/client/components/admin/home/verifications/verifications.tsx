@@ -4,6 +4,7 @@ import { HomeFrameHeading } from "../home.styled";
 import { VerificationsList } from "./list";
 import { VerificationsWrapper } from "./verifications.styled";
 import { verificationsParams } from "./data"
+import { StaffsList } from "./staffs";
 
 
 const Verifications = () =>{
@@ -14,6 +15,7 @@ const Verifications = () =>{
       <DefaultText>Verify bastion members position requests</DefaultText>
       <TabInterface paramsPaths={ verificationsParams }>
         <VerificationsList />
+        <StaffsList />
       </TabInterface>
     </VerificationsWrapper>
   )
